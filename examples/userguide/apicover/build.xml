@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+  $Id$
+ 
+  Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ 
+  This code is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License version 2 only, as
+  published by the Free Software Foundation.  Oracle designates this
+  particular file as subject to the "Classpath" exception as provided
+  by Oracle in the LICENSE file that accompanied this code.
+ 
+  This code is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  version 2 for more details (a copy is included in the LICENSE file that
+  accompanied this code).
+ 
+  You should have received a copy of the GNU General Public License version
+  2 along with this work; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ 
+  Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+  or visit www.oracle.com if you need additional information or have any
+  questions.
+-->
+
+<project name="ApiCover examples" default="apicov" basedir=".">
+
+    <property file="build.properties"/>
+
+    <target name="build" description="Build API cover example">
+
+        <available file="${junit.jar}" property="junit.jar.present" />
+        <fail unless="junit.jar.present" message="Path to junit.jar is not specified. Check 'build.properties' file." />
+
+        <!-- compile the program and build jar-->
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+        <jar destfile="${jar.name}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-class" value="com.sun.tdk.samples.helloworld.HelloWorld"/>
+            </manifest>
+        </jar>
+
+        <!-- compile the test -->
+        <mkdir dir="${test.classes.dir}"/>
+        <javac srcdir="${test.src.dir}"
+               destdir="${test.classes.dir}"
+               classpath="${classes.dir}:${junit.jar}"/>
+
+        <!-- build javadoc -->
+        <mkdir dir="${javadoc.dir}"/>
+        <javadoc sourcepath="${src.dir}" destdir="${javadoc.dir}"
+                 classpath="${classes.dir}:${java.class.path}"
+                 packagenames="${apipackage.name}"/>
+
+    </target>
+
+    <target name="test" description="Run test suite" depends="build">
+        <!-- run junit test -->
+        <mkdir dir="${report.dir}"/>
+        <junit printsummary="yes" fork="yes" haltonfailure="false">
+            <formatter type="plain"/>
+            <classpath>
+                <pathelement location="${jar.name}"/>
+                <pathelement location="${test.classes.dir}"/>
+                <pathelement path="${java.class.path}"/>
+                <pathelement location="${junit.jar}"/>
+            </classpath>
+            <test name="TestGreet" todir="${report.dir}"/>
+        </junit>
+    </target>
+
+    <target name="sigtest" description="Generate signature file" depends="build, test">
+
+        <available file="${rt.jar}" property="rt.jar.present" />
+        <fail unless="rt.jar.present" message="Path to rt.jar is not specified. Check 'build.properties' file." />
+
+        <mkdir dir="${report.dir}"/>
+        <java jar="${sigtestdev.jar}" fork="true">
+            <arg line="setup"/>
+            <arg line="-filename ${sigfile}"/>
+            <arg line="-package ${apipackage.name}"/>
+            <arg line="-classpath ${jar.name}${path.separator}${rt.jar}"/>
+        </java>
+    </target>
+
+    <target name="apicov" description="Generate coverage reports" depends="build, sigtest">
+
+        <available file="${sigfile}" property="sigfile.present" />
+        <fail unless="sigfile.present" message="Signature file is not found." />
+
+        <java jar="${apicover.jar}" fork="true">
+            <arg line="-ts ${test.classes.dir} -api ${sigfile}"/>
+            <arg line="-apiinclude ${apipackage.name}"/>
+            <arg line="-mode w"/>
+            <arg line="-report ${report.dir}/cov-worst-case.txt"/>
+        </java>
+        <echo>
+            -----------------------------------------
+            API Coverage mode - worst case
+            Report : ${report.dir}/cov-worst-case.txt
+        </echo>
+
+        <java jar="${apicover.jar}" fork="true">
+            <arg line="-ts ${test.classes.dir} -api ${sigfile}"/>
+            <arg line="-apiinclude ${apipackage.name}"/>
+            <arg line="-mode r"/>
+            <arg line="-report ${report.dir}/cov-realworld.txt"/>
+        </java>
+        <echo>
+            -----------------------------------------
+            API Coverage mode - real world
+            Report : ${report.dir}/cov-realworld.txt
+        </echo>
+
+        <java jar="${apicover.jar}" fork="true">
+            <arg line="-ts ${test.classes.dir} -api ${sigfile}"/>
+            <arg line="-apiinclude ${apipackage.name}"/>
+            <arg line="-mode r"/>
+            <arg line="-excludeFields"/>
+            <arg line="-detail 5"/>
+            <arg line="-report ${report.dir}/cov-realworld-without-fields.txt"/>
+        </java>
+        <echo>
+            -----------------------------------------
+            API Coverage mode - real world, fields are ignored, 
+            report includes reference counters
+            Report : ${report.dir}/cov-realworld-without-fields.txt
+        </echo>
+    </target>
+
+    <target name="clean" description="Clean up the build">
+        <delete dir="${classes.dir}"/>
+        <delete dir="${test.classes.dir}"/>
+        <delete dir="${javadoc.dir}"/>
+        <delete file="${jar.name}"/>
+        <delete dir="${report.dir}"/>
+    </target>
+
+</project>

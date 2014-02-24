@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  $Id: buildproj.xml 4557 2008-03-24 17:08:06Z eg216457 $
+
+  Copyright (c) 1996, 2009, Oracle and/or its affiliates. All rights reserved.
+  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ 
+  This code is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License version 2 only, as
+  published by the Free Software Foundation.  Oracle designates this
+  particular file as subject to the "Classpath" exception as provided
+  by Oracle in the LICENSE file that accompanied this code.
+ 
+  This code is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  version 2 for more details (a copy is included in the LICENSE file that
+  accompanied this code).
+ 
+  You should have received a copy of the GNU General Public License version
+  2 along with this work; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ 
+  Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+  or visit www.oracle.com if you need additional information or have any
+  questions.
+
+-->
+
+<!--========================================================================-->
+<!-- Docs                                       -->
+<!--========================================================================-->
+<target name="docs" depends="prepare" description="Build Project Documents.">
+    <copy todir="${build.doc.dir}">
+        <fileset dir="${ws.doc.dir}" includes="*.*"/>
+    </copy>
+</target>
+
+<target name="javadoc" depends="prepare, prepareSrc, javatest">
+    <mkdir dir="${build.javadoc.dir}"/>
+    <loadfile property="copyright.text" srcFile='${ws.legal.dir}/copyright.txt' failonerror='false'/>
+    <javadoc sourcepath="${build.src.classes.dir}"
+             destdir="${build.javadoc.dir}"
+             author="false"
+             version="false"
+             additionalparam="-breakiterator"
+             classpath="${build.javatest.dir}:${java.class.path}"
+    >
+        <packageset dir="${build.src.classes.dir}">
+            <include name="com/sun/tdk/exclude/**"/>
+            <include name="com/sun/tdk/signaturetest/**"/>
+        </packageset>
+        <bottom><![CDATA[
+<!--
+${copyright.text}
+-->
+           ]]>
+        </bottom>
+        <tag name="test"/>
+        <tag name="executeClass"/>
+    </javadoc>
+</target>
+
+<!--========================================================================-->
+<!-- Build Sub Targets                            -->
+<!--========================================================================-->
+<target name="build" depends="clean, release, test" description="Build SigTest product."/>
+
+<target name="devbuild" depends="bin, javadoc"/>
+
+
+<!--========================================================================-->
+<!-- Binaries / Libraries                                -->
+<!--========================================================================-->
+
+<!-- Build scripts and other binaries                    -->
+<target name="bin" depends="jars, mvn_jars" description="Build Project Executables."/>
+
+<target name="javatest" depends="prepare">
+    <mkdir dir="${build.javatest.dir}"/>
+    <javac srcdir="${ws.src.classes.dir}"
+           destdir="${build.javatest.dir}"
+           debug="${javac.debug}"
+           source="1.4"
+           target="1.4"
+           verbose="${javac.verbose}" deprecation="${javac.deprecation}"
+           classpathref="compileClassPath"
+           includes="com/sun/javatest/*.java"
+    />
+</target>
+
+<!-- Prepares class sources to be built -->
+<target name="prepareSrc" depends="prepare"
+        description="Prepares class sources to be built.">
+    <copy todir="${build.src.classes.dir}">
+        <fileset dir="${ws.src.classes.dir}/" includes="**/*"/>
+    </copy>
+    <copy todir="${build.mvnsrc.dir}">
+        <fileset dir="${ws.mvnsrc.dir}/" includes="**/*"/>
+    </copy>
+    <tstamp>
+        <format property="current.time" pattern="dd.MM.yyyy HH:mm z"/>
+    </tstamp>
+
+    <property name="version.file" value="${build.src.classes.dir}/com/sun/tdk/signaturetest/Version.java"/>
+
+    <replaceregexp file="${version.file}"
+                   match='Number="[\d\.]+"'
+                   replace='Number="${sigtest.version}"'/>
+
+    <replaceregexp file="${version.file}"
+                   match='build_time=""'
+                   replace='build_time="${current.time}"'/>
+
+    <replaceregexp file="${version.file}"
+                   match='build_os=""'
+                   replace='build_os="${os.name} ${os.version} ${os.arch}"'/>
+
+    <replaceregexp file="${version.file}"
+                   match='build_user=""'
+                   replace='build_user="${user.name}"'/>
+
+</target>
+
+<target name="jars" depends="sigtest_jars, remote_jar, exclude_jar, apicover_jar, apicheck_jar"/>
+
+<target name="sigtest_jars" depends="compileClasses, compileJ8Classes">
+    <mkdir dir="${build.lib.dir}"/>
+    <jar destfile="${build.lib.dir}/sigtest.jar" basedir="${build.classes.dir}"
+         includes="**/signaturetest/**" excludes="**/Setup* **remote/**">
+        <manifest>
+            <attribute name="Main-Class" value="com.sun.tdk.signaturetest.Main"/>
+            <attribute name="Profile" value="compact1"/>
+        </manifest>
+    </jar>
+    <jar destfile="${build.lib.dir}/sigtestdev.jar" basedir="${build.classes.dir}"
+         includes="**/signaturetest/**" excludes="**remote/**">
+        <manifest>
+            <attribute name="Main-Class" value="com.sun.tdk.signaturetest.Main"/>
+            <attribute name="Profile" value="compact1"/>
+        </manifest>
+    </jar>
+</target>
+
+<target name="remote_jar" depends="compileClasses" if="cdc.enabled">
+    <jar destfile="${build.lib.dir}/remote.jar" basedir="${build.classes.dir}/remote"/>
+</target>
+
+<target name="exclude_jar" depends="compileClasses">
+    <mkdir dir="${build.lib.dir}"/>
+    <jar destfile="${build.lib.dir}/exclude.jar" basedir="${build.classes.dir}"
+         includes="**/exclude/*"/>
+</target>
+
+<target name="compileJ8Classes" depends="prepareSrc, prepare, javatest" if="jdk8.home" >
+    <javac fork="true" srcdir="${build.src.classes.dir}"
+           destdir="${build.classes.dir}"
+           executable="${jdk8.home}/bin/javac"
+           source="1.8"
+           target="1.8"
+           classpath="${build.javatest.dir}"
+           debug="${javac.debug}"
+           verbose="${javac.verbose}" deprecation="${javac.deprecation}"
+           classpathref="compileClassPath">
+        <include name="com/sun/tdk/signaturetest/**/J8RefLoader.java"/>
+    </javac>
+</target>
+
+<target name="apicover_jar" depends="compileClasses, compileJ8Classes">
+    <mkdir dir="${build.lib.dir}"/>
+    <jar
+        destfile="${build.lib.dir}/apicover.jar"
+        basedir="${build.classes.dir}"
+        includes="**/apicover/**"
+    >
+        <manifest>
+            <attribute name="Main-Class" value="com.sun.tdk.apicover.Main"/>
+            <attribute name="Class-Path" value="sigtestdev.jar sigtest.jar"/>
+        </manifest>
+    </jar>
+</target>
+
+<target name="apicheck_jar" depends="compileClasses, compileJ8Classes">
+    <mkdir dir="${build.lib.dir}"/>
+    <jar
+        destfile="${build.lib.dir}/apicheck.jar"
+        basedir="${build.classes.dir}"
+        includes="**/apicheck/**"
+    >
+        <manifest>
+            <attribute name="Main-Class" value="com.sun.tdk.apicheck.Main"/>
+            <attribute name="Class-Path" value="sigtestdev.jar sigtest.jar"/>
+        </manifest>
+    </jar>
+</target>
+
+<target name="compileClasses" depends="prepareSrc, prepare, javatest">
+    <mkdir dir="${build.classes.dir}"/>
+    <javac fork="true"
+           executable="${jdk4.home}/bin/javac"
+           srcdir="${build.src.classes.dir}"
+           destdir="${build.classes.dir}"
+
+           source="1.4"
+           target="1.4"
+           classpath="${build.javatest.dir}"
+           debug="${javac.debug}"
+           verbose="${javac.verbose}" deprecation="${javac.deprecation}"
+           classpathref="compileClassPath"
+    >
+        <include name="com/sun/tdk/signaturetest/**/*.java"/>
+        <include name="com/sun/tdk/apicheck/**/*.java"/>
+        <include name="com/sun/tdk/exclude/*.java"/>
+        <exclude name="com/sun/tdk/signaturetest/**/Tiger*.java"/>
+        <exclude name="com/sun/tdk/signaturetest/**/J8RefLoader.java"/>
+        <exclude name="com/sun/tdk/**/remote/**"/>
+    </javac>
+    <javac fork="true" srcdir="${build.src.classes.dir}"
+           destdir="${build.classes.dir}"
+           executable="${proj.build.javac}"
+           source="1.5"
+           target="1.5"
+           classpath="${build.javatest.dir}"
+           debug="${javac.debug}"
+           verbose="${javac.verbose}" deprecation="${javac.deprecation}"
+           classpathref="compileClassPath"
+    >
+        <include name="com/sun/tdk/signaturetest/**/Tiger*.java"/>
+        <exclude name="com/sun/tdk/signaturetest/**/J8RefLoader.java"/>
+    </javac>
+
+    <antcall target="compile_remote_classes"/>
+
+    <!-- Apicover classes -->
+    <javac fork="true"
+           executable="${jdk5.home}/bin/javac"
+           srcdir="${build.src.classes.dir}"
+           destdir="${build.classes.dir}"
+
+           source="1.5"
+           target="1.5"
+           classpath="${build.classes.dir}"
+           debug="${javac.debug}"
+           verbose="${javac.verbose}" deprecation="${javac.deprecation}"
+           classpathref="compileClassPath"
+    >
+        <include name="com/sun/tdk/apicover/**/*.java"/>
+    </javac>
+
+    <copy todir="${build.classes.dir}">
+        <fileset dir="${build.src.classes.dir}" excludes="**/*.java"/>
+    </copy>
+
+    <delete dir="${build.classes.dir}/com/sun/tdk/signaturetest/remote"/>
+</target>
+
+<target name="compile_remote_classes" if="cdc.enabled">
+    <echo>compile_remote_classes</echo>
+    <mkdir dir="${build.classes.dir}/remote"/>
+    <copy todir="${build.src.classes2.dir}/remote">
+        <fileset dir="${build.src.classes.dir}">
+            <include name="com/sun/tdk/signaturetest/remote/*.java"/>
+            <include name="com/sun/tdk/signaturetest/loaders/ReflClassDescrLoader.java"/>
+            <include name="com/sun/tdk/signaturetest/loaders/LoadingHints.java"/>
+            <include name="com/sun/tdk/signaturetest/model/*.java"/>
+            <include name="com/sun/tdk/signaturetest/core/PrimitiveTypes.java"/>
+            <include name="com/sun/tdk/signaturetest/core/ClassDescriptionLoader.java"/>
+            <include name="com/sun/tdk/signaturetest/core/ClassHierarchy.java"/>
+            <include name="com/sun/tdk/signaturetest/util/I18NResourceBundle.java"/>
+            <include name="com/sun/tdk/signaturetest/util/SwissKnife.java"/>
+        </fileset>
+    </copy>
+    <javac fork="true"
+           executable="${jdk4.home}/bin/javac"
+           srcdir="${build.src.classes2.dir}/remote" verbose="true"
+           destdir="${build.classes.dir}/remote"
+           source="1.3"
+           target="1.3"
+           bootclasspath="${cdc.boot}"
+    />
+    <delete dir="${build.src.classes2.dir}/remote"/>
+</target>
+
+
+<target name="examples" depends="prepare, examples_remote, examples_ug, examples_aether, examples_jcovfilter, examples_sertest" description="Build examples"/>
+
+<target name="examples_remote" depends="prepare" description="Prepare remote examples" if="cdc.enabled">
+    <copy todir="${build.examples.dir}/remote">
+        <fileset dir="${ws.examples.dir}/remote" includes="**/*"/>
+    </copy>
+</target>
+
+<target name="examples_ug" depends="prepare" description="Prepare user guide examples">
+    <copy todir="${build.examples.dir}/userguide">
+        <fileset dir="${ws.examples.dir}/userguide" includes="**/*"/>
+    </copy>
+</target>
+
+<target name="examples_aether" depends="prepare, jars" description="Prepare aether example">
+    <copy todir="${build.examples.dir}/aether">
+        <fileset dir="${ws.examples.dir}/aether" includes="**/*"/>
+    </copy>
+    <ant dir="${build.examples.dir}/aether" />
+</target>
+
+<target name="examples_jcovfilter" depends="prepare, jars" description="Prepare jcovfilter example">
+    <copy todir="${build.examples.dir}/jcovfilter">
+        <fileset dir="${ws.examples.dir}/jcovfilter" includes="**/*"/>
+    </copy>
+    <ant dir="${build.examples.dir}/jcovfilter" />
+</target>
+
+<target name="examples_sertest" depends="prepare, jars" description="Prepare sertest example">
+    <copy todir="${build.examples.dir}/sertest">
+        <fileset dir="${ws.examples.dir}/sertest" includes="**/*"/>
+    </copy>
+    <ant dir="${build.examples.dir}/sertest" />
+</target>
+
+<target name="mvn_jars" depends="jars" if="mvn2.exe" >
+
+    <mkdir dir="${build.mvn.dir}"/>
+    <mkdir dir="${build.mvn.target.dir}"/>
+    <copy file="pom.xml" todir="${build.mvn.dir}" /> 
+
+    <copy todir="${build.mvn.dir}/sigtest" >
+        <fileset dir="sigtest"/>
+    </copy>
+ 
+    <copy todir="${build.mvn.dir}/apicover">
+        <fileset dir="apicover"/>
+    </copy>
+    
+    <copy todir="${build.mvn.dir}/apicheck">
+        <fileset dir="apicheck"/>
+    </copy>
+
+    <copy todir="${build.mvn.dir}/sigtest-plugin">
+        <fileset dir="sigtest-plugin"/>
+    </copy>
+   
+    <copy todir="${build.mvn.dir}/apicheck-plugin">
+        <fileset dir="apicheck-plugin"/>
+    </copy>
+
+    <copy todir="${build.mvn.dir}/apicover-plugin">
+        <fileset dir="apicover-plugin"/>
+    </copy>
+
+    <exec executable="${mvn2.exe}" dir="${build.mvn.dir}" failonerror="true">
+        <arg value="-Dbuild.classes.dir=${build.classes.dir}"/>
+        <arg value="-Dsigtest.version=${sigtest.version}"/>
+        <arg value="-Dbuild.mvnsrc.dir=${build.mvnsrc.dir}"/>
+        <arg value="install"/>
+        <arg value="repository:bundle-create"/> 
+    </exec> 
+
+</target>
+
+
+<!--========================================================================-->
+<!-- Release                                                                -->
+<!--========================================================================-->
+<target name="release" depends="devbuild, docs, examples" description="Build and Bundle the product.">
+    <mkdir dir="${release.dir}"/>
+    <mkdir dir="${release.lib.dir}"/>
+    <mkdir dir="${release.mvn.dir}"/>
+    <mkdir dir="${release.examples.dir}"/>
+    <mkdir dir="${release.legal.dir}"/>
+
+    <copy todir="${release.legal.dir}">
+        <fileset dir="${ws.legal.dir}/" includes="**/*"/>
+    </copy>
+
+    <copy todir="${release.lib.dir}">
+        <fileset dir="${build.lib.dir}/" includes="**/*" excludes="**/exclude.jar"/>
+    </copy>
+   
+    <copy todir="${release.mvn.dir}" failonerror="false" flatten="true">  
+        <fileset dir="${build.mvn.dir}/" includes="**/*-bundle.jar" />
+    </copy>
+
+    <copy todir="${release.examples.dir}">
+        <fileset dir="${build.examples.dir}" includes="**/*"/>
+    </copy>
+
+    <copy todir="${release.dir}">
+        <fileset dir="${build.doc.dir}" includes="**/*.*"/>
+    </copy>
+
+    <property name="bundle.name" value="sigtest-${sigtest.version}.zip"/>
+    <property name="bundle.examples.name" value="sigtest-examples-${sigtest.version}.zip"/>
+
+    <basename property="bundle.prefix" file="sigtest-${sigtest.version}" suffix=".zip"/>
+
+    <zip destfile="${build.temp.dir}/${bundle.name}">
+        <zipfileset dir="${release.dir}" prefix="${bundle.prefix}">
+            <include name="**/*"/>
+            <exclude name="examples/**"/>
+        </zipfileset>
+    </zip>
+
+    <zip destfile="${build.temp.dir}/${bundle.examples.name}">
+        <zipfileset dir="${release.dir}" prefix="${bundle.prefix}">
+            <include name="**/*"/>
+            <exclude name="javadoc/**"/>
+            <exclude name="lib/**"/>
+            <exclude name="mvn/**"/>
+        </zipfileset>
+    </zip>
+
+    <move file="${build.temp.dir}/${bundle.name}" todir="${build.base.dir}"/>
+    <move file="${build.temp.dir}/${bundle.examples.name}" todir="${build.base.dir}"/>
+
+</target>

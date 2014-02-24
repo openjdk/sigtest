@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--
+ $Id$
+
+ Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ 
+ This code is free software; you can redistribute it and/or modify it
+ under the terms of the GNU General Public License version 2 only, as
+ published by the Free Software Foundation.  Oracle designates this
+ particular file as subject to the "Classpath" exception as provided
+ by Oracle in the LICENSE file that accompanied this code.
+ 
+ This code is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ version 2 for more details (a copy is included in the LICENSE file that
+ accompanied this code).
+ 
+ You should have received a copy of the GNU General Public License version
+ 2 along with this work; if not, write to the Free Software Foundation,
+ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ 
+ Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ or visit www.oracle.com if you need additional information or have any
+ questions.
+
+-->
+
+<html>
+    <head>
+        <title>SigTest01</title>
+    </head>
+
+    <body>
+
+
+        <A NAME="SigTest01"></A>
+        <b><big>TEST SigTest01</big></b> - API Signature verification
+        <h3>FILES</h3>
+        <p>
+        <ul>
+            <li><a href="SigtestDistrClient.java">SigtestDistrClient.java</a>
+            <li><a href="SigtestDistrServer.java">SigtestDistrServer.java</a>
+        </ul>
+    </p>
+    <table border="1" class="TestDescription" summary="JavaTest Test Description">
+        <thead><tr><th scope="col">Item</th><th scope="col">Value</th></tr></thead>
+        <tr>
+            <td scope="row"><b>title</b></td>
+            <td>SigTest05 - distributed test for SigTest remote loader testing</td></tr>
+        <tr>
+            <td scope="row"><b>name</b></td>
+            <td>SigTest05</td></tr>
+        <tr>
+            <td scope="row"><b>source</b></td>
+        <tr>
+            <td scope="row"><b>executeClass</b></td>
+            <td>javasoft.sqe.tests.api.signaturetest.distributed.SigtestDistrClient</td></tr>
+        <tr>
+            <td scope="row"><b>keywords</b></td>
+            <td>runtime positive distributed</td></tr>
+        <tr>
+            <td scope="row"><b>executeArgs</b></td>
+            <td>-msgSwitch $testMsgSwitch</td></tr>
+        <TR>
+            <TD SCOPE="row"> <B>remote</B> </TD>
+            <TD> networkAgent: javasoft.sqe.tests.api.signaturetest.distributed.SigtestDistrServer -msgSwitch $testMsgSwitch -Package example.main -TestURL $testURL -FileName example.sig -XnoTiger</TD>
+        </TR>
+        <TR>
+            <TD SCOPE="row"> <B>remoteSource</B> </TD>
+            <TD> <A HREF="SigtestDistrServer.java">SigtestDistrServer.java</A> </TD>
+        </TR>
+    </table>
+    <br>
+    <hr>
+
+    <a href="../../legal/copyright.txt">Copyright</a> (c) 2008, Oracle and/or its affiliates. All rights reserved.
+
+</body>
+</html>

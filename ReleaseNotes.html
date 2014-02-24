@@ -1,0 +1,540 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+  $Id$
+
+  Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
+  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+
+  This code is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License version 2 only, as
+  published by the Free Software Foundation.  Oracle designates this
+  particular file as subject to the "Classpath" exception as provided
+  by Oracle in the LICENSE file that accompanied this code.
+
+  This code is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  version 2 for more details (a copy is included in the LICENSE file that
+  accompanied this code).
+
+  You should have received a copy of the GNU General Public License version
+  2 along with this work; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+
+  Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+  or visit www.oracle.com if you need additional information or have any
+  questions.
+
+-->
+
+
+<html>
+    <head>
+        <title>Release Notes - SigTest - Version 2.2</title>
+        <link rel="stylesheet" href="document.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </head>
+    <body>
+        <table summary="This table is for formatting purposes only." border="0"
+               cellpadding="0" cellspacing="0" width="100%">
+            <tbody>
+                <tr>
+                    <td class="sun-darkblue">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="sun-darkblue">
+                        <h1>Release Notes</h1>
+                        <h2>SigTest</h2>
+                        <h2>Version 2.2</h2>
+                        <h2>March 2011</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="sun-lightblue">&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><a name="_top"></a><br>
+            [<a href="#_maincontent">Skip TOC</a>]</p>
+        <h2>Table of Contents</h2>
+        <dl>
+            <dt><a href="#introduction">Introduction</a></dt>
+            <dt><a href="#new_in_release">New in This Release</a>
+            <dt><a href="#system_requirements">System Requirements</a></dt>
+            <dt><a href="#doc">Documentation</a></dt>
+            <dt><a href="#release_contents">Release Contents</a></dt>
+            <dt><a href="#installation">Installation</a></dt>
+            <dt><a href="#using_sig">Using the Signature Test Tool</a></dt>
+            <dt><a href="#using_api">Using the API Coverage Tool</a></dt>
+            <dt><a href="#known_bugs_and_issues">Known Bugs and Issues</a></dt>
+        </dl>
+        <a name="introduction"></a><a name="_maincontent"></a>
+        <h2>Introduction</h2>
+
+        <p>These release notes contain information about version 2.2 of the SigTest tools. See the 
+            <a href="http://sigtest.java.net/sigtest_docs.html"><cite>SigTest 2.2 User's Guide</cite></a> for more information about the tools.
+        </p>
+        <p>
+            The SigTest product is a collection of tools that can be used to
+            compare APIs and to measure the test coverage of an API. The tools
+            were originally created to assist in the creation of Java technology
+            compatibility test suites (TCKs), but are also useful in the creation
+            of other types of test suites and in the software development
+            process. The SigTest product consists of the following three tools.
+        </p>
+        <ul>
+            <li>
+                The <b>Signature Test tool</b> makes it easy to compare the signatures of two
+                different implementations or different versions of the same API. When
+                it compares different implementations of the same API, the tool
+                verifies that all of the members are present, reports when new members
+                are added, and checks the specified behavior of each API member. When
+                it compares different versions of the same API, the tool checks that
+                the old version can be replaced by the new one without adversely
+                affecting existing clients of the API.
+            </li>
+            <p>
+            <li>
+                The <b>API Coverage tool</b> can be used to estimate the test coverage a test
+                suite provides for an implementation of a specified API. It does this
+                by determining how many public class members the test suite references
+                within the API specification. The tool uses a signature file
+                representation of the API specification as the source of specification
+                analysis. It does not process a formal specification in any form.
+            </li>
+            <p>
+            <li>
+                The <b>API Check tool</b> tracks API changes and checks for source and binary
+                compatibility. Much like Signature Test tool, it compares the reference implementation
+                of an API recorded as golden signature file with a tested implementation. Unlike
+                Signature Test tool, which requires that all classes (and the classes they depend on) be
+                specified to the tool, API Check tool does not require dependencies to be specified. For
+                that reason, API Check tool is faster than Signature Test tool, but less rigorous.
+            </li>
+        </ul>
+
+        <p class="nav-link">[<a href="#_top">Top</a>]</p>
+        <a name="new_in_release" id="new_in_release"></a>
+        <h2>New in This Release</h2>
+        <p>
+            The following new features have been added and the following bugs have been
+            fixed.
+        </p>
+
+        <h3>New Features</h3>
+        <ul>
+            <li>Added API Check tool</li>
+            <li>Added Apache Maven wrappers</li>
+            <li>Added upcoming Java 8 features support</li>
+        </ul>
+
+        <p>This release of SigTest also includes the following improvements:</p>
+        <table border="1" cellpadding="12" cellspacing="1">
+            <tbody>
+                <tr>
+                    <th>Bug/RFE </th>
+                    <th>Description </th>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-9">SIGTEST-9</a>
+                        <a href="http://java.net/jira/browse/SIGTEST-44">SIGTEST-44</a>
+                    </td>
+                    <td>Support for non-static constants </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-49">SIGTEST-49</a>
+                    </td>
+                    <td>Option files </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-45">SIGTEST-45</a>
+                    </td>
+                    <td>API Cover - signature files with markup </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-57">SIGTEST-57</a>
+                    </td>
+                    <td>Support for separator-delimited parameters </td>
+                </tr>
+                <tr>
+                    <td><a
+                            <a href="http://java.net/jira/browse/SIGTEST-48">SIGTEST-48</a>
+                    </td>
+                    <td>Plugin API extended </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>Improvements in reflection mode </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-51">SIGTEST-51</a>
+                    </td>
+                    <td>API Cover accepts non-closed signature files in real mode
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>Optional copyright notices in signature files </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <p class="nav-link">[<a href="#_top">Top</a>]</p>
+        <a name="bug_fixes" id="bug_fixes"></a>
+        <h3>Fixed Bugs</h3>
+        <p>The following bugs have been fixed. </p>
+        <table border="1" cellpadding="12" cellspacing="1">
+            <tbody>
+                <tr>
+                    <th>Bug/RFE </th>
+                    <th>Description </th>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-28">SIGTEST-28</a>
+                    </td>
+                    <td>Constant checking should be turned on by default in
+                        reflection mode </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-50">SIGTEST-50</a>
+                    </td>
+                    <td>Missing support for RuntimeInvisibleParameterAnnotations </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-52">SIGTEST-52</a>
+                    </td>
+                    <td>StringIndexOutOfBoundsException when parsing annotations </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-53">SIGTEST-53</a>
+                    </td>
+                    <td>SigTest doesn't catch conflicts with a field came from
+                        private interface </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-54">SIGTEST-54</a>
+                    </td>
+                    <td>Bogus sigtest failure E1.3 when making abstract class
+                        constructor protected </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-58">SIGTEST-58</a>
+                    </td>
+                    <td>Sigtest should process names with dollar sign </td>
+                </tr>
+                <tr>
+                    <td><a href="http://java.net/jira/browse/SIGTEST-59">SIGTEST-59</a>
+                    </td>
+                    <td>Setup does not warn if superinterface for a class excluded
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>
+                        API Cover failed to run if utilized signature file is more
+                        narrow than API under review </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>In some cases sigtest fails in debug mode when running
+                        with -ea </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>BinaryClassDescrLoader doesn't close InputStream(s) </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>Merge procedure lose classes </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>Signature file writer is not thread safe </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>Constructor names in signature files </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        N/A
+                    </td>
+                    <td>APICheckMode started to allow supersetting API </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <p class="nav-link">[<a href="#_top">Top</a>]</p>
+        <p><a name="system_requirements"></a></p>
+        <h2>System Requirements</h2>
+        <p>
+            Using the SigTest tools requires a properly configured certified Java Platform, Standard Edition
+            (Java SE&trade; platform) runtime environment version 1.4 or later,
+            or a Java SE platform 5.0 runtime environment if using reflection to
+            test version 5.0 and later class files. A properly configured
+            JDK&trade; installation is required to compile the examples.</li>
+    </p>
+
+    <p class="nav-link">[<a href="#_top">Top</a>]</p>
+    <a name="doc"></a>
+    <h2>Documentation</h2>
+    <p>
+        The <cite>SigTest 2.2 User's Guide</cite> is available in the <code>doc/</code> directory in both
+        PDF and HTML format.
+    </p>
+
+    <p class="nav-link">[<a href="#_top">Top</a>]</p>
+    <a name="installation"></a>
+    <h2>Installation</h2>
+    <p>
+        To install SigTest, unzip the distribution into a directory
+        of your choice. For example, at a UNIX&reg; system prompt type the following command:</p>
+    <p> 
+        <code>% unzip sigtest-2.2.zip</code></p>
+    <p>
+        Unpacking the Zip bundle installs subdirectories under the base
+        installation directory. For more information, see the <A
+            HREF="#release_contents">Release Contents</A> section below and the
+        documents listed under "For SigTest contributors" in the Quick Links
+        box on the front page of the <A
+            HREF="http://sigtest.java.net">SigTest Project website</A>.
+    </p>
+
+    <p class="nav-link">[<a href="#_top">Top</a>]</p>
+
+    <a name="release_contents"></a>
+    <h2>Release Contents</h2>
+    <p>
+        This section lists the components under the base subdirectory structure (<code>SigTest-2.2/</code>)
+        that is created when you unzip the SigTest distribution archive during
+        installation.
+    </p>
+    <p><span class="nav-link">[<a href="#_top">Top</a>]</span></p>
+    <p><a name="components"></a></p>
+    <h3>Component Descriptions and Locations</h3>
+    <table
+        summary="This table describes SigTest's primary external components."
+        border="1" cellpadding="12" width="75%">
+        <tbody>
+            <tr valign="top">
+                <th  scope="col"><b><u>Component</u></b></th>
+                <th scope="col"><b><u>Description</u></b></th>
+            </tr>
+            <tr valign="top">
+                <td scope="row"   width="200"> <a href="ReleaseNotes.html"><tt>ReleaseNotes.html</tt></a></p>
+                </td>
+                <td>
+                    The SigTest release notes (this document).
+                </td>
+            </tr>
+            <tr valign="top">
+                <td scope="row"> <tt>lib/sigtestdev.jar</tt></td>
+                <td> The entire class archive that is necessary to run all the tool commands used to develop a signature test.</td>
+            </tr>
+            <tr valign="top">
+                <td scope="row"> <tt>lib/sigtest.jar</tt></td>
+                <td> A subset of the files in the <tt>sigtestdev.jar</tt> file, used for just running the signature test, 
+                    usually from within a test suite with the JavaTest harness. You include this file in a finished test suite.</td>
+            </tr>
+        <td scope="row"> <tt>lib/apicover.jar</tt></td>
+        <td>The library required to run the API Coverage tool commands.</td>
+    </tr>
+
+</tr>
+<td scope="row"> <tt>lib/apicheck.jar</tt></td>
+<td>The library required to run the API Check tool commands.</td>
+</tr>    
+
+<tr valign="top">
+    <td scope="row"><tt>mvn/</tt></td>
+    <td>Contains Apache Maven plugins.</td>
+</tr>
+
+<tr valign="top">
+    <td scope="row"> <tt>examples/</tt></td>
+    <td> Contains the files used for the Signature Test tool and API Coverage tool examples. These
+        examples are documented in the <i>SigTest Version 2.2 Users Guide</i> appendix.</td>
+</tr>
+
+</tbody>
+</table>
+<p class="nav-link">[<a href="#_top">Top</a>]</p>
+<a name="using_sig" id="using_sig"></a>
+<h2>Using the Signature Test Tool</h2>
+<p>The Signature Test Tool operates from the command line with the
+    following commands.</p>
+<ul>
+    <li>The <tt>Setup</tt> command creates a signature file
+        from either an API defined by a specification or a reference API
+        implementation. A signature file is a text representation of the set of
+        public and protected features provided by an API. Test suite developers
+        include it in a finished test suite as a signature reference for comparison to
+        the technology implementation under test.</li>
+    <li>The <tt>SignatureTest</tt> command compares the
+        reference API represented in the signature file to the API under test
+        and produces a report. This is the test that becomes part of a
+        finished test suite.</li>
+    <li>The <tt>SetupAndTest</tt> command runs only in static
+        mode, described later, to execute the <tt>Setup</tt> and <tt>SignatureTest</tt>
+        commands in one operation.</li>
+    <li>The <tt>Merge</tt> command creates a combined signature 
+        file from several signature files representing different Java APIs in one Java 
+        runtime environment according to the JSR 68 rules.</li>
+</ul>
+
+<p><span class="nav-link">[<a href="#_top">Top</a>]</span>
+</p>
+<h3><a name="usage_examples" id="usage_examples"></a> </h3>
+<h3>Usage Examples</h3>
+<p>This section contains simple examples that show how to start the
+    Signature Test tool from the command line using the <tt>Setup</tt> and
+    <tt>SignatureTest</tt> command line options. See <a href="#system_requirements">System Requirements</a> for initial setup. </p>
+<p>
+    Example 1: The following command line  runs 
+    the <tt>Setup</tt> command to create a signature file named <tt>result.sig</tt>:
+</p>
+<p>
+    <tt>java -jar sigtestdev.jar Setup -classpath</tt> <i>$JAVA_HOME</i><tt>/jre/lib/rt.jar -filename result.sig -package java.text</tt>
+</p>
+<p>
+    Example 2: The following command line  runs 
+    the <tt>SignatureTest</tt> command to manually run a signature test:
+</p>
+<p>
+    <tt>java -jar sigtest.jar Test -static -filename result.sig -classpath</tt> <i>$JAVA_HOME</i><tt>/jre/lib/rt.jar -package java.text</tt>
+</p>
+
+
+<p class="nav-link">[<a href="#_top">Top</a>]</p>
+<a name="modes"></a>
+<h3>Operating Modes</h3>
+<p>
+    This section describes the Signature Test tool operating modes and
+    report messages.
+</p>
+<p><span class="nav-link">[<a href="#_top">Top</a>]</span></p>
+<p><a name="sigtest_compatibility_check_modes"
+      id="sigtest_compatibility_check_modes"></a></p>
+<h3>Signature Test Compatibility Check Modes</h3>
+<ul>
+    <li><strong>Binary compatibility check mode</strong> - Assures that
+        any application runs with any compatible API without any linkage
+        error.</li>
+
+    <li><strong>Source compatibility check mode</strong> - Verifies that
+        any application that compiles without error with a source compatible
+        API, also compiles without error with all other source compatible
+        APIs.</li>
+</ul>
+
+<ul>
+    <li><strong>Mutual compatibility check mode</strong> - By checking
+        for mutual compatibility of API member sets, the test verifies that
+        classes and their members chosen for comparison are identical in
+        both implementations of the API.
+
+    </li>
+    <li><strong>Migration compatibility check mode</strong> - Verifies
+        that any application that compiles without error with a source
+        compatible API, also compiles without error with all other source
+        compatible APIs.</li>
+</ul>
+
+
+<p><span class="nav-link">[<a href="#_top">Top</a>]</span> </p>
+<p><a name="command_run_modes" id="command_run_modes"></a></p>
+<h4>Command Run Modes</h4>
+<p>
+    Two run modes are available during command execution, each
+    associated with how the class descriptions are examined and retrieved,
+    as follows:
+</p>
+<ul>
+    <li><b>Reflection Mode.</b> The default mode for the<tt> SignatureTest</tt>
+        commands, it uses reflection to examine API classes and retrieve
+        information about them. The reflection mode is of greatest advantage
+        when the API to be analyzed has no external class files.</li>
+    <li><b>Static Mode.</b> Specified with the <tt>-static</tt> option,
+        the tool parses only the class files listed in the <tt>-classpath</tt>
+        command-line argument. You normally use static mode when a reflection
+        mechanism is not supported, or in a security-constrained environment
+        that disallows checking required attributes. Static mode
+        is use full for testing specified classes in another runtime environment.. The <tt>Setup
+            and SetupAndTest</tt> command run only in static mode.</li>
+</ul>
+<p class="nav-link">[<a href="#_top">Top</a>]</p>
+<p class="nav-link"><a name="sigtest_report_messages"
+                       id="sigtest_report_messages"></a></p>
+<h4>Signature Test Report Messages</h4>
+<p>
+    Report messages can be either sorted by default, or unsorted. They
+    contain the following types of information:</p>
+<ul>
+    <li>Version of both the reference API and the API under test</li>
+    <li>Total number of errors found</li>
+    <li>Differences such as added or missing classes, superclasses,
+        fields, or methods</li>
+    <li>Fully qualified name of the enclosing class related to any
+        missing or added description</li>
+    <li>Two errors for any modified item, one for a missing item, and
+        another for an added item</li>
+    <li>Description of any incompatibility in the API implementation
+        under test</li>
+</ul>
+<p>See the <i>SigTest Version 2.2 User's Guide</i>
+    for hands-on procedural examples of running the tool.
+</p>
+
+<p class="nav-link">[<a href="#_top">Top</a>]</p>
+<a name="using_api" id="using_api"></a>
+<h2>Using the API Coverage Tool</h2>
+
+<p>API Coverage Tool is a command-line utility that executes in a Java platform application
+    environment. It generates static API test coverage reports in either plain text or XML 
+    format based on the following items specified by input arguments:</p>
+<ul>
+    <li>The test suite being tested for its coverage, represented by a set of test 
+        class files.</li>
+    <li>A signature file that forms a text representation of the public members 
+        of an API that must be tested by the test suite. You can use the Signature Test tool <tt>Setup</tt> command 
+        to create the appropriate signature file for use by the API Coverage tool.  See the <i>SigTest 2.2 User's Guide</i> for details.</li>
+    <li>One or more exclude lists to make the coverage calculation more accurate 
+        by excluding the elements listed in the specified exclude list files.</li>
+</ul>
+</p>
+
+
+
+<p>[<a href="#_top">Top</a>]</p>
+<h2><a name="known_bugs_and_issues"></a> </h2>
+<h2>Known Bugs and Issues</h2>
+<p>The <tt>SignatureTest</tt> and <tt>Merge</tt> commands might incorrectly process  throw lists related to generics. </p>
+<p>[<a href="#_top">Top</a>]</p>
+
+<hr noshade="noshade">
+<p><a href="legal/copyright.txt">Copyright</a> &copy; 2008, 2010, Oracle and/or its affiliates. All rights reserved.
+    Use is subject to license terms.The majority of the SigTest project is released under the <A
+        HREF="http://openjdk.java.net/legal/gplv2+ce.html">GNU
+        General Public License Version 2 (GPLv2)</A></p>
+</body>
+</html>

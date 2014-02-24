@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  $Id: setupproj.xml 4516 2008-03-17 18:48:27Z eg216457 $
+
+  Copyright (c) 1996, 2009, Oracle and/or its affiliates. All rights reserved.
+  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ 
+  This code is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License version 2 only, as
+  published by the Free Software Foundation.  Oracle designates this
+  particular file as subject to the "Classpath" exception as provided
+  by Oracle in the LICENSE file that accompanied this code.
+ 
+  This code is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  version 2 for more details (a copy is included in the LICENSE file that
+  accompanied this code).
+ 
+  You should have received a copy of the GNU General Public License version
+  2 along with this work; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ 
+  Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+  or visit www.oracle.com if you need additional information or have any
+  questions.
+
+-->
+
+<!--************************************************************************-->
+<!-- Clean Targets                                -->
+<!--************************************************************************-->
+
+<target name="clean" description="Remove all generated files.">
+    <delete dir="${build.temp.dir}"/>
+    <delete dir="${build.base.dir}"/>
+</target>
+
+<!--========================================================================-->
+<!-- Setup                                       -->
+<!--========================================================================-->
+
+<target name="property.check" description="Check user-defined properties.">
+    <available file="${jdk5.home}" property="jdk5.home.present"/>
+    <fail unless="jdk5.home.present" message="Path to JDK 1.5 is not specified. Check 'build/build.properties' file."/>
+
+    <condition property="cdc.enabled">
+        <isset property="cdc.boot"/>
+    </condition>
+</target>
+
+<target name="warning.jdk14" unless="jdk4.home">
+    <echo
+        message="Support Java 1.4 classes via reflection is not supported by current settings. To change this, specify jdk4.home property in 'build/build.properties' file."
+        level="warning"
+    />
+    <property name="jdk4.home" value="${jdk5.home}"/>
+</target>
+
+<target name="warning.j8" unless="jdk8.home">
+    <echo
+        message="Support Java 1.8 classes via reflection is not supported by current settings. To change this, specify jdk8.home property in 'build/build.properties' file."
+        level="warning"
+    />
+</target>
+
+<target name="warning.cdc" unless="cdc.boot">
+    <echo
+        message="Testing CDC classes is not supported by current settings. To change this, specify cdc.boot property in 'build/build.properties' file."
+        level="warning"
+    />
+</target>
+
+<target name="warning.maven" unless="mvn2.exe">
+    <echo
+        message="Maven 2 support is disabled by current settings. To change this, specify mvn2.exe property in 'build/build.properties' file."
+        level="warning"
+    />
+</target>
+
+
+<!-- Make base directory structure -->
+<target name="prepare" depends="property.check,warning.jdk14,warning.cdc, warning.maven, warning.j8"
+        description="Make base directory structure for build">
+    <mkdir dir="${build.base.dir}"/>
+    <mkdir dir="${build.temp.dir}"/>
+
+    <mkdir dir="${build.classes.dir}"/>
+    <mkdir dir="${build.lib.dir}"/>
+    <mkdir dir="${build.examples.dir}"/>
+</target>

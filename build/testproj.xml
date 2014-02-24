@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!--
+  $Id$
+
+  Copyright (c) 1996, 2009, Oracle and/or its affiliates. All rights reserved.
+  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ 
+  This code is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License version 2 only, as
+  published by the Free Software Foundation.  Oracle designates this
+  particular file as subject to the "Classpath" exception as provided
+  by Oracle in the LICENSE file that accompanied this code.
+ 
+  This code is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  version 2 for more details (a copy is included in the LICENSE file that
+  accompanied this code).
+ 
+  You should have received a copy of the GNU General Public License version
+  2 along with this work; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ 
+  Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+  or visit www.oracle.com if you need additional information or have any
+  questions.
+
+-->
+
+
+<!-- testproj.xml file for AntProj						-->
+<!--										-->
+<!-- This sub-build file contains targets to test the Ant Proj      		-->
+<!--										-->
+
+<property name="sigtest.jar" location="${build.lib.dir}/sigtest.jar"/>
+<property name="sigtestdev.jar" location="${build.lib.dir}/sigtestdev.jar"/>
+<property name="apicheck.jar" location="${build.lib.dir}/apicheck.jar"/>
+<property name="apicover.jar" location="${build.lib.dir}/apicover.jar"/>
+
+
+<!--========================================================================-->
+<!-- Tests           							-->
+<!--========================================================================-->
+
+<target name="test" depends="devbuild" description="Test Project build.">
+
+    <taskdef name="setup" classname="com.sun.tdk.signaturetest.ant.ASetup" classpath="${sigtestdev.jar}"/>
+    <taskdef name="stest" classname="com.sun.tdk.signaturetest.ant.ATest" classpath="${sigtest.jar}"/>
+    <taskdef name="merge" classname="com.sun.tdk.signaturetest.ant.AMerge" classpath="${sigtest.jar}"/>
+    <taskdef name="apicheck" classname="com.sun.tdk.apicheck.ant.ACheck" classpath="${apicheck.jar}:${sigtest.jar}"/>
+
+    <mkdir dir="${build.test.dir}"/>
+
+    <echo message="*** Setup 1"/>
+    <setup filename="${build.test.dir}/core.sig" failonerror="true">
+        <package name="com.sun.tdk.signaturetest.core"/>
+        <package name="java.lang.ClassNotFoundException"/>
+        <package name="java.lang.InterruptedException"/>
+        <package name="java.lang.CloneNotSupportedException"/>
+        <classpath>
+            <pathelement location="${build.javatest.dir}"/>
+            <pathelement location="${sigtest.jar}"/>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+        </classpath>
+    </setup>
+
+    <echo message="*** Setup 2"/>
+    <setup filename="${build.test.dir}/loaders.sig" failonerror="true">
+        <package name="com.sun.tdk.signaturetest.loaders"/>
+        <package name="java.lang.ClassNotFoundException"/>
+        <package name="java.lang.InterruptedException"/>
+        <package name="java.lang.CloneNotSupportedException"/>
+        <classpath>
+            <pathelement location="${build.javatest.dir}"/>
+            <pathelement location="${sigtest.jar}"/>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+        </classpath>
+    </setup>
+
+    <echo message="*** Setup 3"/>
+    <setup filename="${build.test.dir}/tdk.sig" nonclosedfile="false" failonerror="true">
+        <package name="com.sun.tdk"/>
+        <classpath>
+            <pathelement location="${build.javatest.dir}"/>
+            <pathelement location="${sigtest.jar}"/>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement path="${java.class.path}"/>
+        </classpath>
+    </setup>
+
+    <echo message="*** Merge 1"/>
+    <merge write="${build.test.dir}/core_and_loaders.sig" failonerror="true">
+        <file name="${build.test.dir}/core.sig"/>
+        <file name="${build.test.dir}/loaders.sig"/>
+    </merge>
+
+    <echo message="*** Test 1"/>
+    <stest filename="${build.test.dir}/core.sig" output="${build.test.dir}/t1.out" failonerror="true"
+           package="com.sun.tdk.signaturetest.core">
+        <classpath>
+            <pathelement location="${build.javatest.dir}"/>
+            <pathelement location="${sigtest.jar}"/>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+        </classpath>
+    </stest>
+
+    <echo message="*** Test 2"/>
+    <stest filename="${build.test.dir}/loaders.sig" output="${build.test.dir}/t2.out" failonerror="true"
+           package="com.sun.tdk.signaturetest.core" negative="true">
+        <classpath>
+            <pathelement location="${build.javatest.dir}"/>
+            <pathelement location="${sigtest.jar}"/>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+        </classpath>
+    </stest>
+
+    <echo message="*** Test 3"/>
+    <stest filename="${build.test.dir}/core_and_loaders.sig" output="${build.test.dir}/t3.out" failonerror="true">
+        <package name="com.sun.tdk.signaturetest.core"/>
+        <package name="com.sun.tdk.signaturetest.loaders"/>
+        <classpath>
+            <pathelement location="${build.javatest.dir}"/>
+            <pathelement location="${sigtest.jar}"/>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+        </classpath>
+    </stest>
+
+    <echo message="*** Test 4"/>
+    <stest filename="${build.test.dir}/core_and_loaders.sig" output="${build.test.dir}/t4.out" failonerror="true"
+           negative="true">
+        <package name="com.sun.tdk.signaturetest.core"/>
+        <package name="com.sun.tdk.signaturetest.loaders"/>
+        <package name="com.sun.tdk.signaturetest.model"/>
+        <classpath>
+            <pathelement location="${build.javatest.dir}"/>
+            <pathelement location="${sigtest.jar}"/>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+        </classpath>
+    </stest>
+
+    <echo message="*** APICheck 1"/>
+    <apicheck filename="${build.test.dir}/tdk.sig" output="${build.test.dir}/t5.out" failonerror="true" debug="true">
+        <package name="com.sun.tdk"/>
+        <classpath>
+            <pathelement location="${sigtest.jar}"/>
+        </classpath>
+    </apicheck>
+
+    <echo message="*** Real world - setup 1"/>
+    <setup filename="${build.test.dir}/java.lang.sig" failonerror="true">
+        <package name="java.lang"/>
+        <classpath>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+        </classpath>
+    </setup>
+
+    <echo message="*** Real world - test 1"/>
+    <stest filename="${build.test.dir}/java.lang.sig" output="${build.test.dir}/rw_t1.out" failonerror="true">
+        <package name="java.lang"/>
+        <classpath>
+            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+        </classpath>
+    </stest>
+    
+    <copy file="${build.test.dir}/java.lang.sig" tofile="${build.test.dir}/java.lang.apicov" />
+    <replace file="${build.test.dir}/java.lang.apicov" token="#Signature file" value="#APICover file" />
+    <java classname="com.sun.tdk.apicover.Main">
+        <classpath>
+            <pathelement location="${sigtestdev.jar}"/>
+            <pathelement location="${apicover.jar}"/>
+        </classpath>
+        <arg line="-api ${build.test.dir}/java.lang.sig -ts ${sigtestdev.jar} -mode r -detail 4 -format plain -report ${build.test.dir}/apicov-1.txt" />
+    </java>
+
+    <java classname="com.sun.tdk.apicover.Main">
+        <classpath>
+            <pathelement location="${sigtestdev.jar}"/>
+            <pathelement location="${apicover.jar}"/>
+        </classpath>
+        <arg line="-api ${build.test.dir}/java.lang.apicov -ts ${sigtestdev.jar} -mode r -detail 4 -format plain -report ${build.test.dir}/apicov-2.txt" />
+    </java>
+
+</target>
