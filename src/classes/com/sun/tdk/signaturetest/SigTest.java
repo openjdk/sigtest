@@ -1,7 +1,7 @@
 /*
  * $Id: SigTest.java 4549 2008-03-24 08:03:34Z me155718 $
  *
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -79,6 +79,10 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static final String PACKAGE_OPTION = "-Package";
     public static final String WITHOUTSUBPACKAGES_OPTION = "-PackageWithoutSubpackages";
     public static final String EXCLUDE_OPTION = "-Exclude";
+
+    public static final String API_INCLUDE = "-ApiInclude";
+    public static final String API_EXCLUDE = "-ApiExclude";
+
     public static final String STATIC_OPTION = "-Static";
     public static final String APIVERSION_OPTION = "-ApiVersion";
     public static final String VERSION_OPTION = "-Version";
@@ -123,6 +127,10 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      * List of names of packages to be ignored along with subpackages.
      */
     protected PackageGroup excludedPackages = new PackageGroup(true);
+
+    protected PackageGroup apiIncl = new PackageGroup(true);
+    protected PackageGroup apiExcl = new PackageGroup(true);
+
     /**
      * List of directories and/or zip-files containing the packages to be
      * checked.
@@ -283,6 +291,10 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             purePackages.addPackages(CommandLineParser.parseListOption(args));
         } else if (optionName.equalsIgnoreCase(EXCLUDE_OPTION)) {
             excludedPackages.addPackages(CommandLineParser.parseListOption(args));
+        } else if (optionName.equalsIgnoreCase(API_INCLUDE)) {
+            apiIncl.addPackages(CommandLineParser.parseListOption(args));
+        } else if (optionName.equalsIgnoreCase(API_EXCLUDE)) {
+            apiExcl.addPackages(CommandLineParser.parseListOption(args));
         } else if (optionName.equalsIgnoreCase(CLASSPATH_OPTION)) {
             classpathStr = args[0];
         } else if (optionName.equalsIgnoreCase(APIVERSION_OPTION)) {
@@ -361,8 +373,19 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      * @see #excludedPackages
      */
     protected boolean isPackageMember(String name) {
-        return !excludedPackages.checkName(name)
+
+        boolean res = !excludedPackages.checkName(name)
                 && (packages.checkName(name) || purePackages.checkName(name));
+
+        if (!apiIncl.isEmpty()) {
+            res = res && apiIncl.checkName(name);
+        }
+
+        if (!apiExcl.isEmpty()) {
+            res = res && !apiExcl.checkName(name);
+        }
+
+        return res;
     }
 
     public void setClassDescrLoader(ClassDescriptionLoader loader) {

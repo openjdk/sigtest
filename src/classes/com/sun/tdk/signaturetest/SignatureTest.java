@@ -1,7 +1,7 @@
 /*
  * $Id: SignatureTest.java 4549 2008-03-24 08:03:34Z me155718 $
  *
- * Copyright (c) 1997, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -96,7 +96,8 @@ import java.util.logging.Logger;
  * field name.
  * <p>
  * <p/>
- * Usage: <code>java com.sun.tdk.signaturetest.SignatureTest</code> &lt;options&gt;
+ * Usage: <code>java com.sun.tdk.signaturetest.SignatureTest</code>
+ * &lt;options&gt;
  * <p>
  * <p/>
  * where &lt;options&gt; includes:
@@ -330,6 +331,9 @@ public class SignatureTest extends SigTest {
         parser.addOption(EXCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
+
+        parser.addOption(API_INCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+        parser.addOption(API_EXCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
 
         parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
