@@ -796,14 +796,22 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             for (int i = 0; i < cls.sigmethods.length; i++) {
                 if ((sig = cls.sigmethods[i]) != null) {
                     try {
-                        parser.scanMethod(sig);
-                        postMethod(parser, cls.getMethod(i));
+                        if (!isAnonimouseSimple(cls)) {
+                            parser.scanMethod(sig);
+                            postMethod(parser, cls.getMethod(i));
+                        }
                     } catch (SigAttrError e) {
                         warning(e.getMessage());
                     }
                 }
             }
         }
+    }
+
+    // simplified logic because of
+    // cls initialization is not complited
+    private boolean isAnonimouseSimple(ClassDescription cls) {
+        return Character.isDigit(cls.getName().charAt(0));
     }
 
     private void postMethod(SignatureParser parser, MemberDescription fid) {

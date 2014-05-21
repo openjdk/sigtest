@@ -211,6 +211,7 @@ public class SignatureTest extends SigTest {
     private String mode = null;
     public static final String BINARY_MODE = "bin";
     private static final String SOURCE_MODE = "src";
+    private static final String EXT_MODE = "src-ext";
     private static final String FORMAT_PLAIN = "plain";
     private static final String FORMAT_HUMAN = "human";
     private static final String FORMAT_BACKWARD = "backward";
@@ -462,7 +463,7 @@ public class SignatureTest extends SigTest {
         } else if (optionName.equalsIgnoreCase(UPDATE_FILE_OPTION)) {
             updateFileName = args[0];
         } else if (optionName.equalsIgnoreCase(MODE_OPTION)) {
-            if (!SOURCE_MODE.equalsIgnoreCase(args[0]) && !BINARY_MODE.equalsIgnoreCase(args[0])) {
+            if (!SOURCE_MODE.equalsIgnoreCase(args[0]) && !BINARY_MODE.equalsIgnoreCase(args[0]) && !EXT_MODE.equalsIgnoreCase(args[0])) {
                 throw new CommandLineParserException(i18nSt.getString("SignatureTest.error.arg.invalid", MODE_OPTION));
             }
             mode = args[0];
@@ -1448,6 +1449,13 @@ public class SignatureTest extends SigTest {
         if (isValueTracked == null) {
             isValueTracked = Boolean.TRUE;
         }
+
+        if (EXT_MODE.equals(mode)) {
+            Modifier.VOLATILE.setTracked(true);
+        } else {
+            Modifier.VOLATILE.setTracked(false);
+        }
+
         if (mode == null) {
             mode = SOURCE_MODE;
         }
@@ -1455,7 +1463,7 @@ public class SignatureTest extends SigTest {
 
         isOneWayConstantChecking = isValueTracked.booleanValue() && BINARY_MODE.equals(mode) || !isStatic;
 
-        if (SOURCE_MODE.equals(mode)) {
+        if (SOURCE_MODE.equals(mode) || EXT_MODE.equals(mode)) {
             isThrowsRemoved = false;
         }
 
