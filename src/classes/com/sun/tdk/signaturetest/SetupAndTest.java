@@ -1,7 +1,5 @@
 /*
- * $Id: SetupAndTest.java 4504 2008-03-13 16:12:22Z sg215604 $
- *
- * Copyright (c) 2001, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -106,6 +104,9 @@ public class SetupAndTest extends Result {
         parser.addOption(SigTest.QUESTIONMARK, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(SigTest.VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
+        parser.addOption(SigTest.API_INCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+        parser.addOption(SigTest.API_EXCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+
         try {
             parser.processArgs(args);
         } catch (CommandLineParserException e) {
@@ -181,7 +182,9 @@ public class SetupAndTest extends Result {
                 || optionName.equalsIgnoreCase(SigTest.WITHOUTSUBPACKAGES_OPTION)
                 || optionName.equalsIgnoreCase(SigTest.EXCLUDE_OPTION)
                 || optionName.equalsIgnoreCase(SigTest.APIVERSION_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.CLASSCACHESIZE_OPTION)) {
+                || optionName.equalsIgnoreCase(SigTest.CLASSCACHESIZE_OPTION)
+                || optionName.equalsIgnoreCase(SigTest.API_INCLUDE)
+                || optionName.equalsIgnoreCase(SigTest.API_EXCLUDE)) {
 
             addOption(setupOptions, optionName, args[0]);
             addOption(testOptions, optionName, args[0]);
