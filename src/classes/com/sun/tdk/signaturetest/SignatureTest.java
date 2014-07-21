@@ -266,7 +266,8 @@ public class SignatureTest extends SigTest {
             }
         } else {
             if (args.length > 0 && args[0].equalsIgnoreCase(VERSION_OPTION)) {
-                System.err.println(Version.getVersionInfo());
+                // this will be printed by super.decodeCommonOptions()
+                //System.err.println(Version.getVersionInfo());
             } else {
                 usage();
             }
