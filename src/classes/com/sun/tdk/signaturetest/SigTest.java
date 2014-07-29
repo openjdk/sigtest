@@ -1,6 +1,4 @@
 /*
- * $Id: SigTest.java 4549 2008-03-24 08:03:34Z me155718 $
- *
  * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -374,18 +372,10 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      */
     protected boolean isPackageMember(String name) {
 
-        boolean res = !excludedPackages.checkName(name)
-                && (packages.checkName(name) || purePackages.checkName(name));
+        boolean excluded = excludedPackages.checkName(name) || apiExcl.checkName(name);
+        boolean included = packages.checkName(name) || purePackages.checkName(name) || apiIncl.checkName(name);
 
-        if (!apiIncl.isEmpty()) {
-            res = res && apiIncl.checkName(name);
-        }
-
-        if (!apiExcl.isEmpty()) {
-            res = res && !apiExcl.checkName(name);
-        }
-
-        return res;
+        return included && !excluded;
     }
 
     public void setClassDescrLoader(ClassDescriptionLoader loader) {

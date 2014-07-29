@@ -1,7 +1,5 @@
 /*
- * $Id: Setup.java 4504 2008-03-13 16:12:22Z sg215604 $
- *
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -215,6 +213,9 @@ public class Setup extends SigTest {
 
         parser.addOption(COPYRIGHT_OPTION, OptionInfo.option(1), optionsDecoder);
 
+        parser.addOption(API_INCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+        parser.addOption(API_EXCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+
         try {
             parser.processArgs(args);
         } catch (CommandLineParserException e) {
@@ -237,7 +238,7 @@ public class Setup extends SigTest {
         }
 
         // create arguments
-        if (packages.isEmpty() && purePackages.isEmpty()) {
+        if (packages.isEmpty() && purePackages.isEmpty() && apiIncl.isEmpty()) {
             packages.addPackage("");
         }
 
@@ -467,7 +468,7 @@ public class Setup extends SigTest {
                 }
 
                 // do not write excluded classes
-                if (excludedPackages.checkName(name)) {
+                if (excludedPackages.checkName(name) || apiExcl.checkName(name)) {
                     excludedClasses.add(name);
                     continue;
                 }
@@ -535,7 +536,7 @@ public class Setup extends SigTest {
         getLog().println(i18n.getString("Setup.report.message.selectedbypackageclasses",
                 Integer.toString(includedClassesNumber + excludedClassesNumber)));
 
-        if (!excludedPackages.isEmpty()) {
+        if (!excludedPackages.isEmpty() || !apiExcl.isEmpty()) {
             getLog().println(i18n.getString("Setup.report.message.excludedbypackageclasses",
                     Integer.toString(excludedClassesNumber)));
         }
@@ -641,6 +642,8 @@ public class Setup extends SigTest {
                 }
             } else {
                 if (!excludedPackages.isEmpty() && excludedPackages.checkName(name)) {
+                    excludedClassesNumber++;
+                } else if (!apiExcl.isEmpty() && apiExcl.checkName(name)) {
                     excludedClassesNumber++;
                 }
                 ignore(i18n.getString("Setup.report.ignore.notreqpackage", name));

@@ -1,6 +1,4 @@
 /*
- * $Id: SignatureTest.java 4549 2008-03-24 08:03:34Z me155718 $
- *
  * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -380,7 +378,7 @@ public class SignatureTest extends SigTest {
             return failed(e.getMessage());
         }
 
-        if (packages.isEmpty() && purePackages.isEmpty()) {
+        if (packages.isEmpty() && purePackages.isEmpty() && apiIncl.isEmpty()) {
             packages.addPackage("");
         }
 
@@ -402,6 +400,14 @@ public class SignatureTest extends SigTest {
 
         if (parser.isOptionSpecified(FILENAME_OPTION) && parser.isOptionSpecified(FILES_OPTION)) {
             String invargs[] = {FILENAME_OPTION, FILES_OPTION};
+            return error(i18nSt.getString("Setup.error.options.cant_be_used_together", invargs));
+        }
+
+        if ((parser.isOptionSpecified(BACKWARD_OPTION)
+                || parser.isOptionSpecified(BACKWARD_ALT_OPTION))
+                && (parser.isOptionSpecified(FORMATHUMAN_OPTION)
+                || parser.isOptionSpecified(FORMATHUMAN_ALT_OPTION))) {
+            String invargs[] = {BACKWARD_OPTION, FORMATHUMAN_OPTION};
             return error(i18nSt.getString("Setup.error.options.cant_be_used_together", invargs));
         }
 
