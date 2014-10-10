@@ -61,7 +61,7 @@
         <classpath>
             <pathelement location="${build.javatest.dir}"/>
             <pathelement location="${sigtest.jar}"/>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
         </classpath>
     </setup>
 
@@ -74,7 +74,7 @@
         <classpath>
             <pathelement location="${build.javatest.dir}"/>
             <pathelement location="${sigtest.jar}"/>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
         </classpath>
     </setup>
 
@@ -84,7 +84,7 @@
         <classpath>
             <pathelement location="${build.javatest.dir}"/>
             <pathelement location="${sigtest.jar}"/>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
             <pathelement path="${java.class.path}"/>
         </classpath>
     </setup>
@@ -101,7 +101,7 @@
         <classpath>
             <pathelement location="${build.javatest.dir}"/>
             <pathelement location="${sigtest.jar}"/>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
         </classpath>
     </stest>
 
@@ -111,7 +111,7 @@
         <classpath>
             <pathelement location="${build.javatest.dir}"/>
             <pathelement location="${sigtest.jar}"/>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
         </classpath>
     </stest>
 
@@ -122,7 +122,7 @@
         <classpath>
             <pathelement location="${build.javatest.dir}"/>
             <pathelement location="${sigtest.jar}"/>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
         </classpath>
     </stest>
 
@@ -135,7 +135,7 @@
         <classpath>
             <pathelement location="${build.javatest.dir}"/>
             <pathelement location="${sigtest.jar}"/>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
         </classpath>
     </stest>
 
@@ -151,7 +151,7 @@
     <setup filename="${build.test.dir}/java.lang.sig" failonerror="true">
         <package name="java.lang"/>
         <classpath>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
         </classpath>
     </setup>
 
@@ -159,7 +159,7 @@
     <stest filename="${build.test.dir}/java.lang.sig" output="${build.test.dir}/rw_t1.out" failonerror="true">
         <package name="java.lang"/>
         <classpath>
-            <pathelement location="${jdk5.home}/jre/lib/rt.jar"/>
+            <pathelement location="${jdk7.home}/jre/lib/rt.jar"/>
         </classpath>
     </stest>
     

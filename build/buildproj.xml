@@ -232,12 +232,11 @@ ${copyright.text}
 
     <!-- Apicover classes -->
     <javac fork="true"
-           executable="${jdk5.home}/bin/javac"
+           executable="${jdk7.home}/bin/javac"
            srcdir="${build.src.classes.dir}"
            destdir="${build.classes.dir}"
-
-           source="1.5"
-           target="1.5"
+           source="1.7"
+           target="1.7"
            classpath="${build.classes.dir}"
            debug="${javac.debug}"
            verbose="${javac.verbose}" deprecation="${javac.deprecation}"

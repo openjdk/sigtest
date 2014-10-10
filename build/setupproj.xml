@@ -41,8 +41,8 @@
 <!--========================================================================-->
 
 <target name="property.check" description="Check user-defined properties.">
-    <available file="${jdk5.home}" property="jdk5.home.present"/>
-    <fail unless="jdk5.home.present" message="Path to JDK 1.5 is not specified. Check 'build/build.properties' file."/>
+    <available file="${jdk7.home}" property="jdk7.home.present"/>
+    <fail unless="jdk7.home.present" message="Path to JDK 1.7 is not specified. Check 'build/build.properties' file."/>
 
     <condition property="cdc.enabled">
         <isset property="cdc.boot"/>
@@ -54,7 +54,7 @@
         message="Support Java 1.4 classes via reflection is not supported by current settings. To change this, specify jdk4.home property in 'build/build.properties' file."
         level="warning"
     />
-    <property name="jdk4.home" value="${jdk5.home}"/>
+    <property name="jdk4.home" value="${jdk7.home}"/>
 </target>
 
 <target name="warning.j8" unless="jdk8.home">

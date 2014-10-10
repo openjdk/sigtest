@@ -101,7 +101,7 @@
         <pathelement location="${build.classes.dir}"/>
     </path>
     <!--get location of java compiler-->
-    <property name="proj.build.javac" value="${jdk5.home}/bin/javac"/>
+    <property name="proj.build.javac" value="${jdk7.home}/bin/javac"/>
 
     <!--************************************************************************-->
     <!-- Help:  Describes Top Level Targets	                		-->
