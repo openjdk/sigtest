@@ -1,7 +1,5 @@
 @echo off
 rem
-rem $Id$
-rem
 rem Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
 rem DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 rem

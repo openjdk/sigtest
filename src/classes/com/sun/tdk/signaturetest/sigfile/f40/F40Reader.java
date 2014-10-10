@@ -1,6 +1,4 @@
 /*
- * $Id: F40Reader.java 4504 2008-03-13 16:12:22Z sg215604 $
- *
  * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *

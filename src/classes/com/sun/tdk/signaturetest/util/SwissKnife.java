@@ -1,6 +1,4 @@
 /*
- * $Id: SwissKnife.java 4516 2008-03-17 18:48:27Z eg216457 $
- *
  * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *

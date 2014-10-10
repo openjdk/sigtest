@@ -1,6 +1,4 @@
 /*
- * $Id: BinaryClassDescrLoader.java 4516 2008-03-17 18:48:27Z eg216457 $
- *
  * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
