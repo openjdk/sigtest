@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 1996, 2009, Oracle and/or its affiliates. All rights reserved.
+  Copyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.
   DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  
   This code is free software; you can redistribute it and/or modify it
@@ -44,16 +44,27 @@
     <!--Property & FileSet Definitions						-->
     <!--************************************************************************-->
 
-    <property file="build.properties"/>
-
-    <!-- Sigtest version used in naming files and directories -->
+    <!-- Default sigtest version used in naming files and directories -->
     <property name="sigtest.version" value="4.0"/>
+
+    <!-- defaults - bin and src level for the most of code  -->
+    <property name="javac.level.bin" value="1.7" />
+    <property name="javac.level.src" value="1.7" />
+
+    <!-- defaults  -->
+    <property name="javac.jt.level.bin" value="1.4" />
+    <property name="javac.jt.level.src" value="1.4" />
+
+    <!-- defaults  -->
+    <property name="javac.core.level.bin" value="1.7" />
+    <property name="javac.core.level.src" value="1.7" />
 
     <!-- Javac default properties -->
     <property name="javac.verbose" value="false"/>
     <property name="javac.deprecation" value="true"/>
-    <property name="javac.verbose" value="false"/>
 
+    <property file="build.properties"/>
+    
     <!-- Subversion workspace dirs -->
     <property name="ws.build.dir" location="."/>
     <property name="ws.top.dir" location="${ws.build.dir}/.."/>

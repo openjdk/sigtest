@@ -64,32 +64,6 @@ import java.util.*;
  */
 public class ClasspathImpl implements Classpath {
 
-    /*
-     public class ClassIterator {
-
-     public boolean hasNext() {
-     return false;
-     }
-
-     public String next() {
-     return null;
-     }
-     }
-     */
-    /**
-     * Reference to the class implementing <b>DirectoryEntry</b>.
-     *
-     * @see DirectoryEntry
-     * @see ClasspathEntry
-     */
-    private static final String DIRECTORY_ENTRY_IMPL = "com.sun.tdk.signaturetest.classpath.DirectoryEntry";
-    /**
-     * Reference to the class implementing <b>JarFileEntry</b>.
-     *
-     * @see JarFileEntry
-     * @see ClasspathEntry
-     */
-    private static final String JAR_ENTRY_IMPL = "com.sun.tdk.signaturetest.classpath.JarFileEntry";
     /**
      * Collector for errors and warnings occurring while <b>ClasspathImpl</b>
      * constructor searches archives of classes.
@@ -335,43 +309,23 @@ public class ClasspathImpl implements Classpath {
      * new <b>DirectoryEntry</b> or new <b>JarFileEntry</b> instance
      * correspondingly.
      *
-     * @param name Qualified name of some directory or zip file.
+     * @param name Qualified name of some directory or zip file or jimage.
      * @return New <b>ClasspathEntry</b> instance corresponding to the given
      * <code>name</code>.
      */
     protected ClasspathEntry createPathEntry(ClasspathEntry previosEntry, String name) {
-        // try to create directory
-        Throwable t = null;
-
-        if (new File(name).isDirectory()) {
-            try {
-                Class c = Class.forName(DIRECTORY_ENTRY_IMPL);
-                Constructor ctor = c.getConstructor(new Class[]{ClasspathEntry.class, String.class});
-                return (ClasspathEntry) ctor.newInstance(new Object[]{previosEntry, name});
-            } catch (InvocationTargetException e) {
-                t = e.getTargetException();
-            } catch (Throwable th) {
-                t = th;
+        try {
+            if (new File(name).isDirectory()) {
+                return new DirectoryEntry(previosEntry, name);
+            } else if (name.endsWith(".jimage")) {
+                return new JimageFileEntry(previosEntry, name);
+            } else {
+                return new JarFileEntry(previosEntry, name);
             }
-
-        } else {
-            // try to create JarFile entry
-            try {
-                Class c = Class.forName(JAR_ENTRY_IMPL);
-                Constructor ctor = c.getConstructor(new Class[]{ClasspathEntry.class, String.class});
-                return (ClasspathEntry) ctor.newInstance(new Object[]{previosEntry, name});
-            } catch (InvocationTargetException e) {
-                t = e.getTargetException();
-            } catch (Throwable th) {
-                t = th;
-            }
+        } catch (IOException ex) {
+            // TODO - log it!
+            ex.printStackTrace();
+            return null;
         }
-        if (t != null) {
-            String invargs[] = {name, t.getMessage()};
-            errors.add(i18n.getString("ClasspathImpl.error.ignoring", invargs));
-            sizeIgnorables++;
-        }
-
-        return null;
     }
 }
