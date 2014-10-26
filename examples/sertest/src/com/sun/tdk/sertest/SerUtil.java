@@ -46,7 +46,6 @@ class SerUtil {
     static Logger logger = Logger.getLogger(SerUtil.class.getName());
     private static final String SER_INT = "java.io.Serializable";
     static final String serVerUID = "serialVersionUID";
-    static final MessageType noSerVerUID = new MessageType(serVerUID + " is not defined", 666);
 
     void initFormat(SigTest st) {
 

@@ -73,34 +73,6 @@ public class SerTest extends SignatureTest {
     }
 
     @Override
-    protected void verifyClass(ClassDescription required, ClassDescription found) {
-        super.verifyClass(required, found);
-
-        if (found.isAbstract() || found.isInterface()) {
-            return;
-        }
-
-        /*
-         * Skip enums - see
-         * http://docs.oracle.com/javase/7/docs/platform/serialization/spec/serial-arch.html#6469
-         */
-        if (found.hasModifier(Modifier.ENUM)) {
-            return;
-        }
-        boolean hasId = false;
-        for (FieldDescr f : found.getDeclaredFields()) {
-            if (SerUtil.serVerUID.equals(f.getName())) {
-                hasId = true;
-                break;
-            }
-        }
-        if (!hasId) {
-            getErrorManager().addError(SerUtil.noSerVerUID, SerUtil.serVerUID,
-                    MemberType.CLASS, found.getQualifiedName(), found);
-        }
-    }
-
-    @Override
     public void run(String[] args, PrintWriter log, PrintWriter ref) {
         super.run(changeParameters(args), log, ref);
     }

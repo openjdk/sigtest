@@ -323,8 +323,8 @@ public class ClasspathImpl implements Classpath {
                 return new JarFileEntry(previosEntry, name);
             }
         } catch (IOException ex) {
-            // TODO - log it!
-            ex.printStackTrace();
+            // TODO - log it if -debug is specified in the context
+            // ex.printStackTrace();
             return null;
         }
     }
