@@ -53,7 +53,7 @@ public class FileManager {
         File f = new File(fileName);
 
         if (f.isAbsolute()) {
-            result = f.toURL();
+            result = f.toURI().toURL();
         } else {
             // check that protocol specified
             if (testURL.indexOf(':') == -1) {

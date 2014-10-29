@@ -73,7 +73,7 @@ public class Converter extends Result {
         Format newFormat = new F40Format();
 
         Reader reader = oldFormat.getReader();
-        reader.readSignatureFile(new File(oldFileName).toURL());
+        reader.readSignatureFile(new File(oldFileName).toURI().toURL());
 
         //write header to the signature file
         Writer writer = newFormat.getWriter();
