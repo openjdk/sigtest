@@ -26,6 +26,7 @@ package com.sun.tdk.signaturetest;
 
 import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.MemberDescription;
 import com.sun.tdk.signaturetest.model.MemberType;
@@ -215,6 +216,8 @@ public class Setup extends SigTest {
 
         parser.addOption(API_INCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(API_EXCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+
+        parser.addOption(BaseOptions.X_JIMAGE_OPTION, OptionInfo.option(1), optionsDecoder);
 
         try {
             parser.processArgs(args);

@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest;
 import com.sun.tdk.signaturetest.classpath.Classpath;
 import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.errors.ErrorFormatter;
 import com.sun.tdk.signaturetest.model.AnnotationItem;
 import com.sun.tdk.signaturetest.model.AnnotationItem.Member;
@@ -142,6 +143,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      */
     private ErrorFormatter errorManager;
 
+    private BaseOptions bo;
+
     protected void setErrorManager(ErrorFormatter em) {
         errorManager = em;
     }
@@ -233,6 +236,11 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
         errorMessages.add(s);
     }
 
+    protected SigTest() {
+        bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+        assert bo != null;
+    }
+
     public void storeWarning(String s, Logger utilLogger) {
         if (reportWarningAsError) {
             storeError(s, utilLogger);
@@ -278,6 +286,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     protected void decodeCommonOptions(String optionName, String[] args) throws CommandLineParserException {
+
+        if (bo.readXJimageOption(optionName, args[0])) return;
 
         if (optionName.equalsIgnoreCase(TESTURL_OPTION)) {
             testURL = args[0];
