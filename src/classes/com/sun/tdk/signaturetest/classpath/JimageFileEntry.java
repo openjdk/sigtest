@@ -58,16 +58,16 @@ public class JimageFileEntry extends DirectoryEntry {
             throw new IOException("Wrong jimage file: " + jimageName);
         }
 
-        if (util == null) {
-            throw new IOException("JIMAGE_EXE is not defined");
-        }
-
         // extract to tmp
         td = Files.createTempDirectory("st_");
         String tempd = td.toAbsolutePath().toString();
 
         String util = bo.getXjimage();
-        assert util != null;
+
+        if (util == null) {
+            throw new IOException("JIMAGE_EXE is not defined");
+        }
+
         Process process = new ProcessBuilder(util, "expand", "--dir", tempd, jimageName).start();
 
         try {
