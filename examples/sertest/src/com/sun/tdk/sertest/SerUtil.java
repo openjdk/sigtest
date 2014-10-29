@@ -109,10 +109,16 @@ class SerUtil {
             MemberCollection cleaned = new MemberCollection();
             for (Iterator e = cls.getMembersIterator(); e.hasNext();) {
                 MemberDescription mr = (MemberDescription) e.next();
+
                 if (!mr.isField() && !mr.isSuperClass() && !mr.isSuperInterface()) {
                     // not a field
                     continue;
                 }
+                // remove inherited fields
+                if (mr.isField() && !mr.getDeclaringClassName().equals(cls.getQualifiedName())) {
+                    continue;
+                }
+
                 if (mr.hasModifier(Modifier.TRANSIENT)) {
                     // ignore transient
                     continue;
