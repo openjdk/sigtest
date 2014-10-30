@@ -229,9 +229,6 @@ public class Setup extends SigTest {
         // since 2.1 - static mode by default
         isStatic = true;
 
-        //if (!parser.isOptionSpecified(XREFLECTION_OPTION) && !parser.isOptionSpecified(STATIC_OPTION))
-        //    return error(i18n.getString("Setup.error.mode.notspecified", new Object[]{STATIC_OPTION, XREFLECTION_OPTION}));
-        // TODO plugin may set own loader. so these options have no sense in this case
         if (parser.isOptionSpecified(XREFLECTION_OPTION) && !parser.isOptionSpecified(STATIC_OPTION)) {
             isStatic = false;
         }
@@ -476,7 +473,6 @@ public class Setup extends SigTest {
                     continue;
                 }
 
-                // TODO - ersh - change this!!!
                 if (name.indexOf('$') < 0) {
                     outerClassesNumber++;
                 } else {

@@ -544,7 +544,6 @@ public class MemberCollectionBuilder {
     }
 
     private void fixAnnotations(ClassDescription cl, ClassHierarchy hierarchy) throws ClassNotFoundException {
-        // TODO (Roman Makarchuk) temporary solution !!!
         // see UseAnnotClss025 test. ClassCorrector should also move annotations
         // from invisible superclass
         SuperClass superClassDescr = cl.getSuperClass();

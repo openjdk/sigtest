@@ -258,7 +258,6 @@ public class Erasurator {
         return cloned_m;
     }
 
-    // TODO weak performance; use indexOf instead of charAt()
     public static ArrayList splitParameters(String actualTypeParams) {
         ArrayList paramList = new ArrayList();
         int startPos = 1;

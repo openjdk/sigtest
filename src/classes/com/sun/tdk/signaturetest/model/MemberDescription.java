@@ -119,7 +119,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     // Note! since all names interned it's possible to use == instead of equals()
     String name = "";
 
-    // TODO using this method is a bad practice!
+    // using this method is a bad practice!
     public final Object clone() {
         try {
             return super.clone();

@@ -522,7 +522,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
         return true;
     }
 
-    // TODO implement the method
     public Context getContext() {
         throw new UnsupportedOperationException("This method is not implemented");
     }

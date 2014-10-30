@@ -767,7 +767,6 @@ public class ClassCorrector implements Transformer {
         }
     }
 
-    // TODO review this method usage
     private boolean isPublicInner(String clName) throws ClassNotFoundException {
         if (clName.indexOf('$') < 0) {
             return false;

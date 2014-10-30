@@ -109,7 +109,6 @@ public class ClassDescription extends MemberDescription {
         return '0' <= c && c <= '9';
     }
 
-    // TODO low performance!
     public ArrayList getTypeBounds() {
 //        assert typeParameters != null;
         ArrayList bounds = new ArrayList();

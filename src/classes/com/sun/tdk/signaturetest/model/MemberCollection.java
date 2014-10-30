@@ -86,7 +86,6 @@ public class MemberCollection {
         members.add(newMember);
     }
 
-    // TODO (Roman Makarchuk) weak performance!
     public MemberDescription find(MemberDescription mr) {
         for (Iterator e = members.iterator(); e.hasNext();) {
             MemberDescription member = (MemberDescription) e.next();

@@ -190,7 +190,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     /**
      * cache of the loaded classes.
      */
-    private LRUCache cache;  //TODO if the cache is moved outside the loader, it became possible to clear ClassDescription.typeparamList
+    private LRUCache cache;
     /**
      * This stack is used to prevent infinite recursive calls of load(String
      * name) method. E.g. the annotation Documented is one example of such

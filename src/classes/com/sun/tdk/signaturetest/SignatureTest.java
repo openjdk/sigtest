@@ -567,7 +567,6 @@ public class SignatureTest extends SigTest {
         PrintWriter log = getLog();
         //  Open the specified sigfile and read standard headers.
 
-        // ME - TODO: rewrite this in the future
         if (readMode == MultipleFileReader.MERGE_MODE && sigFileNameList != null && sigFileNameList.indexOf(File.pathSeparator) >= 0) {
             try {
                 if (writeFileName == null) {

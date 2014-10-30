@@ -90,7 +90,6 @@ public class JSR68Merger extends FeaturesHolder {
                     }
                 }
 
-                // TODO !!!
                 // If this element is first declared class member in inheritance
                 // chain and the other API inherits the same element, then this element doesn't
                 // go to the result API.
