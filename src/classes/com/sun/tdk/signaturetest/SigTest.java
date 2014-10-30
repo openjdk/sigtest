@@ -287,7 +287,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
     protected void decodeCommonOptions(String optionName, String[] args) throws CommandLineParserException {
 
-        if (bo.readXJimageOption(optionName, args[0])) return;
+        if (bo.readXJimageOption(optionName, args)) return;
 
         if (optionName.equalsIgnoreCase(TESTURL_OPTION)) {
             testURL = args[0];

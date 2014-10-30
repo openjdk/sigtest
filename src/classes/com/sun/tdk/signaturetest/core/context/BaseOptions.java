@@ -38,14 +38,14 @@ public class BaseOptions {
     public static final String X_JIMAGE_OPTION = "-xjimage";
     private String xjimage = null;
 
-    public boolean readXJimageOption(String optionName, String optionValue) {
+    public boolean readXJimageOption(String optionName, String[] optionValue) {
         assert optionName != null;
         if ( optionName.equalsIgnoreCase(X_JIMAGE_OPTION) ) {
             assert optionValue != null;
-            assert optionValue != null;
-            assert !optionValue.isEmpty();
-            assert new File(optionValue).isFile();
-            xjimage = optionValue;
+            assert optionValue.length > 0;
+            assert !optionValue[0].isEmpty();
+            assert new File(optionValue[0]).isFile();
+            xjimage = optionValue[0];
             return true;
         }
         return false;
