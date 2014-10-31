@@ -25,6 +25,8 @@
 package com.sun.tdk.signaturetest.core;
 
 import com.sun.tdk.signaturetest.SigTest;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.plugin.Filter;
 import com.sun.tdk.signaturetest.plugin.PluginAPI;
@@ -55,6 +57,8 @@ public class ClassHierarchyImpl implements ClassHierarchy {
      */
     private int trackMode;
     private Filter defaultFilter = new DefaultIsAccessibleFilter();
+
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
 
     public ClassHierarchyImpl(ClassDescriptionLoader loader, int trackMode) {
         this.loader = loader;
@@ -461,7 +465,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
             try {
                 result = c.getClassHierarchy().isClassVisibleOutside(c);
             } catch (ClassNotFoundException e) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
                 }
             }

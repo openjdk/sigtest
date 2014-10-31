@@ -25,8 +25,11 @@
 package com.sun.tdk.signaturetest.loaders;
 
 import com.sun.tdk.signaturetest.SigTest;
+import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.ClassDescriptionLoader;
 import com.sun.tdk.signaturetest.core.PrimitiveTypes;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.Modifier;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
@@ -51,6 +54,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
     private static final String object = "java.lang.Object";
     public static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(TigerRefgClassDescrLoader.class);
     private ClassLoader ldr;
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
 
     public TigerRefgClassDescrLoader() {
         this(null);
@@ -154,7 +158,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
             // skip synthetic fields
             if (fld.isSynthetic()) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     getLog().println(i18n.getString("TigerRefgClassDescrLoader.message.synthetic_field_skipped", fld));
                 }
                 continue;
@@ -203,7 +207,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
             // skip synthetic constructors
             if (ctor.isSynthetic()) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     getLog().println(i18n.getString("TigerRefgClassDescrLoader.message.synthetic_constr_skipped", ctor));
                 }
                 continue;
@@ -277,7 +281,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
             // skip synthetic methods
             if (mtd.isSynthetic()) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     getLog().println(i18n.getString("TigerRefgClassDescrLoader.message.synthetic_method_skipped", mtd));
                 }
                 continue;

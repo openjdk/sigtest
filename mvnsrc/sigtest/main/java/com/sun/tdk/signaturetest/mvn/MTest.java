@@ -28,6 +28,8 @@ import com.sun.tdk.signaturetest.Result;
 import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.SignatureTest;
 import java.util.ArrayList;
+
+import com.sun.tdk.signaturetest.core.context.Option;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -134,7 +136,7 @@ public class MTest extends MBase {
         }
 
         if (debug) {
-            params.add(SigTest.DEBUG_OPTION);
+            params.add(Option.DEBUG.getKey());
         }
         if (errorAll) {
             params.add(SigTest.ERRORALL_OPTION);

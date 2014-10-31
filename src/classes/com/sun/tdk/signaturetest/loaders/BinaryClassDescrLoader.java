@@ -26,8 +26,11 @@ package com.sun.tdk.signaturetest.loaders;
 
 import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.classpath.Classpath;
+import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.ClassDescriptionLoader;
 import com.sun.tdk.signaturetest.core.PrimitiveTypes;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.LRUCache;
@@ -48,6 +51,7 @@ import java.util.*;
 public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHints {
 
     public static final boolean ANNOTATION_DEFAULT_VALUES_ON = true;
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
 
     private class BinaryClassDescription extends ClassDescription {
 
@@ -242,7 +246,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             readClass(c, is, className);
             cache.put(className, c);
         } catch (IOException e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             throw new ClassNotFoundException(className);
@@ -535,7 +539,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 classData.close();
             }
         } catch (Throwable e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             throw new ClassNotFoundException(name, e);
@@ -615,7 +619,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
             if (!hasHint(LoadingHints.READ_SYNTETHIC)) {
                 if (fid.hasModifier(Modifier.ACC_SYNTHETIC)) {
-                    if (SigTest.debug) {
+                    if (bo.isSet(Option.DEBUG)) {
                         getLog().println(i18n.getString("BinaryClassDescrLoader.message.synthetic_field_skipped",
                                 fid.getType() + " " + fid.getQualifiedName()));
                     }
@@ -723,7 +727,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
             // skip synthetic methods and constructors
             if (!hasHint(LoadingHints.READ_SYNTETHIC) && isSynthetic) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     if (isConstructor) {
                         getLog().println(i18n.getString("BinaryClassDescrLoader.message.synthetic_constr_skipped",
                                 fid.getQualifiedName() + "(" + fid.getArgs() + ")"));

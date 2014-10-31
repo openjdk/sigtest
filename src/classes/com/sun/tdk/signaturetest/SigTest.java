@@ -28,6 +28,7 @@ import com.sun.tdk.signaturetest.classpath.Classpath;
 import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.errors.ErrorFormatter;
 import com.sun.tdk.signaturetest.model.AnnotationItem;
 import com.sun.tdk.signaturetest.model.AnnotationItem.Member;
@@ -68,7 +69,6 @@ import java.util.logging.Logger;
  * @author Maxim Sokolnikov
  * @author Serguei Ivashin
  * @author Mikhail Ershov
- * @version 05/04/06
  */
 public abstract class SigTest extends Result implements PluginAPI, Log {
 
@@ -85,7 +85,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static final String STATIC_OPTION = "-Static";
     public static final String APIVERSION_OPTION = "-ApiVersion";
     public static final String VERSION_OPTION = "-Version";
-    public static final String DEBUG_OPTION = "-Debug";
     public static final String HELP_OPTION = "-Help";
     public static final String QUESTIONMARK = "-?";
     public static final String CLASSCACHESIZE_OPTION = "-ClassCacheSize";
@@ -187,8 +186,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      * prints error messages.
      */
     private PrintWriter log;
-    //  Debug mode (printing stack trace)
-    public static boolean debug = false;
+
     /**
      * Descriptions for all classes found at the specified classpath.
      */
@@ -314,7 +312,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             try {
                 cacheSize = Integer.parseInt(args[0]);
             } catch (NumberFormatException ex) {
-                if (debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(ex);
                 }
                 cacheSize = 0;
@@ -325,8 +323,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
         } else if (optionName.equalsIgnoreCase(ALLPUBLIC_OPTION)) {
             trackMode = ClassHierarchy.ALL_PUBLIC;
-        } else if (optionName.equalsIgnoreCase(DEBUG_OPTION)) {
-            debug = true;
         } else if (optionName.equalsIgnoreCase(ERRORALL_OPTION)) {
             reportWarningAsError = true;
         } else if (optionName.equalsIgnoreCase(XNOTIGER_OPTION)) {
@@ -444,12 +440,12 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
         try {
             return testableHierarchy.load(name);
         } catch (ClassNotFoundException e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             storeError(i18n.getString("SigTest.error.class.missing", name), null);
         } catch (LinkageError e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             storeError(i18n.getString("SigTest.error.class.notlinked", e.getMessage()), null);
@@ -470,9 +466,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             }
             return cl;
         } catch (Throwable t) {
-            if (debug) {
-                SwissKnife.reportThrowable(t);
-            }
+            SwissKnife.reportThrowable(t);
         }
 
         return null;
@@ -491,7 +485,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             Constructor ctor = Class.forName(pluginClassName).getConstructor(new Class[0]);
             return (Plugin) ctor.newInstance(new Object[0]);
         } catch (Throwable t) {
-            if (debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(t);
             }
         }

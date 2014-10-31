@@ -63,7 +63,7 @@ public class JimageFileEntry extends DirectoryEntry {
         String tempd = td.toAbsolutePath().toString();
 
         assert bo != null;
-        String util = bo.getValue(Option.X_JIMAGE_OPTION);
+        String util = bo.getValue(Option.X_JIMAGE);
 
         if (util == null) {
             throw new IOException("JIMAGE_EXE is not defined");

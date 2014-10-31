@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest;
 import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.errors.*;
 import com.sun.tdk.signaturetest.loaders.LoadingHints;
 import com.sun.tdk.signaturetest.model.*;
@@ -347,7 +348,6 @@ public class SignatureTest extends SigTest {
         parser.addOption(BACKWARD_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(BACKWARD_ALT_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(EXTENSIBLE_INTERFACES_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(DEBUG_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XVERBOSE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CHECKVALUE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -423,7 +423,7 @@ public class SignatureTest extends SigTest {
                 setLog(new PrintWriter(new FileWriter(logName), true));
                 logFile = true;
             } catch (IOException x) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(x);
                 }
                 return error(i18nSt.getString("SignatureTest.error.out.invfile", OUT_OPTION));
@@ -434,7 +434,7 @@ public class SignatureTest extends SigTest {
         try {
             classpath = new ClasspathImpl(classpathStr);
         } catch (SecurityException e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             getLog().println(i18nSt.getString("SignatureTest.error.sec.newclasses"));
@@ -530,7 +530,7 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classcachesize", new Object[]{CLASSCACHESIZE_OPTION, new Integer(DefaultCacheSize)}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.debug", DEBUG_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.debug", Option.DEBUG));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.error_all", ERRORALL_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.helpusage.version", VERSION_OPTION));
@@ -695,7 +695,7 @@ public class SignatureTest extends SigTest {
                             }
                             sigfileMCBuilder.createMembers(currentClass, addInherited(), false, true);
                         } catch (ClassNotFoundException e) {
-                            if (SigTest.debug) {
+                            if (bo.isSet(Option.DEBUG)) {
                                 SwissKnife.reportThrowable(e);
                             }
                         }
@@ -710,7 +710,7 @@ public class SignatureTest extends SigTest {
                         try {
                             t.transform(currentClass);
                         } catch (ClassNotFoundException e) {
-                            if (SigTest.debug) {
+                            if (bo.isSet(Option.DEBUG)) {
                                 SwissKnife.reportThrowable(e);
                             }
                         }
@@ -732,17 +732,17 @@ public class SignatureTest extends SigTest {
             } catch (VirtualMachineError e) {
                 msg = i18nSt.getString("SignatureTest.error.sigfile.vme", e.getMessage());
             } catch (IOException e) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
                 }
                 msg = i18nSt.getString("SignatureTest.error.sigfile.prob") + linesep + e;
             } catch (SecurityException e) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
                 }
                 msg = i18nSt.getString("SignatureTest.error.sigfile.sec") + linesep + e;
             } catch (Error e) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
                 }
                 msg = i18nSt.getString("SignatureTest.error.unknownerror") + e;
@@ -840,7 +840,7 @@ public class SignatureTest extends SigTest {
                 checkAddedClass(name);
             }
         } catch (SecurityException ex) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(ex);
             }
             getLog().println(i18nSt.getString("SignatureTest.mesg.classpath.sec"));
@@ -870,11 +870,11 @@ public class SignatureTest extends SigTest {
                     }
                 }
             } catch (ClassNotFoundException ex) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(ex);
                 }
             } catch (LinkageError ex1) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(ex1);
                 }
             } catch (ExcludeException e) {
@@ -1009,7 +1009,7 @@ public class SignatureTest extends SigTest {
                 getErrorManager().addError(MessageType.MISS_CLASSES, name, MemberType.CLASS, null, required);
             }
         } catch (SuperClassesNotFoundException ex) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(ex);
             }
             String[] names = ex.getMissedClasses();
@@ -1017,12 +1017,12 @@ public class SignatureTest extends SigTest {
                 getErrorManager().addError(MessageType.MISS_SUPERCLASSES, names[i], MemberType.CLASS, ex.getClassName(), required);
             }
         } catch (ClassNotFoundException ex) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(ex);
             }
             getErrorManager().addError(MessageType.MISS_CLASSES, name, MemberType.CLASS, null, required);
         } catch (LinkageError er) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(er);
             }
             getErrorManager().addError(MessageType.ERROR_LINKERR, name, MemberType.CLASS,

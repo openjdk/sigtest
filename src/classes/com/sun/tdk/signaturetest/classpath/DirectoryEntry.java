@@ -25,6 +25,9 @@
 package com.sun.tdk.signaturetest.classpath;
 
 import com.sun.tdk.signaturetest.SigTest;
+import com.sun.tdk.signaturetest.core.AppContext;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.ExoticCharTools;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
@@ -41,6 +44,8 @@ import java.util.LinkedHashSet;
 class DirectoryEntry extends ClasspathEntry {
 
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(DirectoryEntry.class);
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+
     /**
      * The qualified name of <code>this</code> directory.
      */
@@ -125,7 +130,7 @@ class DirectoryEntry extends ClasspathEntry {
                 }
             }
         } catch (SecurityException e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
         }

@@ -29,7 +29,8 @@ package com.sun.tdk.signaturetest.core.context;
  */
 public enum Option {
 
-    X_JIMAGE_OPTION("-xjimage", Kind.SINGLE);
+    X_JIMAGE("-xjimage", Kind.SINGLE),
+    DEBUG("-debug", Kind.NONE);
 
     public enum Kind{
         NONE, SINGLE, MANY;

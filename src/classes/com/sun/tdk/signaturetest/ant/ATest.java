@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest.ant;
 import com.sun.tdk.signaturetest.Result;
 import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.SignatureTest;
+import com.sun.tdk.signaturetest.core.context.Option;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 
@@ -151,7 +152,7 @@ public class ATest extends ABase {
         }
 
         if (debug) {
-            params.add(SigTest.DEBUG_OPTION);
+            params.add(Option.DEBUG.getKey());
         }
         if (errorAll) {
             params.add(SigTest.ERRORALL_OPTION);

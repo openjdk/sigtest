@@ -25,6 +25,8 @@
 package com.sun.tdk.signaturetest.core;
 
 import com.sun.tdk.signaturetest.SigTest;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 
@@ -58,6 +60,7 @@ public class Erasurator {
     private Map localParameters = new HashMap();
     private HashSet unresolvedWarnings = new HashSet();
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Erasurator.class);
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
 
     public ClassDescription erasure(ClassDescription clz) {
 
@@ -241,18 +244,20 @@ public class Erasurator {
         }
 
         // just for debugging
-        if (SigTest.debug) {
+        if (bo.isSet(Option.DEBUG)) {
             String s = cloned_m.toString();
             /*
              *annotation value can be parametrized class
              *but we should NOT (I'm not 100% sure) erasure this.
-             *so just skip annotation for this checkings
+             *so just skip annotation for this check
              */
             int fl = s.indexOf('\n');
             if (fl > 0) {
                 s = s.substring(0, fl);
             }
-            assert s.indexOf('<') == -1 && s.indexOf('?') == -1 && s.indexOf('{') == -1 : s;
+            // TODO : ME Commented 31.10.14 -
+            // investigate this ( -debug + -ea)
+            //assert s.indexOf('<') == -1 && s.indexOf('?') == -1 && s.indexOf('{') == -1 : s;
         }
 
         return cloned_m;

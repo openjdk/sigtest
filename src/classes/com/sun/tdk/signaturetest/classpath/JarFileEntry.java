@@ -24,8 +24,9 @@
  */
 package com.sun.tdk.signaturetest.classpath;
 
-import com.sun.tdk.signaturetest.SigTest;
-
+import com.sun.tdk.signaturetest.core.AppContext;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.ExoticCharTools;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 import java.io.IOException;
@@ -45,6 +46,7 @@ class JarFileEntry extends ClasspathEntry {
      * Specified jar file. *
      */
     private JarFile jarfile;
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
 
     public JarFileEntry(ClasspathEntry previous, String jarfile) throws IOException {
         super(previous);
@@ -76,7 +78,7 @@ class JarFileEntry extends ClasspathEntry {
             try {
                 jarfile.close();
             } catch (IOException e) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
                 }
             }

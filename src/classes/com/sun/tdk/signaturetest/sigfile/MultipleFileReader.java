@@ -25,6 +25,9 @@
 package com.sun.tdk.signaturetest.sigfile;
 
 import com.sun.tdk.signaturetest.SigTest;
+import com.sun.tdk.signaturetest.core.AppContext;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.loaders.VirtualClassDescriptionLoader;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
@@ -51,6 +54,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
     private int mode;
     private String apiVersion;
     private FileManager fileMan;
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
 
     public MultipleFileReader(PrintWriter log, int mode, FileManager f) {
         // Note: Merge mode is not supported yet.
@@ -90,7 +94,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
             URL fileURL = FileManager.getURL(testURL, sigFileName);
             result = readFile(fileURL);
         } catch (MalformedURLException e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             String invargs[] = {testURL, e.getMessage()};
@@ -145,12 +149,12 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
                     }
                 }
             } catch (IOException e) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
                 }
                 msg = i18n.getString("MultipleFileReader.error.sigfile.prob") + "\n" + e;
             } catch (SecurityException e) {
-                if (SigTest.debug) {
+                if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
                 }
                 msg = i18n.getString("MultipleFileReader.error.sigfile.sec") + "\n" + e;

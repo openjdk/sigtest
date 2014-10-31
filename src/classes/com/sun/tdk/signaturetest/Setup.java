@@ -191,7 +191,6 @@ public class Setup extends SigTest {
 
         parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(DEBUG_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
         parser.addOption(XVERBOSE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -258,7 +257,7 @@ public class Setup extends SigTest {
         try {
             signatureFile = FileManager.getURL(testURL, sigFileName);
         } catch (MalformedURLException e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             System.err.println(e);
@@ -331,7 +330,7 @@ public class Setup extends SigTest {
         sb.append(nl).append(i18n.getString("Setup.usage.apiversion", APIVERSION_OPTION));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}));
-        sb.append(nl).append(i18n.getString("Setup.usage.debug", DEBUG_OPTION));
+        sb.append(nl).append(i18n.getString("Setup.usage.debug", Option.DEBUG));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.helpusage.version", VERSION_OPTION));
         sb.append(nl).append(i18n.getString("Setup.usage.help", HELP_OPTION));
@@ -366,7 +365,7 @@ public class Setup extends SigTest {
         try {
             classpath = new ClasspathImpl(classpathStr);
         } catch (SecurityException e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             getLog().println(i18n.getString("Setup.log.invalid.security.classpath"));
@@ -487,7 +486,7 @@ public class Setup extends SigTest {
                     normalizer.normThrows(c, true);
                     removeUndocumentedAnnotations(c, testableHierarchy);
                 } catch (ClassNotFoundException e) {
-                    if (SigTest.debug) {
+                    if (bo.isSet(Option.DEBUG)) {
                         SwissKnife.reportThrowable(e);
                     }
                     setupProblem(i18n.getString("Setup.error.message.classnotfound", e.getMessage()));
@@ -513,7 +512,7 @@ public class Setup extends SigTest {
             }
 
         } catch (IOException e) {
-            if (SigTest.debug) {
+            if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
             getLog().println(i18n.getString("Setup.error.message.cantcreatesigfile"));
@@ -632,12 +631,12 @@ public class Setup extends SigTest {
                         ignore(i18n.getString("Setup.report.ignore.protect", name));
                     }
                 } catch (ClassNotFoundException ex) {
-                    if (SigTest.debug) {
+                    if (bo.isSet(Option.DEBUG)) {
                         SwissKnife.reportThrowable(ex);
                     }
                     setupProblem(i18n.getString("Setup.error.message.classnotfound", name));
                 } catch (LinkageError ex1) {
-                    if (SigTest.debug) {
+                    if (bo.isSet(Option.DEBUG)) {
                         SwissKnife.reportThrowable(ex1);
                     }
                     setupProblem(i18n.getString("Setup.error.message.classnotlinked", ex1.getMessage()));

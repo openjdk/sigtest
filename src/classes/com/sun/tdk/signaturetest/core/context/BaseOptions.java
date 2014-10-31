@@ -37,7 +37,7 @@ public class BaseOptions {
 
     public static final String ID = BaseOptions.class.getName();
 
-    private EnumSet<Option> options = EnumSet.of(Option.X_JIMAGE_OPTION);
+    private EnumSet<Option> options = EnumSet.of(Option.X_JIMAGE, Option.DEBUG);
     private Map<Option, List<String>> values = new HashMap<>();
 
     public boolean readOptions(String optionName, String[] args) {
