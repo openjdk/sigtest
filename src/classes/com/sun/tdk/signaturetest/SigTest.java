@@ -143,8 +143,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      */
     private ErrorFormatter errorManager;
 
-    private BaseOptions bo;
-
     protected void setErrorManager(ErrorFormatter em) {
         errorManager = em;
     }
@@ -198,6 +196,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static boolean isTigerFeaturesTracked = false;
     private static boolean isJava8 = false;
     protected Plugin pluginClass = null;
+
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
 
     static {
         // Turn isTigerFeaturesTracked on if SigTest is running on Java version >= 5.0
@@ -287,7 +287,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
     protected void decodeCommonOptions(String optionName, String[] args) throws CommandLineParserException {
 
-        if (bo.readXJimageOption(optionName, args)) return;
+        if (bo.readOptions(optionName, args)) return;
 
         if (optionName.equalsIgnoreCase(TESTURL_OPTION)) {
             testURL = args[0];

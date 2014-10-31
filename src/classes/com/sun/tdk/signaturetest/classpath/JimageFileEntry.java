@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest.classpath;
 
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -45,10 +46,9 @@ public class JimageFileEntry extends DirectoryEntry {
 
     public JimageFileEntry(ClasspathEntry previous, String name) throws IOException {
         super(previous);
-        init(name);
-
         bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
         assert bo != null;
+        init(name);
     }
 
     @Override
@@ -62,7 +62,8 @@ public class JimageFileEntry extends DirectoryEntry {
         td = Files.createTempDirectory("st_");
         String tempd = td.toAbsolutePath().toString();
 
-        String util = bo.getXjimage();
+        assert bo != null;
+        String util = bo.getValue(Option.X_JIMAGE_OPTION);
 
         if (util == null) {
             throw new IOException("JIMAGE_EXE is not defined");

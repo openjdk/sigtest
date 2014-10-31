@@ -24,6 +24,8 @@
  */
 package com.sun.tdk.signaturetest.util;
 
+import com.sun.tdk.signaturetest.core.context.Option;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -218,6 +220,22 @@ public class CommandLineParser {
             }
         }
         return (String[]) ar.toArray(new String[]{});
+    }
+
+    public void addOptions(EnumSet<Option> options, String optionsDecoder) {
+        for (Option o : options) {
+            switch (o.getKind()) {
+                case NONE:
+                    addOption(o.getKey(), OptionInfo.optionalFlag(), optionsDecoder);
+                    break;
+                case SINGLE:
+                    addOption(o.getKey(), OptionInfo.option(1), optionsDecoder);
+                    break;
+                case MANY:
+                    addOption(o.getKey(), OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+                    break;
+            }
+        }
     }
 
     private static class KnownOptions {

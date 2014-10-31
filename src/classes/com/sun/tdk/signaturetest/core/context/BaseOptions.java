@@ -24,7 +24,9 @@
  */
 package com.sun.tdk.signaturetest.core.context;
 
-import java.io.File;
+import com.sun.tdk.signaturetest.util.CommandLineParser;
+
+import java.util.*;
 
 /*
  * This bean represents the core application options
@@ -35,28 +37,82 @@ public class BaseOptions {
 
     public static final String ID = BaseOptions.class.getName();
 
-    public static final String X_JIMAGE_OPTION = "-xjimage";
-    private String xjimage = null;
+    private EnumSet<Option> options = EnumSet.of(Option.X_JIMAGE_OPTION);
+    private Map<Option, List<String>> values = new HashMap<>();
 
-    public boolean readXJimageOption(String optionName, String[] optionValue) {
-        assert optionName != null;
-        if ( optionName.equalsIgnoreCase(X_JIMAGE_OPTION) ) {
-            assert optionValue != null;
-            assert optionValue.length > 0;
-            assert !optionValue[0].isEmpty();
-            assert new File(optionValue[0]).isFile();
-            xjimage = optionValue[0];
-            return true;
+    public boolean readOptions(String optionName, String[] args) {
+        for (Option option : options) {
+            if (option.accept(optionName)) {
+                switch (option.getKind()) {
+                    case NONE:
+                        values.put(option, null);
+                        break;
+                    case SINGLE:
+                        assert args != null;
+                        assert args.length > 0;
+                        assert !args[0].isEmpty();
+                        values.put(option, Arrays.asList(args[0]));
+                        break;
+                    case MANY:
+                        assert args != null;
+                        assert args.length > 0;
+                        if (!values.containsKey(option)) {
+                            values.put(option, new ArrayList<String>());
+                        }
+                        values.get(option).addAll(Arrays.asList(CommandLineParser.parseListOption(args)));
+                }
+                return true;
+            }
         }
         return false;
     }
 
-
-    public String getXjimage() {
-        return xjimage;
+    /* Returns if the NONE option was specified
+     * Throws IllegalArgumentException
+     * if the option is not allowed for the context
+     */
+    public boolean isSet(Option option) {
+        assert option != null;
+        assert option.getKind() == Option.Kind.NONE;
+        if (!options.contains(option)) {
+            throw new IllegalArgumentException("Option " + option.getKey() + " is not defined in the context");
+        }
+        return values.containsKey(option);
     }
 
-    public void setXjimage(String xjimage) {
-        this.xjimage = xjimage;
+    /* Returns a value for SINGLE option
+     * or null if the option was not specified
+     * Throws IllegalArgumentException
+     * if the option is not allowed for the context
+     */
+    public String getValue(Option option) {
+        assert option != null;
+        return getValues(option, Option.Kind.SINGLE).get(0);
+    }
+
+    /* Returns a list of values for MANY option
+     * or null if the option was not specified
+     * Throws IllegalArgumentException
+     * if the option is not allowed for the context
+     */
+    public List<String> getValues(Option option) {
+        return getValues(option, Option.Kind.MANY);
+    }
+
+    private List<String> getValues(Option option, Option.Kind expectedKind ) {
+        assert option != null;
+        if (!options.contains(option)) {
+            throw new IllegalArgumentException("Option " + option.getKey() + " is not defined in the context");
+        }
+        if (!values.containsKey(option)) {
+            return null;
+        }
+        assert option.getKind() == expectedKind;
+        assert option.getKind() != Option.Kind.SINGLE || values.get(option).size() == 1;
+        return values.get(option);
+    }
+
+    public EnumSet<Option> getOptions() {
+        return options;
     }
 }

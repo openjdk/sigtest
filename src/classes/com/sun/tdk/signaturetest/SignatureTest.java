@@ -26,6 +26,7 @@ package com.sun.tdk.signaturetest;
 
 import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.errors.*;
 import com.sun.tdk.signaturetest.loaders.LoadingHints;
 import com.sun.tdk.signaturetest.model.*;
@@ -222,6 +223,8 @@ public class SignatureTest extends SigTest {
     private int readMode = MultipleFileReader.MERGE_MODE;
     protected PackageGroup secure = new PackageGroup(true);
 
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+
     /**
      * Run the test using command-line; return status via numeric exit code.
      *
@@ -370,6 +373,8 @@ public class SignatureTest extends SigTest {
         parser.addOption(ORDANN_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
 
         parser.addOption(SECURE_PACKAGES_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+
+        parser.addOptions(bo.getOptions(), optionsDecoder);
 
         try {
             parser.processArgs(args);
