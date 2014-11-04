@@ -51,7 +51,7 @@ import java.util.*;
 public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHints {
 
     public static final boolean ANNOTATION_DEFAULT_VALUES_ON = true;
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
 
     private class BinaryClassDescription extends ClassDescription {
 

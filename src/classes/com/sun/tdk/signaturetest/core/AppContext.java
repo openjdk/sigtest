@@ -51,23 +51,18 @@ public abstract class AppContext {
 
     public abstract String getString(String id);
 
-    public abstract Object getBean(String id);
+    public abstract Object getBean(Class clz);
 
     public abstract void setString(String id, String value);
 
-    public abstract void setBean(String id, Object bean);
+    public abstract void setBean(Object bean);
 
     public abstract AppContext clean();
 
     private static class AppContextImpl extends AppContext {
 
         private ConcurrentHashMap<String, String> strings = new ConcurrentHashMap<String, String>();
-        private ConcurrentHashMap<String, Object> beans = new ConcurrentHashMap<String, Object>();
-
-        private AppContextImpl() {
-            BaseOptions bo = new BaseOptions();
-            setBean(BaseOptions.ID, bo);
-        }
+        private ConcurrentHashMap<Class, Object> beans = new ConcurrentHashMap<Class, Object>();
 
         @Override
         public void setString(String id, String value) {
@@ -75,8 +70,8 @@ public abstract class AppContext {
         }
 
         @Override
-        public void setBean(String id, Object bean) {
-            beans.put(id, bean);
+        public void setBean(Object bean) {
+            beans.put(bean.getClass(), bean);
         }
 
         @Override
@@ -85,8 +80,17 @@ public abstract class AppContext {
         }
 
         @Override
-        public Object getBean(String id) {
-            return beans.get(id);
+        public synchronized Object getBean(Class clz) {
+            if (!beans.containsKey(clz)) {
+                Object o = null;
+                try {
+                    o = clz.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                beans.put(clz, o);
+            }
+            return beans.get(clz);
         }
 
         @java.lang.Override

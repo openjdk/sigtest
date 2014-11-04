@@ -29,19 +29,29 @@ package com.sun.tdk.signaturetest.core.context;
  */
 public enum Option {
 
-    X_JIMAGE("-xjimage", Kind.SINGLE),
-    DEBUG("-debug", Kind.NONE);
-
-    public enum Kind{
-        NONE, SINGLE, MANY;
-    }
+    X_JIMAGE("-XJImage", Kind.SINGLE_OPT),
+    DEBUG("-Debug", Kind.NONE),
+    HELP("-Help", "-?", Kind.NONE),
+    PACKAGE("-Package", Kind.MANY_OPT),
+    FILES("-Files", Kind.SINGLE_REQ), // merge's
+    WRITE("-Write", Kind.SINGLE_OPT), // merge's
+    BINARY("-Binary", Kind.NONE),  // merge's
+    TESTURL("-TestURL", Kind.SINGLE_OPT),
+    VERSION("-Version", "-V", Kind.NONE)
+    ;
 
     private String key;
     private Kind kind;
-
+    private String alias;
     private Option(String key, Kind kind) {
         this.key = key;
         this.kind = kind;
+    }
+
+    private Option(String key, String alias, Kind kind) {
+        this.key = key;
+        this.kind = kind;
+        this.alias = alias;
     }
 
     public String getKey() {
@@ -52,9 +62,26 @@ public enum Option {
         return kind;
     }
 
+    private boolean hasAlias() {
+        return alias != null;
+    }
+
+    private String getAlias() {
+        assert alias != null;
+        return alias;
+    }
+
     public boolean accept(String optionName) {
         assert optionName != null;
-        return optionName.equalsIgnoreCase(key);
+        if (optionName.equalsIgnoreCase(key)) {
+            return true;
+        }
+        return hasAlias() && getAlias().equalsIgnoreCase(key);
+    }
+
+
+    public enum Kind {
+        NONE, SINGLE_OPT, SINGLE_REQ, MANY_OPT;
     }
 
 }

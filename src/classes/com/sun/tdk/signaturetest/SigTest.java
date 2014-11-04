@@ -195,7 +195,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     private static boolean isJava8 = false;
     protected Plugin pluginClass = null;
 
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
 
     static {
         // Turn isTigerFeaturesTracked on if SigTest is running on Java version >= 5.0
@@ -235,7 +235,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     protected SigTest() {
-        bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+        bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
         assert bo != null;
     }
 

@@ -228,10 +228,13 @@ public class CommandLineParser {
                 case NONE:
                     addOption(o.getKey(), OptionInfo.optionalFlag(), optionsDecoder);
                     break;
-                case SINGLE:
+                case SINGLE_OPT:
                     addOption(o.getKey(), OptionInfo.option(1), optionsDecoder);
                     break;
-                case MANY:
+                case SINGLE_REQ:
+                    addOption(o.getKey(), OptionInfo.requiredOption(1), optionsDecoder);
+                    break;
+                case MANY_OPT:
                     addOption(o.getKey(), OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
                     break;
             }

@@ -44,7 +44,7 @@ import java.util.LinkedHashSet;
 class DirectoryEntry extends ClasspathEntry {
 
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(DirectoryEntry.class);
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
 
     /**
      * The qualified name of <code>this</code> directory.

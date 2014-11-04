@@ -27,13 +27,13 @@ package com.sun.tdk.signaturetest.core.context;
 import java.util.EnumSet;
 
 /*
- * This bean represents the core application options
- * associated with SigTest class
+ * This bean represents the merge command options
  * @author Mikhail Ershov
  */
-public class BaseOptions extends Options {
+public class MergeOptions extends Options {
 
-    private EnumSet<Option> options = EnumSet.of(Option.X_JIMAGE, Option.DEBUG/*, Option.HELP*/);
+    private EnumSet<Option> options = EnumSet.of(Option.FILES, Option.WRITE,
+            Option.BINARY, Option.HELP, Option.VERSION);
 
     @Override
     public EnumSet<Option> getOptions() {

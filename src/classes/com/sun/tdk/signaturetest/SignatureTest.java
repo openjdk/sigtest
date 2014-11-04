@@ -224,7 +224,7 @@ public class SignatureTest extends SigTest {
     private int readMode = MultipleFileReader.MERGE_MODE;
     protected PackageGroup secure = new PackageGroup(true);
 
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
 
     /**
      * Run the test using command-line; return status via numeric exit code.

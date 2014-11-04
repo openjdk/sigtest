@@ -54,7 +54,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
     private int mode;
     private String apiVersion;
     private FileManager fileMan;
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
 
     public MultipleFileReader(PrintWriter log, int mode, FileManager f) {
         // Note: Merge mode is not supported yet.

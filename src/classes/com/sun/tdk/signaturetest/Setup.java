@@ -123,7 +123,7 @@ public class Setup extends SigTest {
     private boolean keepSigFile = false;
     private String copyrightStr = null;
 
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.ID);
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
 
     /**
      * runs test in from command line.
