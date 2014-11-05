@@ -26,6 +26,7 @@ package com.sun.tdk.signaturetest.ant;
 
 import com.sun.tdk.signaturetest.Merge;
 import com.sun.tdk.signaturetest.Result;
+import com.sun.tdk.signaturetest.core.context.Option;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.DataType;
@@ -84,7 +85,7 @@ public class AMerge extends ASuperBase {
     private String[] createParams() {
         ArrayList params = new ArrayList();
 
-        params.add(Merge.FILES_OPTION);
+        params.add(Option.FILES.getKey());
 
         Iterator it = files.iterator();
         StringBuffer files = new StringBuffer();
@@ -97,12 +98,12 @@ public class AMerge extends ASuperBase {
         }
         params.add(files.toString());
 
-        params.add(Merge.WRITE_OPTION);
+        params.add(Option.WRITE.getKey());
 
         params.add(write);
 
         if (binary) {
-            params.add(Merge.BINARY_OPTION);
+            params.add(Option.BINARY.getKey());
         }
 
         return (String[]) params.toArray(new String[]{});

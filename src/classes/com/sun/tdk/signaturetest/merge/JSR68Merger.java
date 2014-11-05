@@ -25,8 +25,11 @@
 package com.sun.tdk.signaturetest.merge;
 
 import com.sun.tdk.signaturetest.Result;
+import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.Erasurator;
 import com.sun.tdk.signaturetest.core.Log;
+import com.sun.tdk.signaturetest.core.context.MergeOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.loaders.VirtualClassDescriptionLoader;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.sigfile.FeaturesHolder;
@@ -48,6 +51,8 @@ import java.util.logging.Logger;
 public class JSR68Merger extends FeaturesHolder {
 
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(JSR68Merger.class);
+    private MergeOptions mo = (MergeOptions) AppContext.getContext().getBean(MergeOptions.class);
+
     private Log log;
     private Result result;
     private Erasurator erasurator;
@@ -59,8 +64,8 @@ public class JSR68Merger extends FeaturesHolder {
         setFeatures(fh.getSupportedFeatures());
     }
 
-    public VirtualClassDescriptionLoader merge(MergedSigFile[] files, int mode) {
-        this.mode = mode;
+    public VirtualClassDescriptionLoader merge(MergedSigFile[] files) {
+        //this.mode = mode;
         VirtualClassDescriptionLoader result = new VirtualClassDescriptionLoader();
         setLogger();
 
@@ -863,7 +868,7 @@ public class JSR68Merger extends FeaturesHolder {
 
     private boolean mergeThrows(MemberDescription[] similarMethods, MemberDescription result) {
 
-        if (mode == BINARY_MODE) {
+        if (mo.isSet(Option.BINARY)) {
             result.setThrowables("");
             return true;
         } else {
@@ -916,27 +921,5 @@ public class JSR68Merger extends FeaturesHolder {
         logger.setLevel(Level.SEVERE);
 
     }
-    // ME - ACC_STRICT ?
-//    private static final int flagclass = Modifier.PUBLIC.getValue() | Modifier.FINAL.getValue() |
-//            Modifier.INTERFACE.getValue() | Modifier.ABSTRACT.getValue();
-//
-//    private static final int flagfield = Modifier.PUBLIC.getValue() | Modifier.PRIVATE.getValue() |
-//            Modifier.PROTECTED.getValue() | Modifier.STATIC.getValue() |
-//            Modifier.FINAL.getValue() | Modifier.VOLATILE.getValue() |
-//            Modifier.TRANSIENT.getValue();
-//
-//    private static final int flagmethod = Modifier.PUBLIC.getValue() | Modifier.PRIVATE.getValue() |
-//            Modifier.PROTECTED.getValue() | Modifier.STATIC.getValue() |
-//            Modifier.FINAL.getValue() | Modifier.ABSTRACT.getValue() |
-//            Modifier.ACC_STRICT.getValue() | Modifier.NATIVE.getValue() |
-//            Modifier.SYNCHRONIZED.getValue();
-//
-//    private static final int flaginner = Modifier.PUBLIC.getValue() | Modifier.PRIVATE.getValue() |
-//            Modifier.PROTECTED.getValue() | Modifier.STATIC.getValue() |
-//            Modifier.FINAL.getValue() | Modifier.INTERFACE.getValue() | Modifier.ABSTRACT.getValue();
-    public static final int SOURCE_MODE = 0;
-    public static final int BINARY_MODE = 1;
-    private int mode;
     private static final Logger logger = Logger.getLogger("merge");
-//    private boolean debug = true;
 }

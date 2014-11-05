@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.sun.tdk.signaturetest.core.context.Option;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -73,7 +75,7 @@ public class MMerge extends MBase {
     private String[] createParams() {
         ArrayList params = new ArrayList();
 
-        params.add(Merge.FILES_OPTION);
+        params.add(Option.FILES.getKey());
 
         if (files != null) {
             StringBuffer cpb = new StringBuffer();
@@ -86,12 +88,12 @@ public class MMerge extends MBase {
             params.add(cpb.toString());
         }
 
-        params.add(Merge.WRITE_OPTION);
+        params.add(Option.WRITE.getKey());
 
         params.add(write);
 
         if (binary) {
-            params.add(Merge.BINARY_OPTION);
+            params.add(Option.BINARY.getKey());
         }
 
         return (String[]) params.toArray(new String[]{});

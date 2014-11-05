@@ -24,10 +24,9 @@
  */
 package com.sun.tdk.signaturetest;
 
-import com.sun.tdk.signaturetest.core.ClassHierarchy;
-import com.sun.tdk.signaturetest.core.ClassHierarchyImpl;
-import com.sun.tdk.signaturetest.core.Log;
-import com.sun.tdk.signaturetest.core.MemberCollectionBuilder;
+import com.sun.tdk.signaturetest.core.*;
+import com.sun.tdk.signaturetest.core.context.MergeOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.loaders.VirtualClassDescriptionLoader;
 import com.sun.tdk.signaturetest.merge.JSR68Merger;
 import com.sun.tdk.signaturetest.merge.MergedSigFile;
@@ -37,25 +36,19 @@ import com.sun.tdk.signaturetest.sigfile.Writer;
 import com.sun.tdk.signaturetest.util.CommandLineParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
-import com.sun.tdk.signaturetest.util.OptionInfo;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 public class Merge extends SigTest {
 
     // Command line options
-    public static final String FILES_OPTION = "-Files";
-    public static final String WRITE_OPTION = "-Write";
-    public static final String BINARY_OPTION = "-Binary";
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Merge.class);
-    private boolean binary = false;
-    private String resultedFile;
-    private String[] signatureFiles;
+
+    private MergeOptions mo = (MergeOptions) AppContext.getContext().getBean(MergeOptions.class);
+
 
     /**
      * Run the test using command-line; return status via numeric exit code.
@@ -99,23 +92,16 @@ public class Merge extends SigTest {
         initErrors();
 
         // Print help text only and exit.
-        if (args == null || args.length == 0
-                || (args.length == 1 && (parser.isOptionSpecified(args[0], HELP_OPTION) || parser.isOptionSpecified(args[0], QUESTIONMARK)))) {
+        if (args == null || args.length == 0 || (args.length == 1 && Option.HELP.accept(args[0]))) {
             return false;
         }
 
         final String optionsDecoder = "decodeOptions";
-
-        parser.addOption(FILES_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
-        parser.addOption(WRITE_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(BINARY_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(HELP_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
+        parser.addOptions(mo.getOptions(), optionsDecoder);
 
         try {
             parser.processArgs(args);
-            if (resultedFile != null) {
+            if (mo.getValue(Option.WRITE) != null) {
                 checkValidWriteFile();
             }
         } catch (CommandLineParserException e) {
@@ -129,24 +115,24 @@ public class Merge extends SigTest {
     private void checkValidWriteFile() throws CommandLineParserException {
         File canonicalFile = null;
         try {
-            canonicalFile = (new File(resultedFile)).getCanonicalFile();
+            canonicalFile = (new File(mo.getValue(Option.WRITE))).getCanonicalFile();
         } catch (IOException e) {
-            throw new CommandLineParserException(i18n.getString("Merge.could.not.resolve.file", resultedFile));
+            throw new CommandLineParserException(i18n.getString("Merge.could.not.resolve.file", mo.getValue(Option.WRITE)));
         }
 
-        for (int i = 0; i < signatureFiles.length; i++) {
+        for (String inFile : mo.getValues(Option.FILES) ) {
             try {
-                File sigFile = (new File(signatureFiles[i])).getCanonicalFile();
+                File sigFile = (new File(inFile)).getCanonicalFile();
                 if (canonicalFile.equals(sigFile)) {
                     throw new CommandLineParserException(i18n.getString("Merge.notunique.writefile"));
                 }
             } catch (IOException ex) {
-                throw new CommandLineParserException(i18n.getString("Merge.could.not.resolve.file", signatureFiles[i]));
+                throw new CommandLineParserException(i18n.getString("Merge.could.not.resolve.file", inFile));
             }
         }
 
         try {
-            FileOutputStream f = new FileOutputStream(resultedFile);
+            FileOutputStream f = new FileOutputStream(mo.getValue(Option.WRITE));
             f.close();
         } catch (IOException e) {
             throw new CommandLineParserException(i18n.getString("Merge.could.not.create.write.file"));
@@ -154,30 +140,17 @@ public class Merge extends SigTest {
     }
 
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
-        if (optionName.equalsIgnoreCase(FILES_OPTION)) {
-            StringTokenizer st = new StringTokenizer(args[0], File.pathSeparator);
-            ArrayList list = new ArrayList();
-            while (st.hasMoreElements()) {
-                list.add(st.nextToken());
-            }
-            signatureFiles = (String[]) list.toArray(new String[list.size()]);
-        } else if (optionName.equalsIgnoreCase(WRITE_OPTION)) {
-            resultedFile = args[0];
-        } else if (optionName.equalsIgnoreCase(BINARY_OPTION)) {
-            binary = true;
-        } else if (optionName.equalsIgnoreCase(TESTURL_OPTION)) {
-            testURL = args[0];
-        }
+        mo.readOptions(optionName, args);
     }
 
     void perform() {
 
         String msg;
-        MergedSigFile[] files = new MergedSigFile[signatureFiles.length];
+        MergedSigFile[] files = new MergedSigFile[mo.getValues(Option.FILES).size()];
         PrintWriter log = new PrintWriter(System.out);
         FeaturesHolder fh = new FeaturesHolder();
-        for (int i = 0; i < signatureFiles.length; i++) {
-            String sigFiles = signatureFiles[i];
+        for (int i = 0; i < mo.getValues(Option.FILES).size(); i++) {
+            String sigFiles = mo.getValues(Option.FILES).get(i);
             MultipleFileReader in = new MultipleFileReader(log, MultipleFileReader.CLASSPATH_MODE, getFileManager());
             if (!in.readSignatureFiles(testURL, sigFiles)) {
                 msg = i18n.getString("SignatureTest.error.sigfile.invalid", sigFiles);
@@ -210,8 +183,7 @@ public class Merge extends SigTest {
         }
 
         JSR68Merger merger = new JSR68Merger(this, this, fh);
-        VirtualClassDescriptionLoader result = merger.merge(files,
-                binary ? JSR68Merger.BINARY_MODE : JSR68Merger.SOURCE_MODE);
+        VirtualClassDescriptionLoader result = merger.merge(files);
 
         if (!isPassed()) {
             printErrors();
@@ -248,8 +220,8 @@ public class Merge extends SigTest {
             }
 
             writer.setApiVersion("");
-            if (resultedFile != null) {
-                fos = new FileOutputStream(resultedFile);
+            if (mo.getValue(Option.WRITE) != null) {
+                fos = new FileOutputStream(mo.getValue(Option.WRITE));
                 osw = new OutputStreamWriter(fos, "UTF8");
                 pw = new PrintWriter(osw);
             } else {
@@ -306,12 +278,12 @@ public class Merge extends SigTest {
         sb.append(nl).append(getComponentName() + " - " + i18n.getString("SignatureTest.usage.version", Version.Number));
         sb.append(nl).append(i18n.getString("Setup.usage.start"));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Merge.usage.files", FILES_OPTION));
-        sb.append(nl).append(i18n.getString("Merge.usage.write", WRITE_OPTION));
-        sb.append(nl).append(i18n.getString("Merge.usage.binary", BINARY_OPTION));
+        sb.append(nl).append(i18n.getString("Merge.usage.files", Option.FILES.getKey()));
+        sb.append(nl).append(i18n.getString("Merge.usage.write", Option.WRITE.getKey()));
+        sb.append(nl).append(i18n.getString("Merge.usage.binary", Option.BINARY.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", VERSION_OPTION));
-        sb.append(nl).append(i18n.getString("Setup.usage.help", HELP_OPTION));
+        sb.append(nl).append(i18n.getString("Setup.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.end"));
         System.err.println(sb.toString());

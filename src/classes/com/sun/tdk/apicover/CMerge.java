@@ -26,6 +26,7 @@ package com.sun.tdk.apicover;
 
 import com.sun.tdk.signaturetest.Merge;
 import com.sun.tdk.signaturetest.Version;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.util.CommandLineParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
@@ -107,12 +108,12 @@ public class CMerge {
         sb.append(nl).append(getComponentName()).append(" - ").append(i18n.getString("Merge.usage.version", Version.Number));
         sb.append(nl).append(i18n.getString("Merge.usage.start"));
         sb.append(nl).append(i18n.getString("Merge.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Merge.usage.files", Merge.FILES_OPTION));
-        sb.append(nl).append(i18n.getString("Merge.usage.write", Merge.WRITE_OPTION));
+        sb.append(nl).append(i18n.getString("Merge.usage.files", Option.FILES.getKey()));
+        sb.append(nl).append(i18n.getString("Merge.usage.write", Option.WRITE.getKey()));
         sb.append(nl).append(i18n.getString("Merge.usage.strict", STRICT_OPTION));
         sb.append(nl).append(i18n.getString("Merge.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Merge.helpusage.version", Merge.VERSION_OPTION));
-        sb.append(nl).append(i18n.getString("Merge.usage.help", Merge.HELP_OPTION));
+        sb.append(nl).append(i18n.getString("Merge.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18n.getString("Merge.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Merge.usage.end"));
         System.err.println(sb.toString());
@@ -135,8 +136,8 @@ public class CMerge {
 
         final String optionsDecoder = "decodeOptions";
 
-        parser.addOption(Merge.FILES_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
-        parser.addOption(Merge.WRITE_OPTION, OptionInfo.option(1), optionsDecoder);
+        parser.addOption(Option.FILES.getKey(), OptionInfo.requiredOption(1), optionsDecoder);
+        parser.addOption(Option.WRITE.getKey(), OptionInfo.option(1), optionsDecoder);
         parser.addOption(STRICT_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(Merge.HELP_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(Merge.VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -181,14 +182,14 @@ public class CMerge {
     }
 
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
-        if (optionName.equalsIgnoreCase(Merge.FILES_OPTION)) {
+        if (optionName.equalsIgnoreCase(Option.FILES.getKey())) {
             StringTokenizer st = new StringTokenizer(args[0], File.pathSeparator);
             ArrayList list = new ArrayList();
             while (st.hasMoreElements()) {
                 list.add(st.nextToken());
             }
             iFiles = (String[]) list.toArray(new String[list.size()]);
-        } else if (optionName.equalsIgnoreCase(Merge.WRITE_OPTION)) {
+        } else if (optionName.equalsIgnoreCase(Option.WRITE.getKey())) {
             oFile = args[0];
         } else if (optionName.equalsIgnoreCase(STRICT_OPTION)) {
             strict = true;
