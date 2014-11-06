@@ -33,7 +33,7 @@ public enum Option {
     DEBUG("-Debug", Kind.NONE),
     HELP("-Help", "-?", Kind.NONE),
     PACKAGE("-Package", Kind.MANY_OPT),
-    FILES("-Files", Kind.SINGLE_REQ), // merge's
+    FILES("-Files", Kind.REQ_LIST), // merge's
     WRITE("-Write", Kind.SINGLE_OPT), // merge's
     BINARY("-Binary", Kind.NONE),  // merge's
     TESTURL("-TestURL", Kind.SINGLE_OPT),
@@ -81,7 +81,7 @@ public enum Option {
 
 
     public enum Kind {
-        NONE, SINGLE_OPT, SINGLE_REQ, MANY_OPT;
+        NONE, SINGLE_OPT, SINGLE_REQ, MANY_OPT, REQ_LIST;
     }
 
 }

@@ -232,6 +232,7 @@ public class CommandLineParser {
                     addOption(o.getKey(), OptionInfo.option(1), optionsDecoder);
                     break;
                 case SINGLE_REQ:
+                case REQ_LIST:
                     addOption(o.getKey(), OptionInfo.requiredOption(1), optionsDecoder);
                     break;
                 case MANY_OPT:

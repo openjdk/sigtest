@@ -24,6 +24,12 @@ public abstract class Options {
                         assert !args[0].isEmpty();
                         values.put(option, Arrays.asList(args[0]));
                         break;
+                    case REQ_LIST:
+                        assert args != null;
+                        assert args.length > 0;
+                        assert !args[0].isEmpty();
+                        values.put(option, Arrays.asList(CommandLineParser.parseListOption(args)));
+                        break;
                     case MANY_OPT:
                         assert args != null;
                         assert args.length > 0;
@@ -31,6 +37,7 @@ public abstract class Options {
                             values.put(option, new ArrayList<String>());
                         }
                         values.get(option).addAll(Arrays.asList(CommandLineParser.parseListOption(args)));
+                        break;
                 }
                 return true;
             }

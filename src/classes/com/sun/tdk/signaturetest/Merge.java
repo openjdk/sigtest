@@ -46,7 +46,6 @@ public class Merge extends SigTest {
 
     // Command line options
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Merge.class);
-
     private MergeOptions mo = (MergeOptions) AppContext.getContext().getBean(MergeOptions.class);
 
 
