@@ -128,18 +128,16 @@ public class CMerge {
         CommandLineParser parser = new CommandLineParser(this, "-");
 
         // Print help text only and exit.
-        if (args == null || args.length == 0
-                || (args.length == 1 && (parser.isOptionSpecified(args[0], com.sun.tdk.signaturetest.Merge.HELP_OPTION)
-                || parser.isOptionSpecified(args[0], Merge.QUESTIONMARK)))) {
+        if (args == null || args.length == 0 || Option.HELP.accept(args[0])) {
             return false;
         }
 
         final String optionsDecoder = "decodeOptions";
 
-        parser.addOption(Option.FILES.getKey(), OptionInfo.requiredOption(1), optionsDecoder);
-        parser.addOption(Option.WRITE.getKey(), OptionInfo.option(1), optionsDecoder);
+        parser.addOption(Option.FILES, optionsDecoder);
+        parser.addOption(Option.WRITE, optionsDecoder);
         parser.addOption(STRICT_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(Merge.HELP_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
+        parser.addOption(Option.HELP, optionsDecoder);
         parser.addOption(Merge.VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
         try {

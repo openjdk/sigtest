@@ -25,6 +25,7 @@
 package com.sun.tdk.signaturetest.ant;
 
 import com.sun.tdk.signaturetest.SigTest;
+import com.sun.tdk.signaturetest.core.context.Option;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.DataType;
 import org.apache.tools.ant.types.Path;
@@ -49,7 +50,7 @@ public class ABase extends ASuperBase {
     void createBaseParameters(ArrayList params) {
         params.add(SigTest.FILENAME_OPTION);
         params.add(fileName);
-        params.add(SigTest.CLASSPATH_OPTION);
+        params.add(Option.CLASSPATH.getKey());
         String[] cp = classpath.list();
         StringBuffer cpb = new StringBuffer();
         for (int i = 0; i < cp.length; i++) {
@@ -65,13 +66,13 @@ public class ABase extends ASuperBase {
         }
         Iterator it = pac.iterator();
         while (it.hasNext()) {
-            params.add(SigTest.PACKAGE_OPTION);
+            params.add(Option.PACKAGE.getKey());
             APackage ap = (APackage) it.next();
             params.add(ap.value);
         }
         it = exclude.iterator();
         while (it.hasNext()) {
-            params.add(SigTest.EXCLUDE_OPTION);
+            params.add(Option.EXCLUDE.getKey());
             AExclude ae = (AExclude) it.next();
             params.add(ae.value);
         }

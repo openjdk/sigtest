@@ -53,7 +53,7 @@ public class PackageGroup {
      *
      * @see #isSubpackagesUses
      */
-    private List group;
+    private List<String> group;
 
     /**
      * Create empty list of packages, and decide if subpackages should be
@@ -61,7 +61,7 @@ public class PackageGroup {
      */
     public PackageGroup(boolean isSubpackagesUses) {
         this.isSubpackagesUses = isSubpackagesUses;
-        group = new ArrayList();
+        group = new ArrayList<String>();
     }
 
     public boolean isEmpty() {
@@ -92,8 +92,7 @@ public class PackageGroup {
      * belongs to some subpackage of some of the packages listed here.
      */
     public boolean checkName(String className) {
-        for (Iterator i = group.iterator(); i.hasNext();) {
-            String pack = (String) i.next();
+        for (String pack : group) {
             if ((className.startsWith(getPackageName(pack))
                     && ((className.lastIndexOf('.') <= pack.length()) || isSubpackagesUses)) || className.equals(pack)) {
                 return true;
@@ -108,5 +107,11 @@ public class PackageGroup {
      */
     private static String getPackageName(String name) {
         return name + ((name.endsWith(".") || name.equals("")) ? "" : ".");
+    }
+
+    public void addPackages(List<String> packs) {
+        if (packs != null) {
+            group.addAll(packs);
+        }
     }
 }

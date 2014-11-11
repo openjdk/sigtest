@@ -261,17 +261,10 @@ public class SignatureTest extends SigTest {
         }
 
         //ref ignored
-        if (parseParameters(args)) {
+        if (parseParameters(args) && afterParseParams()) {
             check();
             if (logFile) {
                 getLog().println(toString());
-            }
-        } else {
-            if (args.length > 0 && args[0].equalsIgnoreCase(VERSION_OPTION)) {
-                // this will be printed by super.decodeCommonOptions()
-                //System.err.println(Version.getVersionInfo());
-            } else {
-                usage();
             }
         }
         if (classpath != null) {
@@ -311,33 +304,18 @@ public class SignatureTest extends SigTest {
 
         CommandLineParser parser = new CommandLineParser(this, "-");
 
-        // Print help text only and exit.
-        if (args == null || args.length == 0 || (args.length == 1
-                && (parser.isOptionSpecified(args[0], HELP_OPTION) || parser.isOptionSpecified(args[0], QUESTIONMARK)))) {
-            return false;
-        }
-
         args = exclude.parseParameters(args);
 
         final String optionsDecoder = "decodeOptions";
 
-        parser.addOption(PACKAGE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-
         // required only in static mode!
-        parser.addOption(CLASSPATH_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(FILENAME_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(FILES_OPTION, OptionInfo.option(1), optionsDecoder);
 
         parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
 
-        parser.addOption(WITHOUTSUBPACKAGES_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(EXCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
-
-        parser.addOption(API_INCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(API_EXCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
 
         parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
@@ -359,8 +337,6 @@ public class SignatureTest extends SigTest {
 
         parser.addOption(VERBOSE_OPTION, OptionInfo.optionVariableParams(0, 1), optionsDecoder);
 
-        parser.addOption(HELP_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(QUESTIONMARK, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
         parser.addOption(PLUGIN_OPTION, OptionInfo.option(1), optionsDecoder);
@@ -383,6 +359,14 @@ public class SignatureTest extends SigTest {
             return failed(e.getMessage());
         }
 
+        packages.addPackages(bo.getValues(Option.PACKAGE));
+        purePackages.addPackages(bo.getValues(Option.PURE_PACKAGE));
+        excludedPackages.addPackages(bo.getValues(Option.EXCLUDE));
+        apiIncl.addPackages(bo.getValues(Option.API_INCLUDE));
+        apiExcl.addPackages(bo.getValues(Option.API_EXCLUDE));
+
+
+
         if (packages.isEmpty() && purePackages.isEmpty() && apiIncl.isEmpty()) {
             packages.addPackage("");
         }
@@ -394,8 +378,8 @@ public class SignatureTest extends SigTest {
         }
         // ==================
 
-        if (parser.isOptionSpecified(STATIC_OPTION) && !parser.isOptionSpecified(CLASSPATH_OPTION)) {
-            return error(i18nSt.getString("SignatureTest.error.static.missing_option", CLASSPATH_OPTION));
+        if (parser.isOptionSpecified(STATIC_OPTION) && !parser.isOptionSpecified(Option.CLASSPATH.getKey())) {
+            return error(i18nSt.getString("SignatureTest.error.static.missing_option", Option.CLASSPATH.getKey()));
         }
 
         if (!parser.isOptionSpecified(FILENAME_OPTION) && !parser.isOptionSpecified(FILES_OPTION)) {
@@ -432,7 +416,7 @@ public class SignatureTest extends SigTest {
 
         // create ClasspathImpl for founding of the added classes
         try {
-            classpath = new ClasspathImpl(classpathStr);
+            classpath = new ClasspathImpl(bo.getValue(Option.CLASSPATH));
         } catch (SecurityException e) {
             if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
@@ -510,17 +494,17 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.static", STATIC_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.mode", MODE_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.backward", new Object[]{BACKWARD_OPTION, BACKWARD_ALT_OPTION}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classpath", CLASSPATH_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classpath", Option.CLASSPATH.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.filename", FILENAME_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.or"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.files", new Object[]{FILES_OPTION, java.io.File.pathSeparator}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.package", PACKAGE_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.package", Option.PACKAGE.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.human", new Object[]{FORMATHUMAN_OPTION, FORMATHUMAN_ALT_OPTION}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.out", OUT_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.testurl", TESTURL_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.packagewithoutsubpackages", WITHOUTSUBPACKAGES_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.exclude", EXCLUDE_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE.getKey()));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.exclude", Option.EXCLUDE.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.nomerge", NOMERGE_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.update", UPDATE_FILE_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.apiversion", APIVERSION_OPTION));
@@ -534,7 +518,7 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.error_all", ERRORALL_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.helpusage.version", VERSION_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.help", HELP_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.help", Option.HELP));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.end"));
 

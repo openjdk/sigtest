@@ -171,24 +171,15 @@ public class Setup extends SigTest {
 
         // Print help text only and exit.
         if (args == null || args.length == 0
-                || (args.length == 1 && (parser.isOptionSpecified(args[0], HELP_OPTION)
-                || parser.isOptionSpecified(args[0], QUESTIONMARK)
-                || parser.isOptionSpecified(args[0], VERSION_OPTION)))) {
+                || (args.length == 1 && (parser.isOptionSpecified(args[0], VERSION_OPTION)))) {
             return false;
         }
 
         final String optionsDecoder = "decodeOptions";
 
-        parser.addOption(PACKAGE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(CLASSPATH_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
         parser.addOption(FILENAME_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
-
         parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
-
-        parser.addOption(WITHOUTSUBPACKAGES_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(EXCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -206,8 +197,6 @@ public class Setup extends SigTest {
 
         parser.addOption(ALLPUBLIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
-        parser.addOption(HELP_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(QUESTIONMARK, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
         parser.addOption(PLUGIN_OPTION, OptionInfo.option(1), optionsDecoder);
@@ -216,13 +205,11 @@ public class Setup extends SigTest {
 
         parser.addOption(COPYRIGHT_OPTION, OptionInfo.option(1), optionsDecoder);
 
-        parser.addOption(API_INCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(API_EXCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-
         parser.addOptions(bo.getOptions(), optionsDecoder);
 
         try {
             parser.processArgs(args);
+            afterParseParams();
         } catch (CommandLineParserException e) {
             getLog().println(e.getMessage());
             return failed(e.getMessage());
@@ -238,6 +225,12 @@ public class Setup extends SigTest {
         if (parser.isOptionSpecified(NONCLOSEDFILE_OPTION) && parser.isOptionSpecified(CLOSEDFILE_OPTION)) {
             return error(i18n.getString("Setup.error.mode.contradict", new Object[]{NONCLOSEDFILE_OPTION, CLOSEDFILE_OPTION}));
         }
+
+        packages.addPackages(bo.getValues(Option.PACKAGE));
+        purePackages.addPackages(bo.getValues(Option.PURE_PACKAGE));
+        excludedPackages.addPackages(bo.getValues(Option.EXCLUDE));
+        apiIncl.addPackages(bo.getValues(Option.API_INCLUDE));
+        apiExcl.addPackages(bo.getValues(Option.API_EXCLUDE));
 
         // create arguments
         if (packages.isEmpty() && purePackages.isEmpty() && apiIncl.isEmpty()) {
@@ -264,8 +257,8 @@ public class Setup extends SigTest {
             return error(i18n.getString("Setup.error.url.invalid"));
         }
 
-        if (classpathStr == null) {
-            return error(i18n.getString("Setup.error.arg.unspecified", CLASSPATH_OPTION));
+        if (bo.getValue(Option.CLASSPATH) == null) {
+            return error(i18n.getString("Setup.error.arg.unspecified", Option.CLASSPATH.getKey()));
         }
 
         return passed();
@@ -316,14 +309,14 @@ public class Setup extends SigTest {
         sb.append(getComponentName() + " - " + i18n.getString("Setup.usage.version", Version.Number));
         sb.append(nl).append(i18n.getString("Setup.usage.start"));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.usage.classpath", CLASSPATH_OPTION));
-        sb.append(nl).append(i18n.getString("Setup.usage.package", PACKAGE_OPTION));
+        sb.append(nl).append(i18n.getString("Setup.usage.classpath", Option.CLASSPATH.getKey()));
+        sb.append(nl).append(i18n.getString("Setup.usage.package", Option.PACKAGE.getKey()));
         sb.append(nl).append(i18n.getString("Setup.usage.filename", FILENAME_OPTION));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
 
         sb.append(nl).append(i18n.getString("Setup.usage.testurl", TESTURL_OPTION));
-        sb.append(nl).append(i18n.getString("Setup.usage.packagewithoutsubpackages", WITHOUTSUBPACKAGES_OPTION));
-        sb.append(nl).append(i18n.getString("Setup.usage.exclude", EXCLUDE_OPTION));
+        sb.append(nl).append(i18n.getString("Setup.usage.packagewithoutsubpackages", Option.PURE_PACKAGE.getKey()));
+        sb.append(nl).append(i18n.getString("Setup.usage.exclude", Option.EXCLUDE.getKey()));
         // sb.append(nl).append(i18n.getString("Setup.usage.static", STATIC_OPTION));
         // sb.append(nl).append(i18n.getString("Setup.usage.closedfile", Setup.CLOSEDFILE_OPTION));
         sb.append(nl).append(i18n.getString("Setup.usage.nonclosedfile", NONCLOSEDFILE_OPTION));
@@ -333,7 +326,7 @@ public class Setup extends SigTest {
         sb.append(nl).append(i18n.getString("Setup.usage.debug", Option.DEBUG));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.helpusage.version", VERSION_OPTION));
-        sb.append(nl).append(i18n.getString("Setup.usage.help", HELP_OPTION));
+        sb.append(nl).append(i18n.getString("Setup.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.end"));
         System.err.println(sb.toString());
@@ -360,10 +353,10 @@ public class Setup extends SigTest {
         // create list of all classes available
         HashSet allClasses = new HashSet();
 
-        getLog().println(i18n.getString("Setup.log.classpath", classpathStr));
+        getLog().println(i18n.getString("Setup.log.classpath", bo.getValue(Option.CLASSPATH)));
 
         try {
-            classpath = new ClasspathImpl(classpathStr);
+            classpath = new ClasspathImpl(bo.getValue(Option.CLASSPATH));
         } catch (SecurityException e) {
             if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);

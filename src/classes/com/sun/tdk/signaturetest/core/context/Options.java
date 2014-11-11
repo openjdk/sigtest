@@ -65,7 +65,12 @@ public abstract class Options {
      */
     public String getValue(Option option) {
         assert option != null;
-        return getValues(option).get(0);
+        List<String> vals = getValues(option);
+        if (vals == null) {
+            return null;
+        } else {
+            return vals.get(0);
+        }
     }
 
     /* Returns a list of values for MANY_OPT option

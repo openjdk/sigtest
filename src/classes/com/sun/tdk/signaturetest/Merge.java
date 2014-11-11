@@ -91,7 +91,7 @@ public class Merge extends SigTest {
         initErrors();
 
         // Print help text only and exit.
-        if (args == null || args.length == 0 || (args.length == 1 && Option.HELP.accept(args[0]))) {
+        if (args == null || args.length == 0 || Option.HELP.accept(args[0])) {
             return false;
         }
 

@@ -74,19 +74,12 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
     // Command line options
     public static final String ALLPUBLIC_OPTION = "-AllPublic";
-    public static final String CLASSPATH_OPTION = "-Classpath";
-    public static final String PACKAGE_OPTION = "-Package";
-    public static final String WITHOUTSUBPACKAGES_OPTION = "-PackageWithoutSubpackages";
-    public static final String EXCLUDE_OPTION = "-Exclude";
-
-    public static final String API_INCLUDE = "-ApiInclude";
-    public static final String API_EXCLUDE = "-ApiExclude";
 
     public static final String STATIC_OPTION = "-Static";
     public static final String APIVERSION_OPTION = "-ApiVersion";
     public static final String VERSION_OPTION = "-Version";
-    public static final String HELP_OPTION = "-Help";
-    public static final String QUESTIONMARK = "-?";
+    //public static final String HELP_OPTION = "-Help";
+    //public static final String QUESTIONMARK = "-?";
     public static final String CLASSCACHESIZE_OPTION = "-ClassCacheSize";
     public static final String VERBOSE_OPTION = "-Verbose";
     public static final String XVERBOSE_OPTION = "-Xverbose";
@@ -129,13 +122,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected PackageGroup apiIncl = new PackageGroup(true);
     protected PackageGroup apiExcl = new PackageGroup(true);
 
-    /**
-     * List of directories and/or zip-files containing the packages to be
-     * checked.
-     *
-     * @see java.io.File#pathSeparator
-     */
-    protected String classpathStr = null;
     /**
      * Collector for error messages, or <code>null</code> if log is not
      * required.
@@ -234,11 +220,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
         errorMessages.add(s);
     }
 
-    protected SigTest() {
-        bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
-        assert bo != null;
-    }
-
     public void storeWarning(String s, Logger utilLogger) {
         if (reportWarningAsError) {
             storeError(s, utilLogger);
@@ -291,18 +272,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             testURL = args[0];
         } else if (optionName.equalsIgnoreCase(FILENAME_OPTION)) {
             sigFileName = args[0];
-        } else if (optionName.equalsIgnoreCase(PACKAGE_OPTION)) {
-            packages.addPackages(CommandLineParser.parseListOption(args));
-        } else if (optionName.equalsIgnoreCase(WITHOUTSUBPACKAGES_OPTION)) {
-            purePackages.addPackages(CommandLineParser.parseListOption(args));
-        } else if (optionName.equalsIgnoreCase(EXCLUDE_OPTION)) {
-            excludedPackages.addPackages(CommandLineParser.parseListOption(args));
-        } else if (optionName.equalsIgnoreCase(API_INCLUDE)) {
-            apiIncl.addPackages(CommandLineParser.parseListOption(args));
-        } else if (optionName.equalsIgnoreCase(API_EXCLUDE)) {
-            apiExcl.addPackages(CommandLineParser.parseListOption(args));
-        } else if (optionName.equalsIgnoreCase(CLASSPATH_OPTION)) {
-            classpathStr = args[0];
         } else if (optionName.equalsIgnoreCase(APIVERSION_OPTION)) {
             apiVersion = args[0];
         } else if (optionName.equalsIgnoreCase(STATIC_OPTION)) {
@@ -347,11 +316,17 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
                 throw new CommandLineParserException(i18n.getString("SigTest.error.cant_load.plugin", args[0]));
             }
 
-        } else if (optionName.equalsIgnoreCase(HELP_OPTION) || optionName.equalsIgnoreCase(QUESTIONMARK)) {
-            usage();
         } else if (optionName.equalsIgnoreCase(VERSION_OPTION)) {
             System.err.println(Version.getVersionInfo());
         }
+    }
+
+    protected boolean afterParseParams() {
+        if (bo.isSet(Option.HELP)) {
+            usage();
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -578,8 +553,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     protected AnnotationItem[] unpackContainerAnnotations(AnnotationItem[] annotations, ClassHierarchy ch) {
-        ArrayList /*<AnnotationItem>*/ unpackedAnnotations = new ArrayList();
-        ArrayList /*<AnnotationItem>*/ toRemove = new ArrayList();
+        ArrayList<AnnotationItem> unpackedAnnotations = new ArrayList();
+        ArrayList<AnnotationItem> toRemove = new ArrayList();
         AnnotationParser ap = new AnnotationParser();
         for (int i = 0; i < annotations.length; ++i) {
             try {
@@ -600,7 +575,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             }
         }
         unpackedAnnotations.removeAll(toRemove);
-        return (AnnotationItem[]) unpackedAnnotations.toArray(new AnnotationItem[]{});
+        return unpackedAnnotations.toArray(new AnnotationItem[]{});
     }
 
     protected AnnotationItem[] normalizeArrayParaemeters(AnnotationItem[] annotations, Set exclusions, ClassHierarchy ch) {

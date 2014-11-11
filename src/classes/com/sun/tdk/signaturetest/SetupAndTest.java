@@ -24,6 +24,9 @@
  */
 package com.sun.tdk.signaturetest;
 
+import com.sun.tdk.signaturetest.core.AppContext;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.util.CommandLineParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.OptionInfo;
@@ -50,6 +53,8 @@ public class SetupAndTest extends Result {
     private final List setupOptions = new ArrayList();
     private final List testOptions = new ArrayList();
 
+    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
+
     public static void main(String[] args) {
 
         SetupAndTest t = new SetupAndTest();
@@ -62,7 +67,7 @@ public class SetupAndTest extends Result {
         CommandLineParser parser = new CommandLineParser(this, "-");
 
         // Print help text only and exit.
-        if (args.length == 1 && (parser.isOptionSpecified(args[0], SigTest.HELP_OPTION) || parser.isOptionSpecified(args[0], (SigTest.QUESTIONMARK)))) {
+        if (Option.HELP.accept(args[0])) {
             usage();
             return true;
         }
@@ -76,11 +81,8 @@ public class SetupAndTest extends Result {
         parser.addOption(REFERENCE_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
         parser.addOption(TEST_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
 
-        parser.addOption(SigTest.PACKAGE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(SigTest.FILENAME_OPTION, OptionInfo.option(1), optionsDecoder);
 
-        parser.addOption(SigTest.WITHOUTSUBPACKAGES_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(SigTest.EXCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(SigTest.APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(SigTest.OUT_OPTION, OptionInfo.option(1), optionsDecoder);
 
@@ -100,12 +102,10 @@ public class SetupAndTest extends Result {
 
         parser.addOption(SigTest.VERBOSE_OPTION, OptionInfo.optionVariableParams(0, 1), optionsDecoder);
 
-        parser.addOption(SigTest.HELP_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(SigTest.QUESTIONMARK, OptionInfo.optionalFlag(), optionsDecoder);
+        parser.addOption(Option.HELP, optionsDecoder);
         parser.addOption(SigTest.VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
-        parser.addOption(SigTest.API_INCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(SigTest.API_EXCLUDE, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+        parser.addOptions(bo.getOptions(), optionsDecoder);
 
         try {
             parser.processArgs(args);
@@ -171,20 +171,23 @@ public class SetupAndTest extends Result {
 
     public void decodeOptions(String optionName, String[] args) {
 
-        if (optionName.equalsIgnoreCase(SigTest.HELP_OPTION) || optionName.equals(SigTest.QUESTIONMARK)) {
+        if (bo.readOptions(optionName, args)) return;
+
+
+        if (Option.HELP.accept(optionName)) {
             usage();
         } else if (optionName.equalsIgnoreCase(REFERENCE_OPTION)) {
-            addOption(setupOptions, SigTest.CLASSPATH_OPTION, args[0]);
+            addOption(setupOptions, Option.CLASSPATH.getKey(), args[0]);
         } else if (optionName.equalsIgnoreCase(TEST_OPTION)) {
-            addOption(testOptions, SigTest.CLASSPATH_OPTION, args[0]);
+            addOption(testOptions, Option.CLASSPATH.getKey(), args[0]);
         } else if (optionName.equalsIgnoreCase(SigTest.FILENAME_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.PACKAGE_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.WITHOUTSUBPACKAGES_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.EXCLUDE_OPTION)
+                || optionName.equalsIgnoreCase(Option.PACKAGE.getKey())
+                || optionName.equalsIgnoreCase(Option.PURE_PACKAGE.getKey())
+                || optionName.equalsIgnoreCase(Option.EXCLUDE.getKey())
                 || optionName.equalsIgnoreCase(SigTest.APIVERSION_OPTION)
                 || optionName.equalsIgnoreCase(SigTest.CLASSCACHESIZE_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.API_INCLUDE)
-                || optionName.equalsIgnoreCase(SigTest.API_EXCLUDE)) {
+                || optionName.equalsIgnoreCase(Option.API_INCLUDE.getKey())
+                || optionName.equalsIgnoreCase(Option.API_EXCLUDE.getKey())) {
 
             addOption(setupOptions, optionName, args[0]);
             addOption(testOptions, optionName, args[0]);
@@ -227,7 +230,7 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.reference", REFERENCE_OPTION));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.test", TEST_OPTION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.package", SigTest.PACKAGE_OPTION));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.package", Option.PACKAGE.getKey()));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.out", SigTest.OUT_OPTION));
         sb.append(nl).append(i18n.getString("SignatureTest.usage.backward", new Object[]{SigTest.BACKWARD_OPTION, SigTest.BACKWARD_ALT_OPTION}));
         sb.append(nl).append(i18n.getString("SignatureTest.usage.human", new Object[]{SigTest.FORMATHUMAN_OPTION, SigTest.FORMATHUMAN_ALT_OPTION}));
@@ -235,8 +238,8 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
 
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.filename", Setup.FILENAME_OPTION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.packagewithoutsubpackages", SigTest.WITHOUTSUBPACKAGES_OPTION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.exclude", SigTest.EXCLUDE_OPTION));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE.getKey()));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.exclude", Option.EXCLUDE.getKey()));
 
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.verbose", new Object[]{Setup.VERBOSE_OPTION, Setup.NOWARN}));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.checkvalue", Setup.CHECKVALUE_OPTION));
@@ -246,7 +249,7 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.classcachesize", new Object[]{SigTest.CLASSCACHESIZE_OPTION, new Integer(SigTest.DefaultCacheSize)}));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", SigTest.VERSION_OPTION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.help", SigTest.HELP_OPTION));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
 
         System.err.println(sb.toString());

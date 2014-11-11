@@ -33,6 +33,13 @@ public enum Option {
     DEBUG("-Debug", Kind.NONE),
     HELP("-Help", "-?", Kind.NONE),
     PACKAGE("-Package", Kind.MANY_OPT),
+
+    PURE_PACKAGE("-PackageWithoutSubpackages", Kind.MANY_OPT),
+    EXCLUDE("-Exclude", Kind.MANY_OPT),
+    API_INCLUDE("-ApiInclude", Kind.MANY_OPT),
+    API_EXCLUDE("-ApiExclude", Kind.MANY_OPT),
+    CLASSPATH("-Classpath", Kind.SINGLE_OPT),
+
     FILES("-Files", Kind.REQ_LIST), // merge's
     WRITE("-Write", Kind.SINGLE_OPT), // merge's
     BINARY("-Binary", Kind.NONE),  // merge's

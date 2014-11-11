@@ -224,21 +224,25 @@ public class CommandLineParser {
 
     public void addOptions(EnumSet<Option> options, String optionsDecoder) {
         for (Option o : options) {
-            switch (o.getKind()) {
-                case NONE:
-                    addOption(o.getKey(), OptionInfo.optionalFlag(), optionsDecoder);
-                    break;
-                case SINGLE_OPT:
-                    addOption(o.getKey(), OptionInfo.option(1), optionsDecoder);
-                    break;
-                case SINGLE_REQ:
-                case REQ_LIST:
-                    addOption(o.getKey(), OptionInfo.requiredOption(1), optionsDecoder);
-                    break;
-                case MANY_OPT:
-                    addOption(o.getKey(), OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-                    break;
-            }
+            addOption(o, optionsDecoder);
+        }
+    }
+
+    public void addOption(Option o, String optionsDecoder) {
+        switch (o.getKind()) {
+            case NONE:
+                addOption(o.getKey(), OptionInfo.optionalFlag(), optionsDecoder);
+                break;
+            case SINGLE_OPT:
+                addOption(o.getKey(), OptionInfo.option(1), optionsDecoder);
+                break;
+            case SINGLE_REQ:
+            case REQ_LIST:
+                addOption(o.getKey(), OptionInfo.requiredOption(1), optionsDecoder);
+                break;
+            case MANY_OPT:
+                addOption(o.getKey(), OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+                break;
         }
     }
 

@@ -29,6 +29,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import com.sun.tdk.signaturetest.core.context.Option;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
@@ -71,7 +73,7 @@ public abstract class MBase extends MSuperBase {
         params.add(SigTest.FILENAME_OPTION);
         params.add(fileName);
 
-        params.add(SigTest.CLASSPATH_OPTION);
+        params.add( Option.CLASSPATH.getKey());
         if (pathElements != null) {
             StringBuffer cpb = new StringBuffer();
             for (int i = 0; i < pathElements.size(); i++) {
@@ -92,7 +94,7 @@ public abstract class MBase extends MSuperBase {
         if (packages != null) {
             it = packages.iterator();
             while (it.hasNext()) {
-                params.add(SigTest.PACKAGE_OPTION);
+                params.add(Option.PACKAGE.getKey());
                 params.add(it.next());
             }
         }
@@ -100,7 +102,7 @@ public abstract class MBase extends MSuperBase {
         if (excludes != null) {
             it = excludes.iterator();
             while (it.hasNext()) {
-                params.add(SigTest.EXCLUDE_OPTION);
+                params.add(Option.EXCLUDE.getKey());
                 params.add(it.next());
             }
         }
