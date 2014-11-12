@@ -53,8 +53,6 @@ public class SetupAndTest extends Result {
     private final List setupOptions = new ArrayList();
     private final List testOptions = new ArrayList();
 
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
-
     public static void main(String[] args) {
 
         SetupAndTest t = new SetupAndTest();
@@ -65,6 +63,7 @@ public class SetupAndTest extends Result {
     public boolean run(String[] args, PrintWriter log, PrintWriter ref) {
 
         CommandLineParser parser = new CommandLineParser(this, "-");
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
         // Print help text only and exit.
         if (Option.HELP.accept(args[0])) {
@@ -171,6 +170,7 @@ public class SetupAndTest extends Result {
 
     public void decodeOptions(String optionName, String[] args) {
 
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         if (bo.readOptions(optionName, args)) return;
 
 

@@ -60,7 +60,7 @@ public class Erasurator {
     private Map localParameters = new HashMap();
     private HashSet unresolvedWarnings = new HashSet();
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Erasurator.class);
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
+    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     public ClassDescription erasure(ClassDescription clz) {
 

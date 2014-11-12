@@ -224,8 +224,6 @@ public class SignatureTest extends SigTest {
     private int readMode = MultipleFileReader.MERGE_MODE;
     protected PackageGroup secure = new PackageGroup(true);
 
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
-
     /**
      * Run the test using command-line; return status via numeric exit code.
      *
@@ -260,7 +258,6 @@ public class SignatureTest extends SigTest {
             exclude = new DefaultExcludeList();
         }
 
-        //ref ignored
         if (parseParameters(args) && afterParseParams()) {
             check();
             if (logFile) {
@@ -285,9 +282,7 @@ public class SignatureTest extends SigTest {
      * supported by the format
      */
     private void correctConstants(final ClassDescription currentClass) {
-        FieldDescr[] fields = currentClass.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            FieldDescr fd = fields[i];
+        for (FieldDescr fd : currentClass.getDeclaredFields()) {
             if (!fd.isStatic()) {
                 fd.setConstantValue(null);
             }
@@ -303,6 +298,7 @@ public class SignatureTest extends SigTest {
     private boolean parseParameters(String[] args) {
 
         CommandLineParser parser = new CommandLineParser(this, "-");
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
         args = exclude.parseParameters(args);
 
@@ -364,8 +360,6 @@ public class SignatureTest extends SigTest {
         excludedPackages.addPackages(bo.getValues(Option.EXCLUDE));
         apiIncl.addPackages(bo.getValues(Option.API_INCLUDE));
         apiExcl.addPackages(bo.getValues(Option.API_EXCLUDE));
-
-
 
         if (packages.isEmpty() && purePackages.isEmpty() && apiIncl.isEmpty()) {
             packages.addPackage("");
@@ -547,6 +541,8 @@ public class SignatureTest extends SigTest {
      * @see #parseParameters(String[])
      */
     private boolean check() {
+
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
         if (pluginClass != null) {
             pluginClass.init(this);
@@ -824,6 +820,7 @@ public class SignatureTest extends SigTest {
                 checkAddedClass(name);
             }
         } catch (SecurityException ex) {
+            BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
             if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(ex);
             }
@@ -834,6 +831,7 @@ public class SignatureTest extends SigTest {
 
     private void checkAddedClass(String name) {
         if (!trackedClassNames.contains(name) && isPackageMember(name)) {
+            BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
             try {
                 ClassDescription c = testableHierarchy.load(name);
                 if (c.isPackageInfo()) {
@@ -934,6 +932,7 @@ public class SignatureTest extends SigTest {
         // checks that package from tested API
 
         String name = required.getQualifiedName();
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
         if (!isPackageMember(name)) {
             return passed();

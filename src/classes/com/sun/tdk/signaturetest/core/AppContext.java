@@ -25,6 +25,7 @@
 
 package com.sun.tdk.signaturetest.core;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,7 +52,7 @@ public abstract class AppContext {
 
     public abstract String getString(String id);
 
-    public abstract Object getBean(Class clz);
+    public abstract <T> T getBean(Class<T> clz);
 
     public abstract void setString(String id, String value);
 
@@ -80,21 +81,21 @@ public abstract class AppContext {
         }
 
         @Override
-        public synchronized Object getBean(Class clz) {
+        public synchronized <T> T getBean(Class<T> clz) {
             if (!beans.containsKey(clz)) {
-                Object o = null;
+                Object beanObj = null;
                 try {
-                    o = clz.newInstance();
+                    beanObj = clz.newInstance();
                 } catch (InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
-                beans.put(clz, o);
+                beans.put(clz, beanObj);
             }
-            return beans.get(clz);
+            return (T) beans.get(clz);
         }
 
-        @java.lang.Override
-        public AppContext clean() {
+        @Override
+        public synchronized AppContext clean() {
             strings.clear();
             beans.clear();
             return this;

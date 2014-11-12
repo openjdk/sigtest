@@ -44,7 +44,6 @@ import java.util.LinkedHashSet;
 class DirectoryEntry extends ClasspathEntry {
 
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(DirectoryEntry.class);
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
 
     /**
      * The qualified name of <code>this</code> directory.
@@ -104,6 +103,7 @@ class DirectoryEntry extends ClasspathEntry {
         } while (pos != -1);
 
         // -----------------------------------------------------------------
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         try {
             String[] files = directory.list();
             if (files == null) {

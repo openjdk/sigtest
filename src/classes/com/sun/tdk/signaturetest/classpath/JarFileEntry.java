@@ -46,7 +46,7 @@ class JarFileEntry extends ClasspathEntry {
      * Specified jar file. *
      */
     private JarFile jarfile;
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
+    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     public JarFileEntry(ClasspathEntry previous, String jarfile) throws IOException {
         super(previous);

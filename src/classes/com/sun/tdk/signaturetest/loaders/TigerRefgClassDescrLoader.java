@@ -54,7 +54,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
     private static final String object = "java.lang.Object";
     public static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(TigerRefgClassDescrLoader.class);
     private ClassLoader ldr;
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
+    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     public TigerRefgClassDescrLoader() {
         this(null);

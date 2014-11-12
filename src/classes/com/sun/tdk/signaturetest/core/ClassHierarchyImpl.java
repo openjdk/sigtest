@@ -58,8 +58,6 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     private int trackMode;
     private Filter defaultFilter = new DefaultIsAccessibleFilter();
 
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
-
     public ClassHierarchyImpl(ClassDescriptionLoader loader, int trackMode) {
         this.loader = loader;
         this.trackMode = trackMode;
@@ -447,6 +445,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         return trackMode;
     }
     private HashMap processedClasses = new HashMap();
+    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     class DefaultIsAccessibleFilter implements Filter {
 

@@ -51,7 +51,7 @@ import java.util.logging.Logger;
 public class JSR68Merger extends FeaturesHolder {
 
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(JSR68Merger.class);
-    private MergeOptions mo = (MergeOptions) AppContext.getContext().getBean(MergeOptions.class);
+    private MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
 
     private Log log;
     private Result result;

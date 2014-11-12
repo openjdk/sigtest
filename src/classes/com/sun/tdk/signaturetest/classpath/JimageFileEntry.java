@@ -46,7 +46,7 @@ public class JimageFileEntry extends DirectoryEntry {
 
     public JimageFileEntry(ClasspathEntry previous, String name) throws IOException {
         super(previous);
-        bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
+        bo = AppContext.getContext().getBean(BaseOptions.class);
         assert bo != null;
         init(name);
     }

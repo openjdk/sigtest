@@ -8,7 +8,11 @@ import java.util.*;
  * @author Mikhail Ershov
  */
 public abstract class Options {
-    private Map<Option, List<String>> values = new HashMap<>();
+    private Map<Option, List<String>> values;
+
+    protected Options() {
+        values = new HashMap<>();
+    }
 
     public boolean readOptions(String optionName, String[] args) {
         for (Option option : getOptions()) {

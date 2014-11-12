@@ -123,8 +123,6 @@ public class Setup extends SigTest {
     private boolean keepSigFile = false;
     private String copyrightStr = null;
 
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
-
     /**
      * runs test in from command line.
      */
@@ -168,6 +166,8 @@ public class Setup extends SigTest {
     protected boolean parseParameters(String[] args) {
 
         CommandLineParser parser = new CommandLineParser(this, "-");
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+
 
         // Print help text only and exit.
         if (args == null || args.length == 0
@@ -352,7 +352,7 @@ public class Setup extends SigTest {
 
         // create list of all classes available
         HashSet allClasses = new HashSet();
-
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         getLog().println(i18n.getString("Setup.log.classpath", bo.getValue(Option.CLASSPATH)));
 
         try {
@@ -602,6 +602,7 @@ public class Setup extends SigTest {
      */
     private Collection getPackageClasses(Collection classes) {
         HashSet packageClasses = new HashSet();
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         int nonTigerCount = 0;
 
         // create table of the nested packageClasses.

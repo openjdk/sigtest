@@ -37,7 +37,6 @@ import com.sun.tdk.signaturetest.plugin.*;
 import com.sun.tdk.signaturetest.sigfile.AnnotationParser;
 import com.sun.tdk.signaturetest.sigfile.FileManager;
 import com.sun.tdk.signaturetest.sigfile.Format;
-import com.sun.tdk.signaturetest.util.CommandLineParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
@@ -78,8 +77,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static final String STATIC_OPTION = "-Static";
     public static final String APIVERSION_OPTION = "-ApiVersion";
     public static final String VERSION_OPTION = "-Version";
-    //public static final String HELP_OPTION = "-Help";
-    //public static final String QUESTIONMARK = "-?";
     public static final String CLASSCACHESIZE_OPTION = "-ClassCacheSize";
     public static final String VERBOSE_OPTION = "-Verbose";
     public static final String XVERBOSE_OPTION = "-Xverbose";
@@ -106,21 +103,12 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      * Either equals to <code>ALL_PUBLIC</code>, or not.
      */
     protected int trackMode;
-    /**
-     * List of names of packages to be checked along with subpackages.
-     */
-    protected PackageGroup packages = new PackageGroup(true);
-    /**
-     * List of names of packages to be checked excluding subpackages.
-     */
-    protected PackageGroup purePackages = new PackageGroup(false);
-    /**
-     * List of names of packages to be ignored along with subpackages.
-     */
-    protected PackageGroup excludedPackages = new PackageGroup(true);
 
-    protected PackageGroup apiIncl = new PackageGroup(true);
-    protected PackageGroup apiExcl = new PackageGroup(true);
+    protected PackageGroup packages;
+    protected PackageGroup purePackages;
+    protected PackageGroup excludedPackages;
+    protected PackageGroup apiIncl;
+    protected PackageGroup apiExcl;
 
     /**
      * Collector for error messages, or <code>null</code> if log is not
@@ -181,7 +169,13 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     private static boolean isJava8 = false;
     protected Plugin pluginClass = null;
 
-    private BaseOptions bo = (BaseOptions) AppContext.getContext().getBean(BaseOptions.class);
+    protected SigTest() {
+        packages = new PackageGroup(true);
+        purePackages = new PackageGroup(false);
+        excludedPackages = new PackageGroup(true);
+        apiIncl = new PackageGroup(true);
+        apiExcl = new PackageGroup(true);
+    }
 
     static {
         // Turn isTigerFeaturesTracked on if SigTest is running on Java version >= 5.0
@@ -266,6 +260,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
     protected void decodeCommonOptions(String optionName, String[] args) throws CommandLineParserException {
 
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         if (bo.readOptions(optionName, args)) return;
 
         if (optionName.equalsIgnoreCase(TESTURL_OPTION)) {
@@ -322,6 +317,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     protected boolean afterParseParams() {
+
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         if (bo.isSet(Option.HELP)) {
             usage();
             return false;
@@ -412,6 +409,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     protected ClassDescription load(String name) {
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         try {
             return testableHierarchy.load(name);
         } catch (ClassNotFoundException e) {
@@ -456,6 +454,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected abstract String getComponentName();
 
     protected Plugin loadPlugin(String pluginClassName) {
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         try {
             Constructor ctor = Class.forName(pluginClassName).getConstructor(new Class[0]);
             return (Plugin) ctor.newInstance(new Object[0]);

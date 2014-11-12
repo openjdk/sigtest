@@ -46,8 +46,6 @@ public class Merge extends SigTest {
 
     // Command line options
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Merge.class);
-    private MergeOptions mo = (MergeOptions) AppContext.getContext().getBean(MergeOptions.class);
-
 
     /**
      * Run the test using command-line; return status via numeric exit code.
@@ -96,6 +94,7 @@ public class Merge extends SigTest {
         }
 
         final String optionsDecoder = "decodeOptions";
+        MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
         parser.addOptions(mo.getOptions(), optionsDecoder);
 
         try {
@@ -113,6 +112,7 @@ public class Merge extends SigTest {
 
     private void checkValidWriteFile() throws CommandLineParserException {
         File canonicalFile = null;
+        MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
         try {
             canonicalFile = (new File(mo.getValue(Option.WRITE))).getCanonicalFile();
         } catch (IOException e) {
@@ -139,12 +139,14 @@ public class Merge extends SigTest {
     }
 
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
+        MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
         mo.readOptions(optionName, args);
     }
 
     void perform() {
 
         String msg;
+        MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
         MergedSigFile[] files = new MergedSigFile[mo.getValues(Option.FILES).size()];
         PrintWriter log = new PrintWriter(System.out);
         FeaturesHolder fh = new FeaturesHolder();
