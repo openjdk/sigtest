@@ -307,14 +307,10 @@ public class SignatureTest extends SigTest {
         // required only in static mode!
         parser.addOption(FILENAME_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(FILES_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(FORMATPLAIN_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(FORMATHUMAN_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -329,21 +325,12 @@ public class SignatureTest extends SigTest {
         parser.addOption(ENABLESUPERSET_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(UPDATE_FILE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(MODE_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(ALLPUBLIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOption(VERBOSE_OPTION, OptionInfo.optionVariableParams(0, 1), optionsDecoder);
-
-        parser.addOption(VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOption(PLUGIN_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(NOMERGE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(WRITE_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(ERRORALL_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOption(ORDANN_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-
         parser.addOption(SECURE_PACKAGES_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
 
         parser.addOptions(bo.getOptions(), optionsDecoder);
@@ -508,10 +495,10 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classcachesize", new Object[]{CLASSCACHESIZE_OPTION, new Integer(DefaultCacheSize)}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.debug", Option.DEBUG));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.debug", Option.DEBUG.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.error_all", ERRORALL_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.helpusage.version", VERSION_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.helpusage.version", Option.VERSION.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.help", Option.HELP));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.end"));
@@ -1513,11 +1500,9 @@ public class SignatureTest extends SigTest {
             ((LoadingHints) loader).addLoadingHint(LoadingHints.DONT_READ_VALUES);
         }
 
-        testableHierarchy = new ClassHierarchyImpl(loader, trackMode);
-
+        testableHierarchy = new ClassHierarchyImpl(loader);
         testableMCBuilder = new MemberCollectionBuilder(this, "source:testable");
-
-        signatureClassesHierarchy = new ClassHierarchyImpl(in, trackMode);
+        signatureClassesHierarchy = new ClassHierarchyImpl(in);
 
         // creates ErrorFormatter.
         if ((outFormat != null) && FORMAT_PLAIN.equals(outFormat)) {

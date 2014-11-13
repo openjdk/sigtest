@@ -76,7 +76,7 @@ public class Merge extends SigTest {
         if (parseParameters(args)) {
             perform();
             getLog().flush();
-        } else if (args.length > 0 && args[0].equalsIgnoreCase(VERSION_OPTION)) {
+        } else if (args.length > 0 && Option.VERSION.accept(args[0])) {
             System.err.println(Version.getVersionInfo());
         } else {
             usage();
@@ -283,7 +283,7 @@ public class Merge extends SigTest {
         sb.append(nl).append(i18n.getString("Merge.usage.write", Option.WRITE.getKey()));
         sb.append(nl).append(i18n.getString("Merge.usage.binary", Option.BINARY.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", VERSION_OPTION));
+        sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", Option.VERSION.getKey()));
         sb.append(nl).append(i18n.getString("Setup.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.end"));

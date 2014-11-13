@@ -68,7 +68,7 @@ public class CMerge {
 
         if (parseParameters(args)) {
             perform();
-        } else if (args.length > 0 && args[0].equalsIgnoreCase(Merge.VERSION_OPTION)) {
+        } else if (args.length > 0 && Option.VERSION.accept(args[0])) {
             lgr.severe(Version.getVersionInfo());
         } else {
             usage();
@@ -112,7 +112,7 @@ public class CMerge {
         sb.append(nl).append(i18n.getString("Merge.usage.write", Option.WRITE.getKey()));
         sb.append(nl).append(i18n.getString("Merge.usage.strict", STRICT_OPTION));
         sb.append(nl).append(i18n.getString("Merge.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Merge.helpusage.version", Merge.VERSION_OPTION));
+        sb.append(nl).append(i18n.getString("Merge.helpusage.version", Option.VERSION.getKey()));
         sb.append(nl).append(i18n.getString("Merge.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18n.getString("Merge.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Merge.usage.end"));
@@ -138,7 +138,7 @@ public class CMerge {
         parser.addOption(Option.WRITE, optionsDecoder);
         parser.addOption(STRICT_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(Option.HELP, optionsDecoder);
-        parser.addOption(Merge.VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
+        parser.addOption(Option.VERSION, optionsDecoder);
 
         try {
             parser.processArgs(args);

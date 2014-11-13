@@ -72,11 +72,9 @@ import java.util.logging.Logger;
 public abstract class SigTest extends Result implements PluginAPI, Log {
 
     // Command line options
-    public static final String ALLPUBLIC_OPTION = "-AllPublic";
-
     public static final String STATIC_OPTION = "-Static";
     public static final String APIVERSION_OPTION = "-ApiVersion";
-    public static final String VERSION_OPTION = "-Version";
+    //public static final String VERSION_OPTION = "-Version";
     public static final String CLASSCACHESIZE_OPTION = "-ClassCacheSize";
     public static final String VERBOSE_OPTION = "-Verbose";
     public static final String XVERBOSE_OPTION = "-Xverbose";
@@ -99,10 +97,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected String sigFileNameList = null;  // value of -Files option
     protected String sigFileName = null;   // value of -FileName option
     private FileManager fm = new FileManager();
-    /**
-     * Either equals to <code>ALL_PUBLIC</code>, or not.
-     */
-    protected int trackMode;
 
     protected PackageGroup packages;
     protected PackageGroup purePackages;
@@ -285,8 +279,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
                 throw new CommandLineParserException(i18n.getString("SigTest.error.arg.invalid", optionName));
             }
 
-        } else if (optionName.equalsIgnoreCase(ALLPUBLIC_OPTION)) {
-            trackMode = ClassHierarchy.ALL_PUBLIC;
         } else if (optionName.equalsIgnoreCase(ERRORALL_OPTION)) {
             reportWarningAsError = true;
         } else if (optionName.equalsIgnoreCase(XNOTIGER_OPTION)) {
@@ -310,9 +302,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             if (pluginClass == null) {
                 throw new CommandLineParserException(i18n.getString("SigTest.error.cant_load.plugin", args[0]));
             }
-
-        } else if (optionName.equalsIgnoreCase(VERSION_OPTION)) {
-            System.err.println(Version.getVersionInfo());
         }
     }
 
@@ -322,6 +311,10 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
         if (bo.isSet(Option.HELP)) {
             usage();
             return false;
+        }
+
+        if (bo.isSet(Option.VERSION)) {
+            System.err.println(Version.getVersionInfo());
         }
         return true;
     }

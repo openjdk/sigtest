@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest;
 
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.util.BatchFileParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
@@ -112,7 +113,7 @@ public class Main {
                 }
             } else if (args[0].equalsIgnoreCase(COMMAND_MERGE)) {
                 Merge.main(otherArgs);
-            } else if (args[0].equalsIgnoreCase(SigTest.VERSION_OPTION)) {
+            } else if (Option.VERSION.accept(args[0])) {
                 printVersionInfo();
                 System.exit(1);
             } else {

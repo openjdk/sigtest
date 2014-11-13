@@ -58,6 +58,16 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     private int trackMode;
     private Filter defaultFilter = new DefaultIsAccessibleFilter();
 
+    public ClassHierarchyImpl(ClassDescriptionLoader loader) {
+        this.loader = loader;
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+        if (bo.isSet(Option.ALL_PUBLIC)) {
+            trackMode = ALL_PUBLIC;
+        } else {
+            trackMode = 0;
+        }
+    }
+
     public ClassHierarchyImpl(ClassDescriptionLoader loader, int trackMode) {
         this.loader = loader;
         this.trackMode = trackMode;
@@ -68,8 +78,8 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         return info.superClass;
     }
 
-    public List /* String */ getSuperClasses(String fqClassName) throws ClassNotFoundException {
-        List superclasses = new ArrayList();
+    public List<String> getSuperClasses(String fqClassName) throws ClassNotFoundException {
+        List<String> superclasses = new ArrayList();
         findSuperclasses(fqClassName, superclasses);
         return superclasses;
     }
@@ -79,13 +89,13 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         return info.superInterfaces;
     }
 
-    public Set /* String */ getAllImplementedInterfaces(String fqClassName) throws ClassNotFoundException {
-        Set intfs = new HashSet();
+    public Set<String> getAllImplementedInterfaces(String fqClassName) throws ClassNotFoundException {
+        Set<String> intfs = new HashSet();
         findAllImplementedInterfaces(fqClassName, intfs);
         return intfs;
     }
 
-    private void findSuperclasses(String fqname, List supers) throws ClassNotFoundException {
+    private void findSuperclasses(String fqname, List<String> supers) throws ClassNotFoundException {
         ClassInfo info = getClassInfo(fqname);
         String supr = info.superClass;
         if (supr != null) {
@@ -94,7 +104,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         }
     }
 
-    private void findAllImplementedInterfaces(String fqname, Set implementedInterfaces) throws ClassNotFoundException {
+    private void findAllImplementedInterfaces(String fqname, Set<String> implementedInterfaces) throws ClassNotFoundException {
 
         List superClasses = new ArrayList();
 
@@ -113,7 +123,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         }
     }
 
-    private void findSuperInterfaces(String fqname, Set supers) throws ClassNotFoundException {
+    private void findSuperInterfaces(String fqname, Set<String> supers) throws ClassNotFoundException {
 
         ClassInfo info = getClassInfo(fqname);
 
@@ -168,10 +178,8 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     public boolean isMethodOverriden(MethodDescr md) throws ClassNotFoundException {
         Erasurator erasurator = new Erasurator();
         MethodOverridingChecker moc = new MethodOverridingChecker(erasurator);
-        List scs = getSuperClasses(md.getDeclaringClassName());
-        Iterator it = scs.iterator();
-        while (it.hasNext()) {
-            ClassDescription sc = load((String) it.next());
+        for (String sup : getSuperClasses(md.getDeclaringClassName())) {
+            ClassDescription sc = load(sup);
             erasurator.erasure(sc);
             moc.addMethods(sc.getDeclaredMethods());
         }
@@ -181,11 +189,9 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     public boolean isMethodImplements(MethodDescr md) throws ClassNotFoundException {
         Erasurator erasurator = new Erasurator();
         MethodOverridingChecker moc = new MethodOverridingChecker(erasurator);
-        Set scs = getAllImplementedInterfaces(md.getDeclaringClassName());
-        Iterator it = scs.iterator();
         String name = md.getName();
-        while (it.hasNext()) {
-            ClassDescription sc = load((String) it.next());
+        for (String inf : getAllImplementedInterfaces(md.getDeclaringClassName())) {
+            ClassDescription sc = load(inf);
             erasurator.erasure(sc);
             moc.addMethods(sc.getDeclaredMethods(), name);
         }

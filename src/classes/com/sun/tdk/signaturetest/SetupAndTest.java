@@ -101,15 +101,12 @@ public class SetupAndTest extends Result {
 
         parser.addOption(SigTest.VERBOSE_OPTION, OptionInfo.optionVariableParams(0, 1), optionsDecoder);
 
-        parser.addOption(Option.HELP, optionsDecoder);
-        parser.addOption(SigTest.VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOptions(bo.getOptions(), optionsDecoder);
 
         try {
             parser.processArgs(args);
         } catch (CommandLineParserException e) {
-            if (args.length > 0 && args[0].equalsIgnoreCase(SigTest.VERSION_OPTION)) {
+            if (args.length > 0 && Option.VERSION.accept(args[0])) {
                 System.err.println(Version.getVersionInfo());
                 return passed();
             } else {
@@ -248,7 +245,7 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.formatplain", SigTest.FORMATPLAIN_OPTION));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.classcachesize", new Object[]{SigTest.CLASSCACHESIZE_OPTION, new Integer(SigTest.DefaultCacheSize)}));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", SigTest.VERSION_OPTION));
+        sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", Option.VERSION.getKey()));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
 

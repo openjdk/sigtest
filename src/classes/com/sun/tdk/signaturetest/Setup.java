@@ -137,7 +137,6 @@ public class Setup extends SigTest {
      */
     public void run(String[] args, PrintWriter pw, PrintWriter ref) {
 
-//        assert( pw != null );
         setLog(pw);
 
         outerClassesNumber = 0;
@@ -151,7 +150,7 @@ public class Setup extends SigTest {
             afterParseParameters();
             create(signatureFile);
             getLog().flush();
-        } else if (args.length > 0 && args[0].equalsIgnoreCase(VERSION_OPTION)) {
+        } else if (args.length > 0 && Option.VERSION.accept(args[0])) {
             pw.println(Version.getVersionInfo());
         } else {
             usage();
@@ -171,7 +170,7 @@ public class Setup extends SigTest {
 
         // Print help text only and exit.
         if (args == null || args.length == 0
-                || (args.length == 1 && (parser.isOptionSpecified(args[0], VERSION_OPTION)))) {
+                || (args.length == 1 && Option.VERSION.accept(args[0]))) {
             return false;
         }
 
@@ -183,26 +182,16 @@ public class Setup extends SigTest {
         parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOption(XVERBOSE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(SigTest.VERBOSE_OPTION, OptionInfo.optionVariableParams(0, 1), optionsDecoder);
-
         parser.addOption(CLOSEDFILE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(NONCLOSEDFILE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(KEEP_SIGFILE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOption(CHECKVALUE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XGENCONSTS_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(XREFLECTION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
-        parser.addOption(ALLPUBLIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
-        parser.addOption(VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOption(PLUGIN_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(ERRORALL_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
         parser.addOption(COPYRIGHT_OPTION, OptionInfo.option(1), optionsDecoder);
 
         parser.addOptions(bo.getOptions(), optionsDecoder);
@@ -323,9 +312,9 @@ public class Setup extends SigTest {
         sb.append(nl).append(i18n.getString("Setup.usage.apiversion", APIVERSION_OPTION));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}));
-        sb.append(nl).append(i18n.getString("Setup.usage.debug", Option.DEBUG));
+        sb.append(nl).append(i18n.getString("Setup.usage.debug", Option.DEBUG.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.helpusage.version", VERSION_OPTION));
+        sb.append(nl).append(i18n.getString("Setup.helpusage.version", Option.VERSION.getKey()));
         sb.append(nl).append(i18n.getString("Setup.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.end"));
@@ -379,7 +368,7 @@ public class Setup extends SigTest {
         classpath.setListToBegin();
 
         ClassDescriptionLoader testableLoader = getClassDescrLoader();
-        testableHierarchy = new ClassHierarchyImpl(testableLoader, trackMode);
+        testableHierarchy = new ClassHierarchyImpl(testableLoader);
         testableMCBuilder = new MemberCollectionBuilder(this, "source:setup");
 
         // adds classes which are member of classes from tracked package

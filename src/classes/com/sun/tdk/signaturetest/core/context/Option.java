@@ -39,6 +39,8 @@ public enum Option {
     API_INCLUDE("-ApiInclude", Kind.MANY_OPT),
     API_EXCLUDE("-ApiExclude", Kind.MANY_OPT),
     CLASSPATH("-Classpath", Kind.SINGLE_OPT),
+    ALL_PUBLIC("-AllPublic", Kind.NONE),
+    STATIC("-Static", Kind.NONE),
 
     FILES("-Files", Kind.REQ_LIST), // merge's
     WRITE("-Write", Kind.SINGLE_OPT), // merge's
