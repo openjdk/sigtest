@@ -69,7 +69,7 @@ public class JimageFileEntry extends DirectoryEntry {
             throw new IOException("JIMAGE_EXE is not defined");
         }
 
-        Process process = new ProcessBuilder(util, "expand", "--dir", tempd, jimageName).start();
+        Process process = new ProcessBuilder(util, "extract", "--dir", tempd, jimageName).start();
 
         try {
             int ret = process.waitFor();

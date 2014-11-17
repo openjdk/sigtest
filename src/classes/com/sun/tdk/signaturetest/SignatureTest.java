@@ -258,7 +258,7 @@ public class SignatureTest extends SigTest {
             exclude = new DefaultExcludeList();
         }
 
-        if (parseParameters(args) && afterParseParams()) {
+        if (parseParameters(args)) {
             check();
             if (logFile) {
                 getLog().println(toString());
@@ -340,6 +340,10 @@ public class SignatureTest extends SigTest {
         } catch (CommandLineParserException e) {
             getLog().println(e.getMessage());
             return failed(e.getMessage());
+        }
+
+        if (!processHelpOptions()) {
+            return false;
         }
 
         packages.addPackages(bo.getValues(Option.PACKAGE));
@@ -499,7 +503,7 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.error_all", ERRORALL_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.helpusage.version", Option.VERSION.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.help", Option.HELP));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.help", Option.HELP.getKey()));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.end"));
 

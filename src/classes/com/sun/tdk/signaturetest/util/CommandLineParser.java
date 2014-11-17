@@ -77,6 +77,7 @@ public class CommandLineParser {
         args = BatchFileParser.processParameters(args);
 
         foundOptions.clear();
+        boolean noValidate = false;
 
         String optionStr = null;
 
@@ -94,6 +95,11 @@ public class CommandLineParser {
                     throw new CommandLineParserException(i18n.getString("CommandLineParser.error.option.duplicate", optionStr));
                 }
 
+                Option o = Option.byKey(arg);
+                if (o != null) {
+                    noValidate = noValidate || o.getKind() == Option.Kind.INSTEAD_OF_ANY;
+                }
+
             } else if (!knownOptions.isOption(arg)) {
                 if (optionStr != null) {
                     ((List) foundOptions.get(optionStr)).add(arg);
@@ -104,7 +110,9 @@ public class CommandLineParser {
             }
         }
 
-        knownOptions.validate(foundOptions);
+        if (!noValidate) {
+            knownOptions.validate(foundOptions);
+        }
 
         Iterator it = foundOptions.keySet().iterator();
         while (it.hasNext()) {
@@ -231,6 +239,7 @@ public class CommandLineParser {
     public void addOption(Option o, String optionsDecoder) {
         switch (o.getKind()) {
             case NONE:
+            case INSTEAD_OF_ANY:
                 addOption(o.getKey(), OptionInfo.optionalFlag(), optionsDecoder);
                 break;
             case SINGLE_OPT:

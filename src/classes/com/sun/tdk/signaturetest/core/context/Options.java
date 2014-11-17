@@ -19,6 +19,7 @@ public abstract class Options {
             if (option.accept(optionName)) {
                 switch (option.getKind()) {
                     case NONE:
+                    case INSTEAD_OF_ANY:
                         values.put(option, null);
                         break;
                     case SINGLE_OPT:
@@ -55,7 +56,7 @@ public abstract class Options {
      */
     public boolean isSet(Option option) {
         assert option != null;
-        assert option.getKind() == Option.Kind.NONE;
+        assert option.getKind() == Option.Kind.NONE || option.getKind() == Option.Kind.INSTEAD_OF_ANY;
         if (!getOptions().contains(option)) {
             throw new IllegalArgumentException("Option " + option.getKey() + " is not defined in the context");
         }

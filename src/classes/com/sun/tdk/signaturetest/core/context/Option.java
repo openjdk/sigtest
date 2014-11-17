@@ -31,7 +31,7 @@ public enum Option {
 
     X_JIMAGE("-XJImage", Kind.SINGLE_OPT),
     DEBUG("-Debug", Kind.NONE),
-    HELP("-Help", "-?", Kind.NONE),
+    HELP("-Help", "-?", Kind.INSTEAD_OF_ANY),
     PACKAGE("-Package", Kind.MANY_OPT),
 
     PURE_PACKAGE("-PackageWithoutSubpackages", Kind.MANY_OPT),
@@ -46,7 +46,7 @@ public enum Option {
     WRITE("-Write", Kind.SINGLE_OPT), // merge's
     BINARY("-Binary", Kind.NONE),  // merge's
     TESTURL("-TestURL", Kind.SINGLE_OPT),
-    VERSION("-Version", "-V", Kind.NONE)
+    VERSION("-Version", "-V", Kind.INSTEAD_OF_ANY)
     ;
 
     private String key;
@@ -88,9 +88,18 @@ public enum Option {
         return hasAlias() && getAlias().equalsIgnoreCase(key);
     }
 
+    public static Option byKey(String key) {
+        assert key != null;
+        for (Option o : Option.values()) {
+            if (key.equalsIgnoreCase(o.getKey()) || ( o.hasAlias() && key.equalsIgnoreCase(o.getAlias()))) {
+                return o;
+            }
+        }
+        return null;
+    }
 
     public enum Kind {
-        NONE, SINGLE_OPT, SINGLE_REQ, MANY_OPT, REQ_LIST;
+        NONE, SINGLE_OPT, SINGLE_REQ, MANY_OPT, REQ_LIST, INSTEAD_OF_ANY;
     }
 
 }

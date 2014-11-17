@@ -198,10 +198,13 @@ public class Setup extends SigTest {
 
         try {
             parser.processArgs(args);
-            afterParseParams();
         } catch (CommandLineParserException e) {
             getLog().println(e.getMessage());
             return failed(e.getMessage());
+        }
+
+        if (!processHelpOptions()) {
+            return false;
         }
 
         // since 2.1 - static mode by default
