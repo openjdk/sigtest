@@ -27,6 +27,8 @@ package com.sun.tdk.apicover;
 import com.sun.tdk.signaturetest.Version;
 import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.loaders.BinaryClassDescrLoader;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.MemberDescription;
@@ -51,6 +53,8 @@ import java.util.logging.Logger;
 public class Main implements Log {
 
     private final static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Main.class);
+    private ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
+
     // mandatory options with one parameter
     public static final String API_OPTION = "-api";
     public static final String TS_OPTION = "-ts";
@@ -200,6 +204,8 @@ public class Main implements Log {
         parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(VALIDATE_OPTION, OptionInfo.option(1), optionsDecoder);
 
+        parser.addOptions(ao.getOptions(), optionsDecoder);
+
         try {
             reporter.addConfig(MODE_OPTION, MODE_VALUE_WORST);
             parser.processArgs(args);
@@ -223,6 +229,10 @@ public class Main implements Log {
     }
 
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
+
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+        if (bo.readOptions(optionName, args)) return;
+
         if (optionName.equalsIgnoreCase(API_OPTION)) {
             signatureFile = args[0];
             reporter.addConfig(API_OPTION, args[0]);

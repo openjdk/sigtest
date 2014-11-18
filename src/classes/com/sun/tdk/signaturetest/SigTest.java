@@ -74,7 +74,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     // Command line options
     public static final String STATIC_OPTION = "-Static";
     public static final String APIVERSION_OPTION = "-ApiVersion";
-    //public static final String VERSION_OPTION = "-Version";
     public static final String CLASSCACHESIZE_OPTION = "-ClassCacheSize";
     public static final String VERBOSE_OPTION = "-Verbose";
     public static final String XVERBOSE_OPTION = "-Xverbose";
