@@ -152,8 +152,6 @@ public class Setup extends SigTest {
             getLog().flush();
         } else if (args.length > 0 && Option.VERSION.accept(args[0])) {
             pw.println(Version.getVersionInfo());
-        } else {
-            usage();
         }
     }
 
