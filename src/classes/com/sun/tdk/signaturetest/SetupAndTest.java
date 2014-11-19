@@ -68,6 +68,7 @@ public class SetupAndTest extends Result {
         // Print help text only and exit.
         if (Option.HELP.accept(args[0])) {
             usage();
+            passed();
             return true;
         }
 

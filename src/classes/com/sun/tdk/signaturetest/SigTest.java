@@ -309,6 +309,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         if (bo.isSet(Option.HELP)) {
             usage();
+            passed();
             return false;
         }
 
