@@ -26,6 +26,7 @@ package com.sun.tdk.apicover.mvn;
 
 import com.sun.tdk.apicover.Main;
 import com.sun.tdk.signaturetest.Result;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.mvn.MLogAdapter;
 import com.sun.tdk.signaturetest.mvn.MSuperBase;
 import java.io.File;
@@ -164,9 +165,9 @@ public class MAPICover extends MSuperBase {
         }
 
         addList(params, Main.TS_OPTION, tests);
-        addList(params, Main.APIINCLUDE_OPTION, apiIncludes);
+        addList(params, Option.API_INCLUDE.getKey(), apiIncludes);
         addList(params, Main.APIINCLUDEW_OPTION, apiIncludeWs);
-        addList(params, Main.APIEXCLUDE_OPTION, apiExcludes);
+        addList(params, Option.API_EXCLUDE.getKey(), apiExcludes);
         addList(params, Main.TSICNLUDE_OPTION, tsIncludes);
         addList(params, Main.TSICNLUDEW_OPTION, tsIncludeWs);
         addList(params, Main.TSEXCLUDE_OPTION, tsExcludes);

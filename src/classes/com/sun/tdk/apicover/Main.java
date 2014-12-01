@@ -70,9 +70,9 @@ public class Main implements Log {
     public static final String TSICNLUDE_OPTION = "-tsInclude";
     public static final String TSICNLUDEW_OPTION = "-tsIncludeW";
     public static final String TSEXCLUDE_OPTION = "-tsExclude";
-    public static final String APIINCLUDE_OPTION = "-apiInclude";
+    //public static final String APIINCLUDE_OPTION = "-apiInclude";
     public static final String APIINCLUDEW_OPTION = "-apiIncludeW";
-    public static final String APIEXCLUDE_OPTION = "-apiExclude";
+    //public static final String APIEXCLUDE_OPTION = "-apiExclude";
     public static final String EXCLUDELIST_OPTION = "-excludeList";
     // Single switches
     public static final String EXCLUDEINTERFACES_OPTION = "-excludeInterfaces";
@@ -179,9 +179,9 @@ public class Main implements Log {
         parser.addOption(TSICNLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(TSICNLUDEW_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(TSEXCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(APIINCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+        //parser.addOption(APIINCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
         parser.addOption(APIINCLUDEW_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-        parser.addOption(APIEXCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+        //parser.addOption(APIEXCLUDE_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
 
         parser.addOption(REPORT_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(MODE_OPTION, OptionInfo.option(1), optionsDecoder);
@@ -219,6 +219,10 @@ public class Main implements Log {
             error(i18n.getString("Main.error.arg.conflict", new Object[]{EXCLUDEFIELD_OPTION, INCLUDECONSTANTFIELDS_OPTION}));
         }
 
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+        packages.addPackages(bo.getValues(Option.API_INCLUDE));
+        excludedPackages.addPackages(bo.getValues(Option.API_EXCLUDE));
+
         if (packages.isEmpty() && purePackages.isEmpty()) {
             packages.addPackage("");
         }
@@ -231,7 +235,9 @@ public class Main implements Log {
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
 
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
-        if (bo.readOptions(optionName, args)) return;
+        if (bo.readOptions(optionName, args)) {
+            return;
+        }
 
         if (optionName.equalsIgnoreCase(API_OPTION)) {
             signatureFile = args[0];
@@ -253,11 +259,11 @@ public class Main implements Log {
             isWorstCaseMode = MODE_VALUE_WORST.equalsIgnoreCase(args[0]);
             refCounter.setMode(args[0]);
             reporter.addConfig(MODE_OPTION, args[0].toLowerCase());
-        } else if (optionName.equalsIgnoreCase(APIINCLUDE_OPTION)) {
+        } /*else if (optionName.equalsIgnoreCase(APIINCLUDE_OPTION)) {
             packages.addPackages(CommandLineParser.parseListOption(args));
         } else if (optionName.equalsIgnoreCase(APIEXCLUDE_OPTION)) {
             excludedPackages.addPackages(CommandLineParser.parseListOption(args));
-        } else if (optionName.equalsIgnoreCase(APIINCLUDEW_OPTION)) {
+        } */else if (optionName.equalsIgnoreCase(APIINCLUDEW_OPTION)) {
             purePackages.addPackages(CommandLineParser.parseListOption(args));
         } else if (optionName.equalsIgnoreCase(TSICNLUDE_OPTION)) {
             packagesTS.addPackages(CommandLineParser.parseListOption(args));
@@ -311,8 +317,7 @@ public class Main implements Log {
             passed();
         } else if (optionName.equalsIgnoreCase(OUT_OPTION)) {
             throw new CommandLineParserException(i18n.getString("Main.error.arg.legacy", OUT_OPTION));
-        }
-        if (optionName.equalsIgnoreCase(VALIDATE_OPTION)) {
+        } else if (optionName.equalsIgnoreCase(VALIDATE_OPTION)) {
             throw new CommandLineParserException(i18n.getString("Main.error.arg.legacy", VALIDATE_OPTION));
         }
     }
@@ -340,9 +345,9 @@ public class Main implements Log {
         sb.append(nl).append(i18n.getString("Main.usage.tsIncludeW", TSICNLUDEW_OPTION));
         sb.append(nl).append(i18n.getString("Main.usage.tsExclude", TSEXCLUDE_OPTION));
         sb.append(nl).append(i18n.getString("Main.usage.api", API_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.apiInclude", APIINCLUDE_OPTION));
+        sb.append(nl).append(i18n.getString("Main.usage.apiInclude", Option.API_INCLUDE.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.apiIncludeW", APIINCLUDEW_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.apiExclude", APIEXCLUDE_OPTION));
+        sb.append(nl).append(i18n.getString("Main.usage.apiExclude", Option.API_EXCLUDE.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.excludeList", EXCLUDELIST_OPTION));
         sb.append(nl).append(i18n.getString("Main.usage.excludeInterfaces", EXCLUDEINTERFACES_OPTION));
         sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractClasses", EXCLUDEABSTRACTCLASSES_OPTION));

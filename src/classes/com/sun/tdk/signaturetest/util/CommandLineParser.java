@@ -220,14 +220,14 @@ public class CommandLineParser {
     }
 
     public static String[] parseListOption(String[] args) {
-        ArrayList ar = new ArrayList();
+        ArrayList<String> ar = new ArrayList();
         for (int i = 0; i < args.length; i++) {
             StringTokenizer st = new StringTokenizer(args[i], System.getProperty("path.separator"));
             while (st.hasMoreTokens()) {
                 ar.add(st.nextToken());
             }
         }
-        return (String[]) ar.toArray(new String[]{});
+        return ar.toArray(new String[]{});
     }
 
     public void addOptions(EnumSet<Option> options, String optionsDecoder) {
