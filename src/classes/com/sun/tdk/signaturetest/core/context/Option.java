@@ -36,8 +36,8 @@ public enum Option {
 
     PURE_PACKAGE("-PackageWithoutSubpackages", Kind.MANY_OPT),
     EXCLUDE("-Exclude", Kind.MANY_OPT),
-    API_INCLUDE("-ApiInclude", Kind.MANY_OPT),
-    API_EXCLUDE("-ApiExclude", Kind.MANY_OPT),
+    API_INCLUDE("-apiInclude", Kind.MANY_OPT),
+    API_EXCLUDE("-apiExclude", Kind.MANY_OPT),
     CLASSPATH("-Classpath", Kind.SINGLE_OPT),
     ALL_PUBLIC("-AllPublic", Kind.NONE),
     STATIC("-Static", Kind.NONE),
