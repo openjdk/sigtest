@@ -54,9 +54,6 @@ public class Main implements Log {
     private final static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Main.class);
     private ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
 
-    // mandatory options with one parameter
-//    public static final String API_OPTION = "-api";
-//    public static final String TS_OPTION = "-ts";
     // non-mandatory Strings
     public static final String MODE_OPTION = "-mode";
     public static final String MODE_VALUE_WORST = "w";
@@ -66,12 +63,6 @@ public class Main implements Log {
     public static final String FORMAT_VALUE_XML = "xml";
     public static final String FORMAT_VALUE_PLAIN = "plain";
     public static final String REPORT_OPTION = "-report";
-//    public static final String TSICNLUDE_OPTION = "-tsInclude";
-//    public static final String TSICNLUDEW_OPTION = "-tsIncludeW";
-//    public static final String TSEXCLUDE_OPTION = "-tsExclude";
-    //public static final String APIINCLUDE_OPTION = "-apiInclude";
-//    public static final String APIINCLUDEW_OPTION = "-apiIncludeW";
-    //public static final String APIEXCLUDE_OPTION = "-apiExclude";
     public static final String EXCLUDELIST_OPTION = "-excludeList";
     // Single switches
     public static final String EXCLUDEINTERFACES_OPTION = "-excludeInterfaces";
