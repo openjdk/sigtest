@@ -63,10 +63,10 @@ public enum TimeOfDay {
     /**
      * Returns current local TimeOfDay for specified TimeZone according the
      * following rules:
-     * <li>if hours less then 7 this is night
-     * <li>else if it less then 12 this is morning
-     * <li>else if it less than 18 this is afternoon
-     * <li>else this is evening
+     * if hours less then 7 this is night
+     * else if it less then 12 this is morning
+     * else if it less than 18 this is afternoon
+     * else this is evening
      *
      * @param tz given TimeZone
      * @return a TimeOfDay

@@ -26,6 +26,7 @@ package com.sun.tdk.apicover;
 
 import com.sun.tdk.signaturetest.core.Erasurator;
 import com.sun.tdk.signaturetest.core.PrimitiveTypes;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.MemberDescription;
 import com.sun.tdk.signaturetest.model.Modifier;
@@ -457,7 +458,7 @@ class ReportPlain extends ReportGenerator {
 
         tab(0).append(i18n.getString("ReportPlain.report.Configuration"));
 
-        String[] keys = {Main.TS_OPTION, Main.EXCLUDELIST_OPTION, Main.API_OPTION,
+        String[] keys = {Option.TS.getKey(), Main.EXCLUDELIST_OPTION, Option.API.getKey(),
             Main.EXCLUDEINTERFACES_OPTION,
             Main.EXCLUDEABSTRACTCLASSES_OPTION, Main.EXCLUDEABSTRACTMETHODS_OPTION,
             Main.EXCLUDEFIELD_OPTION, Main.INCLUDECONSTANTFIELDS_OPTION, Main.MODE_OPTION};

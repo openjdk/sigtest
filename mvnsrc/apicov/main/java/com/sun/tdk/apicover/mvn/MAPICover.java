@@ -160,17 +160,17 @@ public class MAPICover extends MSuperBase {
         ArrayList params = new ArrayList();
 
         if (!"".equals(api)) {
-            params.add(Main.API_OPTION);
+            params.add(Option.API.getKey());
             params.add(api);
         }
 
-        addList(params, Main.TS_OPTION, tests);
+        addList(params, Option.TS.getKey(), tests);
         addList(params, Option.API_INCLUDE.getKey(), apiIncludes);
-        addList(params, Main.APIINCLUDEW_OPTION, apiIncludeWs);
+        addList(params, Option.API_INCLUDEW.getKey(), apiIncludeWs);
         addList(params, Option.API_EXCLUDE.getKey(), apiExcludes);
-        addList(params, Main.TSICNLUDE_OPTION, tsIncludes);
-        addList(params, Main.TSICNLUDEW_OPTION, tsIncludeWs);
-        addList(params, Main.TSEXCLUDE_OPTION, tsExcludes);
+        addList(params, Option.TS_ICNLUDE.getKey(), tsIncludes);
+        addList(params, Option.TS_ICNLUDEW.getKey(), tsIncludeWs);
+        addList(params, Option.TS_EXCLUDE.getKey(), tsExcludes);
         addList(params, Main.EXCLUDELIST_OPTION, excludeLists);
 
         if (report != null && !"".equals(report)) {

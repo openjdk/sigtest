@@ -46,7 +46,16 @@ public enum Option {
     WRITE("-Write", Kind.SINGLE_OPT), // merge's
     BINARY("-Binary", Kind.NONE),  // merge's
     TESTURL("-TestURL", Kind.SINGLE_OPT),
-    VERSION("-Version", "-V", Kind.INSTEAD_OF_ANY)
+    VERSION("-Version", "-V", Kind.INSTEAD_OF_ANY),
+
+    // APICOV
+    API("-api", Kind.SINGLE_REQ),
+    TS("-ts" , Kind.SINGLE_REQ),
+    TS_ICNLUDE("-tsInclude", Kind.MANY_OPT),
+    TS_ICNLUDEW("-tsIncludeW", Kind.MANY_OPT),
+    TS_EXCLUDE("-tsExclude", Kind.MANY_OPT),
+    API_INCLUDEW("-apiIncludeW", Kind.MANY_OPT),
+
     ;
 
     private String key;

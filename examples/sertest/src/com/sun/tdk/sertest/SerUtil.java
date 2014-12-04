@@ -26,14 +26,16 @@ package com.sun.tdk.sertest;
 
 import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.Version;
-import com.sun.tdk.signaturetest.errors.MessageType;
 import com.sun.tdk.signaturetest.model.*;
-import com.sun.tdk.signaturetest.plugin.*;
+import com.sun.tdk.signaturetest.plugin.Filter;
+import com.sun.tdk.signaturetest.plugin.PluginAPI;
+import com.sun.tdk.signaturetest.plugin.Transformer;
 import com.sun.tdk.signaturetest.sigfile.FeaturesHolder;
 import com.sun.tdk.signaturetest.sigfile.Format;
 import com.sun.tdk.signaturetest.sigfile.Writer;
 import com.sun.tdk.signaturetest.sigfile.f42.F42Format;
 import com.sun.tdk.signaturetest.sigfile.f42.F42Writer;
+
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,9 +45,88 @@ import java.util.logging.Logger;
  */
 class SerUtil {
 
-    static Logger logger = Logger.getLogger(SerUtil.class.getName());
-    private static final String SER_INT = "java.io.Serializable";
     static final String serVerUID = "serialVersionUID";
+    private static final String SER_INT = "java.io.Serializable";
+    static Logger logger = Logger.getLogger(SerUtil.class.getName());
+    private static Filter serClsFilter = new Filter() {
+        public boolean accept(ClassDescription cls) {
+            return isSerialized(cls);
+        }
+    };
+    private static Transformer emptyTransformer = new Transformer() {
+        public ClassDescription transform(ClassDescription cls) throws ClassNotFoundException {
+            return cls;
+        }
+    };
+    private static Transformer serializationTransformer = new Transformer() {
+        public ClassDescription transform(ClassDescription cls) {
+            MemberCollection cleaned = new MemberCollection();
+            for (Iterator e = cls.getMembersIterator(); e.hasNext(); ) {
+                MemberDescription mr = (MemberDescription) e.next();
+
+                if (isSVUID(mr, cls)) {
+                    cleaned.addMember(mr);
+                }
+
+            }
+            cls.setMembers(cleaned);
+            return cls;
+        }
+    };
+
+
+    private static boolean isSVUID(MemberDescription mr, ClassDescription cls) {
+        return mr.isField() && mr.getDeclaringClassName().equals(cls.getQualifiedName()) && serVerUID.equals(mr.getName());
+    }
+
+    private static Transformer onlyFieldsTransformer = new Transformer() {
+        public ClassDescription transform(ClassDescription cls) {
+            MemberCollection cleaned = new MemberCollection();
+            for (Iterator e = cls.getMembersIterator(); e.hasNext(); ) {
+                MemberDescription mr = (MemberDescription) e.next();
+                if (isSVUID(mr, cls)) {
+                    cleaned.addMember(mr);
+                }
+            }
+            cls.setMembers(cleaned);
+            return cls;
+        }
+    };
+
+    static {
+        PluginAPI.BEFORE_WRITE.setFilter(serClsFilter);
+        PluginAPI.AFTER_BUILD_MEMBERS.setTransformer(serializationTransformer);
+        PluginAPI.CLASS_CORRECTOR.setTransformer(emptyTransformer);
+        // test
+        PluginAPI.BEFORE_TEST.setFilter(serClsFilter);
+        PluginAPI.BEFORE_TEST.setTransformer(onlyFieldsTransformer);
+
+        Modifier.TRANSIENT.setTracked(true);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Initialized");
+        }
+    }
+
+    static boolean isSerialized(ClassDescription cls) {
+
+        /*
+         * Skip enums -
+         * see http://docs.oracle.com/javase/7/docs/platform/serialization/spec/serial-arch.html#6469
+         */
+        if (cls.hasModifier(Modifier.ENUM)) {
+            return false;
+        }
+
+        for (Iterator i = cls.getMembersIterator(); i.hasNext(); ) {
+            MemberDescription md = (MemberDescription) i.next();
+            if (md.isSuperInterface()) {
+                if (SER_INT.equals(md.getQualifiedName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     void initFormat(SigTest st) {
 
@@ -72,92 +153,5 @@ class SerUtil {
         };
         w.setFormat(f);
         st.setFormat(f);
-    }
-    private static Filter serClsFilter = new Filter() {
-        public boolean accept(ClassDescription cls) {
-            return isSerialized(cls);
-        }
-    };
-
-    static boolean isSerialized(ClassDescription cls) {
-
-        /*
-         * Skip enums -
-         * see http://docs.oracle.com/javase/7/docs/platform/serialization/spec/serial-arch.html#6469
-         */
-        if (cls.hasModifier(Modifier.ENUM)) {
-            return false;
-        }
-
-        for (Iterator i = cls.getMembersIterator(); i.hasNext();) {
-            MemberDescription md = (MemberDescription) i.next();
-            if (md.isSuperInterface()) {
-                if (SER_INT.equals(((SuperInterface) md).getQualifiedName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    private static Transformer emptyTransformer = new Transformer() {
-        public ClassDescription transform(ClassDescription cls) throws ClassNotFoundException {
-            return cls;
-        }
-    };
-    private static Transformer serializationTransformer = new Transformer() {
-        public ClassDescription transform(ClassDescription cls) {
-            MemberCollection cleaned = new MemberCollection();
-            for (Iterator e = cls.getMembersIterator(); e.hasNext();) {
-                MemberDescription mr = (MemberDescription) e.next();
-
-                if (!mr.isField() && !mr.isSuperClass() && !mr.isSuperInterface()) {
-                    // not a field
-                    continue;
-                }
-                // remove inherited fields
-                if (mr.isField() && !mr.getDeclaringClassName().equals(cls.getQualifiedName())) {
-                    continue;
-                }
-
-                if (mr.hasModifier(Modifier.TRANSIENT)) {
-                    // ignore transient
-                    continue;
-                }
-                if (mr.hasModifier(Modifier.STATIC) && !serVerUID.equals(mr.getName())) {
-                    // statics except serialVersionUID
-                    continue;
-                }
-                cleaned.addMember(mr);
-            }
-            cls.setMembers(cleaned);
-            return cls;
-        }
-    };
-    private static Transformer onlyFieldsTransformer = new Transformer() {
-        public ClassDescription transform(ClassDescription cls) {
-            MemberCollection cleaned = new MemberCollection();
-            for (Iterator e = cls.getMembersIterator(); e.hasNext();) {
-                MemberDescription mr = (MemberDescription) e.next();
-                if (mr.isField()) {
-                    cleaned.addMember(mr);
-                }
-            }
-            cls.setMembers(cleaned);
-            return cls;
-        }
-    };
-
-    static {
-        PluginAPI.BEFORE_WRITE.setFilter(serClsFilter);
-        PluginAPI.AFTER_BUILD_MEMBERS.setTransformer(serializationTransformer);
-        PluginAPI.CLASS_CORRECTOR.setTransformer(emptyTransformer);
-        // test
-        PluginAPI.BEFORE_TEST.setFilter(serClsFilter);
-        PluginAPI.BEFORE_TEST.setTransformer(onlyFieldsTransformer);
-
-        Modifier.TRANSIENT.setTracked(true);
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("Initialized");
-        }
     }
 }
