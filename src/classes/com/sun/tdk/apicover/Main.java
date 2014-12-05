@@ -65,11 +65,6 @@ public class Main implements Log {
     public static final String REPORT_OPTION = "-report";
     public static final String EXCLUDELIST_OPTION = "-excludeList";
     // Single switches
-    public static final String EXCLUDEINTERFACES_OPTION = "-excludeInterfaces";
-    public static final String EXCLUDEABSTRACTCLASSES_OPTION = "-excludeAbstractClasses";
-    public static final String EXCLUDEABSTRACTMETHODS_OPTION = "-excludeAbstractMethods";
-    public static final String EXCLUDEFIELD_OPTION = "-excludeFields";
-    public static final String INCLUDECONSTANTFIELDS_OPTION = "-includeConstantFields";
     public static final String DEBUG_OPTION = "-debug";
     // special Strings
     public static final String VERSION_OPTION = "-version";
@@ -167,12 +162,6 @@ public class Main implements Log {
         parser.addOption(MODE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(DETAIL_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(FORMAT_OPTION, OptionInfo.option(1), optionsDecoder);
-
-        parser.addOption(EXCLUDEINTERFACES_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(EXCLUDEABSTRACTCLASSES_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(EXCLUDEABSTRACTMETHODS_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(EXCLUDEFIELD_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(INCLUDECONSTANTFIELDS_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(EXCLUDELIST_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
 
         parser.addOption(DEBUG_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -192,11 +181,6 @@ public class Main implements Log {
         } catch (CommandLineParserException e) {
             //usage();
             error(e.getMessage());
-        }
-
-        if (parser.isOptionSpecified(INCLUDECONSTANTFIELDS_OPTION)
-                && parser.isOptionSpecified(EXCLUDEFIELD_OPTION)) {
-            error(i18n.getString("Main.error.arg.conflict", new Object[]{EXCLUDEFIELD_OPTION, INCLUDECONSTANTFIELDS_OPTION}));
         }
 
         packages.addPackages(ao.getValues(Option.API_INCLUDE));
@@ -227,6 +211,37 @@ public class Main implements Log {
 
         signatureFile = ao.getValue(Option.API);
         reporter.addConfig(Option.API.getKey(), signatureFile);
+
+        if (ao.isSet(Option.INCLUDE_CONSTANT_FIELDS) && ao.isSet(Option.EXCLUDE_FIELDS)) {
+            error(i18n.getString("Main.error.arg.conflict",
+                    new Object[]{Option.EXCLUDE_FIELDS.getKey(), Option.INCLUDE_CONSTANT_FIELDS.getKey()}));
+        }
+
+        if (ao.isSet(Option.INCLUDE_CONSTANT_FIELDS)) {
+            reporter.setConstatnChecking(true);
+            reporter.addConfig(Option.INCLUDE_CONSTANT_FIELDS.getKey(), "yes");
+        }
+
+        if (ao.isSet(Option.EXCLUDE_ABSTRACT_CLASSES)) {
+            reporter.excludeAbstractClasses();
+            reporter.addConfig(Option.EXCLUDE_ABSTRACT_CLASSES.getKey(), "yes");
+        }
+
+        if (ao.isSet(Option.EXCLUDE_ABSTRACT_METHODS)) {
+            reporter.excludeAbstractMethods();
+            reporter.addConfig(Option.EXCLUDE_ABSTRACT_METHODS.getKey(), "yes");
+        }
+
+        if (ao.isSet(Option.EXCLUDE_INTERFACES)) {
+            reporter.excludeInterfaces();
+            reporter.addConfig(Option.EXCLUDE_INTERFACES.getKey(), "yes");
+        }
+
+        if (ao.isSet(Option.EXCLUDE_FIELDS)) {
+            reporter.excludeFields();
+            reporter.addConfig(Option.EXCLUDE_FIELDS.getKey(), "yes");
+        }
+
 
     }
 
@@ -262,21 +277,6 @@ public class Main implements Log {
             }
         } else if (optionName.equalsIgnoreCase(REPORT_OPTION)) {
             reporter.setReportfile(args[0]);
-        } else if (optionName.equalsIgnoreCase(INCLUDECONSTANTFIELDS_OPTION)) {
-            reporter.setConstatnChecking(true);
-            reporter.addConfig(INCLUDECONSTANTFIELDS_OPTION, "yes");
-        } else if (optionName.equalsIgnoreCase(EXCLUDEABSTRACTCLASSES_OPTION)) {
-            reporter.excludeAbstractClasses();
-            reporter.addConfig(EXCLUDEABSTRACTCLASSES_OPTION, "yes");
-        } else if (optionName.equalsIgnoreCase(EXCLUDEABSTRACTMETHODS_OPTION)) {
-            reporter.excludeAbstractMethods();
-            reporter.addConfig(EXCLUDEABSTRACTMETHODS_OPTION, "yes");
-        } else if (optionName.equalsIgnoreCase(EXCLUDEINTERFACES_OPTION)) {
-            reporter.excludeInterfaces();
-            reporter.addConfig(EXCLUDEINTERFACES_OPTION, "yes");
-        } else if (optionName.equalsIgnoreCase(EXCLUDEFIELD_OPTION)) {
-            reporter.excludeFields();
-            reporter.addConfig(EXCLUDEFIELD_OPTION, "yes");
         } else if (optionName.equalsIgnoreCase(EXCLUDELIST_OPTION)) {
             reporter.addXList(args);
         } else if (optionName.equalsIgnoreCase(DEBUG_OPTION)) {
@@ -322,11 +322,11 @@ public class Main implements Log {
         sb.append(nl).append(i18n.getString("Main.usage.apiIncludeW", Option.API_INCLUDEW.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.apiExclude", Option.API_EXCLUDE.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.excludeList", EXCLUDELIST_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeInterfaces", EXCLUDEINTERFACES_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractClasses", EXCLUDEABSTRACTCLASSES_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractMethods", EXCLUDEABSTRACTMETHODS_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeFields", EXCLUDEFIELD_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.includeConstantFields", INCLUDECONSTANTFIELDS_OPTION));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeInterfaces",      Option.EXCLUDE_INTERFACES.getKey()));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractClasses", Option.EXCLUDE_ABSTRACT_CLASSES.getKey()));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractMethods", Option.EXCLUDE_ABSTRACT_METHODS.getKey()));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeFields", Option.EXCLUDE_FIELDS.getKey()));
+        sb.append(nl).append(i18n.getString("Main.usage.includeConstantFields",  Option.INCLUDE_CONSTANT_FIELDS.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.mode", MODE_OPTION));
         sb.append(nl).append(i18n.getString("Main.usage.detail", DETAIL_OPTION));
         sb.append(nl).append(i18n.getString("Main.usage.format", FORMAT_OPTION));

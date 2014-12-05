@@ -197,11 +197,11 @@ public class CMerge {
     private boolean checkAndMerge(CovDocument[] docs, boolean strict) throws XPathExpressionException, ParserConfigurationException {
         // check configuration
         String[] keys = {Main.EXCLUDELIST_OPTION,
-            Main.EXCLUDEINTERFACES_OPTION,
-            Main.EXCLUDEABSTRACTCLASSES_OPTION,
-            Main.EXCLUDEABSTRACTMETHODS_OPTION,
-            Main.EXCLUDEFIELD_OPTION,
-            Main.INCLUDECONSTANTFIELDS_OPTION,
+                Option.EXCLUDE_INTERFACES.getKey(),
+                Option.EXCLUDE_ABSTRACT_CLASSES.getKey(),
+                Option.EXCLUDE_ABSTRACT_METHODS.getKey(),
+                Option.EXCLUDE_FIELDS.getKey(),
+                Option.INCLUDE_CONSTANT_FIELDS.getKey(),
             Main.MODE_OPTION};
 
         HashMap<String, String> confs = new HashMap<String, String>();

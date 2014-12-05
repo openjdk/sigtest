@@ -35,10 +35,21 @@ import java.util.EnumSet;
  */
 public class ApicovOptions extends Options {
 
-    private EnumSet<Option> options = EnumSet.of(Option.X_JIMAGE, Option.API_INCLUDE, Option.API_EXCLUDE,
-            Option.API, Option.TS, Option.TS_ICNLUDE, Option.TS_ICNLUDEW,
-            Option.TS_EXCLUDE, Option.API_INCLUDEW);
-
+    private EnumSet<Option> options = EnumSet.of(
+            Option.X_JIMAGE,
+            Option.API_INCLUDE,
+            Option.API_EXCLUDE,
+            Option.API,
+            Option.TS,
+            Option.TS_ICNLUDE,
+            Option.TS_ICNLUDEW,
+            Option.TS_EXCLUDE,
+            Option.API_INCLUDEW,
+            Option.EXCLUDE_INTERFACES,
+            Option.EXCLUDE_ABSTRACT_CLASSES,
+            Option.EXCLUDE_ABSTRACT_METHODS,
+            Option.EXCLUDE_FIELDS,
+            Option.INCLUDE_CONSTANT_FIELDS);
 
     @Override
     public EnumSet<Option> getOptions() {

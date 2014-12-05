@@ -458,10 +458,14 @@ class ReportPlain extends ReportGenerator {
 
         tab(0).append(i18n.getString("ReportPlain.report.Configuration"));
 
-        String[] keys = {Option.TS.getKey(), Main.EXCLUDELIST_OPTION, Option.API.getKey(),
-            Main.EXCLUDEINTERFACES_OPTION,
-            Main.EXCLUDEABSTRACTCLASSES_OPTION, Main.EXCLUDEABSTRACTMETHODS_OPTION,
-            Main.EXCLUDEFIELD_OPTION, Main.INCLUDECONSTANTFIELDS_OPTION, Main.MODE_OPTION};
+        String[] keys = {Option.TS.getKey(),
+                Main.EXCLUDELIST_OPTION, Option.API.getKey(),
+                Option.EXCLUDE_INTERFACES.getKey(),
+                Option.EXCLUDE_ABSTRACT_CLASSES.getKey(),
+                Option.EXCLUDE_ABSTRACT_METHODS.getKey(),
+                Option.EXCLUDE_FIELDS.getKey(),
+                Option.INCLUDE_CONSTANT_FIELDS.getKey(),
+                Main.MODE_OPTION};
 
         int t = 0;
 

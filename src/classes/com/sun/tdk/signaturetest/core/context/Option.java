@@ -56,6 +56,12 @@ public enum Option {
     TS_EXCLUDE("-tsExclude", Kind.MANY_OPT),
     API_INCLUDEW("-apiIncludeW", Kind.MANY_OPT),
 
+    EXCLUDE_INTERFACES("-excludeInterfaces", Kind.NONE),
+    EXCLUDE_ABSTRACT_CLASSES("-excludeAbstractClasses", Kind.NONE),
+    EXCLUDE_ABSTRACT_METHODS("-excludeAbstractMethods", Kind.NONE),
+    EXCLUDE_FIELDS("-excludeFields", Kind.NONE),
+    INCLUDE_CONSTANT_FIELDS("-includeConstantFields", Kind.NONE),
+
     ;
 
     private String key;
