@@ -85,6 +85,13 @@ public class Result {
         return true;
     }
 
+    public boolean notrun() {
+        type = NOT_RUN;
+        reason = "";
+        return true;
+    }
+
+
     public boolean isPassed() {
         return type == PASSED;
     }
