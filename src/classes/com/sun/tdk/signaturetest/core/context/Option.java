@@ -62,6 +62,11 @@ public enum Option {
     EXCLUDE_FIELDS("-excludeFields", Kind.NONE),
     INCLUDE_CONSTANT_FIELDS("-includeConstantFields", Kind.NONE),
 
+    MODE("-mode", Kind.SINGLE_OPT),
+    DETAIL("-detail", Kind.SINGLE_OPT),
+    FORMAT("-format", Kind.SINGLE_OPT),
+    REPORT("-report", Kind.SINGLE_OPT),
+    EXCLUDE_LIST("-excludeList", Kind.MANY_OPT),
     ;
 
     private String key;

@@ -151,7 +151,7 @@ public abstract class ReportGenerator extends APIVisitor {
                     }
                     xList.add(line);
                 }
-                this.addConfig(Main.EXCLUDELIST_OPTION, name);
+                this.addConfig(Option.EXCLUDE_LIST.getKey(), name);
             } catch (IOException e) {
                 log.println(e.getMessage());
                 //Main.debug(e);
@@ -458,18 +458,20 @@ class ReportPlain extends ReportGenerator {
 
         tab(0).append(i18n.getString("ReportPlain.report.Configuration"));
 
-        String[] keys = {Option.TS.getKey(),
-                Main.EXCLUDELIST_OPTION, Option.API.getKey(),
-                Option.EXCLUDE_INTERFACES.getKey(),
-                Option.EXCLUDE_ABSTRACT_CLASSES.getKey(),
-                Option.EXCLUDE_ABSTRACT_METHODS.getKey(),
-                Option.EXCLUDE_FIELDS.getKey(),
-                Option.INCLUDE_CONSTANT_FIELDS.getKey(),
-                Main.MODE_OPTION};
+        Option[] options = {Option.TS,
+                Option.EXCLUDE_LIST,
+                Option.API,
+                Option.EXCLUDE_INTERFACES,
+                Option.EXCLUDE_ABSTRACT_CLASSES,
+                Option.EXCLUDE_ABSTRACT_METHODS,
+                Option.EXCLUDE_FIELDS,
+                Option.INCLUDE_CONSTANT_FIELDS,
+                Option.MODE};
 
         int t = 0;
 
-        for (String key : keys) {
+        for (Option opt : options) {
+            String key = opt.getKey();
             if (config.get(key) == null) {
                 continue;
             }
@@ -481,7 +483,8 @@ class ReportPlain extends ReportGenerator {
 
         t++;
 
-        for (String key : keys) {
+        for (Option opt : options) {
+            String key = opt.getKey();
             if (config.get(key) == null) {
                 continue;
             }

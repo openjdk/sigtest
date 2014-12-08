@@ -171,25 +171,25 @@ public class MAPICover extends MSuperBase {
         addList(params, Option.TS_ICNLUDE.getKey(), tsIncludes);
         addList(params, Option.TS_ICNLUDEW.getKey(), tsIncludeWs);
         addList(params, Option.TS_EXCLUDE.getKey(), tsExcludes);
-        addList(params, Main.EXCLUDELIST_OPTION, excludeLists);
+        addList(params, Option.EXCLUDE_LIST.getKey(), excludeLists);
 
         if (report != null && !"".equals(report)) {
-            params.add(Main.REPORT_OPTION);
+            params.add(Option.REPORT.getKey());
             params.add(report);
         }
 
         if (mode != null && !"".equals(mode)) {
-            params.add(Main.MODE_OPTION);
+            params.add(Option.MODE.getKey());
             params.add(mode);
         }
 
         if (detail != null && !"".equals(detail)) {
-            params.add(Main.DETAIL_OPTION);
+            params.add(Option.DETAIL.getKey());
             params.add(detail);
         }
 
         if (format != null && !"".equals(format)) {
-            params.add(Main.FORMAT_OPTION);
+            params.add(Option.FORMAT.getKey());
             params.add(format);
         }
 

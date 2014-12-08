@@ -55,15 +55,15 @@ public class Main implements Log {
     private ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
 
     // non-mandatory Strings
-    public static final String MODE_OPTION = "-mode";
+    //public static final String MODE_OPTION = "-mode";
     public static final String MODE_VALUE_WORST = "w";
     public static final String MODE_VALUE_REAL = "r";
-    public static final String DETAIL_OPTION = "-detail";
-    public static final String FORMAT_OPTION = "-format";
+    //public static final String DETAIL_OPTION = "-detail";
+    //public static final String FORMAT_OPTION = "-format";
     public static final String FORMAT_VALUE_XML = "xml";
     public static final String FORMAT_VALUE_PLAIN = "plain";
-    public static final String REPORT_OPTION = "-report";
-    public static final String EXCLUDELIST_OPTION = "-excludeList";
+    //public static final String REPORT_OPTION = "-report";
+    //public static final String EXCLUDELIST_OPTION = "-excludeList";
     // Single switches
     public static final String DEBUG_OPTION = "-debug";
     // special Strings
@@ -71,8 +71,8 @@ public class Main implements Log {
     public static final String HELP_OPTION = "-help";
     public static final String QUESTIONMARK = "-?";
     // old Strings, have their own reports
-    public static final String OUT_OPTION = "-out";
-    public static final String VALIDATE_OPTION = "-validate";
+    //public static final String OUT_OPTION = "-out";
+//    public static final String VALIDATE_OPTION = "-validate";
     static final String MAIN_URI = "file:";
     private PrintWriter log;
     static protected boolean debug = false;
@@ -158,11 +158,11 @@ public class Main implements Log {
 
         final String optionsDecoder = "decodeOptions";
 
-        parser.addOption(REPORT_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(MODE_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(DETAIL_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(FORMAT_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(EXCLUDELIST_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+//        parser.addOption(REPORT_OPTION, OptionInfo.option(1), optionsDecoder);
+//        parser.addOption(MODE_OPTION, OptionInfo.option(1), optionsDecoder);
+//        parser.addOption(DETAIL_OPTION, OptionInfo.option(1), optionsDecoder);
+//        parser.addOption(FORMAT_OPTION, OptionInfo.option(1), optionsDecoder);
+//        parser.addOption(EXCLUDELIST_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
 
         parser.addOption(DEBUG_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
@@ -170,13 +170,13 @@ public class Main implements Log {
         parser.addOption(HELP_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(QUESTIONMARK, OptionInfo.optionalFlag(), optionsDecoder);
 
-        parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(VALIDATE_OPTION, OptionInfo.option(1), optionsDecoder);
+//        parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
+//        parser.addOption(VALIDATE_OPTION, OptionInfo.option(1), optionsDecoder);
 
         parser.addOptions(ao.getOptions(), optionsDecoder);
 
         try {
-            reporter.addConfig(MODE_OPTION, MODE_VALUE_WORST);
+            reporter.addConfig(Option.MODE.getKey(), MODE_VALUE_WORST); // default
             parser.processArgs(args);
         } catch (CommandLineParserException e) {
             //usage();
@@ -242,6 +242,58 @@ public class Main implements Log {
             reporter.addConfig(Option.EXCLUDE_FIELDS.getKey(), "yes");
         }
 
+        {
+            String mode = ao.getValue(Option.MODE);
+            if (mode != null) {
+                if (!MODE_VALUE_WORST.equalsIgnoreCase(mode)
+                        && !MODE_VALUE_REAL.equalsIgnoreCase(mode)) {
+                    error(i18n.getString("Main.error.arg.invalid", Option.MODE.getKey()));
+                }
+                isWorstCaseMode = MODE_VALUE_WORST.equalsIgnoreCase(mode);
+                refCounter.setMode(mode.toLowerCase());
+                reporter.addConfig(Option.MODE.getKey(), mode.toLowerCase());
+            }
+        }
+
+        {
+            String format = ao.getValue(Option.FORMAT);
+            if (format != null) {
+                if (!FORMAT_VALUE_PLAIN.equalsIgnoreCase(format)
+                        && !FORMAT_VALUE_XML.equalsIgnoreCase(format)) {
+                    error(i18n.getString("Main.error.arg.invalid", Option.FORMAT.getKey()));
+                }
+                reporter = reporter.createReportGenerator(format, log);
+            }
+        }
+
+        {
+            String detail = ao.getValue(Option.DETAIL);
+            if (detail != null) {
+                try {
+                    int d = Integer.parseInt(detail);
+                    if (d < 0 || d >= ReportGenerator.DETAIL_LEVEL.values().length) {
+                        throw new NumberFormatException();
+                    }
+                    reporter.setDetail(ReportGenerator.DETAIL_LEVEL.values()[d]);
+                } catch (NumberFormatException e) {
+                    error(i18n.getString("Main.error.arg.invalid", Option.DETAIL.getKey()));
+                }
+            }
+        }
+
+        {
+            String report = ao.getValue(Option.REPORT);
+            if (report != null) {
+                reporter.setReportfile(report);
+            }
+        }
+
+        {
+            List<String> excludes = ao.getValues(Option.EXCLUDE);
+            if (excludes != null) {
+                reporter.addXList(excludes.toArray(new String[]{}));
+            }
+        }
 
     }
 
@@ -251,35 +303,7 @@ public class Main implements Log {
             return;
         }
 
-        if (optionName.equalsIgnoreCase(MODE_OPTION)) {
-            if (!MODE_VALUE_WORST.equalsIgnoreCase(args[0])
-                    && !MODE_VALUE_REAL.equalsIgnoreCase(args[0])) {
-                error(i18n.getString("Main.error.arg.invalid", MODE_OPTION));
-            }
-            isWorstCaseMode = MODE_VALUE_WORST.equalsIgnoreCase(args[0]);
-            refCounter.setMode(args[0]);
-            reporter.addConfig(MODE_OPTION, args[0].toLowerCase());
-        } else if (optionName.equalsIgnoreCase(FORMAT_OPTION)) {
-            if (!FORMAT_VALUE_PLAIN.equalsIgnoreCase(args[0])
-                    && !FORMAT_VALUE_XML.equalsIgnoreCase(args[0])) {
-                error(i18n.getString("Main.error.arg.invalid", FORMAT_OPTION));
-            }
-            reporter = reporter.createReportGenerator(args[0], log);
-        } else if (optionName.equalsIgnoreCase(DETAIL_OPTION)) {
-            try {
-                int d = Integer.parseInt(args[0]);
-                if (d < 0 || d >= ReportGenerator.DETAIL_LEVEL.values().length) {
-                    throw new NumberFormatException();
-                }
-                reporter.setDetail(ReportGenerator.DETAIL_LEVEL.values()[d]);
-            } catch (NumberFormatException e) {
-                error(i18n.getString("Main.error.arg.invalid", DETAIL_OPTION));
-            }
-        } else if (optionName.equalsIgnoreCase(REPORT_OPTION)) {
-            reporter.setReportfile(args[0]);
-        } else if (optionName.equalsIgnoreCase(EXCLUDELIST_OPTION)) {
-            reporter.addXList(args);
-        } else if (optionName.equalsIgnoreCase(DEBUG_OPTION)) {
+        if (optionName.equalsIgnoreCase(DEBUG_OPTION)) {
             debug = true;
         } else if (optionName.equalsIgnoreCase(HELP_OPTION) || optionName.equalsIgnoreCase(QUESTIONMARK)) {
             version();
@@ -288,10 +312,6 @@ public class Main implements Log {
         } else if (optionName.equalsIgnoreCase(VERSION_OPTION)) {
             version();
             passed();
-        } else if (optionName.equalsIgnoreCase(OUT_OPTION)) {
-            throw new CommandLineParserException(i18n.getString("Main.error.arg.legacy", OUT_OPTION));
-        } else if (optionName.equalsIgnoreCase(VALIDATE_OPTION)) {
-            throw new CommandLineParserException(i18n.getString("Main.error.arg.legacy", VALIDATE_OPTION));
         }
     }
 
@@ -321,16 +341,16 @@ public class Main implements Log {
         sb.append(nl).append(i18n.getString("Main.usage.apiInclude", Option.API_INCLUDE.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.apiIncludeW", Option.API_INCLUDEW.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.apiExclude", Option.API_EXCLUDE.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeList", EXCLUDELIST_OPTION));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeList", Option.EXCLUDE_LIST.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.excludeInterfaces",      Option.EXCLUDE_INTERFACES.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractClasses", Option.EXCLUDE_ABSTRACT_CLASSES.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractMethods", Option.EXCLUDE_ABSTRACT_METHODS.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.excludeFields", Option.EXCLUDE_FIELDS.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.includeConstantFields",  Option.INCLUDE_CONSTANT_FIELDS.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.mode", MODE_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.detail", DETAIL_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.format", FORMAT_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.report", REPORT_OPTION));
+        sb.append(nl).append(i18n.getString("Main.usage.mode", Option.MODE.getKey()));
+        sb.append(nl).append(i18n.getString("Main.usage.detail", Option.DETAIL.getKey()));
+        sb.append(nl).append(i18n.getString("Main.usage.format", Option.FORMAT.getKey()));
+        sb.append(nl).append(i18n.getString("Main.usage.report", Option.REPORT.getKey()));
         sb.append(nl).append(i18n.getString("Main.usage.debug", DEBUG_OPTION));
         sb.append(nl).append(i18n.getString("Main.usage.help", HELP_OPTION));
         sb.append(nl).append(i18n.getString("Main.usage.version", VERSION_OPTION));

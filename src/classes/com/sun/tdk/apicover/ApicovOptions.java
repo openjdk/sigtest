@@ -49,7 +49,13 @@ public class ApicovOptions extends Options {
             Option.EXCLUDE_ABSTRACT_CLASSES,
             Option.EXCLUDE_ABSTRACT_METHODS,
             Option.EXCLUDE_FIELDS,
-            Option.INCLUDE_CONSTANT_FIELDS);
+            Option.INCLUDE_CONSTANT_FIELDS,
+            Option.MODE,
+            Option.DETAIL,
+            Option.FORMAT,
+            Option.REPORT,
+            Option.EXCLUDE_LIST
+            );
 
     @Override
     public EnumSet<Option> getOptions() {
