@@ -55,31 +55,17 @@ public class Main implements Log {
     private ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
 
     // non-mandatory Strings
-    //public static final String MODE_OPTION = "-mode";
     public static final String MODE_VALUE_WORST = "w";
     public static final String MODE_VALUE_REAL = "r";
-    //public static final String DETAIL_OPTION = "-detail";
-    //public static final String FORMAT_OPTION = "-format";
     public static final String FORMAT_VALUE_XML = "xml";
     public static final String FORMAT_VALUE_PLAIN = "plain";
-    //public static final String REPORT_OPTION = "-report";
-    //public static final String EXCLUDELIST_OPTION = "-excludeList";
-    // Single switches
-    public static final String DEBUG_OPTION = "-debug";
-    // special Strings
-    public static final String VERSION_OPTION = "-version";
-    public static final String HELP_OPTION = "-help";
-    public static final String QUESTIONMARK = "-?";
-    // old Strings, have their own reports
-    //public static final String OUT_OPTION = "-out";
-//    public static final String VALIDATE_OPTION = "-validate";
     static final String MAIN_URI = "file:";
     private PrintWriter log;
     static protected boolean debug = false;
     public final static int DefaultCacheSize = 4096;
     private boolean isWorstCaseMode = true; // worst case is default
     protected ClasspathImpl classpath;
-    //protected String classpathStr = null;
+
     /**
      * URL pointing to signature file.
      */
@@ -115,8 +101,9 @@ public class Main implements Log {
         this.log = log;
         reporter = ReportGenerator.createReportGenerator(refCounter, log);
         try {
-            parseParameters(args);
-            check();
+            if (parseParameters(args)) {
+                check();
+            }
         } catch (Exception e) {
             debug(e);
             error(e.getMessage());
@@ -134,7 +121,7 @@ public class Main implements Log {
      * @param args Same as <code>args[]</code> passes to <code>main()</code>.
      * @throws Exception
      */
-    protected void parseParameters(String[] args) throws Exception {
+    protected boolean parseParameters(String[] args) throws Exception {
 
         try {
             args = BatchFileParser.processParameters(args);
@@ -145,33 +132,8 @@ public class Main implements Log {
         CommandLineParser parser = new CommandLineParser(this, "-");
 
         // Print help text only and exit.
-        if (args != null && args.length == 1 && (parser.isOptionSpecified(args[0], VERSION_OPTION))) {
-            System.err.println(Version.getVersionInfo());
-            passed();
-        } else if (args == null || args.length == 0 || (args.length == 1
-                && (parser.isOptionSpecified(args[0], HELP_OPTION)
-                || parser.isOptionSpecified(args[0], QUESTIONMARK)))) {
-            version();
-            usage();
-            passed();
-        }
 
         final String optionsDecoder = "decodeOptions";
-
-//        parser.addOption(REPORT_OPTION, OptionInfo.option(1), optionsDecoder);
-//        parser.addOption(MODE_OPTION, OptionInfo.option(1), optionsDecoder);
-//        parser.addOption(DETAIL_OPTION, OptionInfo.option(1), optionsDecoder);
-//        parser.addOption(FORMAT_OPTION, OptionInfo.option(1), optionsDecoder);
-//        parser.addOption(EXCLUDELIST_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
-
-        parser.addOption(DEBUG_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
-        parser.addOption(VERSION_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(HELP_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(QUESTIONMARK, OptionInfo.optionalFlag(), optionsDecoder);
-
-//        parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
-//        parser.addOption(VALIDATE_OPTION, OptionInfo.option(1), optionsDecoder);
 
         parser.addOptions(ao.getOptions(), optionsDecoder);
 
@@ -179,7 +141,6 @@ public class Main implements Log {
             reporter.addConfig(Option.MODE.getKey(), MODE_VALUE_WORST); // default
             parser.processArgs(args);
         } catch (CommandLineParserException e) {
-            //usage();
             error(e.getMessage());
         }
 
@@ -289,30 +250,32 @@ public class Main implements Log {
         }
 
         {
-            List<String> excludes = ao.getValues(Option.EXCLUDE);
+            List<String> excludes = ao.getValues(Option.EXCLUDE_LIST);
             if (excludes != null) {
                 reporter.addXList(excludes.toArray(new String[]{}));
             }
         }
 
-    }
+        debug = ao.isSet(Option.DEBUG);
 
-    public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
-
-        if (ao.readOptions(optionName, args)) {
-            return;
-        }
-
-        if (optionName.equalsIgnoreCase(DEBUG_OPTION)) {
-            debug = true;
-        } else if (optionName.equalsIgnoreCase(HELP_OPTION) || optionName.equalsIgnoreCase(QUESTIONMARK)) {
+        if (ao.isSet(Option.HELP)) {
             version();
             usage();
             passed();
-        } else if (optionName.equalsIgnoreCase(VERSION_OPTION)) {
+            return false;
+        }
+
+        if (ao.isSet(Option.VERSION)) {
             version();
             passed();
+            return false;
         }
+
+        return true;
+    }
+
+    public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
+        ao.readOptions(optionName, args);
     }
 
     private boolean isPackageMember(String name) {
@@ -333,27 +296,27 @@ public class Main implements Log {
         String nl = System.getProperty("line.separator");
         StringBuffer sb = new StringBuffer();
         sb.append(i18n.getString("Main.usage.start"));
-        sb.append(nl).append(i18n.getString("Main.usage.ts", Option.TS.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.tsInclude", Option.TS_ICNLUDE.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.tsIncludeW", Option.TS_ICNLUDEW.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.tsExclude", Option.TS_EXCLUDE.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.api", Option.API.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.apiInclude", Option.API_INCLUDE.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.apiIncludeW", Option.API_INCLUDEW.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.apiExclude", Option.API_EXCLUDE.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeList", Option.EXCLUDE_LIST.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeInterfaces",      Option.EXCLUDE_INTERFACES.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractClasses", Option.EXCLUDE_ABSTRACT_CLASSES.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractMethods", Option.EXCLUDE_ABSTRACT_METHODS.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeFields", Option.EXCLUDE_FIELDS.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.includeConstantFields",  Option.INCLUDE_CONSTANT_FIELDS.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.mode", Option.MODE.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.detail", Option.DETAIL.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.format", Option.FORMAT.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.report", Option.REPORT.getKey()));
-        sb.append(nl).append(i18n.getString("Main.usage.debug", DEBUG_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.help", HELP_OPTION));
-        sb.append(nl).append(i18n.getString("Main.usage.version", VERSION_OPTION));
+        sb.append(nl).append(i18n.getString("Main.usage.ts", Option.TS));
+        sb.append(nl).append(i18n.getString("Main.usage.tsInclude", Option.TS_ICNLUDE));
+        sb.append(nl).append(i18n.getString("Main.usage.tsIncludeW", Option.TS_ICNLUDEW));
+        sb.append(nl).append(i18n.getString("Main.usage.tsExclude", Option.TS_EXCLUDE));
+        sb.append(nl).append(i18n.getString("Main.usage.api", Option.API));
+        sb.append(nl).append(i18n.getString("Main.usage.apiInclude", Option.API_INCLUDE));
+        sb.append(nl).append(i18n.getString("Main.usage.apiIncludeW", Option.API_INCLUDEW));
+        sb.append(nl).append(i18n.getString("Main.usage.apiExclude", Option.API_EXCLUDE));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeList", Option.EXCLUDE_LIST));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeInterfaces",      Option.EXCLUDE_INTERFACES));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractClasses", Option.EXCLUDE_ABSTRACT_CLASSES));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractMethods", Option.EXCLUDE_ABSTRACT_METHODS));
+        sb.append(nl).append(i18n.getString("Main.usage.excludeFields", Option.EXCLUDE_FIELDS));
+        sb.append(nl).append(i18n.getString("Main.usage.includeConstantFields",  Option.INCLUDE_CONSTANT_FIELDS));
+        sb.append(nl).append(i18n.getString("Main.usage.mode", Option.MODE));
+        sb.append(nl).append(i18n.getString("Main.usage.detail", Option.DETAIL));
+        sb.append(nl).append(i18n.getString("Main.usage.format", Option.FORMAT));
+        sb.append(nl).append(i18n.getString("Main.usage.report", Option.REPORT));
+        sb.append(nl).append(i18n.getString("Main.usage.debug", Option.DEBUG));
+        sb.append(nl).append(i18n.getString("Main.usage.help", Option.HELP));
+        sb.append(nl).append(i18n.getString("Main.usage.version", Option.VERSION));
         sb.append(nl).append(i18n.getString("Main.usage.end"));
         System.err.println(sb.toString());
     }

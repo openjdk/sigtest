@@ -198,7 +198,7 @@ public class MAPICover extends MSuperBase {
         addFlag(params, Option.EXCLUDE_ABSTRACT_METHODS.getKey(), excludeAbstractMethods);
         addFlag(params, Option.EXCLUDE_FIELDS.getKey(), excludeFields);
         addFlag(params, Option.INCLUDE_CONSTANT_FIELDS.getKey(), includeConstantFields);
-        addFlag(params, Main.DEBUG_OPTION, debug);
+        addFlag(params, Option.DEBUG.getKey(), debug);
 
         return (String[]) params.toArray(new String[]{});
     }

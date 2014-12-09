@@ -24,6 +24,8 @@
  */
 package com.sun.tdk.signaturetest.util;
 
+import com.sun.tdk.signaturetest.core.context.Option;
+
 import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -74,6 +76,20 @@ public class I18NResourceBundle extends ResourceBundle {
      */
     public String getString(String key, Object arg) {
         return getString(key, new Object[]{arg});
+    }
+
+    /**
+     * Get an entry from the resource bundle. If the resource cannot be found, a
+     * message is printed to the console and the result will be a string
+     * containing the method parameters.
+     *
+     * @param key the name of the entry to be returned
+     * @param arg an Option to be formatted into the result using
+     * {@link java.text.MessageFormat#format}
+     * @return the formatted string
+     */
+    public String getString(String key, Option arg) {
+        return getString(key, new Object[]{arg.getKey()});
     }
 
     /**

@@ -54,7 +54,10 @@ public class ApicovOptions extends Options {
             Option.DETAIL,
             Option.FORMAT,
             Option.REPORT,
-            Option.EXCLUDE_LIST
+            Option.EXCLUDE_LIST,
+            Option.DEBUG,
+            Option.VERSION,
+            Option.HELP
             );
 
     @Override
