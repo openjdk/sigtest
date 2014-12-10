@@ -147,6 +147,7 @@ public class ClasspathImpl implements Classpath {
         init(classPath);
     }
 
+    @Override
     public void init(String classPath) {
         entries = new ArrayList();
         errors = new ArrayList();
@@ -187,6 +188,7 @@ public class ClasspathImpl implements Classpath {
         setListToBegin();
     }
 
+    @Override
     public void close() {
         if (entries != null) {
             for (Iterator e = entries.iterator(); e.hasNext();) {
@@ -237,6 +239,7 @@ public class ClasspathImpl implements Classpath {
      * @see #nextClassName()
      * @see #findClass(String)
      */
+    @Override
     public void setListToBegin() {
         iterator = entries.iterator();
         currentEntry = null;
@@ -245,6 +248,7 @@ public class ClasspathImpl implements Classpath {
         }
     }
 
+    @Override
     public boolean hasNext() {
         if (currentEntry == null) {
             return false;
@@ -273,6 +277,7 @@ public class ClasspathImpl implements Classpath {
      * @see #setListToBegin()
      * @see #findClass(String)
      */
+    @Override
     public String nextClassName() {
         return currentEntry.nextClassName();
     }
@@ -289,6 +294,7 @@ public class ClasspathImpl implements Classpath {
      * <b>ClasspathImpl</b> instance.
      * @see java.io.FileInputStream
      */
+    @Override
     public InputStream findClass(String name) throws IOException, ClassNotFoundException {
         name = ExoticCharTools.decodeExotic(name);
 

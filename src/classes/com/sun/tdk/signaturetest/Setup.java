@@ -505,6 +505,9 @@ public class Setup extends SigTest {
             if (writer != null) {
                 writer.close();
             }
+            if (classpath != null) {
+                classpath.close();
+            }
             try {
                 if (fos != null) {
                     fos.close();
