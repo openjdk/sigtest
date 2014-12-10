@@ -24,7 +24,6 @@
  */
 package com.sun.tdk.signaturetest.core;
 
-import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.*;
@@ -56,9 +55,9 @@ import java.util.regex.Pattern;
  */
 public class Erasurator {
 
-    private Map globalParameters = new HashMap();
-    private Map localParameters = new HashMap();
-    private HashSet unresolvedWarnings = new HashSet();
+    private Map<String, String> globalParameters = new HashMap<String, String>();
+    private Map<String, String> localParameters = new HashMap<String, String>();
+    private HashSet<String> unresolvedWarnings = new HashSet<String>();
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Erasurator.class);
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
@@ -90,7 +89,7 @@ public class Erasurator {
         return result;
     }
 
-    private String convert(String s, Map globalParameters, Map localParameters) {
+    private String convert(String s, Map<String, String> globalParameters, Map<String, String> localParameters) {
 
         Matcher m;
         String newS = s;
@@ -108,12 +107,12 @@ public class Erasurator {
         while (m.find()) {
             String param = m.group();
             if (globalParameters.containsKey(param)) {
-                newS = m.replaceFirst((String) globalParameters.get(param));
+                newS = m.replaceFirst(globalParameters.get(param));
                 m = replaceParamUsage.matcher(newS);
                 continue;
             }
             if (localParameters.containsKey(param)) {
-                newS = m.replaceFirst((String) localParameters.get(param));
+                newS = m.replaceFirst(localParameters.get(param));
                 m = replaceParamUsage.matcher(newS);
                 continue;
             }
@@ -133,7 +132,7 @@ public class Erasurator {
         }
     }
 
-    private static void parseTypeParameters(MemberDescription member, Map parameters) {
+    private static void parseTypeParameters(MemberDescription member, Map<String, String> parameters) {
 
         StringTokenizer st = new StringTokenizer(member.getTypeParameters(), "<>,");
         final String ext = " extends ";
@@ -263,8 +262,8 @@ public class Erasurator {
         return cloned_m;
     }
 
-    public static ArrayList splitParameters(String actualTypeParams) {
-        ArrayList paramList = new ArrayList();
+    public static ArrayList<String> splitParameters(String actualTypeParams) {
+        ArrayList<String> paramList = new ArrayList<String>();
         int startPos = 1;
         int level = 0;
         int len = actualTypeParams.length() - 1;
@@ -302,11 +301,11 @@ public class Erasurator {
         return result;
     }
 
-    public static Collection replaceFormalParameters(String fqn, Collection members, List actualTypeParamList, boolean skipRawTypes) {
+    public static Collection<MemberDescription> replaceFormalParameters(String fqn, Collection members, List actualTypeParamList, boolean skipRawTypes) {
 
         assert actualTypeParamList.size() != 0;
 
-        Collection result = new ArrayList();
+        Collection<MemberDescription> result = new ArrayList<MemberDescription>();
 
         for (Iterator it = members.iterator(); it.hasNext();) {
             MemberDescription newFid = replaceFormalParameters(fqn, (MemberDescription) it.next(), actualTypeParamList, skipRawTypes);

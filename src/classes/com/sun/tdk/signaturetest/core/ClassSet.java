@@ -55,7 +55,7 @@ public class ClassSet {
     }
     private ClassHierarchy hierarchy;
     private boolean trackDependeces;
-    private Map stack = new HashMap();
+    private Map classNamesInProcess = new HashMap<String, Object>();
 
     public ClassSet(ClassHierarchy hierarchy, boolean trackDependeces) {
         this.hierarchy = hierarchy;
@@ -68,14 +68,14 @@ public class ClassSet {
 
     private void addClass(String fqname, boolean externalCall) {
 
-        if (stack.get(fqname) != null) {
+        if (classNamesInProcess.get(fqname) != null) {
             return;
         }
 
-        stack.put(fqname, null);
+        classNamesInProcess.put(fqname, null);
 
         try {
-            Counter counter = (Counter) classes.get(fqname);
+            Counter counter = classes.get(fqname);
             try {
 
                 ClassDescription cl = hierarchy.load(fqname);
@@ -107,21 +107,21 @@ public class ClassSet {
             }
 
         } finally {
-            stack.remove(fqname);
+            classNamesInProcess.remove(fqname);
         }
     }
 
     public void removeClass(String fqname) {
 
-        if (stack.get(fqname) != null) {
+        if (classNamesInProcess.get(fqname) != null) {
             return;
         }
 
-        stack.put(fqname, null);
+        classNamesInProcess.put(fqname, null);
 
         try {
 
-            Counter counter = (Counter) classes.get(fqname);
+            Counter counter = classes.get(fqname);
             if (counter != null) {
 
                 int c = counter.intValue();
@@ -149,18 +149,18 @@ public class ClassSet {
                 assert true;
             }
         } finally {
-            stack.remove(fqname);
+            classNamesInProcess.remove(fqname);
         }
 
     }
 
-    public Set getClasses() {
+    public Set<String> getClasses() {
         return Collections.unmodifiableSet(classes.keySet());
     }
 
-    public Set getMissingClasses() {
+    public Set<String> getMissingClasses() {
         return Collections.unmodifiableSet(missingClasses);
     }
-    private Map classes = new HashMap();
-    private Set missingClasses = new HashSet();
+    private Map<String, Counter> classes = new HashMap();
+    private Set<String> missingClasses = new HashSet();
 }
