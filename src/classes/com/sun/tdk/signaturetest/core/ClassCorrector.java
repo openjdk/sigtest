@@ -209,7 +209,7 @@ public class ClassCorrector implements Transformer {
 
         if (oldInt.size() != 0) {
 
-            Set newInt = classHierarchy.getAllImplementedInterfaces(replacement);
+            Set<? extends Object> newInt = classHierarchy.getAllImplementedInterfaces(replacement);
 
             oldInt.removeAll(newInt); // diff
 
@@ -238,7 +238,7 @@ public class ClassCorrector implements Transformer {
         return replacement;
     }
 
-    private void getPaths2(List paths, List currentPath, String intFrom, String intTo) {
+    private void getPaths2(List<ArrayList<String>> paths, List<String> currentPath, String intFrom, String intTo) {
         String[] sis = new String[]{};
         try {
             sis = classHierarchy.getSuperInterfaces(intFrom);
@@ -251,18 +251,17 @@ public class ClassCorrector implements Transformer {
                 getPaths2(paths, currentPath, sis[i], intTo);
                 currentPath.remove(currentPath.size() - 1);
             } else {
-                paths.add(new ArrayList(currentPath));
+                paths.add(new ArrayList<String>(currentPath));
             }
         }
     }
 
-    private void getPaths(List paths, List currentPath, String intFrom, String intTo) {
+    private void getPaths(List<ArrayList<String>> paths, List<String> currentPath, String intFrom, String intTo) {
         getPaths2(paths, currentPath, intFrom, intTo);
         // remove invisible elements
-        for (Iterator it = paths.iterator(); it.hasNext();) {
-            ArrayList path = (ArrayList) it.next();
-            for (Iterator it2 = path.iterator(); it2.hasNext();) {
-                String cl = (String) it2.next();
+        for (ArrayList<String> path : paths) {
+            for (Iterator<String> it2 = path.iterator(); it2.hasNext();) {
+                String cl = it2.next();
                 try {
                     if (!classHierarchy.isAccessible(cl)) {
                         it2.remove();
@@ -287,13 +286,13 @@ public class ClassCorrector implements Transformer {
         // if this member is from interface...
         try {
             if (classHierarchy.isInterface(clName)) {
-                ArrayList paths = new ArrayList();
-                ArrayList currentPath = new ArrayList();
+                ArrayList<ArrayList<String>> paths = new ArrayList<ArrayList<String>>();
+                ArrayList<String> currentPath = new ArrayList<String>();
                 getPaths(paths, currentPath, replaceWithClassName, clName);
                 if (paths.size() > 0) {
-                    ArrayList shorterPath = (ArrayList) paths.get(0);
+                    ArrayList<String> shorterPath = paths.get(0);
                     if (shorterPath.size() > 0) {
-                        return (String) shorterPath.get(shorterPath.size() - 1);
+                        return shorterPath.get(shorterPath.size() - 1);
                     }
                 }
             }
@@ -462,7 +461,7 @@ public class ClassCorrector implements Transformer {
 
         List supers = classHierarchy.getSuperClasses(c.getQualifiedName());
 
-        ArrayList newMembers = new ArrayList();
+        ArrayList<MemberDescription> newMembers = new ArrayList<MemberDescription>();
 
         for (Iterator e = c.getMembersIterator(); e.hasNext();) {
 
@@ -504,13 +503,13 @@ public class ClassCorrector implements Transformer {
         }
 
         for (int i = 0; i < newMembers.size(); ++i) {
-            c.add((MemberDescription) newMembers.get(i));
+            c.add(newMembers.get(i));
         }
     }
 
     private void removeInvisibleInterfaces(ClassDescription c) throws ClassNotFoundException {
 
-        List makeThemDirect = null;
+        List<String> makeThemDirect = null;
 
         for (Iterator e = c.getMembersIterator(); e.hasNext();) {
             MemberDescription mr = (MemberDescription) e.next();
@@ -530,7 +529,7 @@ public class ClassCorrector implements Transformer {
                     if (si.isDirect()) {
 
                         if (makeThemDirect == null) {
-                            makeThemDirect = new ArrayList();
+                            makeThemDirect = new ArrayList<String>();
                         }
 
                         String[] intfs = classHierarchy.getSuperInterfaces(siName);
@@ -664,7 +663,7 @@ public class ClassCorrector implements Transformer {
      */
     private void removeDuplicatedConstants(ClassDescription c) {
 
-        Set constantNames = new HashSet();
+        Set<String> constantNames = new HashSet<String>();
 
         for (Iterator e = c.getMembersIterator(); e.hasNext();) {
             MemberDescription mr = (MemberDescription) e.next();
@@ -709,10 +708,10 @@ public class ClassCorrector implements Transformer {
         String typeparams = mr.getTypeParameters();
 
         if (typeparams != null) {
-            ArrayList params = Erasurator.splitParameters(typeparams);
+            ArrayList<String> params = Erasurator.splitParameters(typeparams);
             for (int i = 0; i < params.size(); ++i) {
 
-                String param = (String) params.get(i);
+                String param = params.get(i);
                 String temp = param.substring(param.indexOf(ext) + ext.length());
                 StringTokenizer st = new StringTokenizer(temp, "&");
 

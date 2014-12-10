@@ -24,7 +24,6 @@
  */
 package com.sun.tdk.signaturetest.core;
 
-import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.*;
@@ -79,7 +78,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     }
 
     public List<String> getSuperClasses(String fqClassName) throws ClassNotFoundException {
-        List<String> superclasses = new ArrayList();
+        List<String> superclasses = new ArrayList<String>();
         findSuperclasses(fqClassName, superclasses);
         return superclasses;
     }
@@ -90,7 +89,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     }
 
     public Set<String> getAllImplementedInterfaces(String fqClassName) throws ClassNotFoundException {
-        Set<String> intfs = new HashSet();
+        Set<String> intfs = new HashSet<String>();
         findAllImplementedInterfaces(fqClassName, intfs);
         return intfs;
     }
@@ -106,7 +105,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
     private void findAllImplementedInterfaces(String fqname, Set<String> implementedInterfaces) throws ClassNotFoundException {
 
-        List superClasses = new ArrayList();
+        List<String> superClasses = new ArrayList<String>();
 
         ClassInfo info = getClassInfo(fqname);
 
@@ -119,7 +118,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         findSuperclasses(fqname, superClasses);
 
         for (int i = 0; i < superClasses.size(); ++i) {
-            findSuperInterfaces((String) superClasses.get(i), implementedInterfaces);
+            findSuperInterfaces(superClasses.get(i), implementedInterfaces);
         }
     }
 
@@ -138,7 +137,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
         String[] result = EMPTY_STRING_ARRAY;
 
-        List subClasses = (List) directSubClasses.get(fqClassName);
+        List<String> subClasses = directSubClasses.get(fqClassName);
         if (subClasses != null) {
             result = (String[]) subClasses.toArray(EMPTY_STRING_ARRAY);
         }
@@ -248,7 +247,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
     public boolean isDocumentedAnnotation(String fqname) throws ClassNotFoundException {
 
-        ClassInfo info = (ClassInfo) processedClasses.get(fqname);
+        ClassInfo info = processedClasses.get(fqname);
         if (info != null) {
             return info.isDocumentedAnnotation;
         }
@@ -315,7 +314,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
             throw new NullPointerException("Parameter fqname can't be null!");
         }
 
-        ClassInfo info = (ClassInfo) processedClasses.get(fqname);
+        ClassInfo info = processedClasses.get(fqname);
         if (info != null) {
             return info.accessable;
         }
@@ -327,7 +326,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     private boolean isAccessible(ClassDescription c, boolean no_cache) {
 
         if (!no_cache) {
-            ClassInfo info = (ClassInfo) processedClasses.get(c.getQualifiedName());
+            ClassInfo info = processedClasses.get(c.getQualifiedName());
             if (info != null) {
                 return info.accessable;
             }
@@ -379,7 +378,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
     private ClassInfo getClassInfo(String fqname) throws ClassNotFoundException {
 
-        ClassInfo info = (ClassInfo) processedClasses.get(fqname);
+        ClassInfo info = processedClasses.get(fqname);
         if (info == null) {
 
             ClassDescription c = load(fqname, true);
@@ -399,14 +398,14 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         }
         return info;
     }
-    private Map directSubClasses = new HashMap();
+    private Map<String, List<String>> directSubClasses = new HashMap<String, List<String>>();
 
     private void addSubClass(String superClass, String subClass) {
 
-        List subClasses = (List) directSubClasses.get(superClass);
+        List<String> subClasses = directSubClasses.get(superClass);
 
         if (subClasses == null) {
-            subClasses = new ArrayList(3);
+            subClasses = new ArrayList<String>(3);
             directSubClasses.put(superClass, subClasses);
         }
 
@@ -450,7 +449,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     public int getTrackMode() {
         return trackMode;
     }
-    private HashMap processedClasses = new HashMap();
+    private HashMap<String, ClassInfo> processedClasses = new HashMap<String, ClassInfo>();
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     class DefaultIsAccessibleFilter implements Filter {
