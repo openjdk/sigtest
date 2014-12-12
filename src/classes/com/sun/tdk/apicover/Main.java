@@ -123,6 +123,13 @@ public class Main implements Log {
      */
     protected boolean parseParameters(String[] args) throws Exception {
 
+        if (args.length == 0) {
+            version();
+            usage();
+            passed();
+            return false;
+        }
+
         try {
             args = BatchFileParser.processParameters(args);
         } catch (CommandLineParserException ex) {
