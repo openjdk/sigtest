@@ -107,7 +107,7 @@
 
     <echo message="*** Test 2"/>
     <stest filename="${build.test.dir}/loaders.sig" output="${build.test.dir}/t2.out" failonerror="true"
-           package="com.sun.tdk.signaturetest.core" negative="true">
+           package="com.sun.tdk.signaturetest.core" >
         <classpath>
             <pathelement location="${build.javatest.dir}"/>
             <pathelement location="${sigtest.jar}"/>
