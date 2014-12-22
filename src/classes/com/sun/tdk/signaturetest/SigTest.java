@@ -254,7 +254,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected void decodeCommonOptions(String optionName, String[] args) throws CommandLineParserException {
 
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
-        bo.readOptions("-debug", new String[] {});
 
         if (bo.readOptions(optionName, args)) return;
 
