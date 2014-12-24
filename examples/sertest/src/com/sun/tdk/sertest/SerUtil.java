@@ -58,25 +58,25 @@ class SerUtil {
             return cls;
         }
     };
+
     private static Transformer serializationTransformer = new Transformer() {
         public ClassDescription transform(ClassDescription cls) {
             MemberCollection cleaned = new MemberCollection();
-            for (Iterator e = cls.getMembersIterator(); e.hasNext(); ) {
+            for (Iterator e = cls.getMembersIterator(); e.hasNext();) {
                 MemberDescription mr = (MemberDescription) e.next();
-
-                if (isSVUID(mr, cls)) {
+                if (isSVUID(mr, cls) || mr.isSuperClass() || mr.isSuperInterface()) {
                     cleaned.addMember(mr);
                 }
-
             }
             cls.setMembers(cleaned);
             return cls;
         }
     };
 
-
     private static boolean isSVUID(MemberDescription mr, ClassDescription cls) {
-        return mr.isField() && mr.getDeclaringClassName().equals(cls.getQualifiedName()) && serVerUID.equals(mr.getName());
+        return mr.isField() && !mr.hasModifier(Modifier.TRANSIENT) &&
+                mr.getDeclaringClassName().equals(cls.getQualifiedName()) &&
+                serVerUID.equals(mr.getName());
     }
 
     private static Transformer onlyFieldsTransformer = new Transformer() {
