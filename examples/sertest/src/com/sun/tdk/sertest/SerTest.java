@@ -25,8 +25,12 @@
 package com.sun.tdk.sertest;
 
 import com.sun.tdk.signaturetest.SignatureTest;
+import com.sun.tdk.signaturetest.model.ClassDescription;
+import com.sun.tdk.signaturetest.model.MemberCollection;
+import com.sun.tdk.signaturetest.model.MemberDescription;
 
 import java.io.PrintWriter;
+import java.util.Iterator;
 
 /**
  * @author Mikhail Ershov
@@ -52,6 +56,22 @@ public class SerTest extends SignatureTest {
     @Override
     protected boolean allowMissingSuperclasses() {
         return true;
+    }
+
+    @Override
+    protected void verifyClass(ClassDescription required, ClassDescription found) {
+        // allow no serialVersionUID for tested classes
+        if (!SerUtil.hasSVUID(found) && SerUtil.hasSVUID(required)) {
+            MemberCollection noSVUID = new MemberCollection();
+            for (Iterator e = required.getMembersIterator(); e.hasNext();) {
+                MemberDescription mr = (MemberDescription) e.next();
+                if (!SerUtil.isSVUID(mr, required)) {
+                    noSVUID.addMember(mr);
+                }
+            }
+            required.setMembers(noSVUID);
+        }
+        super.verifyClass(required, found);
     }
 
     @Override

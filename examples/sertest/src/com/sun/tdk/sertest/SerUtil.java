@@ -53,15 +53,7 @@ class SerUtil {
     static Logger logger = Logger.getLogger(SerUtil.class.getName());
     private static Filter clsWriteFilter = new Filter() {
         public boolean accept(ClassDescription cls) {
-            if (isSerialized(cls)) {
-                for (Iterator e = cls.getMembersIterator(); e.hasNext();) {
-                    MemberDescription member = (MemberDescription) e.next();
-                    if (isSVUID(member, cls)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return isSerialized(cls);
         }
     };
     private static Filter serClsFilter = new Filter() {
@@ -89,10 +81,20 @@ class SerUtil {
         }
     };
 
-    private static boolean isSVUID(MemberDescription mr, ClassDescription cls) {
+    static boolean isSVUID(MemberDescription mr, ClassDescription cls) {
         return mr.isField() && !mr.hasModifier(Modifier.TRANSIENT) &&
                 mr.getDeclaringClassName().equals(cls.getQualifiedName()) &&
                 serVerUID.equals(mr.getName());
+    }
+
+    static boolean hasSVUID(ClassDescription cls) {
+        for (Iterator e = cls.getMembersIterator(); e.hasNext(); ) {
+            MemberDescription member = (MemberDescription) e.next();
+            if (isSVUID(member, cls)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static Transformer onlyFieldsTransformer = new Transformer() {
@@ -180,7 +182,7 @@ class SerUtil {
         return false;
     }
 
-    public static String[] addParam(String[] arr, String newElem) {
+    static String[] addParam(String[] arr, String newElem) {
         if (containsIgnoreString(arr, newElem)) {
             return arr;
         }
