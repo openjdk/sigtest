@@ -26,7 +26,10 @@ package com.sun.tdk.sertest;
 
 import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.Version;
-import com.sun.tdk.signaturetest.model.*;
+import com.sun.tdk.signaturetest.model.ClassDescription;
+import com.sun.tdk.signaturetest.model.MemberCollection;
+import com.sun.tdk.signaturetest.model.MemberDescription;
+import com.sun.tdk.signaturetest.model.Modifier;
 import com.sun.tdk.signaturetest.plugin.Filter;
 import com.sun.tdk.signaturetest.plugin.PluginAPI;
 import com.sun.tdk.signaturetest.plugin.Transformer;
@@ -48,6 +51,19 @@ class SerUtil {
     static final String serVerUID = "serialVersionUID";
     private static final String SER_INT = "java.io.Serializable";
     static Logger logger = Logger.getLogger(SerUtil.class.getName());
+    private static Filter clsWriteFilter = new Filter() {
+        public boolean accept(ClassDescription cls) {
+            if (isSerialized(cls)) {
+                for (Iterator e = cls.getMembersIterator(); e.hasNext();) {
+                    MemberDescription member = (MemberDescription) e.next();
+                    if (isSVUID(member, cls)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    };
     private static Filter serClsFilter = new Filter() {
         public boolean accept(ClassDescription cls) {
             return isSerialized(cls);
@@ -94,7 +110,7 @@ class SerUtil {
     };
 
     static {
-        PluginAPI.BEFORE_WRITE.setFilter(serClsFilter);
+        PluginAPI.BEFORE_WRITE.setFilter(clsWriteFilter);
         PluginAPI.AFTER_BUILD_MEMBERS.setTransformer(serializationTransformer);
         PluginAPI.CLASS_CORRECTOR.setTransformer(emptyTransformer);
         // test
@@ -154,4 +170,29 @@ class SerUtil {
         w.setFormat(f);
         st.setFormat(f);
     }
+
+    private static boolean containsIgnoreString(String[] arr, String value) {
+        for (String v : arr) {
+            if (v.equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String[] addParam(String[] arr, String newElem) {
+        if (containsIgnoreString(arr, newElem)) {
+            return arr;
+        }
+
+        int len = arr.length;
+        String[] newArgs = new String[len + 1];
+
+        System.arraycopy(arr, 0, newArgs, 0, len);
+        newArgs[arr.length] = newElem;
+
+        return newArgs;
+    }
+
+
 }

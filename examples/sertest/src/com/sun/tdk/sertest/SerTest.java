@@ -25,10 +25,7 @@
 package com.sun.tdk.sertest;
 
 import com.sun.tdk.signaturetest.SignatureTest;
-import com.sun.tdk.signaturetest.model.ClassDescription;
-import com.sun.tdk.signaturetest.model.FieldDescr;
-import com.sun.tdk.signaturetest.model.MemberType;
-import com.sun.tdk.signaturetest.model.Modifier;
+
 import java.io.PrintWriter;
 
 /**
@@ -57,23 +54,10 @@ public class SerTest extends SignatureTest {
         return true;
     }
 
-    private String[] changeParameters(String[] args) {
-        for (String option : args) {
-            if (option.equalsIgnoreCase(STATIC_OPTION)) {
-                return args;
-            }
-        }
-        int len = args.length;
-        String[] newArgs = new String[len + 1];
-
-        System.arraycopy(args, 0, newArgs, 0, len);
-        newArgs[args.length] = STATIC_OPTION;
-
-        return newArgs;
-    }
-
     @Override
     public void run(String[] args, PrintWriter log, PrintWriter ref) {
-        super.run(changeParameters(args), log, ref);
+        args = SerUtil.addParam(args, STATIC_OPTION);
+        args = SerUtil.addParam(args, FORMATHUMAN_OPTION);
+        super.run(args, log, ref);
     }
 }

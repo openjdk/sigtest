@@ -25,6 +25,7 @@
 package com.sun.tdk.sertest;
 
 import com.sun.tdk.signaturetest.Setup;
+
 import java.io.PrintWriter;
 
 /**
@@ -49,19 +50,8 @@ public class SerSetup extends Setup {
     }
 
     @Override
-    // add NONCLOSEDFILE_OPTION
     protected boolean parseParameters(String[] args) {
-        for (String option : args) {
-            if (option.equalsIgnoreCase(NONCLOSEDFILE_OPTION)) {
-                return super.parseParameters(args);
-            }
-        }
-        int len = args.length;
-        String[] newArgs = new String[len + 1];
-
-        System.arraycopy(args, 0, newArgs, 0, len);
-        newArgs[args.length] = NONCLOSEDFILE_OPTION;
-
-        return super.parseParameters(newArgs);
+        // add NONCLOSEDFILE_OPTION
+        return super.parseParameters(SerUtil.addParam(args, NONCLOSEDFILE_OPTION));
     }
 }
