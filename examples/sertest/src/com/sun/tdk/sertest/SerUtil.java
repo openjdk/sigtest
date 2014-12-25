@@ -196,5 +196,19 @@ class SerUtil {
         return newArgs;
     }
 
+    static String[] addParam(String[] arr, String newElem, String val) {
+        if (containsIgnoreString(arr, newElem)) {
+            return arr;
+        }
+
+        int len = arr.length;
+        String[] newArgs = new String[len + 2];
+
+        System.arraycopy(arr, 0, newArgs, 0, len);
+        newArgs[arr.length] = newElem;
+        newArgs[arr.length+1] = val;
+
+        return newArgs;
+    }
 
 }

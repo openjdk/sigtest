@@ -25,6 +25,7 @@
 package com.sun.tdk.sertest;
 
 import com.sun.tdk.signaturetest.Setup;
+import com.sun.tdk.signaturetest.core.ClassDescriptionLoader;
 
 import java.io.PrintWriter;
 
@@ -32,6 +33,8 @@ import java.io.PrintWriter;
  * @author Mikhail Ershov
  */
 public class SerSetup extends Setup {
+
+    private ClassDescriptionLoader loader;
 
     public static void main(String[] args) {
         SerSetup t = new SerSetup();
@@ -45,6 +48,18 @@ public class SerSetup extends Setup {
     }
 
     @Override
+    protected ClassDescriptionLoader getClassDescrLoader() {
+        if (isStatic) {
+            return super.getClassDescrLoader();
+        } else {
+            if (loader == null) {
+                loader = new SerClassLoader();
+            }
+            return loader;
+        }
+    }
+
+    @Override
     protected String getComponentName() {
         return "Serialization test  setup";
     }
@@ -52,6 +67,10 @@ public class SerSetup extends Setup {
     @Override
     protected boolean parseParameters(String[] args) {
         // add NONCLOSEDFILE_OPTION
-        return super.parseParameters(SerUtil.addParam(args, NONCLOSEDFILE_OPTION));
+        args = SerUtil.addParam(args, NONCLOSEDFILE_OPTION);
+        args = SerUtil.addParam(args, XGENCONSTS_OPTION, "on");
+        args = SerUtil.addParam(args, KEEP_SIGFILE_OPTION);
+        args = SerUtil.addParam(args, XNOTIGER_OPTION);
+        return super.parseParameters(args);
     }
 }
