@@ -76,8 +76,9 @@ public class SerTest extends SignatureTest {
 
     @Override
     public void run(String[] args, PrintWriter log, PrintWriter ref) {
-        args = SerUtil.addParam(args, STATIC_OPTION);
         args = SerUtil.addParam(args, FORMATHUMAN_OPTION);
+        args = SerUtil.addParam(args, MODE_OPTION, BINARY_MODE);
+        args = SerUtil.addParam(args, XNOTIGER_OPTION);
         super.run(args, log, ref);
     }
 }
