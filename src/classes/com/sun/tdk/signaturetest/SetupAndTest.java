@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest;
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
+import com.sun.tdk.signaturetest.core.context.TestOptions;
 import com.sun.tdk.signaturetest.util.CommandLineParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.OptionInfo;
@@ -64,6 +65,7 @@ public class SetupAndTest extends Result {
 
         CommandLineParser parser = new CommandLineParser(this, "-");
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+        TestOptions to = AppContext.getContext().getBean(TestOptions.class);
 
         // Print help text only and exit.
         if (Option.HELP.accept(args[0])) {
@@ -87,13 +89,6 @@ public class SetupAndTest extends Result {
         parser.addOption(SigTest.OUT_OPTION, OptionInfo.option(1), optionsDecoder);
 
         parser.addOption(SigTest.CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(SigTest.FORMATPLAIN_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
-        parser.addOption(SigTest.FORMATHUMAN_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(SigTest.FORMATHUMAN_ALT_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-
-        parser.addOption(SigTest.BACKWARD_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(SigTest.BACKWARD_ALT_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
 
         parser.addOption(SignatureTest.CHECKVALUE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(SignatureTest.NOCHECKVALUE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -103,6 +98,7 @@ public class SetupAndTest extends Result {
         parser.addOption(SigTest.VERBOSE_OPTION, OptionInfo.optionVariableParams(0, 1), optionsDecoder);
 
         parser.addOptions(bo.getOptions(), optionsDecoder);
+        parser.addOptions(to.getOptions(), optionsDecoder);
 
         try {
             parser.processArgs(args);
@@ -169,8 +165,10 @@ public class SetupAndTest extends Result {
     public void decodeOptions(String optionName, String[] args) {
 
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
-        if (bo.readOptions(optionName, args)) return;
+        bo.readOptions(optionName, args);
 
+        TestOptions to = AppContext.getContext().getBean(TestOptions.class);
+        to.readOptions(optionName, args);
 
         if (Option.HELP.accept(optionName)) {
             usage();
@@ -203,11 +201,11 @@ public class SetupAndTest extends Result {
 
             addOption(testOptions, optionName, args[0]);
 
-        } else if (optionName.equalsIgnoreCase(SigTest.FORMATPLAIN_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.FORMATHUMAN_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.FORMATHUMAN_ALT_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.BACKWARD_OPTION)
-                || optionName.equalsIgnoreCase(SigTest.BACKWARD_ALT_OPTION)
+        } else if (optionName.equalsIgnoreCase(Option.FORMATPLAIN.getKey())
+                || optionName.equalsIgnoreCase(Option.FORMATHUMAN.getKey())
+                || optionName.equalsIgnoreCase(Option.FORMATHUMAN.getAlias())
+                || optionName.equalsIgnoreCase(Option.BACKWARD.getKey())
+                || optionName.equalsIgnoreCase(Option.BACKWARD.getAlias())
                 || optionName.equalsIgnoreCase(SignatureTest.CHECKVALUE_OPTION)) {
 
             addFlag(testOptions, optionName);
@@ -230,8 +228,8 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.test", TEST_OPTION));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.package", Option.PACKAGE.getKey()));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.out", SigTest.OUT_OPTION));
-        sb.append(nl).append(i18n.getString("SignatureTest.usage.backward", new Object[]{SigTest.BACKWARD_OPTION, SigTest.BACKWARD_ALT_OPTION}));
-        sb.append(nl).append(i18n.getString("SignatureTest.usage.human", new Object[]{SigTest.FORMATHUMAN_OPTION, SigTest.FORMATHUMAN_ALT_OPTION}));
+        sb.append(nl).append(i18n.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}));
+        sb.append(nl).append(i18n.getString("SignatureTest.usage.human", new Object[]{Option.FORMATHUMAN.getKey(), Option.FORMATHUMAN.getAlias()}));
 
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
 
@@ -243,7 +241,7 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.checkvalue", Setup.CHECKVALUE_OPTION));
         sb.append(nl).append(i18n.getString("SignatureTest.usage.mode", SignatureTest.MODE_OPTION));
 
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.formatplain", SigTest.FORMATPLAIN_OPTION));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.formatplain", Option.FORMATPLAIN));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.classcachesize", new Object[]{SigTest.CLASSCACHESIZE_OPTION, new Integer(SigTest.DefaultCacheSize)}));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", Option.VERSION.getKey()));

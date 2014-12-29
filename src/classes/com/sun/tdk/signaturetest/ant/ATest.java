@@ -141,9 +141,9 @@ public class ATest extends ABase {
             params.add(SignatureTest.BINARY_MODE);
         }
         if (backward) {
-            params.add(SigTest.BACKWARD_OPTION);
+            params.add(Option.BACKWARD.getKey());
         } else if (human) {
-            params.add(SigTest.FORMATHUMAN_OPTION);
+            params.add(Option.FORMATHUMAN.getKey());
         }
 
         if (out != null && out.length() > 0) {

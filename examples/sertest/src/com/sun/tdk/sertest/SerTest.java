@@ -25,6 +25,7 @@
 package com.sun.tdk.sertest;
 
 import com.sun.tdk.signaturetest.SignatureTest;
+import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.MemberCollection;
 import com.sun.tdk.signaturetest.model.MemberDescription;
@@ -76,7 +77,7 @@ public class SerTest extends SignatureTest {
 
     @Override
     public void run(String[] args, PrintWriter log, PrintWriter ref) {
-        args = SerUtil.addParam(args, FORMATHUMAN_OPTION);
+        args = SerUtil.addParam(args, Option.FORMATHUMAN.getKey());
         args = SerUtil.addParam(args, MODE_OPTION, BINARY_MODE);
         args = SerUtil.addParam(args, XNOTIGER_OPTION);
         super.run(args, log, ref);

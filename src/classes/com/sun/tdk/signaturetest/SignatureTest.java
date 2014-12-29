@@ -28,6 +28,7 @@ import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
+import com.sun.tdk.signaturetest.core.context.TestOptions;
 import com.sun.tdk.signaturetest.errors.*;
 import com.sun.tdk.signaturetest.loaders.LoadingHints;
 import com.sun.tdk.signaturetest.model.*;
@@ -299,6 +300,7 @@ public class SignatureTest extends SigTest {
 
         CommandLineParser parser = new CommandLineParser(this, "-");
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+        TestOptions to = AppContext.getContext().getBean(TestOptions.class);
 
         args = exclude.parseParameters(args);
 
@@ -312,11 +314,6 @@ public class SignatureTest extends SigTest {
         parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(FORMATPLAIN_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(FORMATHUMAN_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(FORMATHUMAN_ALT_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(BACKWARD_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
-        parser.addOption(BACKWARD_ALT_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(EXTENSIBLE_INTERFACES_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XVERBOSE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -334,6 +331,7 @@ public class SignatureTest extends SigTest {
         parser.addOption(SECURE_PACKAGES_OPTION, OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
 
         parser.addOptions(bo.getOptions(), optionsDecoder);
+        parser.addOptions(to.getOptions(), optionsDecoder);
 
         try {
             parser.processArgs(args);
@@ -377,11 +375,8 @@ public class SignatureTest extends SigTest {
             return error(i18nSt.getString("Setup.error.options.cant_be_used_together", invargs));
         }
 
-        if ((parser.isOptionSpecified(BACKWARD_OPTION)
-                || parser.isOptionSpecified(BACKWARD_ALT_OPTION))
-                && (parser.isOptionSpecified(FORMATHUMAN_OPTION)
-                || parser.isOptionSpecified(FORMATHUMAN_ALT_OPTION))) {
-            String invargs[] = {BACKWARD_OPTION, FORMATHUMAN_OPTION};
+        if (to.isSet(Option.BACKWARD) && to.isSet(Option.FORMATHUMAN)) {
+            String invargs[] = {Option.BACKWARD.getKey(), Option.FORMATHUMAN.getKey()};
             return error(i18nSt.getString("Setup.error.options.cant_be_used_together", invargs));
         }
 
@@ -418,22 +413,15 @@ public class SignatureTest extends SigTest {
 
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
 
+        TestOptions to = AppContext.getContext().getBean(TestOptions.class);
+        if (to.readOptions(optionName, args)) return;
+
         if (optionName.equalsIgnoreCase(FILENAME_OPTION)) {
             sigFileName = args[0];
         } else if (optionName.equalsIgnoreCase(FILES_OPTION)) {
             sigFileNameList = args[0];
-        } else if (optionName.equalsIgnoreCase(FORMATPLAIN_OPTION)) {
-            outFormat = FORMAT_PLAIN;
-        } else if (optionName.equalsIgnoreCase(FORMATHUMAN_ALT_OPTION)) {
-            outFormat = FORMAT_HUMAN;
-        } else if (optionName.equalsIgnoreCase(FORMATHUMAN_OPTION)) {
-            outFormat = FORMAT_HUMAN;
-        } else if (optionName.equalsIgnoreCase(BACKWARD_OPTION)) {
-            outFormat = FORMAT_BACKWARD;
-        } else if (optionName.equalsIgnoreCase(EXTENSIBLE_INTERFACES_OPTION)) {
+        }  else if (optionName.equalsIgnoreCase(EXTENSIBLE_INTERFACES_OPTION)) {
             extensibleInterfaces = true;
-        } else if (optionName.equalsIgnoreCase(BACKWARD_ALT_OPTION)) {
-            outFormat = FORMAT_BACKWARD;
         } else if (optionName.equalsIgnoreCase(CHECKVALUE_OPTION)) {
             // default is true as of 1.2.1
             isValueTracked = Boolean.TRUE;
@@ -478,13 +466,13 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.static", STATIC_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.mode", MODE_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.backward", new Object[]{BACKWARD_OPTION, BACKWARD_ALT_OPTION}));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classpath", Option.CLASSPATH.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.filename", FILENAME_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.or"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.files", new Object[]{FILES_OPTION, java.io.File.pathSeparator}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.package", Option.PACKAGE.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.human", new Object[]{FORMATHUMAN_OPTION, FORMATHUMAN_ALT_OPTION}));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.human", new Object[]{Option.FORMATHUMAN.getKey(), Option.FORMATHUMAN.getAlias()}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.out", OUT_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.testurl", TESTURL_OPTION));
@@ -494,7 +482,7 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.update", UPDATE_FILE_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.apiversion", APIVERSION_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.checkvalue", CHECKVALUE_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.formatplain", FORMATPLAIN_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.formatplain", Option.FORMATPLAIN));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.extinterfaces", EXTENSIBLE_INTERFACES_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classcachesize", new Object[]{CLASSCACHESIZE_OPTION, new Integer(DefaultCacheSize)}));
@@ -534,6 +522,15 @@ public class SignatureTest extends SigTest {
     private boolean check() {
 
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+        TestOptions to = AppContext.getContext().getBean(TestOptions.class);
+
+        if (to.isSet(Option.FORMATPLAIN)) {
+            outFormat = FORMAT_PLAIN;
+        } else if (to.isSet(Option.FORMATHUMAN)) {
+            outFormat = FORMAT_HUMAN;
+        } else if (to.isSet(Option.BACKWARD)) {
+            outFormat = FORMAT_BACKWARD;
+        }
 
         if (pluginClass != null) {
             pluginClass.init(this);

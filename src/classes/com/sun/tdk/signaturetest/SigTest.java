@@ -79,11 +79,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static final String XVERBOSE_OPTION = "-Xverbose";
     public static final String XNOTIGER_OPTION = "-XnoTiger";
     public static final String OUT_OPTION = "-Out";
-    public static final String FORMATPLAIN_OPTION = "-FormatPlain";
-    public static final String FORMATHUMAN_OPTION = "-FormatHuman";
-    public static final String FORMATHUMAN_ALT_OPTION = "-H";
-    public static final String BACKWARD_OPTION = "-Backward";
-    public static final String BACKWARD_ALT_OPTION = "-B";
     public static final String EXTENSIBLE_INTERFACES_OPTION = "-ExtensibleInterfaces";
     public static final String FILENAME_OPTION = "-FileName";
     public static final String TESTURL_OPTION = "-TestURL";

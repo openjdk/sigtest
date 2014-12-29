@@ -67,6 +67,11 @@ public enum Option {
     FORMAT("-format", Kind.SINGLE_OPT),
     REPORT("-report", Kind.SINGLE_OPT),
     EXCLUDE_LIST("-excludeList", Kind.MANY_OPT),
+
+    FORMATPLAIN("-FormatPlain", Kind.NONE),
+    FORMATHUMAN("-FormatHuman", "-H", Kind.NONE),
+    BACKWARD("-Backward", "-B", Kind.NONE),
+
     ;
 
     private String key;
@@ -91,11 +96,11 @@ public enum Option {
         return kind;
     }
 
-    private boolean hasAlias() {
+    public boolean hasAlias() {
         return alias != null;
     }
 
-    private String getAlias() {
+    public String getAlias() {
         assert alias != null;
         return alias;
     }
