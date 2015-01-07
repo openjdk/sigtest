@@ -241,16 +241,28 @@ public class CommandLineParser {
             case NONE:
             case INSTEAD_OF_ANY:
                 addOption(o.getKey(), OptionInfo.optionalFlag(), optionsDecoder);
+                if (o.hasAlias()) {
+                    addOption(o.getAlias(), OptionInfo.optionalFlag(), optionsDecoder);
+                }
                 break;
             case SINGLE_OPT:
                 addOption(o.getKey(), OptionInfo.option(1), optionsDecoder);
+                if (o.hasAlias()) {
+                    addOption(o.getAlias(), OptionInfo.option(1), optionsDecoder);
+                }
                 break;
             case SINGLE_REQ:
             case REQ_LIST:
                 addOption(o.getKey(), OptionInfo.requiredOption(1), optionsDecoder);
+                if (o.hasAlias()) {
+                    addOption(o.getKey(), OptionInfo.requiredOption(1), optionsDecoder);
+                }
                 break;
             case MANY_OPT:
                 addOption(o.getKey(), OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+                if (o.hasAlias()) {
+                    addOption(o.getAlias(), OptionInfo.optionVariableParams(1, OptionInfo.UNLIMITED), optionsDecoder);
+                }
                 break;
         }
     }

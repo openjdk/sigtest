@@ -110,7 +110,7 @@ public enum Option {
         if (optionName.equalsIgnoreCase(key)) {
             return true;
         }
-        return hasAlias() && getAlias().equalsIgnoreCase(key);
+        return hasAlias() && getAlias().equalsIgnoreCase(optionName);
     }
 
     public static Option byKey(String key) {

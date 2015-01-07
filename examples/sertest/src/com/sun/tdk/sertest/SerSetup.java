@@ -25,7 +25,10 @@
 package com.sun.tdk.sertest;
 
 import com.sun.tdk.signaturetest.Setup;
+import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.ClassDescriptionLoader;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
+import com.sun.tdk.signaturetest.core.context.Option;
 
 import java.io.PrintWriter;
 
@@ -49,7 +52,10 @@ public class SerSetup extends Setup {
 
     @Override
     protected ClassDescriptionLoader getClassDescrLoader() {
-        if (isStatic) {
+
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+
+        if (bo.isSet(Option.STATIC)) {
             return super.getClassDescrLoader();
         } else {
             if (loader == null) {

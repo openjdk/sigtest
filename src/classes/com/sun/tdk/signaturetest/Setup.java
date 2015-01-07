@@ -177,7 +177,7 @@ public class Setup extends SigTest {
         parser.addOption(FILENAME_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
         parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
+        //parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XVERBOSE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -206,10 +206,8 @@ public class Setup extends SigTest {
         }
 
         // since 2.1 - static mode by default
-        isStatic = true;
-
-        if (parser.isOptionSpecified(XREFLECTION_OPTION) && !parser.isOptionSpecified(STATIC_OPTION)) {
-            isStatic = false;
+        if (!parser.isOptionSpecified(XREFLECTION_OPTION)) {
+            bo.readOptions(Option.STATIC.getKey(), null);
         }
 
         if (parser.isOptionSpecified(NONCLOSEDFILE_OPTION) && parser.isOptionSpecified(CLOSEDFILE_OPTION)) {
@@ -272,8 +270,8 @@ public class Setup extends SigTest {
             } else {
                 throw new CommandLineParserException(i18n.getString("Setup.error.arg.invalidval", XGENCONSTS_OPTION));
             }
-        } else if (optionName.equalsIgnoreCase(XREFLECTION_OPTION)) {
-            isStatic = false;
+//        } else if (optionName.equalsIgnoreCase(XREFLECTION_OPTION)) {
+//            isStatic = false;
         } else if (optionName.equalsIgnoreCase(COPYRIGHT_OPTION)) {
             copyrightStr = args[0];
         } else {
@@ -285,7 +283,8 @@ public class Setup extends SigTest {
         if (explicitlyGenConsts != null) {
             setConstantValuesTracked(explicitlyGenConsts.booleanValue());
         } else {
-            setConstantValuesTracked(isStatic);
+            BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+            setConstantValuesTracked(bo.isSet(Option.STATIC));
         }
     }
 

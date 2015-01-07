@@ -72,7 +72,7 @@ import java.util.logging.Logger;
 public abstract class SigTest extends Result implements PluginAPI, Log {
 
     // Command line options
-    public static final String STATIC_OPTION = "-Static";
+    //public static final String STATIC_OPTION = "-Static";
     public static final String APIVERSION_OPTION = "-ApiVersion";
     public static final String CLASSCACHESIZE_OPTION = "-ClassCacheSize";
     public static final String VERBOSE_OPTION = "-Verbose";
@@ -127,11 +127,10 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     /**
      * Either static or reflections-based class descriptions finder.
      *
-     * @see #isStatic
      */
     protected MemberCollectionBuilder testableMCBuilder;
     protected ThrowsNormalizer normalizer = new ThrowsNormalizer();
-    protected boolean isStatic = false;
+    //protected boolean isStatic = false;
     protected boolean nowarnings = false;
     protected boolean noerrors = false;
 
@@ -258,8 +257,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             sigFileName = args[0];
         } else if (optionName.equalsIgnoreCase(APIVERSION_OPTION)) {
             apiVersion = args[0];
-        } else if (optionName.equalsIgnoreCase(STATIC_OPTION)) {
-            isStatic = true;
+//        } else if (optionName.equalsIgnoreCase(STATIC_OPTION)) {
+//            isStatic = true;
         } else if (optionName.equalsIgnoreCase(CLASSCACHESIZE_OPTION)) {
             cacheSize = 0;
             try {
@@ -358,7 +357,9 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             return loader;
         }
 
-        if (isStatic) {
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+
+        if (bo.isSet(Option.STATIC)) {
             //  static mode
 
             loader = getLoader("com.sun.tdk.signaturetest.loaders.BinaryClassDescrLoader", new Class[]{Classpath.class, Integer.class},

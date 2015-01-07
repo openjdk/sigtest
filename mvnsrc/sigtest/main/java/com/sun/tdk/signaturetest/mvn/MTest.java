@@ -119,7 +119,7 @@ public class MTest extends MBase {
     private String[] createParams() {
         ArrayList params = new ArrayList();
         createBaseParameters(params);
-        params.add(SigTest.STATIC_OPTION);
+        params.add(Option.STATIC.getKey());
         if (binary) {
             params.add(SignatureTest.MODE_OPTION);
             params.add(SignatureTest.BINARY_MODE);

@@ -75,8 +75,8 @@ public class SetupAndTest extends Result {
         }
 
         // Both Setup and SignatureTest always will work in the static mode
-        addFlag(setupOptions, SigTest.STATIC_OPTION);
-        addFlag(testOptions, SigTest.STATIC_OPTION);
+        addFlag(setupOptions, Option.STATIC.getKey());
+        addFlag(testOptions, Option.STATIC.getKey());
 
         final String optionsDecoder = "decodeOptions";
 

@@ -312,7 +312,7 @@ public class SignatureTest extends SigTest {
         parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
+        //parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(EXTENSIBLE_INTERFACES_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -361,7 +361,7 @@ public class SignatureTest extends SigTest {
         }
         // ==================
 
-        if (parser.isOptionSpecified(STATIC_OPTION) && !parser.isOptionSpecified(Option.CLASSPATH.getKey())) {
+        if (bo.isSet(Option.STATIC) && !parser.isOptionSpecified(Option.CLASSPATH.getKey())) {
             return error(i18nSt.getString("SignatureTest.error.static.missing_option", Option.CLASSPATH.getKey()));
         }
 
@@ -404,7 +404,7 @@ public class SignatureTest extends SigTest {
             getLog().println(i18nSt.getString("SignatureTest.error.sec.newclasses"));
         }
 
-        if (isStatic && classpath.isEmpty()) {
+        if (bo.isSet(Option.STATIC) && classpath.isEmpty()) {
             return error(i18nSt.getString("SignatureTest.error.classpath.unspec"));
         }
 
@@ -464,7 +464,7 @@ public class SignatureTest extends SigTest {
         sb.append(getComponentName() + " - " + i18nSt.getString("SignatureTest.usage.version", Version.Number));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.start"));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.static", STATIC_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.static", Option.STATIC));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.mode", MODE_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classpath", Option.CLASSPATH.getKey()));
@@ -1348,8 +1348,9 @@ public class SignatureTest extends SigTest {
             normalizeArrayParaemeters(testAnnotList, orderImportant, testCh);
         }
 
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         // RI JSR 308 doesn't support reflection yet
-        if (!isStatic) {
+        if (!bo.isSet(Option.STATIC)) {
             baseAnnotList = removeExtendedAnnotations(baseAnnotList);
         }
 
@@ -1428,6 +1429,9 @@ public class SignatureTest extends SigTest {
     }
 
     protected boolean prepareCheck(MultipleFileReader in, PrintWriter log) {
+
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+
         if (isValueTracked == null) {
             isValueTracked = Boolean.TRUE;
         }
@@ -1443,7 +1447,7 @@ public class SignatureTest extends SigTest {
         }
         MemberType.setMode(BINARY_MODE.equals(mode));
 
-        isOneWayConstantChecking = isValueTracked.booleanValue() && BINARY_MODE.equals(mode) || !isStatic;
+        isOneWayConstantChecking = isValueTracked.booleanValue() && BINARY_MODE.equals(mode) || !bo.isSet(Option.STATIC);
 
         if (SOURCE_MODE.equals(mode) || EXT_MODE.equals(mode)) {
             isThrowsRemoved = false;
