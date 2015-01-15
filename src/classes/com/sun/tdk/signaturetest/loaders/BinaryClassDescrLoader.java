@@ -75,8 +75,8 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             }
         }
 
-        List getMethodRefs() {
-            ArrayList memberList = new ArrayList();
+        List<MemberDescription> getMethodRefs() {
+            ArrayList<MemberDescription> memberList = new ArrayList();
             int n = constants.length;
             for (int i = 1; i < n; i++) {
                 if (constants[i].tag == CONSTANT_Long || constants[i].tag == CONSTANT_Double) {
@@ -524,15 +524,15 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
     }
 
-    public List loadCalls(String name) throws ClassNotFoundException {
+    public List<MemberDescription> loadCalls(String name) throws ClassNotFoundException {
 
         // String name = ClassCorrector.stripGenerics(className);
-        List result = new ArrayList();
+        List<MemberDescription> result = new ArrayList();
         try {
             BinaryClassDescription c = new BinaryClassDescription();
             DataInputStream classData = new DataInputStream(classpath.findClass(name));
             try {
-                readClass(c, (DataInput) classData);
+                readClass(c, classData);
                 result = c.getMethodRefs();
             } finally {
                 c.cleanup();

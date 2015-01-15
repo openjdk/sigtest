@@ -37,14 +37,14 @@ import com.sun.tdk.signaturetest.util.BatchFileParser;
 import com.sun.tdk.signaturetest.util.CommandLineParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
-import com.sun.tdk.signaturetest.util.OptionInfo;
 import com.sun.tdk.apicover.markup.Adapter;
 import com.sun.tdk.signaturetest.Result;
 
 import com.sun.tdk.signaturetest.core.MemberCollectionBuilder.BuildMode;
 import com.sun.tdk.signaturetest.sigfile.FileManager;
 import com.sun.tdk.signaturetest.util.SwissKnife;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -79,6 +79,8 @@ public class Main implements Log {
     private PackageGroup packages = new PackageGroup(true);
     private PackageGroup purePackages = new PackageGroup(false);
     private PackageGroup excludedPackages = new PackageGroup(true);
+
+    private CallFilter callFilter = new CallFilter();
 
     /**
      * Run the test using command-line; return status via numeric exit code.
@@ -265,6 +267,10 @@ public class Main implements Log {
 
         debug = ao.isSet(Option.DEBUG);
 
+        if (!callFilter.init()) {
+            error(i18n.getString("Main.error.initfilter"));
+        }
+
         if (ao.isSet(Option.HELP)) {
             version();
             usage();
@@ -383,7 +389,9 @@ public class Main implements Log {
                 try {
                     ClassDescription tsClass = tsHierarchy.load(name);
                     refCounter.addTSClass(tsClass, false);
-                    calls.addAll(tsLoader.loadCalls(name));
+                    List<MemberDescription> fCalls = tsLoader.loadCalls(name);
+                    fCalls = callFilter.filterCalls(fCalls, name);
+                    calls.addAll(fCalls);
                 } catch (ClassNotFoundException e) {
                     if (debug) {
                         log.println(i18n.getString("Main.warning.class.invalid", name));

@@ -771,7 +771,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
         dependences.add(temp);
     }
 
-    protected static String getClassShortName(String fqn) {
+    public static String getClassShortName(String fqn) {
         String result = fqn;
         int pos = Math.max(fqn.lastIndexOf(MEMBER_DELIMITER), fqn.lastIndexOf(CLASS_DELIMITER));
         if (pos != -1) {

@@ -24,6 +24,8 @@
  */
 package com.sun.tdk.signaturetest.core;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -94,7 +96,8 @@ public class PackageGroup {
     public boolean checkName(String className) {
         for (String pack : group) {
             if ((className.startsWith(getPackageName(pack))
-                    && ((className.lastIndexOf('.') <= pack.length()) || isSubpackagesUses)) || className.equals(pack)) {
+                    && ((className.lastIndexOf('.') <= pack.length())
+                    || isSubpackagesUses)) || className.equals(pack)) {
                 return true;
             }
         }
