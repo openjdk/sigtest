@@ -24,10 +24,7 @@
  */
 package com.sun.tdk.signaturetest.core;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**

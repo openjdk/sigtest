@@ -25,9 +25,6 @@
 
 package com.sun.tdk.signaturetest.core;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import com.sun.tdk.signaturetest.core.context.BaseOptions;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 
