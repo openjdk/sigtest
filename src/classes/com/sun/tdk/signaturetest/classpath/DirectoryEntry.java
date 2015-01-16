@@ -24,7 +24,6 @@
  */
 package com.sun.tdk.signaturetest.classpath;
 
-import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
@@ -33,7 +32,6 @@ import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashSet;

@@ -30,6 +30,8 @@ package com.sun.tdk.signaturetest.core.context;
 public enum Option {
 
     X_JIMAGE("-XJImage", Kind.SINGLE_OPT),
+    X_JAKE("-XJake", Kind.NONE),
+
     DEBUG("-Debug", Kind.NONE),
     HELP("-Help", "-?", Kind.INSTEAD_OF_ANY),
     PACKAGE("-Package", Kind.MANY_OPT),

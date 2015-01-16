@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2015 Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -39,16 +39,42 @@ import java.nio.file.attribute.BasicFileAttributes;
 /**
  * @author Mike Ershov
  */
-public class JimageFileEntry extends DirectoryEntry {
+public class JimageM2Entry extends DirectoryEntry {
 
     private Path td;
     private BaseOptions bo;
 
-    public JimageFileEntry(ClasspathEntry previous, String name) throws IOException {
+    public JimageM2Entry(ClasspathEntry previous, String name) throws IOException {
         super(previous);
         bo = AppContext.getContext().getBean(BaseOptions.class);
         assert bo != null;
         init(name);
+    }
+
+    public static void removeRecursive(Path path) throws IOException {
+        Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                if (exc == null) {
+                    Files.delete(dir);
+                    return FileVisitResult.CONTINUE;
+                } else {
+                    throw exc;
+                }
+            }
+        });
     }
 
     @Override
@@ -84,7 +110,6 @@ public class JimageFileEntry extends DirectoryEntry {
 
     }
 
-
     @Override
     public void close() {
 
@@ -96,32 +121,5 @@ public class JimageFileEntry extends DirectoryEntry {
         super.close();
 
     }
-
-    public static void removeRecursive(Path path) throws IOException {
-        Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                Files.delete(file);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                Files.delete(file);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                if (exc == null) {
-                    Files.delete(dir);
-                    return FileVisitResult.CONTINUE;
-                } else {
-                    throw exc;
-                }
-            }
-        });
-    }
-
 
 }

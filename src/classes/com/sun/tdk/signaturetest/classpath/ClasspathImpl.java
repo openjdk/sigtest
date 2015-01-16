@@ -24,7 +24,6 @@
  */
 package com.sun.tdk.signaturetest.classpath;
 
-import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
@@ -36,9 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -102,6 +99,8 @@ public class ClasspathImpl implements Classpath {
      */
     private static String pathSeparator;
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClasspathImpl.class);
+
+    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     /**
      * Try to determine path separator used by operating system. Path separator
@@ -325,7 +324,12 @@ public class ClasspathImpl implements Classpath {
             if (new File(name).isDirectory()) {
                 return new DirectoryEntry(previosEntry, name);
             } else if (name.endsWith(".jimage")) {
-                return new JimageFileEntry(previosEntry, name);
+                if (bo.isSet(Option.X_JAKE)) {
+                    return new JimageJakeEntry(previosEntry, name);
+                } else {
+                    return new JimageM2Entry(previosEntry, name);
+                }
+
             } else {
                 return new JarFileEntry(previosEntry, name);
             }

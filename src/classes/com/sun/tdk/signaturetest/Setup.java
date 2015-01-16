@@ -52,47 +52,34 @@ import java.util.*;
  * This class creates signature file. The classes in the signature file are
  * grouped by type, and alphabetized by class name.<br> The following signature
  * files could be created:
- * <p/>
  * Usage: java com.sun.tdk.signaturetest.setup.Setup &lt;options&gt;
  * <p>
- * <p/>
  * where &lt;options&gt; includes:
- * <p/>
  * <dl> <dt><code><b>-TestURL</b></code> &lt;URL&gt; <dd> URL of signature file.
- * <p/>
  * <dt><code><b>-FileName</b></code> &lt;n&gt; <dd> Path name of signature file
  * name.
- * <p/>
  * <dt><code><b>-Package</b></code> &lt;package name&gt; <dd> Package which are
  * needed to be tracked (several options can be specified).
- * <p/>
  * <dt><code><b>-PackageWithoutSubpackages</b></code> &lt;package&gt; <dd> Name
  * of the package, which is to be tracked itself excluding its subpackages. Such
  * option should be included for each package required to be tracked excluding
  * subpackages.
- * <p/>
  * <dt><code><b>-Exclude</b></code> &lt;package or class name&gt; <dd> package
  * or class which is not needed to be tracked.(several options can be specified)
- * <p/>
  * <dt><code><b>-static</b></code> <dd> Track in the static mode. In this mode
  * test uses class file parsing instead of the reflection for. The path
  * specified by -Classpath options is required in this mode.
- * <p/>
  * <dt><code><b>-CheckValue</b></code> <dd> Writes values of the primitive
  * constants in signature file. This options could be used in the static mode
  * only.
- * <p/>
  * <dt><code><b>-AllPublic</b></code> <dd> track unaccessible nested classes
  * (I.e. which are public or protected but are members of default or private
  * access class).
- * <p/>
  * <dt><code><b>-Classpath</b></code> &lt;path&gt; <dd> specify the path, which
  * includes tracked classes.
- * <p/>
  * <dt><code><b>-Version</b></code> &lt;version&gt; <dd> Specify API version. If
  * this parameter is not specified, API version is assumed to be that reported
  * by <code>getProperty("java.version")</code>.
- * <p/>
  * <dt><code><b>-Verbose</b></code> <dd> Print names of ignored classes. </dl>
  *
  * @author Maxim Sokolnikov
