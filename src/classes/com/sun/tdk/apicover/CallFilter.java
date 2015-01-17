@@ -67,6 +67,10 @@ public class CallFilter {
             while (mi.hasNext()) {
                 MemberDescription md = mi.next();
                 String apiClass = md.getDeclaringClassName();
+                int dollar = apiClass.indexOf('$');
+                if (dollar >= 0) {
+                    apiClass = apiClass.substring(0, dollar);
+                }
                 String pkg = ClassDescription.getPackageName(apiClass);
                 String cls = ClassDescription.getClassShortName(apiClass);
 
