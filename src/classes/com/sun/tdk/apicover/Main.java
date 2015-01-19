@@ -153,6 +153,10 @@ public class Main implements Log {
             error(e.getMessage());
         }
 
+        if (!ao.isSet(Option.API) && !ao.isSet(Option.FILTERSIG)) {
+            error(i18n.getString("Main.error.option.required", Option.API.getKey()));
+        }
+
         packages.addPackages(ao.getValues(Option.API_INCLUDE));
         purePackages.addPackages(ao.getValues(Option.API_INCLUDEW));
         excludedPackages.addPackages(ao.getValues(Option.API_EXCLUDE));
@@ -267,7 +271,7 @@ public class Main implements Log {
 
         debug = ao.isSet(Option.DEBUG);
 
-        if (!callFilter.init()) {
+        if (!callFilter.init(log)) {
             error(i18n.getString("Main.error.initfilter"));
         }
 
@@ -341,33 +345,37 @@ public class Main implements Log {
         new Adapter(f);
 
         try {
-            if (!in.readSignatureFiles(MAIN_URI, signatureFile)) {
-                error(i18n.getString("Main.error.sigfile.invalid", signatureFile));
-            }
 
-            // Signature file version
-            boolean is4 = in.isFeatureSupported(Format.BuildMembers);
-            MemberCollectionBuilder b = new MemberCollectionBuilder(this);
-            ClassDescription cd;
-            while ((cd = in.nextClass()) != null) {
-                try {
-                    if (is4) {
-                        cd.setHierarchy(apiHierarchy);
-                        if (!isWorstCaseMode) {
-                            b.setBuildMode(BuildMode.SIGFILE);
+            if (!searachOnly()) {
+
+                if (!in.readSignatureFiles(MAIN_URI, signatureFile)) {
+                    error(i18n.getString("Main.error.sigfile.invalid", signatureFile));
+                }
+
+                // Signature file version
+                boolean is4 = in.isFeatureSupported(Format.BuildMembers);
+                MemberCollectionBuilder b = new MemberCollectionBuilder(this);
+                ClassDescription cd;
+                while ((cd = in.nextClass()) != null) {
+                    try {
+                        if (is4) {
+                            cd.setHierarchy(apiHierarchy);
+                            if (!isWorstCaseMode) {
+                                b.setBuildMode(BuildMode.SIGFILE);
+                            }
+                            b.createMembers(cd, true, false, true);
                         }
-                        b.createMembers(cd, true, false, true);
+                    } catch (Exception e) {
+                        debug(e);
+                        error(i18n.getString("Main.error.check", e.getMessage()));
                     }
-                } catch (Exception e) {
-                    debug(e);
-                    error(i18n.getString("Main.error.check", e.getMessage()));
+                    if (isPackageMember(cd.getQualifiedName())) {
+                        refCounter.addClass(cd);
+                    }
+                    refCounter.addTSClass(cd, true);
                 }
-                if (isPackageMember(cd.getQualifiedName())) {
-                    refCounter.addClass(cd);
-                }
-                refCounter.addTSClass(cd, true);
-            }
 
+            }
             /*
              * Read TS and send each call to reporter.
              */
@@ -414,16 +422,24 @@ public class Main implements Log {
                 refCounter.addRef(md);
             }
 
-            if (size == 0) {
-                System.err.println(i18n.getString("Main.warning.ts.empty", ts));
+            if (!searachOnly()) {
+                if (size == 0) {
+                    System.err.println(i18n.getString("Main.warning.ts.empty", ts));
+                }
+
+                reporter.out();
             }
-            reporter.out();
+
         } catch (Throwable e) {
             debug(e);
             error(i18n.getString("Main.error.check", e.getMessage()));
         } finally {
             in.close();
         }
+    }
+
+    private boolean searachOnly() {
+        return !ao.isSet(Option.API);
     }
 
     private void error(String s) {

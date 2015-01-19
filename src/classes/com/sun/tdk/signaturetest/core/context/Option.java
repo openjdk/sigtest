@@ -51,7 +51,7 @@ public enum Option {
     VERSION("-Version", "-V", Kind.INSTEAD_OF_ANY),
 
     // APICOV
-    API("-api", Kind.SINGLE_REQ),
+    API("-api", Kind.SINGLE_OPT),
     TS("-ts" , Kind.SINGLE_REQ),
     TS_ICNLUDE("-tsInclude", Kind.MANY_OPT),
     TS_ICNLUDEW("-tsIncludeW", Kind.MANY_OPT),
@@ -59,6 +59,7 @@ public enum Option {
     API_INCLUDEW("-apiIncludeW", Kind.MANY_OPT),
 
     FILTERMAP("-FilterMap", Kind.MANY_OPT),
+    FILTERSIG("-FilterSig", Kind.MANY_OPT),
 
 
     EXCLUDE_INTERFACES("-excludeInterfaces", Kind.NONE),

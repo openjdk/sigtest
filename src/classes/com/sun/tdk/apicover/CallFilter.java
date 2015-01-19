@@ -27,12 +27,10 @@ package com.sun.tdk.apicover;
 
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.context.Option;
-import com.sun.tdk.signaturetest.model.ClassDescription;
-import com.sun.tdk.signaturetest.model.MemberDescription;
+import com.sun.tdk.signaturetest.model.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * Filters invocations based on -FilterMap rules
@@ -44,44 +42,84 @@ public class CallFilter {
     private final String PKG_PATTERN = "API_PACKAGE";
     private final String CLS_PATTERN = "API_CLASS";
     private ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
-    private List<String> filters = null;
+    private List<String> mapFilters = null;
+    private List<String> sigFilters = null;
+    private PrintWriter pw;
 
-    public boolean init() {
+    public boolean init(PrintWriter printWriter) {
 
         if (ao.isSet(Option.FILTERMAP)) {
-            filters = ao.getValues(Option.FILTERMAP);
+            mapFilters = ao.getValues(Option.FILTERMAP);
         }
+        if (ao.isSet(Option.FILTERSIG)) {
+            sigFilters = ao.getValues(Option.FILTERSIG);
+        }
+
+        pw = printWriter;
 
         return true;
     }
 
+
+    private boolean hasNoFilter() {
+        return (mapFilters == null || mapFilters.isEmpty()) &&
+                (sigFilters == null || sigFilters.isEmpty());
+    }
+
     public List<MemberDescription> filterCalls(List<MemberDescription> foundCalls, String testClassName) {
-        if (filters == null || filters.isEmpty()) {
+        if (hasNoFilter()) {
             return foundCalls;
         }
 
-        List<MemberDescription> filteredCalls = new ArrayList<>();
+        if (mapFilters != null && !mapFilters.isEmpty()) {
+            List<MemberDescription> filteredCalls = new ArrayList<>();
+            for (String filter : mapFilters) {
+                Iterator<MemberDescription> mi = foundCalls.iterator();
+                while (mi.hasNext()) {
+                    MemberDescription md = mi.next();
+                    String apiClass = md.getDeclaringClassName();
+                    int dollar = apiClass.indexOf('$');
+                    if (dollar >= 0) {
+                        apiClass = apiClass.substring(0, dollar);
+                    }
+                    String pkg = ClassDescription.getPackageName(apiClass);
+                    String cls = ClassDescription.getClassShortName(apiClass);
 
-        for (String filter : filters) {
-            Iterator<MemberDescription> mi = foundCalls.iterator();
-            while (mi.hasNext()) {
-                MemberDescription md = mi.next();
-                String apiClass = md.getDeclaringClassName();
-                int dollar = apiClass.indexOf('$');
-                if (dollar >= 0) {
-                    apiClass = apiClass.substring(0, dollar);
-                }
-                String pkg = ClassDescription.getPackageName(apiClass);
-                String cls = ClassDescription.getClassShortName(apiClass);
-
-                if (accept(filter, pkg, cls, testClassName)) {
-                    filteredCalls.add(md);
-                    mi.remove();
+                    if (accept(filter, pkg, cls, testClassName)) {
+                        filteredCalls.add(md);
+                        mi.remove();
+                    }
                 }
             }
+            return filteredCalls;
         }
 
-        return filteredCalls;
+        if (sigFilters != null && !sigFilters.isEmpty()) {
+            TreeSet<String> filteredSigs = new TreeSet<>();
+            for (String filter : sigFilters) {
+                if (filter == null || filter.isEmpty()) {
+                    continue;
+                }
+                Iterator<MemberDescription> mi = foundCalls.iterator();
+                while (mi.hasNext()) {
+                    MemberDescription md = mi.next();
+                    String sig = getMemberSignature(md);
+                    if (sig.matches(filter)) {
+                        filteredSigs.add(sig);
+                    }
+                }
+            }
+            if (!filteredSigs.isEmpty()) {
+                pw.println(testClassName);
+                for (String sig : filteredSigs) {
+                    pw.println("    " + sig);
+                }
+            }
+            return Collections.emptyList();
+        }
+
+        return null;
+
     }
 
     private boolean accept(String pattern, String pkg, String cls, String testClassName) {
@@ -100,6 +138,20 @@ public class CallFilter {
             p = ++newP;
         }
         return string;
+    }
+
+    private String getMemberSignature(MemberDescription md) {
+        if (md instanceof ConstructorDescr) {
+            ConstructorDescr cd = (ConstructorDescr) md;
+            return cd.getSignature();
+        } else if (md instanceof MethodDescr) {
+            MethodDescr mthd = (MethodDescr) md;
+            return mthd.getDeclaringClassName() + "." + mthd.getSignature();
+        } else if (md instanceof FieldDescr) {
+            FieldDescr fd = (FieldDescr) md;
+            return fd.getQualifiedName();
+        }
+        return "???";
     }
 
 }

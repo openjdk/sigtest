@@ -128,7 +128,7 @@ public abstract class ReportGenerator extends APIVisitor {
     protected ReportGenerator(RefCounter refCounter) {
         this.setReportfile(null);
         this.refCounter = refCounter;
-        this.config = new HashMap<String, String[]>();
+        this.config = new HashMap<>();
     }
 
     public void setDetail(DETAIL_LEVEL detail) {
