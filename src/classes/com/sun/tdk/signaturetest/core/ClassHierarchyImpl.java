@@ -157,6 +157,10 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
         assert subClassName != null && superClassName != null;
 
+        if (subClassName.charAt(0) == '{' || superClassName.charAt(0) == '{') {
+            return false;
+        }
+
         String name = subClassName;
         do {
             ClassInfo info = getClassInfo(name);
