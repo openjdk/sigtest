@@ -307,12 +307,11 @@ public class SignatureTest extends SigTest {
         final String optionsDecoder = "decodeOptions";
 
         // required only in static mode!
-        parser.addOption(FILENAME_OPTION, OptionInfo.option(1), optionsDecoder);
+        //parser.addOption(FILENAME_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(FILES_OPTION, OptionInfo.option(1), optionsDecoder);
-        parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
+        //parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
-        //parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(EXTENSIBLE_INTERFACES_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -356,7 +355,7 @@ public class SignatureTest extends SigTest {
 
         initDefaultAnnotations();
 
-        if (parser.isOptionSpecified(FILENAME_OPTION)) {
+        if (bo.isSet(Option.FILE_NAME)) {
             readMode = MultipleFileReader.CLASSPATH_MODE;
         }
         // ==================
@@ -365,13 +364,13 @@ public class SignatureTest extends SigTest {
             return error(i18nSt.getString("SignatureTest.error.static.missing_option", Option.CLASSPATH.getKey()));
         }
 
-        if (!parser.isOptionSpecified(FILENAME_OPTION) && !parser.isOptionSpecified(FILES_OPTION)) {
-            String invargs[] = {FILENAME_OPTION, FILES_OPTION};
+        if (bo.getValue(Option.FILE_NAME) == null && !parser.isOptionSpecified(FILES_OPTION)) {
+            String invargs[] = {Option.FILE_NAME.getKey(), FILES_OPTION};
             return error(i18nSt.getString("SignatureTest.error.options.filename_options", invargs));
         }
 
-        if (parser.isOptionSpecified(FILENAME_OPTION) && parser.isOptionSpecified(FILES_OPTION)) {
-            String invargs[] = {FILENAME_OPTION, FILES_OPTION};
+        if (bo.getValue(Option.FILE_NAME) != null && parser.isOptionSpecified(FILES_OPTION)) {
+            String invargs[] = {Option.FILE_NAME.getKey(), FILES_OPTION};
             return error(i18nSt.getString("Setup.error.options.cant_be_used_together", invargs));
         }
 
@@ -416,9 +415,10 @@ public class SignatureTest extends SigTest {
         TestOptions to = AppContext.getContext().getBean(TestOptions.class);
         if (to.readOptions(optionName, args)) return;
 
-        if (optionName.equalsIgnoreCase(FILENAME_OPTION)) {
-            sigFileName = args[0];
-        } else if (optionName.equalsIgnoreCase(FILES_OPTION)) {
+//        if (optionName.equalsIgnoreCase(FILENAME_OPTION)) {
+//            sigFileName = args[0];
+//        } else
+        if (optionName.equalsIgnoreCase(FILES_OPTION)) {
             sigFileNameList = args[0];
         }  else if (optionName.equalsIgnoreCase(EXTENSIBLE_INTERFACES_OPTION)) {
             extensibleInterfaces = true;
@@ -468,14 +468,14 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.mode", MODE_OPTION));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classpath", Option.CLASSPATH.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.filename", FILENAME_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.filename", Option.FILE_NAME));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.or"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.files", new Object[]{FILES_OPTION, java.io.File.pathSeparator}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.package", Option.PACKAGE.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.human", new Object[]{Option.FORMATHUMAN.getKey(), Option.FORMATHUMAN.getAlias()}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.out", OUT_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.testurl", TESTURL_OPTION));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.testurl", Option.TEST_URL));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.exclude", Option.EXCLUDE.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.nomerge", NOMERGE_OPTION));
@@ -524,6 +524,12 @@ public class SignatureTest extends SigTest {
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         TestOptions to = AppContext.getContext().getBean(TestOptions.class);
 
+        String sigFileName = bo.getValue(Option.FILE_NAME);
+        String testURL = bo.getValue(Option.TEST_URL);
+        if (testURL == null) {
+            testURL = "";
+        }
+
         if (to.isSet(Option.FORMATPLAIN)) {
             outFormat = FORMAT_PLAIN;
         } else if (to.isSet(Option.FORMATHUMAN)) {
@@ -552,7 +558,7 @@ public class SignatureTest extends SigTest {
                 if (BINARY_MODE.equals(mode)) {
                     args = new String[]{"-Files", sigFileNameList, "-Write", writeFileName, "-Binary"};
                 }
-                m.testURL = this.testURL;
+                //m.testURL = testURL;
                 m.run(args, log, null);
                 if (!m.isPassed()) {
                     error(m.getReason());

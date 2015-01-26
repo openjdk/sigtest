@@ -161,10 +161,9 @@ public class Setup extends SigTest {
 
         final String optionsDecoder = "decodeOptions";
 
-        parser.addOption(FILENAME_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
-        parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
+        //parser.addOption(FILENAME_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
+        //parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
-        //parser.addOption(STATIC_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(XVERBOSE_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -212,18 +211,18 @@ public class Setup extends SigTest {
             packages.addPackage("");
         }
 
-        if (sigFileName == null) {
+        if (bo.getValue(Option.FILE_NAME) == null) {
             return error(i18n.getString("Setup.error.filename.missing"));
         }
 
-        if (parser.isOptionSpecified(TESTURL_OPTION)) {
-            if (new File(sigFileName).isAbsolute()) {
-                return error(i18n.getString("Setup.error.testurl.absolutepath", new Object[]{TESTURL_OPTION, sigFileName}));
+        if (bo.getValue(Option.TEST_URL) != null) {
+            if (new File(bo.getValue(Option.FILE_NAME)).isAbsolute()) {
+                return error(i18n.getString("Setup.error.testurl.absolutepath", new Object[]{Option.TEST_URL.getKey(), bo.getValue(Option.FILE_NAME)}));
             }
         }
 
         try {
-            signatureFile = FileManager.getURL(testURL, sigFileName);
+            signatureFile = FileManager.getURL(bo.getValue(Option.TEST_URL), bo.getValue(Option.FILE_NAME));
         } catch (MalformedURLException e) {
             if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
@@ -285,24 +284,24 @@ public class Setup extends SigTest {
         sb.append(getComponentName() + " - " + i18n.getString("Setup.usage.version", Version.Number));
         sb.append(nl).append(i18n.getString("Setup.usage.start"));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.usage.classpath", Option.CLASSPATH.getKey()));
-        sb.append(nl).append(i18n.getString("Setup.usage.package", Option.PACKAGE.getKey()));
-        sb.append(nl).append(i18n.getString("Setup.usage.filename", FILENAME_OPTION));
+        sb.append(nl).append(i18n.getString("Setup.usage.classpath", Option.CLASSPATH));
+        sb.append(nl).append(i18n.getString("Setup.usage.package", Option.PACKAGE));
+        sb.append(nl).append(i18n.getString("Setup.usage.filename", Option.FILE_NAME));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
 
-        sb.append(nl).append(i18n.getString("Setup.usage.testurl", TESTURL_OPTION));
-        sb.append(nl).append(i18n.getString("Setup.usage.packagewithoutsubpackages", Option.PURE_PACKAGE.getKey()));
-        sb.append(nl).append(i18n.getString("Setup.usage.exclude", Option.EXCLUDE.getKey()));
+        sb.append(nl).append(i18n.getString("Setup.usage.testurl", Option.TEST_URL));
+        sb.append(nl).append(i18n.getString("Setup.usage.packagewithoutsubpackages", Option.PURE_PACKAGE));
+        sb.append(nl).append(i18n.getString("Setup.usage.exclude", Option.EXCLUDE));
         // sb.append(nl).append(i18n.getString("Setup.usage.static", STATIC_OPTION));
         // sb.append(nl).append(i18n.getString("Setup.usage.closedfile", Setup.CLOSEDFILE_OPTION));
         sb.append(nl).append(i18n.getString("Setup.usage.nonclosedfile", NONCLOSEDFILE_OPTION));
         sb.append(nl).append(i18n.getString("Setup.usage.apiversion", APIVERSION_OPTION));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}));
-        sb.append(nl).append(i18n.getString("Setup.usage.debug", Option.DEBUG.getKey()));
+        sb.append(nl).append(i18n.getString("Setup.usage.debug", Option.DEBUG));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.helpusage.version", Option.VERSION.getKey()));
-        sb.append(nl).append(i18n.getString("Setup.usage.help", Option.HELP.getKey()));
+        sb.append(nl).append(i18n.getString("Setup.helpusage.version", Option.VERSION));
+        sb.append(nl).append(i18n.getString("Setup.usage.help", Option.HELP));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.end"));
         System.err.println(sb.toString());

@@ -83,8 +83,6 @@ public class SetupAndTest extends Result {
         parser.addOption(REFERENCE_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
         parser.addOption(TEST_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
 
-        parser.addOption(SigTest.FILENAME_OPTION, OptionInfo.option(1), optionsDecoder);
-
         parser.addOption(SigTest.APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(SigTest.OUT_OPTION, OptionInfo.option(1), optionsDecoder);
 
@@ -115,7 +113,7 @@ public class SetupAndTest extends Result {
         }
 
         // Assign temporary name for the sigfile if none was specified
-        if (!parser.isOptionSpecified(SigTest.FILENAME_OPTION)) {
+        if (!parser.isOptionSpecified(Option.FILE_NAME.getKey())) {
             String tmpsigfile = null;
 
             try {
@@ -123,8 +121,8 @@ public class SetupAndTest extends Result {
                 f.deleteOnExit();
                 tmpsigfile = f.getPath();
 
-                addOption(setupOptions, SigTest.FILENAME_OPTION, tmpsigfile);
-                addOption(testOptions, SigTest.FILENAME_OPTION, tmpsigfile);
+                addOption(setupOptions, Option.FILE_NAME.getKey(), tmpsigfile);
+                addOption(testOptions, Option.FILE_NAME.getKey(), tmpsigfile);
             } catch (IOException ioe) {
                 return failed(i18n.getString("SetupAndTest.error.message.tempfile"));
             }
@@ -176,7 +174,7 @@ public class SetupAndTest extends Result {
             addOption(setupOptions, Option.CLASSPATH.getKey(), args[0]);
         } else if (optionName.equalsIgnoreCase(TEST_OPTION)) {
             addOption(testOptions, Option.CLASSPATH.getKey(), args[0]);
-        } else if (optionName.equalsIgnoreCase(SigTest.FILENAME_OPTION)
+        } else if (optionName.equalsIgnoreCase(Option.FILE_NAME.getKey())
                 || optionName.equalsIgnoreCase(Option.PACKAGE.getKey())
                 || optionName.equalsIgnoreCase(Option.PURE_PACKAGE.getKey())
                 || optionName.equalsIgnoreCase(Option.EXCLUDE.getKey())
@@ -226,16 +224,16 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.reference", REFERENCE_OPTION));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.test", TEST_OPTION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.package", Option.PACKAGE.getKey()));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.package", Option.PACKAGE));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.out", SigTest.OUT_OPTION));
         sb.append(nl).append(i18n.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}));
         sb.append(nl).append(i18n.getString("SignatureTest.usage.human", new Object[]{Option.FORMATHUMAN.getKey(), Option.FORMATHUMAN.getAlias()}));
 
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
 
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.filename", Setup.FILENAME_OPTION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE.getKey()));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.exclude", Option.EXCLUDE.getKey()));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.filename", Option.FILE_NAME));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.exclude", Option.EXCLUDE));
 
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.verbose", new Object[]{Setup.VERBOSE_OPTION, Setup.NOWARN}));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.checkvalue", Setup.CHECKVALUE_OPTION));
@@ -244,8 +242,8 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.formatplain", Option.FORMATPLAIN));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.classcachesize", new Object[]{SigTest.CLASSCACHESIZE_OPTION, new Integer(SigTest.DefaultCacheSize)}));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", Option.VERSION.getKey()));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.help", Option.HELP.getKey()));
+        sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", Option.VERSION));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.help", Option.HELP));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
 
         System.err.println(sb.toString());

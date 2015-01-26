@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -72,7 +72,6 @@ import java.util.logging.Logger;
 public abstract class SigTest extends Result implements PluginAPI, Log {
 
     // Command line options
-    //public static final String STATIC_OPTION = "-Static";
     public static final String APIVERSION_OPTION = "-ApiVersion";
     public static final String CLASSCACHESIZE_OPTION = "-ClassCacheSize";
     public static final String VERBOSE_OPTION = "-Verbose";
@@ -80,16 +79,16 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static final String XNOTIGER_OPTION = "-XnoTiger";
     public static final String OUT_OPTION = "-Out";
     public static final String EXTENSIBLE_INTERFACES_OPTION = "-ExtensibleInterfaces";
-    public static final String FILENAME_OPTION = "-FileName";
-    public static final String TESTURL_OPTION = "-TestURL";
+    //public static final String FILENAME_OPTION = "-FileName";
+    //public static final String TESTURL_OPTION = "-TestURL";
     public static final String PLUGIN_OPTION = "-Plugin";
     public static final String ERRORALL_OPTION = "-ErrorAll";
     public static final String NOWARN = "nowarn";
     public static final String NOERR = "noerr";
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(SigTest.class);
-    protected String testURL = "";
+    //protected String testURL = "";
     protected String sigFileNameList = null;  // value of -Files option
-    protected String sigFileName = null;   // value of -FileName option
+    //protected String sigFileName = null;   // value of -FileName option
     private FileManager fm = new FileManager();
 
     protected PackageGroup packages;
@@ -251,14 +250,13 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
         if (bo.readOptions(optionName, args)) return;
 
-        if (optionName.equalsIgnoreCase(TESTURL_OPTION)) {
-            testURL = args[0];
-        } else if (optionName.equalsIgnoreCase(FILENAME_OPTION)) {
-            sigFileName = args[0];
-        } else if (optionName.equalsIgnoreCase(APIVERSION_OPTION)) {
+//        if (optionName.equalsIgnoreCase(TESTURL_OPTION)) {
+//            testURL = args[0];
+//        } else if (optionName.equalsIgnoreCase(FILENAME_OPTION)) {
+//            sigFileName = args[0];
+//        } else
+        if (optionName.equalsIgnoreCase(APIVERSION_OPTION)) {
             apiVersion = args[0];
-//        } else if (optionName.equalsIgnoreCase(STATIC_OPTION)) {
-//            isStatic = true;
         } else if (optionName.equalsIgnoreCase(CLASSCACHESIZE_OPTION)) {
             cacheSize = 0;
             try {

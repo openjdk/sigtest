@@ -43,11 +43,12 @@ public enum Option {
     CLASSPATH("-Classpath", Kind.SINGLE_OPT),
     ALL_PUBLIC("-AllPublic", Kind.NONE),
     STATIC("-Static", Kind.NONE),
+    TEST_URL("-TestURL", Kind.SINGLE_OPT),
+    FILE_NAME("-FileName", Kind.SINGLE_OPT),
 
     FILES("-Files", Kind.REQ_LIST), // merge's
     WRITE("-Write", Kind.SINGLE_OPT), // merge's
     BINARY("-Binary", Kind.NONE),  // merge's
-    TESTURL("-TestURL", Kind.SINGLE_OPT),
     VERSION("-Version", "-V", Kind.INSTEAD_OF_ANY),
 
     // APICOV

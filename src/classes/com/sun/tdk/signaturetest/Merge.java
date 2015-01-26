@@ -25,6 +25,7 @@
 package com.sun.tdk.signaturetest;
 
 import com.sun.tdk.signaturetest.core.*;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.MergeOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.loaders.VirtualClassDescriptionLoader;
@@ -147,6 +148,12 @@ public class Merge extends SigTest {
 
         String msg;
         MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
+        BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+        String testURL = bo.getValue(Option.TEST_URL);
+        if (testURL == null) {
+            testURL = "";
+        }
+
         MergedSigFile[] files = new MergedSigFile[mo.getValues(Option.FILES).size()];
         PrintWriter log = new PrintWriter(System.out);
         FeaturesHolder fh = new FeaturesHolder();

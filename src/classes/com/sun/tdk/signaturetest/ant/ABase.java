@@ -48,7 +48,7 @@ public class ABase extends ASuperBase {
     private String apiVersion;
 
     void createBaseParameters(ArrayList params) {
-        params.add(SigTest.FILENAME_OPTION);
+        params.add(Option.FILE_NAME.getKey());
         params.add(fileName);
         params.add(Option.CLASSPATH.getKey());
         String[] cp = classpath.list();

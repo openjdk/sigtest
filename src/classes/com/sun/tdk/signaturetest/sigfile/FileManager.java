@@ -52,6 +52,10 @@ public class FileManager {
         URL result;
         File f = new File(fileName);
 
+        if (testURL == null) {
+            testURL = "";
+        }
+
         if (f.isAbsolute()) {
             result = f.toURI().toURL();
         } else {
