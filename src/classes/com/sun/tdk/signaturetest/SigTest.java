@@ -79,8 +79,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static final String XNOTIGER_OPTION = "-XnoTiger";
     public static final String OUT_OPTION = "-Out";
     public static final String EXTENSIBLE_INTERFACES_OPTION = "-ExtensibleInterfaces";
-    //public static final String FILENAME_OPTION = "-FileName";
-    //public static final String TESTURL_OPTION = "-TestURL";
     public static final String PLUGIN_OPTION = "-Plugin";
     public static final String ERRORALL_OPTION = "-ErrorAll";
     public static final String NOWARN = "nowarn";
@@ -250,11 +248,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
         if (bo.readOptions(optionName, args)) return;
 
-//        if (optionName.equalsIgnoreCase(TESTURL_OPTION)) {
-//            testURL = args[0];
-//        } else if (optionName.equalsIgnoreCase(FILENAME_OPTION)) {
-//            sigFileName = args[0];
-//        } else
         if (optionName.equalsIgnoreCase(APIVERSION_OPTION)) {
             apiVersion = args[0];
         } else if (optionName.equalsIgnoreCase(CLASSCACHESIZE_OPTION)) {

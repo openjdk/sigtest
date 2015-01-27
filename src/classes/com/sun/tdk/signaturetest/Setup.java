@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -161,8 +161,6 @@ public class Setup extends SigTest {
 
         final String optionsDecoder = "decodeOptions";
 
-        //parser.addOption(FILENAME_OPTION, OptionInfo.requiredOption(1), optionsDecoder);
-        //parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(XNOTIGER_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
@@ -256,8 +254,6 @@ public class Setup extends SigTest {
             } else {
                 throw new CommandLineParserException(i18n.getString("Setup.error.arg.invalidval", XGENCONSTS_OPTION));
             }
-//        } else if (optionName.equalsIgnoreCase(XREFLECTION_OPTION)) {
-//            isStatic = false;
         } else if (optionName.equalsIgnoreCase(COPYRIGHT_OPTION)) {
             copyrightStr = args[0];
         } else {
@@ -292,8 +288,6 @@ public class Setup extends SigTest {
         sb.append(nl).append(i18n.getString("Setup.usage.testurl", Option.TEST_URL));
         sb.append(nl).append(i18n.getString("Setup.usage.packagewithoutsubpackages", Option.PURE_PACKAGE));
         sb.append(nl).append(i18n.getString("Setup.usage.exclude", Option.EXCLUDE));
-        // sb.append(nl).append(i18n.getString("Setup.usage.static", STATIC_OPTION));
-        // sb.append(nl).append(i18n.getString("Setup.usage.closedfile", Setup.CLOSEDFILE_OPTION));
         sb.append(nl).append(i18n.getString("Setup.usage.nonclosedfile", NONCLOSEDFILE_OPTION));
         sb.append(nl).append(i18n.getString("Setup.usage.apiversion", APIVERSION_OPTION));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));

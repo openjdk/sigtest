@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -306,10 +306,7 @@ public class SignatureTest extends SigTest {
 
         final String optionsDecoder = "decodeOptions";
 
-        // required only in static mode!
-        //parser.addOption(FILENAME_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(FILES_OPTION, OptionInfo.option(1), optionsDecoder);
-        //parser.addOption(TESTURL_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(APIVERSION_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(OUT_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(CLASSCACHESIZE_OPTION, OptionInfo.option(1), optionsDecoder);
@@ -415,9 +412,6 @@ public class SignatureTest extends SigTest {
         TestOptions to = AppContext.getContext().getBean(TestOptions.class);
         if (to.readOptions(optionName, args)) return;
 
-//        if (optionName.equalsIgnoreCase(FILENAME_OPTION)) {
-//            sigFileName = args[0];
-//        } else
         if (optionName.equalsIgnoreCase(FILES_OPTION)) {
             sigFileNameList = args[0];
         }  else if (optionName.equalsIgnoreCase(EXTENSIBLE_INTERFACES_OPTION)) {
@@ -558,7 +552,6 @@ public class SignatureTest extends SigTest {
                 if (BINARY_MODE.equals(mode)) {
                     args = new String[]{"-Files", sigFileNameList, "-Write", writeFileName, "-Binary"};
                 }
-                //m.testURL = testURL;
                 m.run(args, log, null);
                 if (!m.isPassed()) {
                     error(m.getReason());

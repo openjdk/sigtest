@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,6 +24,8 @@
  */
 package com.sun.tdk.apicover;
 
+import com.sun.tdk.signaturetest.core.AppContext;
+import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.core.context.Options;
 
@@ -37,6 +39,7 @@ public class ApicovOptions extends Options {
 
     private EnumSet<Option> options = EnumSet.of(
             Option.X_JIMAGE,
+            Option.X_JAKE,
             Option.API_INCLUDE,
             Option.API_EXCLUDE,
             Option.API,
@@ -60,10 +63,17 @@ public class ApicovOptions extends Options {
             Option.DEBUG,
             Option.VERSION,
             Option.HELP
-            );
+    );
+
+    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     @Override
     public EnumSet<Option> getOptions() {
         return options;
+    }
+
+    @Override
+    protected Options getParent() {
+        return bo;
     }
 }
