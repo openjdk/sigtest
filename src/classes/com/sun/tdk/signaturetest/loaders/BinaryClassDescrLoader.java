@@ -463,27 +463,25 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             String declaringClass = c.getDeclaringClassName();
             if (!MemberDescription.NO_DECLARING_CLASS.equals(declaringClass)) {
 
-                boolean desclaringClassExists = false;
-                InputStream is = null;
-                try {
-                    is = classpath.findClass(declaringClass);
-                    desclaringClassExists = is != null;
-                } catch (ClassNotFoundException e) {
+                Classpath.KIND_CLASS_DATA k = classpath.isClassPresent(declaringClass);
+
+                if (k == Classpath.KIND_CLASS_DATA.NOT_FOUND) {
                     c.setNoDeclaringClass();
                     warning(i18n.getString("BinaryClassDescrLoader.error.enclosing_class_not_found", c.getQualifiedName()));
-                } finally {
-                    if (is != null) {
-                        is.close();
-                    }
-                }
-
-                if (desclaringClassExists) {
+                } else {
                     try {
-                        tp = load(declaringClass).getTypeparamList();
+                        ClassDescription enc;
+                        if (k == Classpath.KIND_CLASS_DATA.DESCRIPTION) {
+                            enc = classpath.findClassDescription(declaringClass);
+                        } else {
+                            enc = load(declaringClass);
+                        }
+                        tp = enc.getTypeparamList();
                     } catch (ClassNotFoundException e) {
                         throw new ClassFormatError(i18n.getString("BinaryClassDescrLoader.error.enclosing", fqname));
                     }
                 }
+
             }
 
             ClassDescription.TypeParameterList typeparamList = new ClassDescription.TypeParameterList(tp);

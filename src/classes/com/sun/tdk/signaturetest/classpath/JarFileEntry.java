@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest.classpath;
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
+import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.ExoticCharTools;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 import java.io.IOException;
@@ -107,4 +108,5 @@ class JarFileEntry extends ClasspathEntry {
 
         return jarfile.getInputStream(jarEntry);
     }
+
 }

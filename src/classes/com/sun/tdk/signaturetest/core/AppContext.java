@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,10 +25,13 @@
 
 package com.sun.tdk.signaturetest.core;
 
+import com.sun.tdk.signaturetest.classpath.Classpath;
+
+import java.io.PrintWriter;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-/*
+/**
  * Application's context holder
  * Stores environmental values such as options and settings
  * @author Mikhail Ershov
@@ -55,12 +58,22 @@ public abstract class AppContext {
 
     public abstract void setBean(Object bean);
 
+    public abstract PrintWriter getLogWriter();
+
+    public abstract void setLogWriter(PrintWriter pw);
+
     public abstract AppContext clean();
+
+    public abstract Classpath getInputClasspath();
+
+    public abstract void setInputClasspath(Classpath cp);
 
     private static class AppContextImpl extends AppContext {
 
         private ConcurrentHashMap<String, String> strings = new ConcurrentHashMap<String, String>();
         private ConcurrentHashMap<Class, Object> beans = new ConcurrentHashMap<Class, Object>();
+        private PrintWriter log;
+        private Classpath cp;
 
         @Override
         public void setString(String id, String value) {
@@ -70,6 +83,16 @@ public abstract class AppContext {
         @Override
         public void setBean(Object bean) {
             beans.put(bean.getClass(), bean);
+        }
+
+        @Override
+        public PrintWriter getLogWriter() {
+            return log;
+        }
+
+        @Override
+        public void setLogWriter(PrintWriter pw) {
+            log = pw;
         }
 
         @Override
@@ -95,7 +118,19 @@ public abstract class AppContext {
         public synchronized AppContext clean() {
             strings.clear();
             beans.clear();
+            log = null;
+            cp = null;
             return this;
+        }
+
+        @Override
+        public Classpath getInputClasspath() {
+            return cp;
+        }
+
+        @Override
+        public void setInputClasspath(Classpath cp) {
+            this.cp = cp;
         }
     }
 }

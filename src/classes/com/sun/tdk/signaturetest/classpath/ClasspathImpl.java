@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,8 +25,10 @@
 package com.sun.tdk.signaturetest.classpath;
 
 import com.sun.tdk.signaturetest.core.AppContext;
+import com.sun.tdk.signaturetest.core.ClassDescriptionLoader;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
+import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.ExoticCharTools;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
@@ -59,7 +61,8 @@ import java.util.*;
  *
  * @author Maxim Sokolnikov
  * @author Roman Makarchuk
- * @version 05/03/22
+ * @author Mikhail Ershov
+ *
  * @see com.sun.tdk.signaturetest.classpath.ClasspathEntry
  */
 public class ClasspathImpl implements Classpath {
@@ -68,7 +71,7 @@ public class ClasspathImpl implements Classpath {
      * Collector for errors and warnings occurring while <b>ClasspathImpl</b>
      * constructor searches archives of classes.
      */
-    private List errors;
+    private List<String> errors;
     /**
      * Number of ignorable entries found in the path given to
      * <b>ClasspathImpl</b> constructor.
@@ -82,8 +85,8 @@ public class ClasspathImpl implements Classpath {
      * @see com.sun.tdk.signaturetest.classpath.DirectoryEntry
      * @see JarFileEntry
      */
-    private List entries;
-    private Iterator iterator;
+    private List<ClasspathEntry> entries;
+    private Iterator<ClasspathEntry> iterator;
     /**
      * <I>Current</I> directory or zip-file entry, containing <I>current</I>
      * class. This field is used to organize transparent enumeration of all
@@ -190,16 +193,16 @@ public class ClasspathImpl implements Classpath {
     @Override
     public void close() {
         if (entries != null) {
-            for (Iterator e = entries.iterator(); e.hasNext();) {
-                ((ClasspathEntry) e.next()).close();
+            for (ClasspathEntry ce : entries) {
+                ce.close();
             }
-
             entries = null;
             iterator = null;
             currentEntry = null;
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return entries.isEmpty();
     }
@@ -209,10 +212,11 @@ public class ClasspathImpl implements Classpath {
      *
      * @param out Where to println error messages.
      */
+    @Override
     public void printErrors(PrintWriter out) {
         if (out != null) {
-            for (int i = 0; i < errors.size(); i++) {
-                out.println((String) errors.get(i));
+            for (String err : errors) {
+                out.println(err);
             }
         }
     }
@@ -243,7 +247,7 @@ public class ClasspathImpl implements Classpath {
         iterator = entries.iterator();
         currentEntry = null;
         if (iterator.hasNext()) {
-            currentEntry = (ClasspathEntry) iterator.next();
+            currentEntry = iterator.next();
         }
     }
 
@@ -259,7 +263,7 @@ public class ClasspathImpl implements Classpath {
 
         currentEntry = null;
         if (iterator.hasNext()) {
-            currentEntry = (ClasspathEntry) iterator.next();
+            currentEntry = iterator.next();
             return hasNext();
         }
 
@@ -300,14 +304,53 @@ public class ClasspathImpl implements Classpath {
         // generic names are no allowed here
         assert (name.indexOf('<') == -1 && name.indexOf('>') == -1);
 
-        for (Iterator e = entries.iterator(); e.hasNext();) {
+        for (Iterator<ClasspathEntry> e = entries.iterator(); e.hasNext();) {
             try {
-                return ((ClasspathEntry) e.next()).findClass(name);
+                return (e.next()).findClass(name);
             } catch (ClassNotFoundException exc) {
                 // just skip this entry
             }
         }
         throw new ClassNotFoundException(name);
+    }
+
+    @Override
+    public ClassDescription findClassDescription(String qualifiedClassName) throws ClassNotFoundException {
+        for (ClasspathEntry ce : entries) {
+            try {
+                if (ce instanceof ClassDescriptionLoader) {
+                    return ((ClassDescriptionLoader)ce).load(qualifiedClassName);
+                }
+            } catch (ClassNotFoundException cnfe) {
+
+            }
+        }
+        throw new ClassNotFoundException(qualifiedClassName);
+    }
+
+    @Override
+    public KIND_CLASS_DATA isClassPresent(String qualifiedClassName) {
+        try {
+            findClassDescription(qualifiedClassName);
+            return KIND_CLASS_DATA.DESCRIPTION;
+        } catch (Exception cnfe) {
+            InputStream is = null;
+            try {
+                is = findClass(qualifiedClassName);
+                return KIND_CLASS_DATA.BYTE_CODE;
+            } catch (Exception e) {
+
+            } finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        // Ok
+                    }
+                }
+            }
+        }
+        return KIND_CLASS_DATA.NOT_FOUND;
     }
 
     /**
@@ -329,7 +372,8 @@ public class ClasspathImpl implements Classpath {
                 } else {
                     return new JimageM2Entry(previosEntry, name);
                 }
-
+            } else if (isSigFile(name)) {
+                return new SigFileEntry(previosEntry, name);
             } else {
                 return new JarFileEntry(previosEntry, name);
             }
@@ -338,5 +382,10 @@ public class ClasspathImpl implements Classpath {
             // ex.printStackTrace();
             return null;
         }
+    }
+
+    private boolean isSigFile(String fName) {
+        // first version, later ti analise the content
+        return fName.toLowerCase().endsWith(".sig");
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,13 +24,17 @@
  */
 package com.sun.tdk.signaturetest.classpath;
 
+import com.sun.tdk.signaturetest.model.ClassDescription;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 /**
  * @author Maxim Sokolnikov
  * @author Serguei Ivashin
  * @author Roman Makarchuk
+ * @author Mikhail Ershov
  */
 public interface Classpath {
 
@@ -59,6 +63,10 @@ public interface Classpath {
      */
     public String nextClassName();
 
+    boolean isEmpty();
+
+    void printErrors(PrintWriter out);
+
     /**
      * Reset enumeration of classes which are found by this module.
      */
@@ -70,4 +78,14 @@ public interface Classpath {
      * implementation must always return first class in the path
      */
     public InputStream findClass(String qualifiedClassName) throws IOException, ClassNotFoundException;
+
+    public ClassDescription findClassDescription(String qualifiedClassName) throws ClassNotFoundException;
+
+    public KIND_CLASS_DATA isClassPresent(String qualifiedClassName);
+
+    public enum KIND_CLASS_DATA {
+        DESCRIPTION, BYTE_CODE, NOT_FOUND;
+    }
+
+
 }

@@ -265,8 +265,8 @@ public class SignatureTest extends SigTest {
                 getLog().println(toString());
             }
         }
-        if (classpath != null) {
-            classpath.close();
+        if (getClasspath() != null) {
+            getClasspath().close();
         }
 
 //        long runTime = System.currentTimeMillis() - startTime;
@@ -352,7 +352,7 @@ public class SignatureTest extends SigTest {
 
         initDefaultAnnotations();
 
-        if (bo.isSet(Option.FILE_NAME)) {
+        if (bo.getValue(Option.FILE_NAME) != null) {
             readMode = MultipleFileReader.CLASSPATH_MODE;
         }
         // ==================
@@ -392,7 +392,7 @@ public class SignatureTest extends SigTest {
 
         // create ClasspathImpl for founding of the added classes
         try {
-            classpath = new ClasspathImpl(bo.getValue(Option.CLASSPATH));
+            setClasspath(new ClasspathImpl(bo.getValue(Option.CLASSPATH)));
         } catch (SecurityException e) {
             if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
@@ -400,7 +400,7 @@ public class SignatureTest extends SigTest {
             getLog().println(i18nSt.getString("SignatureTest.error.sec.newclasses"));
         }
 
-        if (bo.isSet(Option.STATIC) && classpath.isEmpty()) {
+        if (bo.isSet(Option.STATIC) && getClasspath().isEmpty()) {
             return error(i18nSt.getString("SignatureTest.error.classpath.unspec"));
         }
 
@@ -794,14 +794,14 @@ public class SignatureTest extends SigTest {
     private void checkAddedClasses() {
         //check that new classes are not added to the tracked packages.
 
-        if (classpath == null) {
+        if (getClasspath() == null) {
             return;
         }
 
         try {
             String name;
-            while (classpath.hasNext()) {
-                name = ExoticCharTools.encodeExotic(classpath.nextClassName());
+            while (getClasspath().hasNext()) {
+                name = ExoticCharTools.encodeExotic(getClasspath().nextClassName());
                 // Check that class isn't tracked and this class is
                 // accessible in the current tested mode
                 checkAddedClass(name);
@@ -1492,7 +1492,7 @@ public class SignatureTest extends SigTest {
 
         log.println();
 
-        classpath.printErrors(log);
+        getClasspath().printErrors(log);
 
         trackedClassNames = new HashSet();
 

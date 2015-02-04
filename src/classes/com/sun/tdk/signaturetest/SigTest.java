@@ -25,7 +25,6 @@
 package com.sun.tdk.signaturetest;
 
 import com.sun.tdk.signaturetest.classpath.Classpath;
-import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
@@ -84,9 +83,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static final String NOWARN = "nowarn";
     public static final String NOERR = "noerr";
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(SigTest.class);
-    //protected String testURL = "";
     protected String sigFileNameList = null;  // value of -Files option
-    //protected String sigFileName = null;   // value of -FileName option
     private FileManager fm = new FileManager();
 
     protected PackageGroup packages;
@@ -140,15 +137,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      * classes being loaded.
      */
     protected int cacheSize = DefaultCacheSize;
-    /**
-     * prints error messages.
-     */
-    private PrintWriter log;
 
-    /**
-     * Descriptions for all classes found at the specified classpath.
-     */
-    protected ClasspathImpl classpath;
     public static boolean isTigerFeaturesTracked = false;
     private static boolean isJava8 = false;
     protected Plugin pluginClass = null;
@@ -207,7 +196,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             utilLogger.warning(s);
         }
         if (!nowarnings) {
-            log.println(i18n.getString("SigTest.warning", s));
+            getLog().println(i18n.getString("SigTest.warning", s));
         }
     }
 
@@ -229,17 +218,18 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      */
     protected void setupProblem(String msg) {
         if (!noerrors) {
-            log.println(msg);
+            getLog().println(msg);
             errors++;
         }
     }
 
     protected void setLog(PrintWriter w) {
-        log = w;
+        assert w != null;
+        AppContext.getContext().setLogWriter(w);
     }
 
     public PrintWriter getLog() {
-        return log;
+        return AppContext.getContext().getLogWriter();
     }
 
     protected void decodeCommonOptions(String optionName, String[] args) throws CommandLineParserException {
@@ -354,7 +344,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             //  static mode
 
             loader = getLoader("com.sun.tdk.signaturetest.loaders.BinaryClassDescrLoader", new Class[]{Classpath.class, Integer.class},
-                    new Object[]{classpath, new Integer(cacheSize)}, getLog());
+                    new Object[]{getClasspath(), new Integer(cacheSize)}, getLog());
 
             if (loader == null) {
                 throw new LinkageError(i18n.getString("SigTest.error.mgr.linkerr.loadstatic"));
@@ -574,5 +564,16 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
     protected FileManager getFileManager() {
         return fm;
+    }
+
+    /**
+     * Descriptions for all classes found at the specified classpath.
+     */
+    protected Classpath getClasspath() {
+        return AppContext.getContext().getInputClasspath();
+    }
+
+    protected void setClasspath(Classpath classpath) {
+        AppContext.getContext().setInputClasspath(classpath);
     }
 }

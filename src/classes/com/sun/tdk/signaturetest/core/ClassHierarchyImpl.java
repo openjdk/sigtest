@@ -139,7 +139,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
         List<String> subClasses = directSubClasses.get(fqClassName);
         if (subClasses != null) {
-            result = (String[]) subClasses.toArray(EMPTY_STRING_ARRAY);
+            result = subClasses.toArray(EMPTY_STRING_ARRAY);
         }
 
         return result;
@@ -163,11 +163,18 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
         String name = subClassName;
         do {
-            ClassInfo info = getClassInfo(name);
-            if (superClassName.equals(info.superClass)) {
-                return true;
+            try {
+                ClassInfo info = getClassInfo(name);
+                if (superClassName.equals(info.superClass)) {
+                    return true;
+                }
+                name = info.superClass;
+            } catch (ClassNotFoundException cnfe) {
+                if (bo.isSet(Option.DEBUG)) {
+                    SwissKnife.reportThrowable(cnfe);
+                }
+                return false;
             }
-            name = info.superClass;
 
         } while (name != null);
 
@@ -219,7 +226,12 @@ public class ClassHierarchyImpl implements ClassHierarchy {
             name = m.replaceAll("");
         }
 
-        ClassDescription c = loader.load(name);
+        ClassDescription c = null;
+        try {
+            c = loader.load(name);
+        } catch (ClassNotFoundException ce) {
+            c = AppContext.getContext().getInputClasspath().findClassDescription(name);
+        }
 
         Transformer t = PluginAPI.ON_CLASS_LOAD.getTransformer();
         if (t != null) {

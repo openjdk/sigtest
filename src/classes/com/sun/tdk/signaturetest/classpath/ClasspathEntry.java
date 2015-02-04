@@ -24,6 +24,9 @@
  */
 package com.sun.tdk.signaturetest.classpath;
 
+import com.sun.tdk.signaturetest.model.ClassDescription;
+
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
@@ -76,5 +79,20 @@ public abstract class ClasspathEntry implements Classpath {
 
     public boolean isEmpty() {
         return classes.isEmpty();
+    }
+
+    @Override
+    public ClassDescription findClassDescription(String qualifiedClassName) throws ClassNotFoundException {
+        throw new ClassNotFoundException(qualifiedClassName);
+    }
+
+    @Override
+    public void printErrors(PrintWriter out) {
+        throw new IllegalStateException();
+    }
+
+    @Override
+    public KIND_CLASS_DATA isClassPresent(String qualifiedClassName) {
+        throw new IllegalStateException();
     }
 }

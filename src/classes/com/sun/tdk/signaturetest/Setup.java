@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest;
 
+import com.sun.tdk.signaturetest.classpath.Classpath;
 import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
@@ -325,7 +326,7 @@ public class Setup extends SigTest {
         getLog().println(i18n.getString("Setup.log.classpath", bo.getValue(Option.CLASSPATH)));
 
         try {
-            classpath = new ClasspathImpl(bo.getValue(Option.CLASSPATH));
+            setClasspath(new ClasspathImpl(bo.getValue(Option.CLASSPATH)));
         } catch (SecurityException e) {
             if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
@@ -335,17 +336,18 @@ public class Setup extends SigTest {
             return error(i18n.getString("Setup.log.invalid.security.classpath"));
         }
 
-        classpath.printErrors(getLog());
+        getClasspath().printErrors(getLog());
 
         String name;
-        while (classpath.hasNext()) {
-            name = classpath.nextClassName();
+        Classpath cp = getClasspath();
+        while (cp.hasNext()) {
+            name = cp.nextClassName();
             if (!allClasses.add(name)) {
                 getLog().println(i18n.getString("Setup.log.duplicate.class", name));
             }
         }
 
-        classpath.setListToBegin();
+        cp.setListToBegin();
 
         ClassDescriptionLoader testableLoader = getClassDescrLoader();
         testableHierarchy = new ClassHierarchyImpl(testableLoader);
@@ -484,8 +486,8 @@ public class Setup extends SigTest {
             if (writer != null) {
                 writer.close();
             }
-            if (classpath != null) {
-                classpath.close();
+            if (cp != null) {
+                cp.close();
             }
             try {
                 if (fos != null) {
