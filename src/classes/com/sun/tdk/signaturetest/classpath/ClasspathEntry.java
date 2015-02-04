@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -47,19 +47,19 @@ public abstract class ClasspathEntry implements Classpath {
      * Qualified names for all those classes found in <code>this</code>
      * directory.
      */
-    protected LinkedHashSet classes;
+    protected LinkedHashSet<String> classes;
     /**
      * This <code>currentPosition</code> iterator is used to browse
      * <code>classes</code>
      */
-    protected Iterator currentPosition;
+    protected Iterator<String> currentPosition;
 
     public boolean hasNext() {
         return currentPosition.hasNext();
     }
 
     public String nextClassName() {
-        return (String) currentPosition.next();
+        return currentPosition.next();
     }
 
     /**

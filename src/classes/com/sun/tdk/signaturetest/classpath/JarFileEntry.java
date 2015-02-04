@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,7 +27,6 @@ package com.sun.tdk.signaturetest.classpath;
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
-import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.ExoticCharTools;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 import java.io.IOException;
@@ -57,10 +56,10 @@ class JarFileEntry extends ClasspathEntry {
     public void init(String jarfile) throws IOException {
         this.jarfile = new JarFile(jarfile);
 
-        Enumeration entries = this.jarfile.entries();
-        classes = new LinkedHashSet();
+        Enumeration<JarEntry> entries = this.jarfile.entries();
+        classes = new LinkedHashSet<>();
         while (entries.hasMoreElements()) {
-            String name = ((JarEntry) entries.nextElement()).getName();
+            String name = entries.nextElement().getName();
             if (name.endsWith(JAVA_CLASSFILE_EXTENSION)) {
                 name = name.substring(0, name.length() - JAVA_CLASSFILE_EXTENSION_LEN).replace('/', '.');
                 if (previousEntry == null || !previousEntry.contains(name)) {

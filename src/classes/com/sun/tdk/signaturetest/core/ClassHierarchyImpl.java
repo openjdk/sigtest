@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest.core;
 
+import com.sun.tdk.signaturetest.classpath.Classpath;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.*;
@@ -38,6 +39,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author Roman Makarchuk
+ * @author Mikhail Ershov
  */
 public class ClassHierarchyImpl implements ClassHierarchy {
 
@@ -226,11 +228,17 @@ public class ClassHierarchyImpl implements ClassHierarchy {
             name = m.replaceAll("");
         }
 
-        ClassDescription c = null;
+        ClassDescription c;
         try {
             c = loader.load(name);
         } catch (ClassNotFoundException ce) {
-            c = AppContext.getContext().getInputClasspath().findClassDescription(name);
+            assert AppContext.getContext() != null;
+            Classpath cp = AppContext.getContext().getInputClasspath();
+            if (cp != null) {
+                c = cp.findClassDescription(name);
+            } else {
+                throw new ClassNotFoundException(name);
+            }
         }
 
         Transformer t = PluginAPI.ON_CLASS_LOAD.getTransformer();

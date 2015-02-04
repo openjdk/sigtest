@@ -151,9 +151,9 @@ public class ClasspathImpl implements Classpath {
 
     @Override
     public void init(String classPath) {
-        entries = new ArrayList();
-        errors = new ArrayList();
-        Set unique = new HashSet();
+        entries = new ArrayList<ClasspathEntry>();
+        errors = new ArrayList<String>();
+        Set<String> unique = new HashSet<String>();
         String path = (classPath == null) ? "" : classPath;
         if (!path.equals("") && (pathSeparator == null)) {
             throw new SecurityException(i18n.getString("ClasspathImpl.error.notdefinepathsep"));
