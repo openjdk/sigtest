@@ -24,6 +24,8 @@
  */
 package com.sun.tdk.signaturetest.plugin;
 
+import com.sun.tdk.signaturetest.errors.ErrorFormatter;
+
 import java.util.List;
 
 /**
@@ -31,5 +33,5 @@ import java.util.List;
  */
 public interface MessageTransformer {
 
-    public List /* ErrorFormatter.Message */ changeMessageList(List messages);
+    List<ErrorFormatter.Message>  changeMessageList(List<ErrorFormatter.Message> messages);
 }

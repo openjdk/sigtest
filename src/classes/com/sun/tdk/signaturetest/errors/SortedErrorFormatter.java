@@ -49,12 +49,12 @@ public class SortedErrorFormatter extends ErrorFormatter {
     /**
      * Headers for message groups by error type.
      */
-    private Map /*String,String*/ testedsuper = new HashMap();
+    private Map<String,String> testedsuper = new HashMap<>();
     private boolean verbose = false;
     /**
      * Messages buffer.
      */
-    protected List failedMessages;
+    protected List<Message> failedMessages;
     /**
      * Tabulator position.
      */
@@ -120,7 +120,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
         MessageType lastType = null;
         numErrors = 0;
         for (int i = 0; i < length; i++) {
-            Message current = (Message) failedMessages.get(i);
+            Message current = failedMessages.get(i);
             // recalculate num errors because of possible PluginAPI filtering
             if (!current.messageType.isWarning()) {
                 numErrors++;
@@ -214,7 +214,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
         List /*Vector(Vector(Message))*/ vv = new ArrayList();
 
         for (i = 0; i < failedMessages.size(); i++) {
-            Message msgi = (Message) failedMessages.get(i);
+            Message msgi = failedMessages.get(i);
 
             List /*(Message)*/ v = null;
 
@@ -228,7 +228,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
 
             if (v == null) {
                 for (k = i + 1; k < failedMessages.size(); k++) {
-                    Message msgk = (Message) failedMessages.get(k);
+                    Message msgk = failedMessages.get(k);
 
                     if (msgCompare(msgk, msgi)) {
                         if (v == null) {
@@ -295,7 +295,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
         }
 
         for (i = failedMessages.size(); --i >= 0;) {
-            Message msgi = (Message) failedMessages.get(i);
+            Message msgi = failedMessages.get(i);
 
             for (k = 0; k < exclude.size(); k++) {
                 Message msgk = (Message) exclude.get(k);
@@ -319,7 +319,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
         return testedsuper;
     }
 
-    protected void setTestedsuper( /*String,String*/Map testedsuper) {
+    protected void setTestedsuper(Map<String, String> testedsuper) {
         this.testedsuper = testedsuper;
     }
 

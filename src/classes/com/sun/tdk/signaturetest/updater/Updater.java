@@ -43,7 +43,7 @@ import com.sun.tdk.signaturetest.util.SwissKnife;
 public class Updater extends DefaultHandler {
 
     private UpdateRecord ur;
-    private LinkedList commands;
+    private LinkedList<Command> commands;
     private String lastData;
     private PrintWriter log;
 
@@ -63,7 +63,7 @@ public class Updater extends DefaultHandler {
     }
 
     public void startDocument() throws SAXException {
-        commands = new LinkedList();
+        commands = new LinkedList<>();
     }
 
     public void startElement(String uri, String localName, String qName,
@@ -155,10 +155,9 @@ public class Updater extends DefaultHandler {
         }
     }
 
-    private void processCommands(Collection commands, Updater.SigList sl) {
-        Iterator it = commands.iterator();
-        while (it.hasNext()) {
-            ((Command) (it.next())).perform(sl);
+    private void processCommands(Collection<Command> commands, Updater.SigList sl) {
+        for (Command command: commands) {
+            command.perform(sl);
         }
     }
 
