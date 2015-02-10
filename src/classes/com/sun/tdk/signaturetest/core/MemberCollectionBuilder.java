@@ -285,11 +285,12 @@ public class MemberCollectionBuilder {
 
     private void addInherited(boolean checkHidding, ClassDescription cl, ClassHierarchy hierarchy, List paramList, boolean skipRawTypes, MethodOverridingChecker overridingChecker, MemberCollection retVal) throws ClassNotFoundException {
 
+
         String clsName = cl.getQualifiedName();
         Set internalClasses = Collections.EMPTY_SET;
-        if (checkHidding) {
-            internalClasses = cl.getInternalClasses();
-        }
+//        if (checkHidding) {
+//            internalClasses = cl.getInternalClasses();
+//        }
         Map inheritedFields = new HashMap();
         SuperClass superClassDescr = cl.getSuperClass();
         if (superClassDescr != null) {
@@ -344,8 +345,8 @@ public class MemberCollectionBuilder {
             ClassHierarchy hierarchy, boolean checkHidding,
             List paramList, boolean skipRawTypes,
             MethodOverridingChecker overridingChecker,
-            MemberCollection retVal, Map inheritedFields,
-            Set internalClasses) throws ClassNotFoundException {
+            MemberCollection retVal, Map inheritedFields
+            , Set internalClasses  ) throws ClassNotFoundException {
 
         String clsName = cl.getQualifiedName();
         // findMember direct interfaces
@@ -447,7 +448,6 @@ public class MemberCollectionBuilder {
                         retVal.addMember(si);
 
                     } else if (membToAdd.isInner()) {
-
                         if (!internalClasses.contains(membToAdd.getName()) && retVal.findSimilar(membToAdd) == null) {
                             retVal.addMember(membToAdd);
                         } else {
