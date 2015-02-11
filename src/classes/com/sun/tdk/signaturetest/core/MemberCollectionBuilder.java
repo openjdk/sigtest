@@ -288,9 +288,9 @@ public class MemberCollectionBuilder {
 
         String clsName = cl.getQualifiedName();
         Set internalClasses = Collections.EMPTY_SET;
-//        if (checkHidding) {
-//            internalClasses = cl.getInternalClasses();
-//        }
+        if (checkHidding) {
+            internalClasses = cl.getInternalClasses();
+        }
         Map inheritedFields = new HashMap();
         SuperClass superClassDescr = cl.getSuperClass();
         if (superClassDescr != null) {
