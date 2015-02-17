@@ -285,12 +285,7 @@ public class MemberCollectionBuilder {
 
     private void addInherited(boolean checkHidding, ClassDescription cl, ClassHierarchy hierarchy, List paramList, boolean skipRawTypes, MethodOverridingChecker overridingChecker, MemberCollection retVal) throws ClassNotFoundException {
 
-
         String clsName = cl.getQualifiedName();
-        Set internalClasses = Collections.EMPTY_SET;
-        if (checkHidding) {
-            internalClasses = cl.getInternalClasses();
-        }
         Map inheritedFields = new HashMap();
         SuperClass superClassDescr = cl.getSuperClass();
         if (superClassDescr != null) {
@@ -321,7 +316,7 @@ public class MemberCollectionBuilder {
                         si.setDirect(false);
                         retVal.addMember(si);
                     } else if (supMD.isInner()) {
-                        if (!internalClasses.contains(supMD.getName())) {
+                        if (retVal.findSimilar(supMD) == null) {
                             retVal.addMember(supMD);
                         }
                     } else {
@@ -336,17 +331,16 @@ public class MemberCollectionBuilder {
         }
         addInheritedFromInterfaces(cl, hierarchy, checkHidding, paramList,
                 skipRawTypes, overridingChecker,
-                retVal, inheritedFields, internalClasses);
+                retVal, inheritedFields);
     }
 
     // this method invokes recursively
     // addInheritedFromInterfaces - getMembers - addInherited - addInheritedFromInterfaces - ...
     private void addInheritedFromInterfaces(ClassDescription cl,
-            ClassHierarchy hierarchy, boolean checkHidding,
-            List paramList, boolean skipRawTypes,
-            MethodOverridingChecker overridingChecker,
-            MemberCollection retVal, Map inheritedFields
-            , Set internalClasses  ) throws ClassNotFoundException {
+                                            ClassHierarchy hierarchy, boolean checkHidding,
+                                            List paramList, boolean skipRawTypes,
+                                            MethodOverridingChecker overridingChecker,
+                                            MemberCollection retVal, Map inheritedFields) throws ClassNotFoundException {
 
         String clsName = cl.getQualifiedName();
         // findMember direct interfaces
@@ -357,7 +351,6 @@ public class MemberCollectionBuilder {
             try {
                 ClassDescription intf = hierarchy.load(interfaces[i].getQualifiedName());
                 MemberCollection h = getMembers(intf, interfaces[i].getTypeParameters(), false, true, true, checkHidding);
-                //MemberCollection h = getMembers(intf, interfaces[i].getTypeParameters(), false, true, false, checkHidding);
                 Collection coll = h.getAllMembers();
                 if (paramList != null) {
                     coll = Erasurator.replaceFormalParameters(clsName, coll, paramList, skipRawTypes);
@@ -448,7 +441,7 @@ public class MemberCollectionBuilder {
                         retVal.addMember(si);
 
                     } else if (membToAdd.isInner()) {
-                        if (!internalClasses.contains(membToAdd.getName()) && retVal.findSimilar(membToAdd) == null) {
+                        if (retVal.findSimilar(membToAdd) == null) {
                             retVal.addMember(membToAdd);
                         } else {
                             if (!hierarchy.isClassVisibleOutside(membToAdd.getDeclaringClassName())) {
