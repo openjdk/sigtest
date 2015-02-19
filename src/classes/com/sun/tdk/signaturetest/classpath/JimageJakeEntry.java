@@ -99,13 +99,14 @@ public class JimageJakeEntry extends ClasspathEntry {
             throw new IOException("JIMAGE_EXE is not defined");
         }
 
+
         try {
             Process process = new ProcessBuilder(util, "extract", "--dir", tempd, jimageName).start();
             int ret = process.waitFor();
             if (ret != 0) {
                 throw new IOException("jimage error");
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
