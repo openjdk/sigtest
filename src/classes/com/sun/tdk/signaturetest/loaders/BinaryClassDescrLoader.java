@@ -260,9 +260,18 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 }
             }
         }
-
         return c;
     }
+
+    public ClassDescription altLoad(String className) throws ClassNotFoundException {
+        Classpath cp = AppContext.getContext().getInputClasspath();
+        if (cp != null) {
+            return cp.findClassDescription(className);
+        } else {
+            throw new ClassNotFoundException(className);
+        }
+    }
+
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(BinaryClassDescrLoader.class);
     // Magic number identifying class file format
     private static final int MAGIC = 0xCAFEBABE;
@@ -474,7 +483,11 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                         if (k == Classpath.KIND_CLASS_DATA.DESCRIPTION) {
                             enc = classpath.findClassDescription(declaringClass);
                         } else {
-                            enc = load(declaringClass);
+                            try {
+                                enc = load(declaringClass);
+                            } catch (ClassNotFoundException ex) {
+                                enc = altLoad(declaringClass);
+                            }
                         }
                         tp = enc.getTypeparamList();
                     } catch (ClassNotFoundException e) {
@@ -1059,8 +1072,12 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
         void completeAnnotation(AnnotationItem anno) {
             try {
-                ClassDescription c = load(anno.getName());
-
+                ClassDescription c;
+                try {
+                    c = load(anno.getName());
+                } catch (ClassNotFoundException ex) {
+                    c = altLoad(anno.getName());
+                }
                 AnnotationItem[] annoList = c.getAnnoList();
 
                 for (int k = 0; k < annoList.length; k++) {
