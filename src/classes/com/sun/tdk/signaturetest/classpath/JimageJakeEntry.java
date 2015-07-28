@@ -133,7 +133,7 @@ public class JimageJakeEntry extends ClasspathEntry {
                 // just skip to the next
             }
         }
-        throw new ClassCastException(name);
+        throw new ClassNotFoundException(name);
     }
 
     @Override
