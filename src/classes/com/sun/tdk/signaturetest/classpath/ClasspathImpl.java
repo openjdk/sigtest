@@ -367,11 +367,7 @@ public class ClasspathImpl implements Classpath {
             if (new File(name).isDirectory()) {
                 return new DirectoryEntry(previosEntry, name);
             } else if (name.endsWith(".jimage")) {
-                if (bo.isSet(Option.X_JAKE)) {
-                    return new JimageJakeEntry(previosEntry, name);
-                } else {
-                    return new JimageM2Entry(previosEntry, name);
-                }
+                return new JimageJakeEntry(previosEntry, name);
             } else if (isSigFile(name)) {
                 return new SigFileEntry(previosEntry, name);
             } else {

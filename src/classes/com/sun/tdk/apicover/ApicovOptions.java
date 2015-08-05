@@ -39,7 +39,6 @@ public class ApicovOptions extends Options {
 
     private EnumSet<Option> options = EnumSet.of(
             Option.X_JIMAGE,
-            Option.X_JAKE,
             Option.API_INCLUDE,
             Option.API_EXCLUDE,
             Option.API,
