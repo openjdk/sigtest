@@ -26,6 +26,7 @@ package com.sun.tdk.signaturetest.sigfile;
 
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.MemberType;
+import org.w3c.dom.Document;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,6 +50,7 @@ public abstract class SignatureClassLoader implements Reader {
     private BufferedReader in;
     private Parser parser;
     private final int BUFSIZE = 0x8000;
+    private List<Document> documents;
     /**
      * API version found in <code>this</code> signature file.
      */
@@ -62,6 +64,7 @@ public abstract class SignatureClassLoader implements Reader {
         this.format = format;
         features = format.getSupportedFeatures();
         parser = getParser();
+        documents = new ArrayList<>();
     }
 
     protected abstract Parser getParser();
@@ -101,14 +104,16 @@ public abstract class SignatureClassLoader implements Reader {
             if (currentLine.length() == 0 || currentLine.startsWith("#")) {
                 continue;
             }
-
             MemberType type = MemberType.getItemType(currentLine);
+
             if (type == MemberType.CLASS) {
                 if (classDescr == null) {
                     classDescr = currentLine;
                 } else {
                     break;
                 }
+            } else if (type == MemberType.MODULE) {
+                readXML("module", currentLine);
             } else {
                 if (classDescr == null) {
                     throw new Error();
@@ -127,6 +132,32 @@ public abstract class SignatureClassLoader implements Reader {
         definitions = convertClassDefinitions(definitions);
 
         return parser.parseClassDescription(classDescr, definitions);
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    protected void readXML(String elName, String line) throws IOException {
+        StringBuilder xmlTxt = new StringBuilder();
+        while (line != null && !line.trim().isEmpty()) {
+            line = line.trim();
+            line = preprocessLine(line);
+            if (line.length() == 0 || line.startsWith("#")) {
+                line = in.readLine();
+                continue;
+            }
+            xmlTxt.append(line);
+            line = in.readLine();
+        }
+        Document d = processXMLFragment(xmlTxt.toString());
+        if (d != null) {
+            documents.add(d);
+        }
+    }
+
+    protected Document processXMLFragment(String s) {
+        return null;
     }
 
     protected String preprocessLine(String currentLine) {

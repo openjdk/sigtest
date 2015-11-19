@@ -39,6 +39,8 @@ public enum Option {
     EXCLUDE("-Exclude", Kind.MANY_OPT),
     API_INCLUDE("-apiInclude", Kind.MANY_OPT),
     API_EXCLUDE("-apiExclude", Kind.MANY_OPT),
+    PKG_INCLUDE("-pkgInclude", Kind.MANY_OPT),
+    PKG_EXCLUDE("-pkgExclude", Kind.MANY_OPT),
     CLASSPATH("-Classpath", Kind.SINGLE_OPT),
     ALL_PUBLIC("-AllPublic", Kind.NONE),
     STATIC("-Static", Kind.NONE),
@@ -78,11 +80,16 @@ public enum Option {
     FORMATHUMAN("-FormatHuman", "-H", Kind.NONE),
     BACKWARD("-Backward", "-B", Kind.NONE),
 
-    ;
+    MOD_INCLUDE("-modInclude", Kind.MANY_OPT),
+    MOD_EXCLUDE("-modExclude", Kind.MANY_OPT),
+
+    COPYRIGHT("-CopyRight", Kind.SINGLE_OPT),
+    APIVERSION("-ApiVersion", Kind.SINGLE_OPT);
 
     private String key;
     private Kind kind;
     private String alias;
+
     private Option(String key, Kind kind) {
         this.key = key;
         this.kind = kind;

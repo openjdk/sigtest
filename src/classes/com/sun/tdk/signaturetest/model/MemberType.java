@@ -66,6 +66,8 @@ public final class MemberType implements Comparable, Serializable {
     public static final MemberType CONSTRUCTOR = new MemberType("cons", constructorModifiers);
     public static final MemberType METHOD = new MemberType("meth", methodModifiers);
     public static final MemberType FIELD = new MemberType("fld", fieldModifiers);
+    public static final MemberType MODULE = new MemberType("<module", noneModifiers);
+
 
     public String toString() {
         return name;
@@ -158,5 +160,5 @@ public final class MemberType implements Comparable, Serializable {
     private final Modifier[] applicableModifiers;
     private int modifiersMask;
     private int trackedModifiersMask;     // used to clean non-tracked modifiers quickly
-    public static final MemberType[] knownTypes = {CLASS, SUPERCLASS, SUPERINTERFACE, CONSTRUCTOR, METHOD, FIELD, INNER};
+    public static final MemberType[] knownTypes = {CLASS, SUPERCLASS, SUPERINTERFACE, CONSTRUCTOR, METHOD, FIELD, INNER, MODULE};
 }

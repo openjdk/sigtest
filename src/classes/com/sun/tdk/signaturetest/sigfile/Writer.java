@@ -31,17 +31,8 @@ import java.io.PrintWriter;
 /**
  * @author Roman Makarchuk
  */
-public interface Writer {
+public interface Writer extends BaseWriter {
 
-    public void init(PrintWriter out);
+    void write(ClassDescription classDescription);
 
-    void setApiVersion(String apiVersion);
-
-    public void addFeature(Format.Feature feature);
-
-    public void writeHeader();
-
-    public void write(ClassDescription classDescription);
-
-    public void close();
 }

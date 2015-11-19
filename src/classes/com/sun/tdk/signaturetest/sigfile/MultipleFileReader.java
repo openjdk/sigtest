@@ -32,6 +32,7 @@ import com.sun.tdk.signaturetest.loaders.VirtualClassDescriptionLoader;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +40,7 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -55,6 +57,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
     private String apiVersion;
     private FileManager fileMan;
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private List<Document> documents;
 
     public MultipleFileReader(PrintWriter log, int mode, FileManager f) {
         // Note: Merge mode is not supported yet.
@@ -148,6 +151,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
                         assert mode == MERGE_MODE;
                     }
                 }
+                documents = in.getDocuments();
             } catch (IOException e) {
                 if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
@@ -182,6 +186,10 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
 
     public void rewind() {
         classIterator = getClassIterator();
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
     }
 
     public ClassDescription nextClass() throws IOException {

@@ -29,6 +29,8 @@ import com.sun.tdk.signaturetest.sigfile.f41.F41Format;
 import com.sun.tdk.signaturetest.sigfile.f40.F40Format;
 import com.sun.tdk.signaturetest.sigfile.f31.F31Format;
 import com.sun.tdk.signaturetest.sigfile.f21.F21Format;
+import com.sun.tdk.signaturetest.sigfile.f43.F43Format;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -146,7 +148,7 @@ public class FileManager {
         formats.add(frm);
         defaultFormat = frm;
     }
-    private Format defaultFormat = new F42Format();
+    private Format defaultFormat = new F43Format();
     private List formats = new ArrayList();
 
     public FileManager() {
@@ -155,5 +157,6 @@ public class FileManager {
         formats.add(new F31Format());
         formats.add(new F40Format());
         formats.add(new F41Format());
+        formats.add(new F42Format());
     }
 }

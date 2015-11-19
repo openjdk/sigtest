@@ -33,6 +33,8 @@ import com.sun.tdk.signaturetest.util.SwissKnife;
 public class Main {
 
     // Command line options
+    private static final String COMMAND_MOD_SETUP = "Mod_Setup";
+    private static final String COMMAND_MOD_TEST = "Mod_Test";
     private static final String COMMAND_SETUP = "Setup";
     private static final String COMMAND_TEST = "Test";
     private static final String COMMAND_TEST_ALT = "SignatureTest";
@@ -60,8 +62,8 @@ public class Main {
         System.out.println();
         if (isSigtestdevJar) {
             System.out.println(i18n.getString("Main.usage.variant.canbedev",
-                    new Object[]{COMMAND_SETUP, COMMAND_TEST,
-                        COMMAND_SETUP_AND_TEST, COMMAND_MERGE}));
+                    new Object[]{COMMAND_MOD_SETUP, COMMAND_SETUP, COMMAND_TEST,
+                            COMMAND_SETUP_AND_TEST, COMMAND_MERGE}));
         } else {
             System.out.println(i18n.getString("Main.usage.variant.canbe",
                     new Object[]{COMMAND_TEST, COMMAND_MERGE}));
@@ -94,7 +96,21 @@ public class Main {
             System.arraycopy(args, 1, otherArgs, 0, args.length - 1);
 
             // Running another class (Setup, Test, etc) with given arguments
-            if (args[0].equalsIgnoreCase(COMMAND_SETUP)) {
+            if (args[0].equalsIgnoreCase(COMMAND_MOD_SETUP)) {
+                if (isSigtestdevJar) {
+                    ModSetup.main(otherArgs);
+                } else {
+                    System.out.println(i18n.getString("Main.command.absent",
+                            new Object[]{COMMAND_MOD_SETUP, jar}));
+                }
+            } else if (args[0].equalsIgnoreCase(COMMAND_MOD_TEST)) {
+                if (isSigtestdevJar) {
+                    ModTest.main(otherArgs);
+                } else {
+                    System.out.println(i18n.getString("Main.command.absent",
+                            new Object[]{COMMAND_MOD_SETUP, jar}));
+                }
+            } else if (args[0].equalsIgnoreCase(COMMAND_SETUP)) {
                 if (isSigtestdevJar) {
                     Setup.main(otherArgs);
                 } else {

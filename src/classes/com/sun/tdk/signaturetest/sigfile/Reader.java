@@ -25,9 +25,11 @@
 package com.sun.tdk.signaturetest.sigfile;
 
 import com.sun.tdk.signaturetest.model.ClassDescription;
+import org.w3c.dom.Document;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -46,4 +48,7 @@ public interface Reader {
     void close() throws IOException;
 
     String getApiVersion();
+
+    List<Document> getDocuments();
+
 }

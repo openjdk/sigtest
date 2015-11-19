@@ -166,7 +166,7 @@ public class JimageJakeEntry extends ClasspathEntry {
     @Override
     protected boolean contains(String className) {
         for (DirectoryEntry module : module_homes) {
-            if (!module.contains(className)) {
+            if (module.contains(className)) {
                 return true;
             }
         }

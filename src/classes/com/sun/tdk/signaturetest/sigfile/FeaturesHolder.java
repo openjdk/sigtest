@@ -38,6 +38,7 @@ public class FeaturesHolder {
     public static final Feature XHiders = new Feature("#XHiders");
     public static final Feature OuterClasses = new Feature("#OuterClasses");
     public static final Feature CopyRight = new Feature("#CopyRight");
+    public static final Feature ModuleInfo = new Feature("#ModuleInfo");
 
     public void addSupportedFeature(Feature feature) {
         ensureInitialized();

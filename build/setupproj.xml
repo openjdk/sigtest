@@ -64,6 +64,13 @@
     />
 </target>
 
+<target name="warning.j9" unless="jdk9.home">
+    <echo
+        message="Support Java 1.9 classes via reflection is not supported by current settings. To change this, specify jdk9.home property in 'build/build.properties' file."
+        level="warning"
+    />
+</target>
+
 <target name="warning.cdc" unless="cdc.boot">
     <echo
         message="Testing CDC classes is not supported by current settings. To change this, specify cdc.boot property in 'build/build.properties' file."
@@ -80,7 +87,7 @@
 
 
 <!-- Make base directory structure -->
-<target name="prepare" depends="property.check,warning.jdk14,warning.cdc, warning.maven, warning.j8"
+<target name="prepare" depends="property.check,warning.jdk14,warning.cdc, warning.maven, warning.j8, warning.j9"
         description="Make base directory structure for build">
     <mkdir dir="${build.base.dir}"/>
     <mkdir dir="${build.temp.dir}"/>

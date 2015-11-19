@@ -84,6 +84,10 @@ public class F40Writer implements Writer {
             out.println(FeaturesHolder.TigerInfo);
         }
 
+        if (features.contains(FeaturesHolder.ModuleInfo)) {
+            out.println(FeaturesHolder.ModuleInfo);
+        }
+
         if (features.contains(FeaturesHolder.CopyRight)) {
             out.println("\n" + FeaturesHolder.CopyRight + "\n");
         }
@@ -401,6 +405,8 @@ public class F40Writer implements Writer {
     }
 
     public void close() {
-        out.close();
+        if (out != null) {
+            out.close();
+        }
     }
 }

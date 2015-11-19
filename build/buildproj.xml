@@ -123,7 +123,7 @@ ${copyright.text}
 
 <target name="jars" depends="sigtest_jars, remote_jar, exclude_jar, apicover_jar, apicheck_jar"/>
 
-<target name="sigtest_jars" depends="compileClasses, compileJ8Classes">
+<target name="sigtest_jars" depends="compileClasses, compileJ8Classes, compileJ9Classes">
     <mkdir dir="${build.lib.dir}"/>
     <jar destfile="${build.lib.dir}/sigtest.jar" basedir="${build.classes.dir}"
          includes="**/signaturetest/**" excludes="**/Setup* **remote/**">
@@ -165,7 +165,22 @@ ${copyright.text}
     </javac>
 </target>
 
-<target name="apicover_jar" depends="compileClasses, compileJ8Classes">
+<target name="compileJ9Classes" depends="prepareSrc, prepare, javatest, compileClasses" if="jdk9.home" >
+
+    <javac fork="true" srcdir="${build.src.classes.dir}"
+           destdir="${build.classes.dir}"
+           executable="${jdk9.home}/bin/javac"
+           source="1.9"
+           target="1.9"
+           classpath="${build.classes.dir}"
+           debug="${javac.debug}"
+           verbose="${javac.verbose}" deprecation="${javac.deprecation}" >
+         <!--   classpathref="compileClassPath"  -->
+        <include name="com/sun/tdk/signaturetest/**/ModuleLoader.java"/>
+    </javac>
+</target>
+
+<target name="apicover_jar" depends="compileClasses, compileJ8Classes, compileJ9Classes">
     <mkdir dir="${build.lib.dir}"/>
     <jar
         destfile="${build.lib.dir}/apicover.jar"
@@ -179,7 +194,7 @@ ${copyright.text}
     </jar>
 </target>
 
-<target name="apicheck_jar" depends="compileClasses, compileJ8Classes">
+<target name="apicheck_jar" depends="compileClasses, compileJ8Classes, compileJ9Classes">
     <mkdir dir="${build.lib.dir}"/>
     <jar
         destfile="${build.lib.dir}/apicheck.jar"
@@ -211,6 +226,7 @@ ${copyright.text}
         <include name="com/sun/tdk/exclude/*.java"/>
         <exclude name="com/sun/tdk/signaturetest/**/Tiger*.java"/>
         <exclude name="com/sun/tdk/signaturetest/**/J8RefLoader.java"/>
+        <exclude name="com/sun/tdk/signaturetest/**/ModuleLoader.java"/>
         <exclude name="com/sun/tdk/**/remote/**"/>
     </javac>
     <javac fork="true" srcdir="${build.src.classes.dir}"
@@ -224,6 +240,7 @@ ${copyright.text}
            classpathref="compileClassPath" >
         <include name="com/sun/tdk/signaturetest/**/Tiger*.java"/>
         <exclude name="com/sun/tdk/signaturetest/**/J8RefLoader.java"/>
+        <exclude name="com/sun/tdk/signaturetest/**/ModuleLoader.java"/>
     </javac>
 
     <antcall target="compile_remote_classes"/>
