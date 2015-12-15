@@ -17,10 +17,8 @@ public class ModuleLoader implements ModuleDescriptionLoader {
         Set<ModuleDescription> result = new HashSet<>();
 
         Layer bootL = Layer.boot();
-        Optional<Configuration> oc = bootL.configuration();
-        //System.out.println(oc);
-        if (oc.isPresent()) {
-            Configuration c = oc.get();
+        Configuration c = bootL.configuration();
+        if (c != null) {
             Set<ModuleDescriptor> mds = c.descriptors();
             for (ModuleDescriptor md : mds ) {
 
