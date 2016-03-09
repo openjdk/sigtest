@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class ModBase extends SigTest {
-    protected static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ModBase.class);
+    protected static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ModBase.class);
     protected PackageGroup modIncl;
     protected PackageGroup modExcl;
     protected String apiVer = "";
