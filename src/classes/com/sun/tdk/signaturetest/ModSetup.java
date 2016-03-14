@@ -24,7 +24,7 @@ public class ModSetup extends ModBase {
     private String copyrightStr = null;
 
 
-    protected ModSetup() {
+    public ModSetup() {
         super();
     }
 

@@ -45,9 +45,7 @@ public class ModuleLoader implements ModuleDescriptionLoader {
                 for (ModuleDescriptor.Exports me : exports) {
                     ModuleDescription.Exports exp = new ModuleDescription.Exports();
                     exp.source = me.source();
-                    if (me.targets().isPresent()) {
-                        exp.targets = new HashSet<String>(me.targets().get());
-                    }
+                    exp.targets = new HashSet<String>(me.targets());
                     rexports.add(exp);
                 }
                 rmd.setExports(rexports);

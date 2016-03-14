@@ -25,7 +25,7 @@ public class ModTest extends ModBase {
     protected PackageGroup pkgIncl;
     protected PackageGroup pkgExcl;
 
-    protected ModTest() {
+    public ModTest() {
         pkgIncl = new PackageGroup(true);
         pkgExcl = new PackageGroup(true);
     }
