@@ -16,8 +16,8 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.PrintWriter;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ModTest extends ModBase {
 
@@ -86,7 +86,7 @@ public class ModTest extends ModBase {
             }
         }
 
-        for (String mN : thisModel.keySet() ) {
+        for (String mN : thisModel.keySet()) {
 
             ModuleDescription thisModule = thisModel.get(mN);
             ModuleDescription thatModule = thatModel.get(mN);
@@ -104,7 +104,7 @@ public class ModTest extends ModBase {
             thisExports = filterExports(thisExports);
             thatExports = filterExports(thatExports);
 
-            for(ModuleDescription.Exports thisEx : thisExports) {
+            for (ModuleDescription.Exports thisEx : thisExports) {
                 ModuleDescription.Exports thatEx = null;
                 for (ModuleDescription.Exports t : thatExports) {
                     if (t.source.equals(thisEx.source)) {
@@ -121,7 +121,7 @@ public class ModTest extends ModBase {
                     continue;
                 }
             }
-            for(ModuleDescription.Exports thatEx : thatExports) {
+            for (ModuleDescription.Exports thatEx : thatExports) {
                 ModuleDescription.Exports thisEx = null;
                 for (ModuleDescription.Exports t : thisExports) {
                     if (t.source.equals(thatEx.source)) {
@@ -140,28 +140,46 @@ public class ModTest extends ModBase {
             Set<String> thatProvides = thatModule.getProvides().keySet();
             thisProvides = filterProvides(thisProvides);
             thatProvides = filterProvides(thatProvides);
-            if (!thisProvides.equals(thatProvides)) {
 
-                Set<String> onlyHere = new HashSet<>(thisProvides);
-                onlyHere.removeAll(thatProvides);
+            compareStringSets(thisModule, thisProvides, thatProvides, "'service'");
 
-                Set<String> onlyThere = new HashSet<>(thatProvides);
-                onlyThere.removeAll(thisProvides);
+            // 4. requires public
+            Set<String> thisPublicRequires = thisModule.getRequires()
+                    .stream().filter(md -> md.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC))
+                    .map(ModuleDescription.Requires::getName).collect(Collectors.toSet());
 
-                for (String sName : onlyHere) {
-                    errorFormatter.addError("Extra service " + sName + " provided by module " + thisModule.getName() );
-                }
-                for (String sName : onlyThere) {
-                    errorFormatter.addError("Required service " + sName + " is not provided by module " + thisModule.getName() );
-                }
-            }
+            Set<String> thatPublicRequires = thatModule.getRequires()
+                    .stream().filter(md -> md.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC))
+                    .map(ModuleDescription.Requires::getName).collect(Collectors.toSet());
+
+            compareStringSets(thisModule, thisPublicRequires, thatPublicRequires, "'requires public'");
+
+
         }
         return errorFormatter.getNunErrors() == 0;
     }
 
+    private void compareStringSets(ModuleDescription thisModule, Set<String> thisSet, Set<String> thatSet, String objName) {
+        if (!thisSet.equals(thatSet)) {
+
+            Set<String> onlyHere = new HashSet<>(thisSet);
+            onlyHere.removeAll(thatSet);
+
+            Set<String> onlyThere = new HashSet<>(thatSet);
+            onlyThere.removeAll(thisSet);
+
+            for (String sName : onlyHere) {
+                errorFormatter.addError("Extra " + objName + " " + sName + " provided by module " + thisModule.getName());
+            }
+            for (String sName : onlyThere) {
+                errorFormatter.addError("Required " + objName + " " + sName + " is not provided by module " + thisModule.getName());
+            }
+        }
+    }
+
     private Set<String> filterProvides(Set<String> provides) {
         Iterator<String> it = provides.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             String service = it.next();
             if (!isApiPackage(service)) {
                 //System.out.println(" - service " + service);
@@ -176,7 +194,7 @@ public class ModTest extends ModBase {
         Iterator<ModuleDescription.Exports> it = exports.iterator();
 
         // remove non-api sources
-        while( it.hasNext()) {
+        while (it.hasNext()) {
             ModuleDescription.Exports ex = it.next();
             if (!isApiPackage(ex.source)) {
                 //System.out.println(" - source " + ex.source);
@@ -186,7 +204,7 @@ public class ModTest extends ModBase {
 
         // remove non-api targets
         it = exports.iterator();
-        while( it.hasNext()) {
+        while (it.hasNext()) {
             ModuleDescription.Exports ex = it.next();
             if (ex.targets.isEmpty()) {
                 continue;

@@ -7,8 +7,7 @@ import java.util.Set;
 /**
  * Reflection of java.lang.module.ModuleDescriptor
  */
-public class ModuleDescription
-{
+public class ModuleDescription {
 
     private String name;
 
@@ -151,6 +150,10 @@ public class ModuleDescription
 
         public String name;
         public Set<ModuleDescription.Requires.Modifier> modifiers = Collections.EMPTY_SET;
+
+        public String getName() {
+            return name;
+        }
 
         @Override
         public String toString() {
