@@ -5,6 +5,7 @@ import com.sun.tdk.signaturetest.model.ModuleDescription;
 
 import java.lang.module.Configuration;
 import java.lang.module.ModuleDescriptor;
+import java.lang.module.ResolvedModule;
 import java.lang.reflect.Layer;
 import java.util.*;
 
@@ -19,8 +20,11 @@ public class ModuleLoader implements ModuleDescriptionLoader {
         Layer bootL = Layer.boot();
         Configuration c = bootL.configuration();
         if (c != null) {
-            Set<ModuleDescriptor> mds = c.descriptors();
-            for (ModuleDescriptor md : mds ) {
+            Set<ResolvedModule> rms = c.modules();
+
+            for (ResolvedModule rm : rms) {
+
+                ModuleDescriptor md = rm.reference().descriptor();
 
                 ModuleDescription rmd = new ModuleDescription();
                 // 1. name
