@@ -17,7 +17,6 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ModTest extends ModBase {
 
@@ -144,13 +143,19 @@ public class ModTest extends ModBase {
             compareStringSets(thisModule, thisProvides, thatProvides, "'service'");
 
             // 4. requires public
-            Set<String> thisPublicRequires = thisModule.getRequires()
-                    .stream().filter(md -> md.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC))
-                    .map(ModuleDescription.Requires::getName).collect(Collectors.toSet());
 
-            Set<String> thatPublicRequires = thatModule.getRequires()
-                    .stream().filter(md -> md.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC))
-                    .map(ModuleDescription.Requires::getName).collect(Collectors.toSet());
+            Set<String> thisPublicRequires = new HashSet<>();
+            for (ModuleDescription.Requires rq : thisModule.getRequires()) {
+                if (rq.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC)) {
+                    thisPublicRequires.add(rq.getName());
+                }
+            }
+            Set<String> thatPublicRequires = new HashSet<>();
+            for (ModuleDescription.Requires rq : thatModule.getRequires()) {
+                if (rq.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC)) {
+                    thatPublicRequires.add(rq.getName());
+                }
+            }
 
             compareStringSets(thisModule, thisPublicRequires, thatPublicRequires, "'requires public'");
 
