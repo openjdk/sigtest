@@ -487,12 +487,22 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 //
 //  Annotation parsing methods
 //
-    List/*AnnotationItem*/ parse(ClassDescription c, int target, Annotation[] xx) {
-        List/*AnnotationItem*/ annolist = new ArrayList();
+    List<AnnotationItem> parse(ClassDescription c, int target, Annotation[] xx) {
+        List<AnnotationItem> annolist = new ArrayList();
 
         if (xx != null) {
             for (int i = 0; i < xx.length; i++) {
-                annolist.add(parse(c, target, xx[i]));
+                try {
+                    annolist.add(parse(c, target, xx[i]));
+                } catch (RuntimeException ex) {
+                    // Annotation can be inaccessible, see CODETOOLS-7901631
+                    // So we should ignore java.lang.reflect.InaccessibleObjectException
+                    // not referring statically to that class because it exists since 1.9
+                    // and this code should be 1.5 compatible
+                    if (!"java.lang.reflect.InaccessibleObjectException".equals(ex.getClass().getName())) {
+                        throw ex;
+                    }
+                }
             }
         }
 
