@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2016, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -95,6 +95,21 @@ public class PackageGroup {
             if ((className.startsWith(getPackageName(pack))
                     && ((className.lastIndexOf('.') <= pack.length())
                     || isSubpackagesUses)) || className.equals(pack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if the given module <code>name</code> belongs to some of the
+     * modules listed by <code>this</code> <b>PackageGroup</b>. If
+     * <code>isSubpackagesUsed</code> policy is set, also check if that module
+     * is submodule.
+     */
+    public boolean checkModuleName(String moduleName) {
+        for (String pack : group) {
+            if (moduleName.equals(pack) || (isSubpackagesUses && moduleName.startsWith(pack + "."))) {
                 return true;
             }
         }

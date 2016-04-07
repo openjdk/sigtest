@@ -1,5 +1,31 @@
+/*
+ * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
 package com.sun.tdk.signaturetest.sigfile.f43;
 
+import com.sun.tdk.signaturetest.core.context.ModFeatures;
 import com.sun.tdk.signaturetest.model.ModuleDescription;
 import com.sun.tdk.signaturetest.sigfile.ModWriter;
 import com.sun.tdk.signaturetest.sigfile.f42.F42Writer;
@@ -17,6 +43,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Set;
 
 import static com.sun.tdk.signaturetest.sigfile.f43.F43Format.*;
 
@@ -41,63 +68,92 @@ public class F43Writer extends F42Writer implements ModWriter {
             Element eModule = doc.createElement(MODULE);
 
             eModule.setAttribute(NAME, md.getName());
-            if (!md.getVersion().isEmpty()) {
-                eModule.setAttribute(VERSION, md.getVersion());
+
+            Set<ModFeatures> features = md.getFeatures();
+            eModule.setAttribute(FEATURES, ModFeatures.commaListFromFeatureSet(features));
+
+            if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.VERSION)) {
+                if (!md.getVersion().isEmpty()) {
+                    eModule.setAttribute(VERSION, md.getVersion());
+                }
             }
-            if (!md.getMainClass().isEmpty()) {
-                eModule.setAttribute(MAIN_CLASS, md.getMainClass());
+
+            if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.MAIN_CLASS)) {
+                if (!md.getMainClass().isEmpty()) {
+                    eModule.setAttribute(MAIN_CLASS, md.getMainClass());
+                }
             }
+
             doc.appendChild(eModule);
 
-            for (String packName : md.getPackages()) {
-                Element ePack = doc.createElement(PACKAGE);
-                ePack.setAttribute(NAME, packName);
-                eModule.appendChild(ePack);
-            }
-
-            for (String packName : md.getConceals()) {
-                Element ePack = doc.createElement(CONCEAL);
-                ePack.setAttribute(NAME, packName);
-                eModule.appendChild(ePack);
-            }
-
-            for (ModuleDescription.Exports ex : md.getExports()) {
-                Element eExp = doc.createElement(EXPORTS);
-                eExp.setAttribute(SOURCE, ex.source);
-                for (String target : ex.targets) {
-                    Element eTarget = doc.createElement(TARGET);
-                    eTarget.setAttribute(NAME, target);
-                    eExp.appendChild(eTarget);
+            if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.PACKAGES)) {
+                for (String packName : md.getPackages()) {
+                    Element ePack = doc.createElement(PACKAGE);
+                    ePack.setAttribute(NAME, packName);
+                    eModule.appendChild(ePack);
                 }
-                eModule.appendChild(eExp);
+            }
+            if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.CONCEAL)) {
+                for (String packName : md.getConceals()) {
+                    Element ePack = doc.createElement(CONCEAL);
+                    ePack.setAttribute(NAME, packName);
+                    eModule.appendChild(ePack);
+                }
+            }
+
+            if (features.contains(ModFeatures.ALL)
+                    || features.contains(ModFeatures.EXPORTS_PUBLIC)
+                    || features.contains(ModFeatures.EXPORTS_ALL)) {
+                for (ModuleDescription.Exports ex : md.getExports()) {
+
+                    if (!ex.targets.isEmpty()) {
+                        if (!features.contains(ModFeatures.ALL)
+                                && !features.contains(ModFeatures.EXPORTS_ALL)) {
+                            continue;
+                        }
+                    }
+
+                    Element eExp = doc.createElement(EXPORTS);
+
+                    eExp.setAttribute(SOURCE, ex.source);
+                    for (String target : ex.targets) {
+                        Element eTarget = doc.createElement(TARGET);
+                        eTarget.setAttribute(NAME, target);
+                        eExp.appendChild(eTarget);
+                    }
+                    eModule.appendChild(eExp);
+                }
             }
 
             for (ModuleDescription.Requires re : md.getRequires()) {
-                Element eReq = doc.createElement(REQUIRES);
-                eReq.setAttribute(NAME, re.name);
-                for (ModuleDescription.Requires.Modifier m : re.modifiers) {
-                    eReq.setAttribute(m.name().toLowerCase(), TRUE);
-                }
-                eModule.appendChild(eReq);
-            }
 
-            for (ModuleDescription.Provides pr : md.getProvides().values()) {
-                Element ePr = doc.createElement(PROVIDES);
-                ePr.setAttribute(SERVICE, pr.service);
-                eModule.appendChild(ePr);
-                for (String provider : pr.providers) {
-                    Element eProvider = doc.createElement(PROVIDER);
-                    eProvider.setAttribute(NAME, provider);
-                    ePr.appendChild(eProvider);
+                if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.REQUIRES_ALL) ||
+                        (features.contains(ModFeatures.REQUIRES_PUBLIC) && re.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC))) {
+
+                    Element eReq = doc.createElement(REQUIRES);
+                    eReq.setAttribute(NAME, re.name);
+                    for (ModuleDescription.Requires.Modifier m : re.modifiers) {
+                        eReq.setAttribute(m.name().toLowerCase(), TRUE);
+                    }
+                    eModule.appendChild(eReq);
                 }
             }
 
-            for (String uses : md.getUses()) {
-                Element eUses = doc.createElement(USES);
-                eUses.setAttribute(NAME, uses);
-                eModule.appendChild(eUses);
+            if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.SERVICES)) {
+                for (ModuleDescription.Provides pr : md.getProvides().values()) {
+                    Element ePr = doc.createElement(PROVIDES);
+                    ePr.setAttribute(SERVICE, pr.service);
+                    eModule.appendChild(ePr);
+                }
             }
 
+            if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.USES)) {
+                for (String uses : md.getUses()) {
+                    Element eUses = doc.createElement(USES);
+                    eUses.setAttribute(NAME, uses);
+                    eModule.appendChild(eUses);
+                }
+            }
             out.println(getStringFromDocument(doc));
 
         } catch (ParserConfigurationException e) {

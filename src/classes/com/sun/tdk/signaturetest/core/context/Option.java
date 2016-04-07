@@ -80,11 +80,17 @@ public enum Option {
     FORMATHUMAN("-FormatHuman", "-H", Kind.NONE),
     BACKWARD("-Backward", "-B", Kind.NONE),
 
-    MOD_INCLUDE("-modInclude", Kind.MANY_OPT),
-    MOD_EXCLUDE("-modExclude", Kind.MANY_OPT),
+    MODULES("-modules", Kind.SINGLE_OPT),
 
     COPYRIGHT("-CopyRight", Kind.SINGLE_OPT),
-    APIVERSION("-ApiVersion", Kind.SINGLE_OPT);
+    APIVERSION("-ApiVersion", Kind.SINGLE_OPT),
+
+    // mod_setup
+    FEATURES("-Features", Kind.SINGLE_OPT),
+
+    // mod_test
+    CHECKS("-Checks", Kind.SINGLE_OPT);
+
 
     private String key;
     private Kind kind;

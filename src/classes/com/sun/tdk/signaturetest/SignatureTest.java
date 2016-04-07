@@ -748,7 +748,7 @@ public class SignatureTest extends SigTest {
             if (numErrors == 0) {
                 return passed();
             } else {
-                return failed(i18nSt.getString("SignatureTest.mesg.failed",
+                return failed(i18nSt.getString("MTest.msg.failed",
                         Integer.toString(numErrors)));
             }
 

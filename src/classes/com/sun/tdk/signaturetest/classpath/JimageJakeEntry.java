@@ -84,10 +84,6 @@ public class JimageJakeEntry extends ClasspathEntry {
     @Override
     public void init(String jimageName) throws IOException {
 
-        if (!jimageName.endsWith(".jimage")) {
-            throw new IOException("Wrong jimage file: " + jimageName);
-        }
-
         // extract to tmp
         td = Files.createTempDirectory("st_");
         String tempd = td.toAbsolutePath().toString();

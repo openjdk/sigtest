@@ -1,3 +1,28 @@
+/*
+ * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
 package com.sun.tdk.signaturetest.sigfile.f43;
 
 import com.sun.tdk.signaturetest.model.ModuleDescription;
@@ -17,6 +42,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 
+import static com.sun.tdk.signaturetest.core.context.ModFeatures.featureSetFromCommaList;
 import static com.sun.tdk.signaturetest.sigfile.f43.F43Format.*;
 
 public class F43Reader extends F42Reader {
@@ -48,6 +74,13 @@ public class F43Reader extends F42Reader {
             if (name != null && !name.isEmpty()) {
                 md.setName(name);
             }
+        }
+        {
+            String features = m.getAttribute(FEATURES);
+            if (features == null ) {
+                features = "";
+            }
+            md.setFeatures(featureSetFromCommaList(features));
         }
         {
             String version = m.getAttribute(VERSION);
@@ -95,9 +128,9 @@ public class F43Reader extends F42Reader {
                 export.source = e.getAttribute(SOURCE);
                 HashSet<String> taSet = new HashSet<>();
 
-                NodeList trgs = e.getElementsByTagName(TARGET);
-                for (int j = 0; j < trgs.getLength(); j++) {
-                    Element t = (Element) trgs.item(j);
+                NodeList targs = e.getElementsByTagName(TARGET);
+                for (int j = 0; j < targs.getLength(); j++) {
+                    Element t = (Element) targs.item(j);
                     taSet.add(t.getAttribute(NAME));
                 }
                 export.targets = taSet;

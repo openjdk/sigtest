@@ -62,7 +62,7 @@ public class Main {
         System.out.println();
         if (isSigtestdevJar) {
             System.out.println(i18n.getString("Main.usage.variant.canbedev",
-                    new Object[]{COMMAND_MOD_SETUP, COMMAND_SETUP, COMMAND_TEST,
+                    new Object[]{COMMAND_MOD_SETUP, COMMAND_SETUP, COMMAND_MOD_TEST, COMMAND_TEST,
                             COMMAND_SETUP_AND_TEST, COMMAND_MERGE}));
         } else {
             System.out.println(i18n.getString("Main.usage.variant.canbe",

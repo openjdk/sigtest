@@ -211,12 +211,12 @@ public class Setup extends SigTest {
         }
 
         if (bo.getValue(Option.FILE_NAME) == null) {
-            return error(i18n.getString("Setup.error.filename.missing"));
+            return error(i18n.getString("MTest.error.filename.missing"));
         }
 
         if (bo.getValue(Option.TEST_URL) != null) {
             if (new File(bo.getValue(Option.FILE_NAME)).isAbsolute()) {
-                return error(i18n.getString("Setup.error.testurl.absolutepath", new Object[]{Option.TEST_URL.getKey(), bo.getValue(Option.FILE_NAME)}));
+                return error(i18n.getString("MTest.error.testurl.absolutepath", new Object[]{Option.TEST_URL.getKey(), bo.getValue(Option.FILE_NAME)}));
             }
         }
 

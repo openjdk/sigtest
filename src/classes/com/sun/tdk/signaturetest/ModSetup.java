@@ -1,7 +1,33 @@
+/*
+ * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
 package com.sun.tdk.signaturetest;
 
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.ModuleDescriptionLoader;
+import com.sun.tdk.signaturetest.core.context.ModFeatures;
 import com.sun.tdk.signaturetest.core.context.ModSetupOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.ModuleDescription;
@@ -9,11 +35,14 @@ import com.sun.tdk.signaturetest.sigfile.FeaturesHolder;
 import com.sun.tdk.signaturetest.sigfile.FileManager;
 import com.sun.tdk.signaturetest.sigfile.ModWriter;
 import com.sun.tdk.signaturetest.sigfile.Writer;
-import com.sun.tdk.signaturetest.util.*;
+import com.sun.tdk.signaturetest.util.CommandLineParser;
+import com.sun.tdk.signaturetest.util.CommandLineParserException;
+import com.sun.tdk.signaturetest.util.OptionInfo;
+import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.io.*;
-
 import java.net.URL;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -22,10 +51,10 @@ public class ModSetup extends ModBase {
 
     private ModSetupOptions mo = AppContext.getContext().getBean(ModSetupOptions.class);
     private String copyrightStr = null;
+    private EnumSet<ModFeatures> features = EnumSet.of(ModFeatures.ALL);
 
 
     public ModSetup() {
-        super();
     }
 
     /**
@@ -88,16 +117,10 @@ public class ModSetup extends ModBase {
             return false;
         }
 
-        modIncl.addPackages(mo.getValues(Option.MOD_INCLUDE));
-        modExcl.addPackages(mo.getValues(Option.MOD_EXCLUDE));
-
-        // create arguments
-        if (modIncl.isEmpty()) {
-            modIncl.addPackage("");
-        }
+        setupModulesAndPackages(mo);
 
         if (mo.getValue(Option.FILE_NAME) == null) {
-            return error(i18n.getString("Setup.error.filename.missing"));
+            return error(i18n.getString("MTest.error.filename.missing"));
         }
 
         copyrightStr = mo.getValue(Option.COPYRIGHT);
@@ -105,14 +128,28 @@ public class ModSetup extends ModBase {
             apiVer = mo.getValue(Option.APIVERSION);
         }
 
+        if (!processFeatureList(mo)) {
+            return false;
+        }
+
         if (mo.getValue(Option.TEST_URL) != null) {
             if (new File(mo.getValue(Option.FILE_NAME)).isAbsolute()) {
-                return error(i18n.getString("Setup.error.testurl.absolutepath", new Object[]{Option.TEST_URL.getKey(), mo.getValue(Option.FILE_NAME)}));
+                return error(i18n.getString("MTest.error.testurl.absolutepath", new Object[]{Option.TEST_URL.getKey(), mo.getValue(Option.FILE_NAME)}));
             }
         }
 
         return true;
 
+    }
+
+    private boolean processFeatureList(ModSetupOptions mo) {
+        try {
+            features = ModFeatures.featureSetFromCommaList(mo.getValue(Option.FEATURES));
+        } catch (IllegalArgumentException ex) {
+            error(i18n.getString("Setup.error.wrongfeature", ex.getMessage()));
+            return false;
+        }
+        return true;
     }
 
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
@@ -124,8 +161,8 @@ public class ModSetup extends ModBase {
      */
     protected void usage() {
         StringBuffer sb = new StringBuffer();
-
         sb.append(getComponentName() + " - " + i18n.getString("MSetup.usage.version", Version.Number));
+        sb.append(i18n.getString("MSetup.usage"));
         System.err.println(sb.toString());
     }
 
@@ -149,10 +186,11 @@ public class ModSetup extends ModBase {
                 ModuleDescriptionLoader mdl = getModuleLoader();
                 Set<ModuleDescription> modules = mdl.loadBootModules();
                 for (ModuleDescription md : modules) {
+                    md.setFeatures(features);
                     model.put(md.getName(), md);
                 }
             }
-            filterModuleSet(model, true);
+            filterModuleSet(model, true, mo.isSet(Option.DEBUG));
 
             Writer w = getFileManager().getDefaultFormat().getWriter();
             if (w instanceof ModWriter) {
@@ -203,7 +241,6 @@ public class ModSetup extends ModBase {
                 SwissKnife.reportThrowable(ex);
             }
         }
-
 
         return passed();
     }
