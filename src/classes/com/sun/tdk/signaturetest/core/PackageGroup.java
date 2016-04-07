@@ -108,8 +108,8 @@ public class PackageGroup {
      * is submodule.
      */
     public boolean checkModuleName(String moduleName) {
-        for (String pack : group) {
-            if (moduleName.equals(pack) || (isSubpackagesUses && moduleName.startsWith(pack + "."))) {
+        for (String mn : group) {
+            if (mn.isEmpty() || moduleName.equals(mn) || (isSubpackagesUses && moduleName.startsWith(mn + "."))) {
                 return true;
             }
         }
