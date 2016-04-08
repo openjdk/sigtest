@@ -34,9 +34,9 @@ Features for recording and for checking
 public enum ModFeatures {
 
     /*
-    checks module list only
+    checks module existence
      */
-    MODULE_LIST,
+    AVAILABILITY,
 
     /*
     the module's version
@@ -116,7 +116,7 @@ public enum ModFeatures {
             }
         }
         if (res.isEmpty() || res.contains(ALL)) {
-            return EnumSet.of(MODULE_LIST, REQUIRES_PUBLIC, EXPORTS_PUBLIC);
+            return EnumSet.of(AVAILABILITY, REQUIRES_PUBLIC, EXPORTS_PUBLIC);
         }
         return res;
     }

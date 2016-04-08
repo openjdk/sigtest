@@ -263,7 +263,7 @@ public abstract class ModBase extends SigTest {
 
         private ArrayList<String> errors = new ArrayList<>();
 
-        void addError(String i18key, String... args) {
+        void addError(String i18key, Object... args) {
             errors.add(String.format(i18n.getString(i18key), args));
         }
 
