@@ -115,7 +115,7 @@ public enum ModFeatures {
                 }
             }
         }
-        if (res.isEmpty() || res.contains(ALL)) {
+        if (res.isEmpty()) {
             return EnumSet.of(AVAILABILITY, REQUIRES_PUBLIC, EXPORTS_PUBLIC);
         }
         return res;
