@@ -128,13 +128,13 @@ public class ModTest extends ModBase {
 
         for (String mName : onlyHere) {
             // i18n "Extra module %s found\n"
-            errorFormatter.addError("MTest.error.module.extra", mName);
+            errorFormatter.addError(i18n.getString("MTest.error.module.extra"), mName);
             result = false;
         }
 
         for (String mName : onlyThere) {
             // i18n "Required module %s is not found\n"
-            errorFormatter.addError("MTest.error.module.not.found", mName);
+            errorFormatter.addError(i18n.getString("MTest.error.module.not.found"), mName);
             result = false;
         }
 
@@ -153,7 +153,7 @@ public class ModTest extends ModBase {
             if (s2 == null || s2.isEmpty()) s2="n/a";
 
             // i18n "Module %s - different main class: %s and %s\n"
-            errorFormatter.addError("MTest.error.main.class",
+            errorFormatter.addError(i18n.getString("MTest.error.main.class"),
                     thatModule.getName(), s1, s2);
             return false;
         }
@@ -171,7 +171,7 @@ public class ModTest extends ModBase {
             if (s2 == null || s2.isEmpty()) s2="n/a";
 
             // i18n "Module %s - different versions: %s and %s\n"
-            errorFormatter.addError("MTest.error.version",
+            errorFormatter.addError(i18n.getString("MTest.error.version"),
                     thatModule.getName(), s1, s2);
             return false;
         }
@@ -222,13 +222,13 @@ public class ModTest extends ModBase {
             }
             if (thatEx == null) {
                 // i18n "Extra export %s found in module %s\n"
-                errorFormatter.addError("MTest.error.export.not.found",
+                errorFormatter.addError(i18n.getString("MTest.error.export.not.found"),
                         thisEx.source, thisModule.getName());
                 continue;
             }
             if (!thisEx.targets.equals(thatEx.targets)) {
                 // i18n "Different targets for export %s in module %s: %s and %s\n"
-                errorFormatter.addError("MTest.error.export.targets",
+                errorFormatter.addError(i18n.getString("MTest.error.export.targets"),
                         thisEx.source, thisModule.getName(),
                         thisEx.targets.toString(), thatEx.targets.toString());
                 continue;
@@ -248,7 +248,7 @@ public class ModTest extends ModBase {
             }
             if (thisEx == null) {
                 // i18n "Missing export %s found in module %s\n"
-                errorFormatter.addError("MTest.error.export.missing",
+                errorFormatter.addError(i18n.getString("MTest.error.export.missing"),
                         thatEx.source, thatModule.getName());
                 continue;
             }
@@ -313,7 +313,7 @@ public class ModTest extends ModBase {
         assert thatModule.getFeatures() != null;
         if (!thatModule.getFeatures().contains(ModFeatures.ALL) &&
                 !thatModule.getFeatures().contains(checker)) {
-            errorFormatter.addError("MTest.checker.not.supported", thatModule.getName(), checker.name());
+            errorFormatter.addError(i18n.getString("MTest.checker.not.supported"), thatModule.getName(), checker.name());
             return false;
         }
         return true;
@@ -331,13 +331,13 @@ public class ModTest extends ModBase {
 
             for (String sName : onlyHere) {
                 // i18n "Extra %s %s provided by module %s\n"
-                errorFormatter.addError("MTest.error.extra.entity",
+                errorFormatter.addError(i18n.getString("MTest.error.extra.entity"),
                         objName, sName, thisModule.getName());
                 retVal = false;
             }
             for (String sName : onlyThere) {
                 // i18n "Required %s %s is not provided by module %s\n"
-                errorFormatter.addError("MTest.error.missing.entity",
+                errorFormatter.addError(i18n.getString("MTest.error.missing.entity"),
                         objName, sName, thisModule.getName());
                 retVal = false;
             }
