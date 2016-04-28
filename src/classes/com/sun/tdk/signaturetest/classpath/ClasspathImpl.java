@@ -366,7 +366,7 @@ public class ClasspathImpl implements Classpath {
         try {
             if (new File(name).isDirectory()) {
                 return new DirectoryEntry(previosEntry, name);
-            } else if (name.endsWith(".jimage")) {
+            } else if ( new File(name).getName().equals("modules") || name.endsWith(".jimage")) {
                 return new JimageJakeEntry(previosEntry, name);
             } else if (isSigFile(name)) {
                 return new SigFileEntry(previosEntry, name);
