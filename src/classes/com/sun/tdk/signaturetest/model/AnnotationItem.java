@@ -208,29 +208,32 @@ public class AnnotationItem implements Comparable {
         }
 
         public int compareTo(Object x) {
-
             Member that = (Member) x;
 
-            int result = 0;
-
-            if (type != null && that.type != null) {
-                result = type.compareTo(that.type);
-            } else if (type == null && that.type == null) {
-                // nothing to do
-            } else if (type == null) {
-                result = -1;
-            } else {
-                result = 1;
-            }
+            int result = compareNullableStrings(type, that.type);
 
             if (result == 0) {
-                result = name.compareTo(that.name);
-                if (result == 0) {
-                    result = value.compareTo(that.value);
-                }
+                result = compareNullableStrings(name, that.name);
             }
+            if (result == 0) {
+                result = compareNullableStrings(value, that.value);
+            }
+
             return result;
         }
+
+        private int compareNullableStrings(String s1, String s2) {
+            if (s1 != null && s2 != null) {
+                return s1.compareTo(s2);
+            } else if (s1 == null && s2 == null) {
+                return 0;
+            } else if (s1 == null) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+
 
         public int hashCode() {
             int hash = 7;
