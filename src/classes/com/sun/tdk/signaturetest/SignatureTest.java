@@ -1150,8 +1150,9 @@ public class SignatureTest extends SigTest {
         }
     }
 
-    // see CR 7157095 and option -secure
     private void correctClassModifiers(ClassDescription required, ClassDescription found) {
+
+        // see CR 7157095 and option -secure
         if (secure.checkName(found.getQualifiedName())) {
             if (required.isAbstract() != found.isAbstract()) {
                 if (!SwissKnife.canBeSubclassed(found) && !SwissKnife.canBeSubclassed(required)) {
@@ -1160,6 +1161,27 @@ public class SignatureTest extends SigTest {
                 }
             }
         }
+
+        // CODETOOLS-7901685
+        if (required.hasModifier(Modifier.ENUM) && found.hasModifier(Modifier.ENUM)) {
+            found.addModifier(Modifier.ABSTRACT);
+            required.addModifier(Modifier.ABSTRACT);
+            found.addModifier(Modifier.FINAL);
+            required.addModifier(Modifier.FINAL);
+            for (Iterator e = required.getMembersIterator(); e.hasNext();) {
+                MemberDescription mr = (MemberDescription) e.next();
+                if (mr.isMethod() && mr.hasModifier(Modifier.ABSTRACT)) {
+                    e.remove();
+                }
+            }
+            for (Iterator e = found.getMembersIterator(); e.hasNext();) {
+                MemberDescription mr = (MemberDescription) e.next();
+                if (mr.isMethod() && mr.hasModifier(Modifier.ABSTRACT)) {
+                    e.remove();
+                }
+            }
+        }
+
     }
 
     /**
