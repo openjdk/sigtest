@@ -1164,24 +1164,22 @@ public class SignatureTest extends SigTest {
 
         // CODETOOLS-7901685
         if (required.hasModifier(Modifier.ENUM) && found.hasModifier(Modifier.ENUM)) {
-            found.addModifier(Modifier.ABSTRACT);
-            required.addModifier(Modifier.ABSTRACT);
-            found.addModifier(Modifier.FINAL);
-            required.addModifier(Modifier.FINAL);
-            for (Iterator e = required.getMembersIterator(); e.hasNext();) {
-                MemberDescription mr = (MemberDescription) e.next();
-                if (mr.isMethod() && mr.hasModifier(Modifier.ABSTRACT)) {
-                    e.remove();
-                }
-            }
-            for (Iterator e = found.getMembersIterator(); e.hasNext();) {
-                MemberDescription mr = (MemberDescription) e.next();
-                if (mr.isMethod() && mr.hasModifier(Modifier.ABSTRACT)) {
-                    e.remove();
-                }
-            }
+            fixEnum(required);
+            fixEnum(found);
         }
 
+    }
+
+    private void fixEnum(ClassDescription required) {
+        required.addModifier(Modifier.FINAL);
+        required.removeModifier(Modifier.ABSTRACT);
+        for (Iterator e = required.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = (MemberDescription) e.next();
+            if (mr.isMethod()) {
+                mr.addModifier(Modifier.FINAL);
+                mr.removeModifier(Modifier.ABSTRACT);
+            }
+        }
     }
 
     /**
