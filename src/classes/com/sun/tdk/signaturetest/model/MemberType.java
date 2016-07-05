@@ -42,7 +42,7 @@ public final class MemberType implements Comparable, Serializable {
         Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE,
         Modifier.ABSTRACT, Modifier.FINAL, Modifier.INTERFACE,
         Modifier.STATIC, Modifier.ANNOTATION, Modifier.ENUM, Modifier.ACC_STRICT,
-        Modifier.ACC_SUPER, Modifier.ACC_SYNTHETIC
+        Modifier.ACC_SUPER, Modifier.ACC_SYNTHETIC, Modifier.ACC_MODULE
     };
     private static final Modifier[] constructorModifiers = {
         Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE,
@@ -66,7 +66,7 @@ public final class MemberType implements Comparable, Serializable {
     public static final MemberType CONSTRUCTOR = new MemberType("cons", constructorModifiers);
     public static final MemberType METHOD = new MemberType("meth", methodModifiers);
     public static final MemberType FIELD = new MemberType("fld", fieldModifiers);
-    public static final MemberType MODULE = new MemberType("<module", noneModifiers);
+    public static final MemberType MODULE = new MemberType("module", noneModifiers);
 
 
     public String toString() {

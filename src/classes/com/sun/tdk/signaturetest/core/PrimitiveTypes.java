@@ -24,12 +24,14 @@
  */
 package com.sun.tdk.signaturetest.core;
 
+import java.lang.reflect.Array;
+
 /**
  * @author Mikhail Ershov
  */
 public class PrimitiveTypes {
 
-    // prevent creating this utility class
+    // prevents creating this utility class
     private PrimitiveTypes() {
     }
 
@@ -66,6 +68,37 @@ public class PrimitiveTypes {
         return null;
     }
 
+    public static String simpleObjectToString(Object o) {
+        StringBuffer sb = new StringBuffer();
+        simpleObjectToString(o, sb);
+        return sb.toString().trim();
+    }
+
+    private static void simpleObjectToString(Object o, StringBuffer sb) {
+        if (o.getClass().isArray()) {
+            sb.append("[");
+            Object[] arr = (Object[]) o;
+            for (Object oo : arr) {
+                simpleObjectToString(oo, sb);
+            }
+            // trim sb
+            if (sb.charAt(sb.length()-1) == ' ') {
+                sb.deleteCharAt(sb.length() - 1);
+            }
+            sb.append("]");
+        } else if (o instanceof String) {
+            sb.append('"');
+            sb.append(o);
+            sb.append('"');
+        } else if (o instanceof Class) {
+            sb.append(((Class) o).getName());
+        } else {
+            sb.append(o.toString());
+        }
+        sb.append(' ');
+    }
+
+
     private static class Pair {
 
         Pair(char vm, String jls) {
@@ -75,6 +108,7 @@ public class PrimitiveTypes {
         char VMNotation;
         String JLSNotation;
     }
+
     private static Pair[] types = {
         new Pair('Z', "boolean"),
         new Pair('V', "void"),

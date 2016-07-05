@@ -683,8 +683,8 @@ public class SignatureTest extends SigTest {
                         }
                     }
 
-                    if (currentClass.isPackageInfo() && isTigerFeaturesTracked) {
-                        verifyPackageInfo(currentClass);
+                    if (currentClass.isModuleOrPackaheInfo() && isTigerFeaturesTracked) {
+                        verifyMduleOrPackageInfo(currentClass);
                     } else {
                         verifyClass(currentClass, supportNSC);
                     }
@@ -821,7 +821,7 @@ public class SignatureTest extends SigTest {
             BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
             try {
                 ClassDescription c = testableHierarchy.load(name);
-                if (c.isPackageInfo()) {
+                if (c.isModuleOrPackaheInfo()) {
                     if (isTigerFeaturesTracked) {
                         checkAnnotations(null, c, null, null, null, testableHierarchy);
                     }
@@ -1054,7 +1054,7 @@ public class SignatureTest extends SigTest {
         return result;
     }
 
-    private void verifyPackageInfo(ClassDescription required) {
+    private void verifyMduleOrPackageInfo(ClassDescription required) {
 
         assert (isTigerFeaturesTracked);
 

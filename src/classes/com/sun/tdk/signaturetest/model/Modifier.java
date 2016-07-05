@@ -57,6 +57,7 @@ public final class Modifier implements Serializable {
     public static final Modifier ACC_SUPER = new Modifier("acc_super", 0x00000020, 0, false);
     public static final Modifier ACC_SYNTHETIC = new Modifier("acc_synthetic", 0x00001000, 0, false);
     public static final Modifier ACC_STRICT = new Modifier("acc_strict", 0x00000800, java.lang.reflect.Modifier.STRICT, false);
+    public static final Modifier ACC_MODULE = new Modifier("module", 0x00008000, 0, true);
 
     public String toString() {
         return name;

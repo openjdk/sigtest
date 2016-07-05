@@ -480,7 +480,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
         private boolean isAccessible(ClassDescription c) {
 
-            if (c.isPackageInfo()) {
+            if (c.isModuleOrPackaheInfo()) {
                 return true;
             }
 

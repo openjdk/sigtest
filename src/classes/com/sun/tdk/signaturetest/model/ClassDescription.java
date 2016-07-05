@@ -52,6 +52,7 @@ import java.util.*;
 public class ClassDescription extends MemberDescription {
 
     private static final String PACKAGE_INFO_CLASS = ".package-info";
+    private static final String MODULE_INFO_CLASS = ".module-info";
     public static final String OUTER_PREFIX = "outer";
 
     // NOTE: Change this method carefully if you changed the code,
@@ -330,6 +331,14 @@ public class ClassDescription extends MemberDescription {
 
     public boolean isPackageInfo() {
         return name.endsWith(PACKAGE_INFO_CLASS);
+    }
+
+    public boolean isModuleInfo() {
+        return name.endsWith(MODULE_INFO_CLASS);
+    }
+
+    public boolean isModuleOrPackaheInfo() {
+        return isPackageInfo() || isModuleInfo();
     }
 
     public String getPackageName() {

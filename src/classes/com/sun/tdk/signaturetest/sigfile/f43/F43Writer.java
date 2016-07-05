@@ -26,6 +26,7 @@
 package com.sun.tdk.signaturetest.sigfile.f43;
 
 import com.sun.tdk.signaturetest.core.context.ModFeatures;
+import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.ModuleDescription;
 import com.sun.tdk.signaturetest.sigfile.ModWriter;
 import com.sun.tdk.signaturetest.sigfile.f42.F42Writer;
@@ -56,6 +57,11 @@ public class F43Writer extends F42Writer implements ModWriter {
         this.out = out;
         setFormat(new F43Format());
         super.init(out);
+    }
+
+    @Override
+    public void write(ClassDescription classDescription) {
+        super.write(classDescription);
     }
 
     @Override

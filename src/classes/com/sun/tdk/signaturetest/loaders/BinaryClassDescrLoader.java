@@ -710,28 +710,28 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             String methodName = c.getName(classData.readUnsignedShort());
 
             boolean isConstructor = "<init>".equals(methodName);
-            MemberDescription fid;
+            MemberDescription memberD;
 
             if (isConstructor) {
-                fid = new ConstructorDescr(c, modif);
+                memberD = new ConstructorDescr(c, modif);
             } else {
-                fid = new MethodDescr(methodName, c.getQualifiedName(), modif);
+                memberD = new MethodDescr(methodName, c.getQualifiedName(), modif);
             }
 
-            boolean isBridgeMethod = fid.hasModifier(Modifier.BRIDGE);
-            boolean isSynthetic = fid.hasModifier(Modifier.ACC_SYNTHETIC);
+            boolean isBridgeMethod = memberD.hasModifier(Modifier.BRIDGE);
+            boolean isSynthetic = memberD.hasModifier(Modifier.ACC_SYNTHETIC);
 //            boolean isSyntheticConstuctor = isConstructor && fid.hasModifier(Modifier.ACC_SYNTHETIC);
 
             String descr = c.getName(classData.readUnsignedShort());
             int pos = descr.indexOf(')');
 
             try {
-                fid.setArgs(getArgs(descr.substring(1, pos)));
+                memberD.setArgs(getArgs(descr.substring(1, pos)));
             } catch (IllegalArgumentException e) {
                 err(i18n.getString("BinaryClassDescrLoader.message.incorrectformat", c.getQualifiedName()));
             }
 
-            fid.setType(convertVMType(descr.substring(pos + 1)));
+            memberD.setType(convertVMType(descr.substring(pos + 1)));
 
             MethodAttrs attrs = new MethodAttrs();
             attrs.read(c, classData);
@@ -741,9 +741,9 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 if (bo.isSet(Option.DEBUG)) {
                     if (isConstructor) {
                         getLog().println(i18n.getString("BinaryClassDescrLoader.message.synthetic_constr_skipped",
-                                fid.getQualifiedName() + "(" + fid.getArgs() + ")"));
+                                memberD.getQualifiedName() + "(" + memberD.getArgs() + ")"));
                     } else {
-                        String signature = fid.getType() + " " + fid.getQualifiedName() + "(" + fid.getArgs() + ")";
+                        String signature = memberD.getType() + " " + memberD.getQualifiedName() + "(" + memberD.getArgs() + ")";
                         if (isBridgeMethod) {
                             getLog().println(i18n.getString("BinaryClassDescrLoader.message.bridge", signature));
                         } else {
@@ -756,24 +756,25 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             }
 
             if (attrs.annodef != null) {
-                fid.addModifier(Modifier.HASDEFAULT);
-                ((MethodDescr) fid).setAnnoDef(attrs.annodef);
+                memberD.addModifier(Modifier.HASDEFAULT);
+                ((MethodDescr) memberD).setAnnoDef(attrs.annodef);
+                System.out.println(c.getQualifiedName() + " " + memberD.getName() + " value=" + PrimitiveTypes.simpleObjectToString(attrs.annodef) ) ;
             }
 
-            fid.setThrowables(MemberDescription.getThrows(attrs.xthrows));
+            memberD.setThrowables(MemberDescription.getThrows(attrs.xthrows));
 
             if (isConstructor) {
-                fid.setType(MemberDescription.NO_TYPE);
-                ctors.add(fid);
+                memberD.setType(MemberDescription.NO_TYPE);
+                ctors.add(memberD);
                 tmpctors.add(attrs.signature);
-            } else if ("<clinit>".equals(fid.getName())) {
+            } else if ("<clinit>".equals(memberD.getName())) {
                 //  ignore
             } else {
-                mthds.add(fid);
+                mthds.add(memberD);
                 tmpmthds.add(attrs.signature);
             }
 
-            fid.setAnnoList(AnnotationItem.toArray(attrs.annolist));
+            memberD.setAnnoList(AnnotationItem.toArray(attrs.annolist));
         }
 
         if ((n = ctors.size()) != 0) {

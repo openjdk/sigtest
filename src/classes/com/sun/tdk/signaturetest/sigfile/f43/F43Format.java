@@ -52,6 +52,7 @@ public class F43Format extends F42Format {
 
     public F43Format() {
         addSupportedFeature(FeaturesHolder.ModuleInfo);
+        addSupportedFeature(FeaturesHolder.AnnDevVal);
     }
 
     public Reader getReader() {

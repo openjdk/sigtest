@@ -152,7 +152,7 @@ public class F40Writer implements Writer {
         writeInternalMembers(buf, F40Format.HIDDEN_CLASSES, classDescription.getInternalClasses());
     }
 
-    private void write(StringBuffer buf, MemberDescription m) {
+    protected void write(StringBuffer buf, MemberDescription m) {
 
         MemberType type = m.getMemberType();
 
@@ -203,7 +203,7 @@ public class F40Writer implements Writer {
         }
     }
 
-    private void write(StringBuffer buf, ConstructorDescr m) {
+    protected void write(StringBuffer buf, ConstructorDescr m) {
 
         MemberType memberType = m.getMemberType();
 
@@ -241,7 +241,7 @@ public class F40Writer implements Writer {
         }
     }
 
-    private void write(StringBuffer buf, MethodDescr m) {
+    protected void write(StringBuffer buf, MethodDescr m) {
 
         MemberType memberType = m.getMemberType();
 
@@ -286,7 +286,7 @@ public class F40Writer implements Writer {
         }
     }
 
-    private void write(StringBuffer buf, FieldDescr m) {
+    protected void write(StringBuffer buf, FieldDescr m) {
 
         MemberType memberType = m.getMemberType();
 
@@ -328,7 +328,7 @@ public class F40Writer implements Writer {
         }
     }
 
-    private void write(StringBuffer buf, InnerDescr m) {
+    protected void write(StringBuffer buf, InnerDescr m) {
 
         MemberType memberType = m.getMemberType();
 
@@ -344,7 +344,7 @@ public class F40Writer implements Writer {
         buf.append(m.getName());
     }
 
-    private void write(StringBuffer buf, SuperClass m) {
+    protected void write(StringBuffer buf, SuperClass m) {
 
         MemberType memberType = m.getMemberType();
 
@@ -359,7 +359,7 @@ public class F40Writer implements Writer {
         }
     }
 
-    private void write(StringBuffer buf, SuperInterface m) {
+    protected void write(StringBuffer buf, SuperInterface m) {
 
         MemberType memberType = m.getMemberType();
 

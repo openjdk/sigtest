@@ -39,6 +39,7 @@ public class FeaturesHolder {
     public static final Feature OuterClasses = new Feature("#OuterClasses");
     public static final Feature CopyRight = new Feature("#CopyRight");
     public static final Feature ModuleInfo = new Feature("#ModuleInfo");
+    public static final Feature AnnDevVal = new Feature("#AnnoDefVals");
 
     public void addSupportedFeature(Feature feature) {
         ensureInitialized();
