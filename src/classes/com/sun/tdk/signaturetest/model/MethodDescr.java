@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest.model;
 
+import com.sun.tdk.signaturetest.core.PrimitiveTypes;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -154,5 +155,9 @@ public final class MethodDescr extends MemberDescription {
         while (st.hasMoreTokens()) {
             addDependency(set, st.nextToken());
         }
+    }
+
+    public void setDefaultValue(String defValueAsString) {
+        setAnnoDef(PrimitiveTypes.stringToSimpleObject(defValueAsString));
     }
 }

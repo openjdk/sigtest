@@ -25,8 +25,11 @@
 
 package com.sun.tdk.signaturetest.sigfile.f43;
 
+import com.sun.tdk.signaturetest.core.PrimitiveTypes;
 import com.sun.tdk.signaturetest.core.context.ModFeatures;
 import com.sun.tdk.signaturetest.model.ClassDescription;
+import com.sun.tdk.signaturetest.model.MethodDescr;
+import com.sun.tdk.signaturetest.model.Modifier;
 import com.sun.tdk.signaturetest.model.ModuleDescription;
 import com.sun.tdk.signaturetest.sigfile.ModWriter;
 import com.sun.tdk.signaturetest.sigfile.f42.F42Writer;
@@ -62,6 +65,22 @@ public class F43Writer extends F42Writer implements ModWriter {
     @Override
     public void write(ClassDescription classDescription) {
         super.write(classDescription);
+    }
+
+    @Override
+    protected void write(StringBuffer buf, MethodDescr m) {
+        writeMeth(buf, m);
+
+        if (m.hasModifier(Modifier.HASDEFAULT)) {
+            Object ad = m.getAnnoDef();
+            if (ad != null) {
+                buf.append(" value= ");
+                buf.append(PrimitiveTypes.simpleObjectToString(ad));
+            }
+        }
+
+        addAnnotations(buf, m);
+
     }
 
     @Override

@@ -758,7 +758,6 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             if (attrs.annodef != null) {
                 memberD.addModifier(Modifier.HASDEFAULT);
                 ((MethodDescr) memberD).setAnnoDef(attrs.annodef);
-                System.out.println(c.getQualifiedName() + " " + memberD.getName() + " value=" + PrimitiveTypes.simpleObjectToString(attrs.annodef) ) ;
             }
 
             memberD.setThrowables(MemberDescription.getThrows(attrs.xthrows));

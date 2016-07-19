@@ -196,6 +196,10 @@ public class F40Writer implements Writer {
             buf.append(typeParameters);
         }
 
+        addAnnotations(buf, m);
+    }
+
+    protected void addAnnotations(StringBuffer buf, MemberDescription m) {
         AnnotationItem[] annoList = m.getAnnoList();
         for (int i = 0; i < annoList.length; ++i) {
             buf.append("\n ");
@@ -234,15 +238,19 @@ public class F40Writer implements Writer {
             buf.append(throwables);
         }
 
-        AnnotationItem[] annoList = m.getAnnoList();
-        for (int i = 0; i < annoList.length; ++i) {
-            buf.append("\n ");
-            buf.append(annoList[i]);
-        }
+        addAnnotations(buf, m);
+
     }
 
     protected void write(StringBuffer buf, MethodDescr m) {
 
+        writeMeth(buf, m);
+
+        addAnnotations(buf, m);
+
+    }
+
+    protected void writeMeth(StringBuffer buf, MethodDescr m) {
         MemberType memberType = m.getMemberType();
 
         buf.append(memberType);
@@ -277,12 +285,6 @@ public class F40Writer implements Writer {
         if (throwables.length() > 0) {
             buf.append(" throws ");
             buf.append(throwables);
-        }
-
-        AnnotationItem[] annoList = m.getAnnoList();
-        for (int i = 0; i < annoList.length; ++i) {
-            buf.append("\n ");
-            buf.append(annoList[i]);
         }
     }
 
@@ -321,11 +323,8 @@ public class F40Writer implements Writer {
             buf.append(constantValue);
         }
 
-        AnnotationItem[] annoList = m.getAnnoList();
-        for (int i = 0; i < annoList.length; ++i) {
-            buf.append("\n ");
-            buf.append(annoList[i]);
-        }
+        addAnnotations(buf, m);
+
     }
 
     protected void write(StringBuffer buf, InnerDescr m) {

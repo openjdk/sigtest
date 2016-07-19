@@ -80,9 +80,10 @@ public class PrimitiveTypes {
             Object[] arr = (Object[]) o;
             for (Object oo : arr) {
                 simpleObjectToString(oo, sb);
+                sb.append(',');
             }
             // trim sb
-            if (sb.charAt(sb.length()-1) == ' ') {
+            if (sb.charAt(sb.length()-1) == ',') {
                 sb.deleteCharAt(sb.length() - 1);
             }
             sb.append("]");
@@ -95,7 +96,22 @@ public class PrimitiveTypes {
         } else {
             sb.append(o.toString());
         }
-        sb.append(' ');
+    }
+
+    public static Object stringToSimpleObject(String defValueAsString) {
+        if (defValueAsString.equals("true")) {
+            return Boolean.TRUE;
+        }
+        if (defValueAsString.equals("false")) {
+            return Boolean.FALSE;
+        }
+        if (defValueAsString.endsWith("\"\"")) {
+            return "";
+        }
+        if (defValueAsString.startsWith("\"") && defValueAsString.endsWith("\"")) {
+            return defValueAsString.substring(1, defValueAsString.length()-1);
+        }
+        return defValueAsString;
     }
 
 

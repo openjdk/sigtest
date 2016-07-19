@@ -39,11 +39,12 @@ import java.util.*;
  */
 public class F40Parser implements Parser {
 
+    private static final String VALUE = " value= ";
     private String line;
     private int linesz;
     private int idx;
     private char chr;
-    private List elems;
+    private List<String> elems;
     private String currentClassName;
 
     public ClassDescription parseClassDescription(String classDefinition, List /*String*/ members) {
@@ -263,7 +264,7 @@ public class F40Parser implements Parser {
         return cls;
     }
 
-    private MemberDescription parse(ConstructorDescr ctor, String def) {
+    protected MemberDescription parse(ConstructorDescr ctor, String def) {
 
         init(ctor, def);
 
@@ -299,7 +300,7 @@ public class F40Parser implements Parser {
         return ctor;
     }
 
-    private MemberDescription parse(MethodDescr method, String def) {
+    protected MemberDescription parse(MethodDescr method, String def) {
 
         init(method, def);
 
@@ -324,19 +325,32 @@ public class F40Parser implements Parser {
             method.setArgs(s.substring(1, s.length() - 1));
         }
 
-        if (elems.size() != 0) {
-            s = getElem();
-            if (!s.equals("throws")) {
-                err();
-            }
+        if (!elems.isEmpty() && elems.get(0).equals("throws")) {
+            getElem(); // "throws"
             s = getElem();
             method.setThrowables(s);
+        }
+
+        if (!elems.isEmpty() && supportsValues() && elems.get(0).equals(VALUE.trim())) {
+            int pos = line.indexOf(VALUE);
+            if (pos >= 0) {
+                method.setDefaultValue(line.substring(pos + VALUE.length()));
+                elems.clear();
+            }
+        }
+
+        if (!elems.isEmpty()) {
+            err();
         }
 
         return method;
     }
 
-    private MemberDescription parse(FieldDescr field, String def) {
+    protected boolean supportsValues() {
+        return false;
+    }
+
+    protected MemberDescription parse(FieldDescr field, String def) {
 
         init(field, def);
 
@@ -361,7 +375,7 @@ public class F40Parser implements Parser {
         return field;
     }
 
-    private MemberDescription parse(SuperClass superCls, String def) {
+    protected MemberDescription parse(SuperClass superCls, String def) {
 
         init(superCls, def);
         superCls.setModifiers(Modifier.scanModifiers(elems));
@@ -369,12 +383,12 @@ public class F40Parser implements Parser {
         if (n == 0) {
             err();
         }
-        superCls.setupGenericClassName((String) elems.get(n - 1));
+        superCls.setupGenericClassName( elems.get(n - 1));
 
         return superCls;
     }
 
-    private MemberDescription parse(SuperInterface superIntf, String def) {
+    protected MemberDescription parse(SuperInterface superIntf, String def) {
 
         init(superIntf, def);
         superIntf.setModifiers(Modifier.scanModifiers(elems));
@@ -382,12 +396,12 @@ public class F40Parser implements Parser {
         if (n == 0) {
             err();
         }
-        superIntf.setupGenericClassName((String) elems.get(n - 1));
+        superIntf.setupGenericClassName( elems.get(n - 1));
 
         return superIntf;
     }
 
-    private MemberDescription parse(InnerDescr inner, String def) {
+    protected MemberDescription parse(InnerDescr inner, String def) {
 
         init(inner, def);
 
@@ -403,7 +417,7 @@ public class F40Parser implements Parser {
         String s = null;
 
         if (elems.size() != 0) {
-            s = (String) elems.get(0);
+            s = elems.get(0);
             elems.remove(0);
         }
 

@@ -25,8 +25,22 @@
 
 package com.sun.tdk.signaturetest.sigfile.f43;
 
+import com.sun.tdk.signaturetest.model.MemberDescription;
+import com.sun.tdk.signaturetest.model.MethodDescr;
 import com.sun.tdk.signaturetest.sigfile.f42.F42Parser;
 
 public class F43Parser extends F42Parser{
 
+
+    @Override
+    protected boolean supportsValues() {
+        return true;
+    }
+
+
+    @Override
+    protected MemberDescription parse(MethodDescr method, String def) {
+
+        return super.parse(method, def);
+    }
 }
