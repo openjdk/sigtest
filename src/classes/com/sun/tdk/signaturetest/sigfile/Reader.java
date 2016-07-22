@@ -25,7 +25,7 @@
 package com.sun.tdk.signaturetest.sigfile;
 
 import com.sun.tdk.signaturetest.model.ClassDescription;
-import org.w3c.dom.Document;
+import com.sun.tdk.signaturetest.toyxml.Elem;
 
 import java.io.IOException;
 import java.net.URL;
@@ -49,6 +49,6 @@ public interface Reader {
 
     String getApiVersion();
 
-    List<Document> getDocuments();
+    List<Elem> getElems();
 
 }

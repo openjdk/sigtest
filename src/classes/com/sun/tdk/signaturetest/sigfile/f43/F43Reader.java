@@ -29,16 +29,9 @@ import com.sun.tdk.signaturetest.model.ModuleDescription;
 import com.sun.tdk.signaturetest.sigfile.Format;
 import com.sun.tdk.signaturetest.sigfile.Parser;
 import com.sun.tdk.signaturetest.sigfile.f42.F42Reader;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import com.sun.tdk.signaturetest.toyxml.Elem;
+import com.sun.tdk.signaturetest.toyxml.ToyParser;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 
@@ -56,17 +49,12 @@ public class F43Reader extends F42Reader {
     }
 
     @Override
-    protected Document processXMLFragment(String line) {
-        try {
-            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            return db.parse( new InputSource( new StringReader( line )) );
-        } catch (ParserConfigurationException | SAXException | IOException  e) {
-            e.printStackTrace();
-        }
-        return null;
+    protected Elem processXMLFragment(String line) {
+        ToyParser p = new ToyParser();
+        return p.parse(line);
     }
 
-    public static ModuleDescription fromDom(Element m) {
+    public static ModuleDescription fromTDom(Elem m) {
         ModuleDescription md = new ModuleDescription();
         {
             assert MODULE.equals(m.getNodeName());
@@ -77,7 +65,7 @@ public class F43Reader extends F42Reader {
         }
         {
             String features = m.getAttribute(FEATURES);
-            if (features == null ) {
+            if (features == null) {
                 features = "";
             }
             md.setFeatures(featureSetFromCommaList(features));
@@ -95,10 +83,9 @@ public class F43Reader extends F42Reader {
             }
         }
         {
-            NodeList pkgs = m.getElementsByTagName(PACKAGE);
+            List<Elem> pkgs = m.getElementsByTagName(PACKAGE);
             HashSet<String> pkSet = new HashSet<>();
-            for (int i = 0; i < pkgs.getLength(); i++) {
-                Element p = (Element) pkgs.item(i);
+            for (Elem p : pkgs) {
                 String pkgName = p.getAttribute(NAME);
                 if (!pkgName.isEmpty()) {
                     pkSet.add(pkgName);
@@ -107,10 +94,9 @@ public class F43Reader extends F42Reader {
             md.setPackages(pkSet);
         }
         {
-            NodeList cons = m.getElementsByTagName(CONCEAL);
+            List<Elem> cons = m.getElementsByTagName(CONCEAL);
             HashSet<String> coSet = new HashSet<>();
-            for (int i = 0; i < cons.getLength(); i++) {
-                Element c = (Element) cons.item(i);
+            for (Elem c : cons) {
                 String coName = c.getAttribute(NAME);
                 if (!coName.isEmpty()) {
                     coSet.add(coName);
@@ -119,18 +105,16 @@ public class F43Reader extends F42Reader {
             md.setConceals(coSet);
         }
         {
-            NodeList exps = m.getElementsByTagName(EXPORTS);
+            List<Elem> exps = m.getElementsByTagName(EXPORTS);
             HashSet<ModuleDescription.Exports> exSet = new HashSet<>();
 
-            for (int i = 0; i < exps.getLength(); i++) {
-                Element e = (Element) exps.item(i);
+            for (Elem e : exps) {
                 ModuleDescription.Exports export = new ModuleDescription.Exports();
                 export.source = e.getAttribute(SOURCE);
                 HashSet<String> taSet = new HashSet<>();
 
-                NodeList targs = e.getElementsByTagName(TARGET);
-                for (int j = 0; j < targs.getLength(); j++) {
-                    Element t = (Element) targs.item(j);
+                List<Elem> targs = e.getElementsByTagName(TARGET);
+                for (Elem t : targs) {
                     taSet.add(t.getAttribute(NAME));
                 }
                 export.targets = taSet;
@@ -139,12 +123,11 @@ public class F43Reader extends F42Reader {
             md.setExports(exSet);
         }
         {
-            NodeList reqs = m.getElementsByTagName(REQUIRES);
+            List<Elem> reqs = m.getElementsByTagName(REQUIRES);
             HashSet<ModuleDescription.Requires> rqSet = new HashSet<>();
-            for (int i = 0; i < reqs.getLength(); i++) {
-                Element r = (Element) reqs.item(i);
+            for (Elem r : reqs) {
                 ModuleDescription.Requires rq = new ModuleDescription.Requires();
-                rq.name =  r.getAttribute(NAME);
+                rq.name = r.getAttribute(NAME);
                 Set<ModuleDescription.Requires.Modifier> ms = new HashSet<>();
                 if (TRUE.equals(r.getAttribute(ModuleDescription.Requires.Modifier.MANDATED.name().toLowerCase()))) {
                     ms.add(ModuleDescription.Requires.Modifier.MANDATED);
@@ -162,16 +145,15 @@ public class F43Reader extends F42Reader {
             md.setRequires(rqSet);
         }
         {
-            NodeList prs = m.getElementsByTagName(PROVIDES);
+            List<Elem> prs = m.getElementsByTagName(PROVIDES);
             Map<String, ModuleDescription.Provides> prMap = new HashMap<>();
-            for (int i = 0; i < prs.getLength(); i++) {
-                Element p = (Element) prs.item(i);
+            for (int i = 0; i < prs.size(); i++) {
+                Elem p = prs.get(i);
                 ModuleDescription.Provides pr = new ModuleDescription.Provides();
-                pr.service =  p.getAttribute(SERVICE);
+                pr.service = p.getAttribute(SERVICE);
                 pr.providers = new HashSet<>();
-                NodeList ps = p.getElementsByTagName(PROVIDER);
-                for (int j = 0; j < ps.getLength(); j++) {
-                    Element t = (Element) ps.item(j);
+                List<Elem> ps = p.getElementsByTagName(PROVIDER);
+                for (Elem t : ps) {
                     pr.providers.add(t.getAttribute(NAME));
                 }
                 prMap.put(pr.service, pr);
@@ -179,14 +161,14 @@ public class F43Reader extends F42Reader {
             md.setProvides(prMap);
         }
         {
-            NodeList uses = m.getElementsByTagName(USES);
+            List<Elem> uses = m.getElementsByTagName(USES);
             Set<String> usSet = new HashSet<>();
-            for (int i = 0; i < uses.getLength(); i++) {
-                Element c = (Element) uses.item(i);
+            for (Elem c : uses) {
                 usSet.add(c.getAttribute(NAME));
             }
             md.setUses(usSet);
         }
         return md;
     }
+
 }

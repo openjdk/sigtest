@@ -26,7 +26,7 @@ package com.sun.tdk.signaturetest.sigfile;
 
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.MemberType;
-import org.w3c.dom.Document;
+import com.sun.tdk.signaturetest.toyxml.Elem;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public abstract class SignatureClassLoader implements Reader {
     private BufferedReader in;
     private Parser parser;
     private final int BUFSIZE = 0x8000;
-    private List<Document> documents;
+    private List<Elem> elems;
     /**
      * API version found in <code>this</code> signature file.
      */
@@ -64,7 +64,7 @@ public abstract class SignatureClassLoader implements Reader {
         this.format = format;
         features = format.getSupportedFeatures();
         parser = getParser();
-        documents = new ArrayList<>();
+        elems = new ArrayList<>();
     }
 
     protected abstract Parser getParser();
@@ -134,8 +134,8 @@ public abstract class SignatureClassLoader implements Reader {
         return parser.parseClassDescription(classDescr, definitions);
     }
 
-    public List<Document> getDocuments() {
-        return documents;
+    public List<Elem> getElems() {
+        return elems;
     }
 
     protected void readXML(String elName, String line) throws IOException {
@@ -150,13 +150,13 @@ public abstract class SignatureClassLoader implements Reader {
             xmlTxt.append(line);
             line = in.readLine();
         }
-        Document d = processXMLFragment(xmlTxt.toString());
+        Elem d = processXMLFragment(xmlTxt.toString());
         if (d != null) {
-            documents.add(d);
+            elems.add(d);
         }
     }
 
-    protected Document processXMLFragment(String s) {
+    protected Elem processXMLFragment(String s) {
         return null;
     }
 

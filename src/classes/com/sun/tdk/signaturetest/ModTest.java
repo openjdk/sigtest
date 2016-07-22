@@ -33,11 +33,10 @@ import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.ModuleDescription;
 import com.sun.tdk.signaturetest.sigfile.MultipleFileReader;
 import com.sun.tdk.signaturetest.sigfile.f43.F43Reader;
+import com.sun.tdk.signaturetest.toyxml.Elem;
 import com.sun.tdk.signaturetest.util.CommandLineParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.OptionInfo;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -360,11 +359,10 @@ public class ModTest extends ModBase {
         in.readSignatureFile(testUrl, mo.getValue(Option.FILE_NAME));
 
         Map<String, ModuleDescription> modules = new HashMap<>();
-        List<Document> docs = in.getDocuments();
+        List<Elem> docs = in.getElements();
         if (docs != null) {
-            for (Document d : docs) {
-                Element m = d.getDocumentElement();
-                ModuleDescription md = F43Reader.fromDom(m);
+            for (Elem m : docs) {
+                ModuleDescription md = F43Reader.fromTDom(m);
                 modules.put(md.getName(), md);
             }
         }

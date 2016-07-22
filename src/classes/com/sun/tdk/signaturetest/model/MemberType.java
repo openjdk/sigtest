@@ -66,7 +66,7 @@ public final class MemberType implements Comparable, Serializable {
     public static final MemberType CONSTRUCTOR = new MemberType("cons", constructorModifiers);
     public static final MemberType METHOD = new MemberType("meth", methodModifiers);
     public static final MemberType FIELD = new MemberType("fld", fieldModifiers);
-    public static final MemberType MODULE = new MemberType("module", noneModifiers);
+    public static final MemberType MODULE = new MemberType("<module", noneModifiers);
 
 
     public String toString() {

@@ -24,15 +24,14 @@
  */
 package com.sun.tdk.signaturetest.sigfile;
 
-import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.loaders.VirtualClassDescriptionLoader;
 import com.sun.tdk.signaturetest.model.ClassDescription;
+import com.sun.tdk.signaturetest.toyxml.Elem;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
-import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +56,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
     private String apiVersion;
     private FileManager fileMan;
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
-    private List<Document> documents;
+    private List<Elem> elements;
 
     public MultipleFileReader(PrintWriter log, int mode, FileManager f) {
         // Note: Merge mode is not supported yet.
@@ -151,7 +150,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
                         assert mode == MERGE_MODE;
                     }
                 }
-                documents = in.getDocuments();
+                elements = in.getElems();
             } catch (IOException e) {
                 if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);
@@ -188,8 +187,8 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
         classIterator = getClassIterator();
     }
 
-    public List<Document> getDocuments() {
-        return documents;
+    public List<Elem> getElements() {
+        return elements;
     }
 
     public ClassDescription nextClass() throws IOException {
