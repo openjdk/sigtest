@@ -168,6 +168,10 @@ public abstract class ReportGenerator extends APIVisitor {
 
     public abstract void print();
 
+    public abstract void printFooter();
+
+    public abstract void printHeader();
+
     public abstract void close();
 
     ReportGenerator createReportGenerator(String type, PrintWriter log) {
@@ -275,6 +279,7 @@ public abstract class ReportGenerator extends APIVisitor {
 
     private void filter() {
         results.clear();
+        top = new PackageDescr("");
         APIVisitor calc = new APIVisitor() {
             protected void visit(ClassDescription cd) {
                 for (Iterator i = cd.getMembersIterator(); i.hasNext();) {
@@ -367,10 +372,14 @@ public abstract class ReportGenerator extends APIVisitor {
     }
 
     void out() {
-        api = new ArrayList<>(refCounter.getClasses());
+
+        api =  new ArrayList<>(refCounter.getClasses());
         filter();
+        printHeader();
         print();
+        printFooter();
         close();
+
     }
 }
 
@@ -392,9 +401,6 @@ class ReportPlain extends ReportGenerator {
     }
 
     public void print() {
-        tab(p0).append(i18n.getString("ReportPlain.report.Coverage"));
-        println();
-        println();
 
         tab(p7, '=');
         println();
@@ -457,6 +463,19 @@ class ReportPlain extends ReportGenerator {
             println();
         }
 
+
+    }
+
+    @Override
+    public void printHeader() {
+        tab(p0).append(i18n.getString("ReportPlain.report.Coverage"));
+        println();
+        println();
+    }
+
+    @Override
+    public void printFooter() {
+
         tab(0).append(i18n.getString("ReportPlain.report.Configuration"));
 
         Option[] options = {Option.TS,
@@ -495,6 +514,7 @@ class ReportPlain extends ReportGenerator {
         }
 
         println();
+
     }
 
     @Override
@@ -651,6 +671,16 @@ class ReportXML extends ReportGenerator {
             }
         }
         endElement(XC.HEAD);
+    }
+
+    @Override
+    public void printFooter() {
+        // nothing
+    }
+
+    @Override
+    public void printHeader() {
+        // nothing
     }
 
     @Override

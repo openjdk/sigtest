@@ -41,7 +41,6 @@ class APIVisitor {
     PackageDescr top = new PackageDescr("");
 
     public void visit(List<ClassDescription> api) {
-        System.err.println("Visit List " + api.size());
         this.api = api;
         collectPackages();
         visit(top);
