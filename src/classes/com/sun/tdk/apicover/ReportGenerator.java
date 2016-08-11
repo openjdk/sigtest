@@ -170,6 +170,8 @@ public abstract class ReportGenerator extends APIVisitor {
 
     public abstract void print();
 
+    public abstract void close();
+
     ReportGenerator createReportGenerator(String type, PrintWriter log) {
         ReportGenerator newReportGenerator;
         if (type.equals(Main.FORMAT_VALUE_PLAIN)) {
@@ -366,10 +368,10 @@ public abstract class ReportGenerator extends APIVisitor {
     }
 
     void out() {
-        this.api = new ArrayList<ClassDescription>();
-        api.addAll(refCounter.getClasses());
+        api = new ArrayList<>(refCounter.getClasses());
         filter();
         print();
+        close();
     }
 }
 
@@ -494,6 +496,11 @@ class ReportPlain extends ReportGenerator {
         }
 
         println();
+    }
+
+    @Override
+    public void close() {
+        assert pw != null;
         pw.close();
     }
 
@@ -664,8 +671,6 @@ class ReportXML extends ReportGenerator {
             endElement(XC.REPORT);
             ser.endDocument();
 
-            pw.flush();
-            pw.close();
 
             /////////////////////
             //ser = stf.newTransformerHandler(new StreamSource(new File("pp.xsl")));
@@ -675,6 +680,13 @@ class ReportXML extends ReportGenerator {
         } catch (SAXException ex) {
             SwissKnife.reportThrowable(ex);
         }
+    }
+
+    @Override
+    public void close() {
+        assert pw != null;
+        pw.flush();
+        pw.close();
     }
 
     @Override

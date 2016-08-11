@@ -153,7 +153,7 @@ public class Main implements Log {
             error(e.getMessage());
         }
 
-        if (!ao.isSet(Option.API) && !ao.isSet(Option.FILTERSIG)) {
+        if (ao.getValue(Option.API) == null && ao.getValue(Option.FILTERSIG) == null) {
             error(i18n.getString("Main.error.option.required", Option.API.getKey()));
         }
 
@@ -439,7 +439,7 @@ public class Main implements Log {
     }
 
     private boolean searachOnly() {
-        return !ao.isSet(Option.API);
+        return ao.getValue(Option.API) == null;
     }
 
     private void error(String s) {

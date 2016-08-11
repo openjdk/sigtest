@@ -33,7 +33,7 @@ import java.util.*;
 
 public class RefCounter {
 
-    private HashMap<String, ClassDescription> api = new HashMap<String, ClassDescription>();
+    private HashMap<String, ClassDescription> api = new HashMap<>();
 
     private enum MODE {
 
@@ -41,8 +41,8 @@ public class RefCounter {
     }
     private MODE mode = MODE.WORST;
     private Erasurator erasurator = new Erasurator();
-    private Map<String, ClassDescription> ts = new HashMap<String, ClassDescription>();
-    Map<String, Integer> results = new HashMap<String, Integer>();
+    private Map<String, ClassDescription> ts = new HashMap<>();
+    Map<String, Integer> results = new HashMap<>();
 
     public RefCounter() {
         super();
@@ -51,7 +51,7 @@ public class RefCounter {
     }
 
     public void addClass(ClassDescription cd) {
-        ArrayList<MemberDescription> modified = new ArrayList<MemberDescription>();
+        ArrayList<MemberDescription> modified = new ArrayList<>();
         boolean hasTracked = false;
         Iterator i = cd.getMembersIterator();
         boolean hasMembers = i.hasNext();
@@ -94,7 +94,7 @@ public class RefCounter {
     }
 
     public void addRef(MemberDescription call) {
-        Set<String> calledClasses = Collections.<String>emptySet();
+        Set<String> calledClasses = Collections.emptySet();
         if (ts.get(call.getDeclaringClassName()) == null) {
             return;
         }
@@ -127,7 +127,7 @@ public class RefCounter {
 
     private Set<String> findDecl(ClassDescription tsClass, MemberDescription md) {
         boolean foundSuper = true;
-        Set<String> result = new TreeSet<String>();
+        Set<String> result = new TreeSet<>();
 
         if (mode == MODE.WORST) {
             result.add(tsClass.getQualifiedName());
@@ -203,7 +203,7 @@ public class RefCounter {
         this.mode = "r".equals(mode) ? MODE.REAL : MODE.WORST;
     }
 
-    private void clearInheretid() {
+    private void clearInherited() {
         for (ClassDescription cd : api.values()) {
             for (Iterator i = cd.getMembersIterator(); i.hasNext();) {
                 MemberDescription md = (MemberDescription) i.next();
@@ -221,7 +221,7 @@ public class RefCounter {
     }
 
     public Collection<ClassDescription> getClasses() {
-        clearInheretid();
+        clearInherited();
         return api.values();
     }
 }

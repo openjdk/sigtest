@@ -88,7 +88,7 @@ public abstract class Options {
      */
     public boolean isSet(Option option) {
         assert option != null;
-        assert option.getKind() == Option.Kind.NONE || option.getKind() == Option.Kind.INSTEAD_OF_ANY;
+        assert option.getKind() == Option.Kind.NONE || option.getKind() == Option.Kind.INSTEAD_OF_ANY : option.name();
         if (!getOptions().contains(option)) {
             throw new IllegalArgumentException("Option " + option.getKey() + " is not defined in the context");
         }

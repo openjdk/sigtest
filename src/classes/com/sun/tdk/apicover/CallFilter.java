@@ -48,10 +48,10 @@ public class CallFilter {
 
     public boolean init(PrintWriter printWriter) {
 
-        if (ao.isSet(Option.FILTERMAP)) {
+        if (ao.getValue(Option.FILTERMAP) != null) {
             mapFilters = ao.getValues(Option.FILTERMAP);
         }
-        if (ao.isSet(Option.FILTERSIG)) {
+        if (ao.getValue(Option.FILTERSIG) != null) {
             sigFilters = ao.getValues(Option.FILTERSIG);
         }
 
