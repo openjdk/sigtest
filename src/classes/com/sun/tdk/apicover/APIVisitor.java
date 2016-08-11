@@ -37,17 +37,18 @@ import java.util.List;
  */
 class APIVisitor {
 
-    List<ClassDescription> api = new ArrayList<ClassDescription>();
+    List<ClassDescription> api = new ArrayList<>();
     PackageDescr top = new PackageDescr("");
 
     public void visit(List<ClassDescription> api) {
+        System.err.println("Visit List " + api.size());
         this.api = api;
         collectPackages();
         visit(top);
     }
 
     private void collectPackages() {
-        List<PackageDescr> packages = new ArrayList<PackageDescr>();
+        List<PackageDescr> packages = new ArrayList<>();
         packages.add(top);
         for (ClassDescription cd : api) {
             String pname = cd.getPackageName();
@@ -75,31 +76,22 @@ class APIVisitor {
     }
 
     protected void visit(PackageDescr x) {
-        //System.out.println("TRY ==================" + x);
+        //System.err.println("TRY ==================" + x);
         for (Object cd : x.getDeclaredClasses()) {
-            //    System.out.println("CD ===============" + cd);
+            //System.err.println("CD ===============" + cd);
             visit((ClassDescription) cd);
         }
         for (Object pd : x.getDeclaredPackages()) {
+            //System.err.println("PD ===============" + pd);
             visit((PackageDescr) pd);
         }
     }
 
     protected void visit(ClassDescription x) {
-        /*
-         for (ConstructorDescr cd : x.getDeclaredConstructors())
-         visit(cd);
-
-         for (MethodDescr md : x.getDeclaredMethods())
-         visit(md);
-
-         for (FieldDescr fd : x.getDeclaredFields())
-         visit(fd);
-         */
 
         // XXX
         // hand-made sort of members
-        ArrayList<MemberDescription> list = new ArrayList<MemberDescription>();
+        ArrayList<MemberDescription> list = new ArrayList<>();
         for (Iterator i = x.getMembersIterator(); i.hasNext();) {
             boolean isInserted = false;
             MemberDescription md = (MemberDescription) i.next();
@@ -136,7 +128,4 @@ class APIVisitor {
 
     protected void visit(MemberDescription x) {
     }
-    //protected void visit (ConstructorDescr x)     {}
-    //protected void visit (MethodDescr x)   {}
-    //protected void visit (FieldDescr x)    {}
 }

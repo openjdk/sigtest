@@ -68,13 +68,13 @@ public abstract class ReportGenerator extends APIVisitor {
     }
     DETAIL_LEVEL detail = DETAIL_LEVEL.NOT_COVERED_MEMB;
     FIELD_MODE fieldMode = FIELD_MODE.NOCONST;
-    Set<EXLUDE_MODE> excludeMode = new HashSet<EXLUDE_MODE>();
+    Set<EXLUDE_MODE> excludeMode = new HashSet<>();
     Map<String, String[]> config;
-    Map<String, Field> results = new HashMap<String, Field>();
-    Collection<String> xList = new ArrayList<String>();
+    Map<String, Field> results = new HashMap<>();
+    Collection<String> xList = new ArrayList<>();
     protected PrintWriter pw;
 
-    public static enum DETAIL_LEVEL {
+    public enum DETAIL_LEVEL {
 
         PACKAGE, CLASS, NOT_COVERED_MEMB, COVERED_MEMB, ANY_MEMB, COUNT;
 
@@ -154,14 +154,12 @@ public abstract class ReportGenerator extends APIVisitor {
                 this.addConfig(Option.EXCLUDE_LIST.getKey(), name);
             } catch (IOException e) {
                 log.println(e.getMessage());
-                //Main.debug(e);
             } finally {
                 if (in != null) {
                     try {
                         in.close();
                     } catch (IOException e) {
                         log.println(e.getMessage());
-                        //Main.debug(e);
                     }
                 }
             }
@@ -276,6 +274,7 @@ public abstract class ReportGenerator extends APIVisitor {
     }
 
     private void filter() {
+        results.clear();
         APIVisitor calc = new APIVisitor() {
             protected void visit(ClassDescription cd) {
                 for (Iterator i = cd.getMembersIterator(); i.hasNext();) {
@@ -506,6 +505,9 @@ class ReportPlain extends ReportGenerator {
 
     @Override
     protected void visit(PackageDescr pd) {
+        if (!results.containsKey(pd.toString())) {
+            return;
+        }
         if (pd.equals(top)) {
             super.visit(pd);
             return;
