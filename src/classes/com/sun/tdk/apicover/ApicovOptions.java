@@ -61,7 +61,8 @@ public class ApicovOptions extends Options {
             Option.FILTERSIG,
             Option.DEBUG,
             Option.VERSION,
-            Option.HELP
+            Option.HELP,
+            Option.STRUCTURE
     );
 
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);

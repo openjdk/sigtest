@@ -74,6 +74,7 @@ public enum Option {
     DETAIL("-detail", Kind.SINGLE_OPT),
     FORMAT("-format", Kind.SINGLE_OPT),
     REPORT("-report", Kind.SINGLE_OPT),
+    STRUCTURE("-structure", Kind.SINGLE_OPT),
     EXCLUDE_LIST("-excludeList", Kind.MANY_OPT),
 
     FORMATPLAIN("-FormatPlain", Kind.NONE),

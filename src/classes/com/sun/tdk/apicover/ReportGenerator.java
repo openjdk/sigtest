@@ -170,7 +170,7 @@ public abstract class ReportGenerator extends APIVisitor {
 
     public abstract void printFooter();
 
-    public abstract void printHeader();
+    public abstract void printHeader(String header);
 
     public abstract void close();
 
@@ -373,13 +373,52 @@ public abstract class ReportGenerator extends APIVisitor {
 
     void out() {
 
-        api =  new ArrayList<>(refCounter.getClasses());
-        filter();
-        printHeader();
-        print();
-        printFooter();
-        close();
+        Structure structure;
+        try {
+            structure = new Structure();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
 
+        if (!structure.isActive()) {
+            api =  new ArrayList<>(refCounter.getClasses());
+            filter();
+            printHeader(null);
+            print();
+            printFooter();
+            close();
+        } else {
+            List<ClassDescription> allApi =  new ArrayList<>(refCounter.getClasses());
+            printHeader(structure.getTitle());
+            for (Structure.Section s : structure.getSections()) {
+                if (!s.isHidden()) {
+                    api = filterRefs(s, allApi);
+                    if (!api.isEmpty()) {
+                        filter();
+                        if (s.getTitle() != null) {
+                            printHeader(s.getTitle());
+                        }
+                        print();
+                    }
+                }
+            }
+            printFooter();
+            close();
+        }
+
+    }
+
+    private List<ClassDescription> filterRefs(Structure.Section section, List<ClassDescription> allApi) {
+        ArrayList<ClassDescription> res = new ArrayList<>();
+        for (ClassDescription cd : allApi) {
+            for ( String pkg  : section.getPkgInclude()) {
+                if ( cd.getQualifiedName().startsWith(pkg)) {
+                    res.add(cd);
+                    break;
+                }
+            }
+        }
+        return res;
     }
 }
 
@@ -467,8 +506,12 @@ class ReportPlain extends ReportGenerator {
     }
 
     @Override
-    public void printHeader() {
-        tab(p0).append(i18n.getString("ReportPlain.report.Coverage"));
+    public void printHeader(String header) {
+        if (header == null) {
+            tab(p0).append(i18n.getString("ReportPlain.report.Coverage"));
+        } else {
+            tab(p0).append(header);
+        }
         println();
         println();
     }
@@ -679,7 +722,7 @@ class ReportXML extends ReportGenerator {
     }
 
     @Override
-    public void printHeader() {
+    public void printHeader(String header) {
         // nothing
     }
 

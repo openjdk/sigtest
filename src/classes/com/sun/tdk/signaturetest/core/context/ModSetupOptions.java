@@ -36,6 +36,7 @@ public class ModSetupOptions extends Options {
             Option.FEATURES,
             Option.COPYRIGHT,
             Option.DEBUG,
+            Option.MODE,
             Option.HELP, Option.VERSION, Option.APIVERSION);
 
     @Override

@@ -92,7 +92,7 @@ public abstract class ModBase extends SigTest {
 
     }
 
-    protected ModuleDescriptionLoader getModuleLoader() {
+    public static ModuleDescriptionLoader getModuleLoader() {
         String lClassName = "com.sun.tdk.signaturetest.loaders.ModuleLoader";
         try {
             Class<ModuleDescriptionLoader> c = (Class<ModuleDescriptionLoader>) Class.forName(lClassName);

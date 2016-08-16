@@ -31,9 +31,7 @@ import com.sun.tdk.signaturetest.core.context.ModFeatures;
 import com.sun.tdk.signaturetest.core.context.ModSetupOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.ModuleDescription;
-import com.sun.tdk.signaturetest.sigfile.FeaturesHolder;
-import com.sun.tdk.signaturetest.sigfile.FileManager;
-import com.sun.tdk.signaturetest.sigfile.ModWriter;
+import com.sun.tdk.signaturetest.sigfile.*;
 import com.sun.tdk.signaturetest.sigfile.Writer;
 import com.sun.tdk.signaturetest.util.CommandLineParser;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
@@ -52,6 +50,7 @@ public class ModSetup extends ModBase {
     private ModSetupOptions mo = AppContext.getContext().getBean(ModSetupOptions.class);
     private String copyrightStr = null;
     private EnumSet<ModFeatures> features = EnumSet.of(ModFeatures.ALL);
+    private WriteMode wm = WriteMode.SIGFILE;
 
 
     public ModSetup() {
@@ -128,6 +127,18 @@ public class ModSetup extends ModBase {
             apiVer = mo.getValue(Option.APIVERSION);
         }
 
+        {
+            String mode = mo.getValue(Option.MODE);
+            if (mode != null) {
+                if (WriteMode.STRUCT_CUMULATIVE.name().equalsIgnoreCase(mode)) {
+                    wm = WriteMode.STRUCT_CUMULATIVE;
+                } else if (WriteMode.STRUCT_PLAIN.name().equalsIgnoreCase(mode)) {
+                    wm = WriteMode.STRUCT_PLAIN;
+                }
+            }
+        }
+
+
         if (!processFeatureList(mo)) {
             return false;
         }
@@ -179,18 +190,28 @@ public class ModSetup extends ModBase {
         ModWriter writer = null;
         FileOutputStream fos = null;
 
-        try {
-            HashMap<String, ModuleDescription> model = new HashMap<>();
-            {
-                signatureFile = FileManager.getURL(mo.getValue(Option.TEST_URL), mo.getValue(Option.FILE_NAME));
-                ModuleDescriptionLoader mdl = getModuleLoader();
-                Set<ModuleDescription> modules = mdl.loadBootModules();
-                for (ModuleDescription md : modules) {
-                    md.setFeatures(features);
-                    model.put(md.getName(), md);
-                }
+        ModuleDescriptionLoader mdl = getModuleLoader();
+        HashMap<String, ModuleDescription> model = new HashMap<>();
+        {
+            Set<ModuleDescription> modules = mdl.loadBootModules();
+            for (ModuleDescription md : modules) {
+                md.setFeatures(features);
+                model.put(md.getName(), md);
             }
-            filterModuleSet(model, true, mo.isSet(Option.DEBUG));
+        }
+        filterModuleSet(model, true, mo.isSet(Option.DEBUG));
+
+        if (wm == WriteMode.STRUCT_PLAIN || wm == WriteMode.STRUCT_CUMULATIVE) {
+            if ( new StructWriter().createStructFile(wm, model, mdl.loadBootModules()) ) {
+                return passed();
+            } else {
+                return failed("");
+            }
+        }
+
+        try {
+
+            signatureFile = FileManager.getURL(mo.getValue(Option.TEST_URL), mo.getValue(Option.FILE_NAME));
 
             Writer w = getFileManager().getDefaultFormat().getWriter();
             if (w instanceof ModWriter) {
@@ -243,6 +264,11 @@ public class ModSetup extends ModBase {
         }
 
         return passed();
+    }
+
+
+    public enum WriteMode {
+        SIGFILE, STRUCT_CUMULATIVE, STRUCT_PLAIN;
     }
 
 
