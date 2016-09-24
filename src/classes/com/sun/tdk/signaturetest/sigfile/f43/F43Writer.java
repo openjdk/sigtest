@@ -51,6 +51,9 @@ import java.util.Set;
 
 import static com.sun.tdk.signaturetest.sigfile.f43.F43Format.*;
 
+/**
+ * @author Mike Ershov
+ */
 public class F43Writer extends F42Writer implements ModWriter {
 
     private PrintWriter out;

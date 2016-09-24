@@ -52,6 +52,7 @@ public class ExcludeList implements Exclude {
      * @see com.sun.tdk.exclude.Exclude#addSignature(java.lang.String)
      */
     public void addSignature(String name) {
+        // escape .(){}{}%$
         String regpack1 = name.replaceAll("(\\.|\\(|\\)|\\{|\\}|\\[|\\]|\\%|\\$)", "\\\\$1");
         String regpack = regpack1.replaceAll("\\\\\\\\", "");
         try {

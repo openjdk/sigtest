@@ -49,6 +49,7 @@ public class ApiCheck extends SignatureTest {
         return true;
     }
 
+    @Override
     protected void setupLoaders(ClassDescriptionLoader loader, ClassDescriptionLoader second) {
         setClassDescrLoader(new CombinedLoader(loader, second));
     }

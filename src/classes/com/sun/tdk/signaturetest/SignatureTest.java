@@ -1308,9 +1308,9 @@ public class SignatureTest extends SigTest {
                     return;     // OK
                 }
 
-                // reflection can't read non-static values
+                // reflection can't read values (couldn't make it accessible ) - it's ok
                 // is it bug or according to the specification?
-                if (fConstValue == null && rConstValue != null && !found.isStatic()) {
+                if (fConstValue == null && rConstValue != null ) {
                     if (((FieldDescr) required).isCompatible(found, true)) {
 //        Fortify
 //                        if (logger.isLoggable(Level.FINE)) {
