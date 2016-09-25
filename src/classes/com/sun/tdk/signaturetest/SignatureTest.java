@@ -688,8 +688,10 @@ public class SignatureTest extends SigTest {
                     } else {
                         verifyClass(currentClass, supportNSC);
                     }
-                    // save memory
-                    currentClass.setMembers(null);
+                    if (! isAPICheckMode()) {
+                        // save memory
+                        currentClass.setMembers(null);
+                    }
                 }
 
             } catch (OutOfMemoryError e) {
@@ -708,6 +710,8 @@ public class SignatureTest extends SigTest {
                     SwissKnife.reportThrowable(e);
                 }
                 msg = i18nSt.getString("SignatureTest.error.sigfile.sec") + linesep + e;
+            } catch (AssertionError ass) {
+                SwissKnife.reportThrowable(ass);
             } catch (Error e) {
                 if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(e);

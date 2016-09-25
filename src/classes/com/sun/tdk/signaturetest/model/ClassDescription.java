@@ -391,6 +391,7 @@ public class ClassDescription extends MemberDescription {
      * @see MemberDescription
      */
     public Iterator getMembersIterator() {
+        assert members != null;
         return members.iterator();
     }
 
