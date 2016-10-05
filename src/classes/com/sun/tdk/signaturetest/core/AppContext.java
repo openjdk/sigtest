@@ -68,12 +68,17 @@ public abstract class AppContext {
 
     public abstract void setInputClasspath(Classpath cp);
 
+    public abstract void setClassLoader(ClassDescriptionLoader loader);
+
+    public abstract ClassDescriptionLoader getClassLoader();
+
     private static class AppContextImpl extends AppContext {
 
         private ConcurrentHashMap<String, String> strings = new ConcurrentHashMap<String, String>();
         private ConcurrentHashMap<Class, Object> beans = new ConcurrentHashMap<Class, Object>();
         private PrintWriter log;
         private Classpath cp;
+        private ClassDescriptionLoader loader;
 
         @Override
         public void setString(String id, String value) {
@@ -131,6 +136,16 @@ public abstract class AppContext {
         @Override
         public void setInputClasspath(Classpath cp) {
             this.cp = cp;
+        }
+
+        @Override
+        public void setClassLoader(ClassDescriptionLoader loader) {
+            this.loader = loader;
+        }
+
+        @Override
+        public ClassDescriptionLoader getClassLoader() {
+            return loader;
         }
     }
 }

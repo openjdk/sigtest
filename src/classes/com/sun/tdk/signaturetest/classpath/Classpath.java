@@ -44,24 +44,24 @@ public interface Classpath {
      * @param classPath parameter provided to initialize module (usually a
      * directory or file classPath).
      */
-    public void init(String classPath) throws IOException;
+    void init(String classPath) throws IOException;
 
     /**
      * Free resources used (if any) or do nothing.
      */
-    public void close();
+    void close();
 
     /**
      * @return true if more classes available
      */
-    public boolean hasNext();
+    boolean hasNext();
 
     /**
      * Return name of the next available class.
      *
      * @return Class qualified name
      */
-    public String nextClassName();
+    String nextClassName();
 
     boolean isEmpty();
 
@@ -70,20 +70,20 @@ public interface Classpath {
     /**
      * Reset enumeration of classes which are found by this module.
      */
-    public void setListToBegin();
+    void setListToBegin();
 
     /**
      * Returns <b>InputStream</b> instance providing bytecode for the required
      * class. If classpath has several classes with the same qualified name, an
      * implementation must always return first class in the path
      */
-    public InputStream findClass(String qualifiedClassName) throws IOException, ClassNotFoundException;
+    InputStream findClass(String qualifiedClassName) throws IOException, ClassNotFoundException;
 
-    public ClassDescription findClassDescription(String qualifiedClassName) throws ClassNotFoundException;
+    ClassDescription findClassDescription(String qualifiedClassName) throws ClassNotFoundException;
 
-    public KIND_CLASS_DATA isClassPresent(String qualifiedClassName);
+    KIND_CLASS_DATA isClassPresent(String qualifiedClassName);
 
-    public enum KIND_CLASS_DATA {
+    enum KIND_CLASS_DATA {
         DESCRIPTION, BYTE_CODE, NOT_FOUND;
     }
 

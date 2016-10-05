@@ -266,10 +266,16 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     public ClassDescription altLoad(String className) throws ClassNotFoundException {
         Classpath cp = AppContext.getContext().getInputClasspath();
         if (cp != null) {
-            return cp.findClassDescription(className);
-        } else {
-            throw new ClassNotFoundException(className);
+            try {
+                return cp.findClassDescription(className);
+            } catch (ClassNotFoundException e) {
+                ClassDescriptionLoader l = AppContext.getContext().getClassLoader();
+                if (l != null) {
+                    return l.load(className);
+                }
+            }
         }
+        throw new ClassNotFoundException(className);
     }
 
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(BinaryClassDescrLoader.class);

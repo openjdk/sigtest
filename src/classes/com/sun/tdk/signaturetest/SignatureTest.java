@@ -1523,6 +1523,7 @@ public class SignatureTest extends SigTest {
         ClassDescriptionLoader loader = getClassDescrLoader();
         setupLoaders(loader, in);
         loader = getClassDescrLoader();
+        AppContext.getContext().setClassLoader(loader);
 
         if (!isValueTracked.booleanValue() && loader instanceof LoadingHints) {
             ((LoadingHints) loader).addLoadingHint(LoadingHints.DONT_READ_VALUES);
