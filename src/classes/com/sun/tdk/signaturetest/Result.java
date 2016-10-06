@@ -96,7 +96,7 @@ public class Result {
         return type == PASSED;
     }
 
-    protected String getReason() {
+    public String getReason() {
         return reason;
     }
 
