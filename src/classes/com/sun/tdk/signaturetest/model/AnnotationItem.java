@@ -163,7 +163,7 @@ public class AnnotationItem implements Comparable {
 
     private static Member normAnnMember(Member m) {
         //System.out.println("AnnItem.normAnnMember was=" + m.value);
-        if (m.value.startsWith("[") && m.value.endsWith("]")) {
+        if (m.value != null && m.value.startsWith("[") && m.value.endsWith("]")) {
             // sort them
             String sValues = m.value.substring(1, m.value.length() - 1);
             StringTokenizer st = new StringTokenizer(sValues, ",");
