@@ -1177,12 +1177,9 @@ public class SignatureTest extends SigTest {
     private void fixEnum(ClassDescription required) {
         required.addModifier(Modifier.FINAL);
         required.removeModifier(Modifier.ABSTRACT);
-        for (Iterator e = required.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
-            if (mr.isMethod()) {
-                mr.addModifier(Modifier.FINAL);
-                mr.removeModifier(Modifier.ABSTRACT);
-            }
+        for (MethodDescr mr : required.getDeclaredMethods()) {
+            mr.addModifier(Modifier.FINAL);
+            mr.removeModifier(Modifier.ABSTRACT);
         }
     }
 
