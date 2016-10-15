@@ -654,43 +654,46 @@ public class SignatureTest extends SigTest {
                         getLog().println(i18nSt.getString("SignatureTest.mesg.verbose.check", currentClass.getQualifiedName()));
                         getLog().flush();
                     }
-
-                    if (buildMembers && sigfileMCBuilder != null) {
-                        try {
-                            if (isAPICheckMode()) {
-                                sigfileMCBuilder.setBuildMode(MemberCollectionBuilder.BuildMode.SIGFILE);
-                            }
-                            sigfileMCBuilder.createMembers(currentClass, addInherited(), false, true);
-                        } catch (ClassNotFoundException e) {
-                            if (bo.isSet(Option.DEBUG)) {
-                                SwissKnife.reportThrowable(e);
-                            }
-                        }
-                    }
-
-                    if (useErasurator()) {
-                        currentClass = localErasurator.erasure(currentClass);
-                    }
-
-                    Transformer t = PluginAPI.BEFORE_TEST.getTransformer();
-                    if (t != null) {
-                        try {
-                            t.transform(currentClass);
-                        } catch (ClassNotFoundException e) {
-                            if (bo.isSet(Option.DEBUG)) {
-                                SwissKnife.reportThrowable(e);
-                            }
-                        }
-                    }
-
-                    if (currentClass.isModuleOrPackaheInfo() && isTigerFeaturesTracked) {
-                        verifyMduleOrPackageInfo(currentClass);
+                    if ( to.isSet(Option.CHECK_EXCESS_CLASSES_ONLY)) {
+                        trackedClassNames.add(currentClass.getQualifiedName());
                     } else {
-                        verifyClass(currentClass, supportNSC);
-                    }
-                    if (! isAPICheckMode()) {
-                        // save memory
-                        currentClass.setMembers(null);
+                        if (buildMembers && sigfileMCBuilder != null) {
+                            try {
+                                if (isAPICheckMode()) {
+                                    sigfileMCBuilder.setBuildMode(MemberCollectionBuilder.BuildMode.SIGFILE);
+                                }
+                                sigfileMCBuilder.createMembers(currentClass, addInherited(), false, true);
+                            } catch (ClassNotFoundException e) {
+                                if (bo.isSet(Option.DEBUG)) {
+                                    SwissKnife.reportThrowable(e);
+                                }
+                            }
+                        }
+
+                        if (useErasurator()) {
+                            currentClass = localErasurator.erasure(currentClass);
+                        }
+
+                        Transformer t = PluginAPI.BEFORE_TEST.getTransformer();
+                        if (t != null) {
+                            try {
+                                t.transform(currentClass);
+                            } catch (ClassNotFoundException e) {
+                                if (bo.isSet(Option.DEBUG)) {
+                                    SwissKnife.reportThrowable(e);
+                                }
+                            }
+                        }
+
+                        if (currentClass.isModuleOrPackaheInfo() && isTigerFeaturesTracked) {
+                            verifyMduleOrPackageInfo(currentClass);
+                        } else {
+                            verifyClass(currentClass, supportNSC);
+                        }
+                        if (!isAPICheckMode()) {
+                            // save memory
+                            currentClass.setMembers(null);
+                        }
                     }
                 }
 

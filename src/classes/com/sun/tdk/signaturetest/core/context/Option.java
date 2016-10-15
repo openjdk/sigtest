@@ -80,6 +80,7 @@ public enum Option {
     FORMATPLAIN("-FormatPlain", Kind.NONE),
     FORMATHUMAN("-FormatHuman", "-H", Kind.NONE),
     BACKWARD("-Backward", "-B", Kind.NONE),
+    CHECK_EXCESS_CLASSES_ONLY("-ExcessOnly", "-EO", Kind.NONE),
 
     MODULES("-modules", Kind.SINGLE_OPT),
 
