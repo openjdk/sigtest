@@ -236,7 +236,25 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
-        if (bo.readOptions(optionName, args)) return;
+        if (bo.readOptions(optionName, args)) {
+            // convert -modules to -package
+            if (Option.MODULES.accept(optionName) && bo.getValue(Option.MODULES)  != null) {
+                if(isModuleSupportAvailable()) {
+                    List<String> moduleSet = new ArrayList<>();
+                    for (String m : bo.getValue(Option.MODULES).split(",")) {
+                        m = m.trim();
+                        if (!m.isEmpty()) {
+                            moduleSet.add(m);
+                        }
+                    }
+                    purePackages.addPackages(ModBase.getModuleLoader().getExportedPackages(moduleSet));
+                } else {
+                    throw new CommandLineParserException(i18n.getString("SigTest.error.no.module.support"));
+                }
+            }
+
+            return;
+        }
 
         if (optionName.equalsIgnoreCase(APIVERSION_OPTION)) {
             apiVersion = args[0];
@@ -278,6 +296,13 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
                 throw new CommandLineParserException(i18n.getString("SigTest.error.cant_load.plugin", args[0]));
             }
         }
+    }
+
+    /**
+     * @return if module support available (Java 9 or newer)
+     */
+    private boolean isModuleSupportAvailable() {
+        return ModBase.getModuleLoader() != null;
     }
 
     protected boolean processHelpOptions() {

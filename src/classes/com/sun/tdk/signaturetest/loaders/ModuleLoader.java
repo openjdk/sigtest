@@ -33,6 +33,7 @@ import java.lang.module.ModuleDescriptor;
 import java.lang.module.ResolvedModule;
 import java.lang.reflect.Layer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class ModuleLoader implements ModuleDescriptionLoader {
@@ -71,10 +72,11 @@ public class ModuleLoader implements ModuleDescriptionLoader {
                 //System.out.println("    exports:");
                 Set<ModuleDescription.Exports> rexports = new LinkedHashSet<>();
 
+                // TODO - stream it
                 for (ModuleDescriptor.Exports me : exports) {
                     ModuleDescription.Exports exp = new ModuleDescription.Exports();
                     exp.source = me.source();
-                    exp.targets = new HashSet<String>(me.targets());
+                    exp.targets = new HashSet<>(me.targets());
                     rexports.add(exp);
                 }
                 rmd.setExports(rexports);
@@ -88,7 +90,7 @@ public class ModuleLoader implements ModuleDescriptionLoader {
 
                     if (!r.modifiers().isEmpty()) {
 
-                        Set<ModuleDescription.Requires.Modifier> modifs = new LinkedHashSet<ModuleDescription.Requires.Modifier>();
+                        Set<ModuleDescription.Requires.Modifier> modifs = new LinkedHashSet<>();
 
                         for (ModuleDescriptor.Requires.Modifier m : r.modifiers()) {
                             switch (m) {
@@ -126,12 +128,23 @@ public class ModuleLoader implements ModuleDescriptionLoader {
 
                 result.add(rmd);
             }
-
             return result;
-
         }
 
-
         return Collections.emptySet();
+    }
+
+    /**
+     * @return set of public exported packages by specified modules
+     */
+    @Override
+    public List<String> getExportedPackages(List<String> modules) {
+
+        return loadBootModules().stream()
+                .filter(md -> modules.contains(md.getName()))
+                .flatMap(md -> md.getExports().stream())
+                .filter(ex -> ex.isPublic()).map(ex -> ex.source)
+                .collect(Collectors.toList());
+
     }
 }

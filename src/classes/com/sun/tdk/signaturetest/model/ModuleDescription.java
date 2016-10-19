@@ -212,6 +212,10 @@ public class ModuleDescription {
                     '}';
         }
 
+        public boolean isPublic() {
+            return targets.isEmpty();
+        }
+
     }
 
 }

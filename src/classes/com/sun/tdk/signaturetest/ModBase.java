@@ -99,7 +99,7 @@ public abstract class ModBase extends SigTest {
             ModuleDescriptionLoader md = c.newInstance();
             return md;
         } catch (Throwable e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }
