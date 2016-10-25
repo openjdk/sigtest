@@ -24,14 +24,14 @@
  */
 package com.sun.tdk.signaturetest.plugin;
 
-import com.sun.tdk.signaturetest.sigfile.f42.F42Format;
 import com.sun.tdk.signaturetest.sigfile.Reader;
 import com.sun.tdk.signaturetest.sigfile.Writer;
+import com.sun.tdk.signaturetest.sigfile.f43.F43Format;
 
 /**
  * @author Mikhail Ershov
  */
-public class FormatAdapter extends F42Format {
+public class FormatAdapter extends F43Format {
 
     private String signature;
     protected Reader reader;

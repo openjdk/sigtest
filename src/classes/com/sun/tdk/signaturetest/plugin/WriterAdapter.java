@@ -24,13 +24,13 @@
  */
 package com.sun.tdk.signaturetest.plugin;
 
-import com.sun.tdk.signaturetest.sigfile.f41.F41Writer;
 import com.sun.tdk.signaturetest.sigfile.Format;
+import com.sun.tdk.signaturetest.sigfile.f43.F43Writer;
 
 /**
  * @author Mikhail Ershov
  */
-public class WriterAdapter extends F41Writer {
+public class WriterAdapter extends F43Writer {
 
     public WriterAdapter(Format f) {
         super();

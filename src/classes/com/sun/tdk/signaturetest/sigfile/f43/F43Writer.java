@@ -58,10 +58,15 @@ public class F43Writer extends F42Writer implements ModWriter {
 
     private PrintWriter out;
 
+    public F43Writer() {
+        super();
+        setFormat(new F43Format());
+    }
+
+
     @Override
     public void init(PrintWriter out) {
         this.out = out;
-        setFormat(new F43Format());
         super.init(out);
     }
 

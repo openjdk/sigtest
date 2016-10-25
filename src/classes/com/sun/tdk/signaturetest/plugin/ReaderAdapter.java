@@ -24,13 +24,13 @@
  */
 package com.sun.tdk.signaturetest.plugin;
 
-import com.sun.tdk.signaturetest.sigfile.f41.F41Reader;
 import com.sun.tdk.signaturetest.sigfile.Format;
+import com.sun.tdk.signaturetest.sigfile.f43.F43Reader;
 
 /**
  * @author Mikhail Ershov
  */
-public class ReaderAdapter extends F41Reader {
+public class ReaderAdapter extends F43Reader {
 
     public ReaderAdapter(Format format) {
         super(format);
