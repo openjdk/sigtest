@@ -144,23 +144,4 @@ public class ExoticCharTools {
         sb.append((char) Integer.parseInt(str.substring(start), 16));
     }
 
-    /*
-     public static void main(String [] args) {
-     doit ("qw@#$$ert");
-     doit ("qwert!@#$%^~");
-     doit ("qw$$$@@%#%$%%#%^#^ert!@#$%^~");
-     doit ("***");
-     doit ("опа3243244да");
-     }
-
-     private static void doit(String s) {
-     System.out.println("-------------------");
-     System.out.println(s);
-     System.out.println(encodeExotic(s));
-     System.out.println(decodeExotic(encodeExotic(s)));
-     if (!s.equals(decodeExotic(encodeExotic(s)))) {
-     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-     }
-     }
-     */
 }
