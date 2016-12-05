@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest;
 
+import com.sun.tdk.signaturetest.classpath.Classpath;
 import com.sun.tdk.signaturetest.classpath.ClasspathImpl;
 import com.sun.tdk.signaturetest.core.*;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
@@ -37,10 +38,6 @@ import com.sun.tdk.signaturetest.plugin.PluginAPI;
 import com.sun.tdk.signaturetest.plugin.Transformer;
 import com.sun.tdk.signaturetest.sigfile.FeaturesHolder;
 import com.sun.tdk.signaturetest.sigfile.MultipleFileReader;
-import com.sun.tdk.signaturetest.util.CommandLineParser;
-import com.sun.tdk.signaturetest.util.CommandLineParserException;
-import com.sun.tdk.signaturetest.util.I18NResourceBundle;
-import com.sun.tdk.signaturetest.util.OptionInfo;
 import com.sun.tdk.signaturetest.updater.Updater;
 import com.sun.tdk.signaturetest.util.*;
 
@@ -49,7 +46,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -390,9 +386,20 @@ public class SignatureTest extends SigTest {
             }
         }
 
-        // create ClasspathImpl for founding of the added classes
+        // create ClasspathImpl for added classes finding
         try {
-            setClasspath(new ClasspathImpl(bo.getValue(Option.CLASSPATH)));
+            //setClasspath(new ClasspathImpl(bo.getValue(Option.CLASSPATH)));
+            if (!bo.isSet(Option.STATIC) && isPlatformEnumerationSupported()) {
+                try {
+                    Class epci = Class.forName("com.sun.tdk.signaturetest.classpath.EnumPlatformClasspathImpl");
+                    Classpath cp = (Classpath) epci.getConstructor().newInstance();
+                    setClasspath(cp);
+                } catch (Exception e) {
+                    setClasspath(new ClasspathImpl(bo.getValue(Option.CLASSPATH)));
+                }
+            } else {
+                setClasspath(new ClasspathImpl(bo.getValue(Option.CLASSPATH)));
+            }
         } catch (SecurityException e) {
             if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
@@ -406,6 +413,23 @@ public class SignatureTest extends SigTest {
 
         return passed();
     }
+
+
+    /*
+    * Detects if the current platform supports Java9's
+    * ModuleReader::list for enumerating available classes
+     */
+    private boolean isPlatformEnumerationSupported() {
+        try {
+            Class.forName("java.lang.module.ModuleReader").getMethod("list");
+            System.out.println("PlatformEnumeration detected");
+            return true;
+        } catch (Throwable t) {
+            System.out.println("PlatformEnumeration is NOT detected");
+            return false;
+        }
+    }
+
 
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
 

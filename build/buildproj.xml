@@ -177,6 +177,7 @@ ${copyright.text}
            verbose="${javac.verbose}" deprecation="${javac.deprecation}" >
          <!--   classpathref="compileClassPath"  -->
         <include name="com/sun/tdk/signaturetest/**/ModuleLoader.java"/>
+        <include name="com/sun/tdk/signaturetest/**/EnumPlatformClasspathImpl.java"/>
     </javac>
 </target>
 
@@ -228,6 +229,7 @@ ${copyright.text}
         <exclude name="com/sun/tdk/signaturetest/**/J8RefLoader.java"/>
         <exclude name="com/sun/tdk/signaturetest/**/ModuleLoader.java"/>
         <exclude name="com/sun/tdk/**/remote/**"/>
+        <exclude name="com/sun/tdk/signaturetest/classpath/EnumPlatformClasspathImpl.java"/>
     </javac>
     <javac fork="true" srcdir="${build.src.classes.dir}"
            destdir="${build.classes.dir}"
@@ -241,6 +243,7 @@ ${copyright.text}
         <include name="com/sun/tdk/signaturetest/**/Tiger*.java"/>
         <exclude name="com/sun/tdk/signaturetest/**/J8RefLoader.java"/>
         <exclude name="com/sun/tdk/signaturetest/**/ModuleLoader.java"/>
+        <exclude name="com/sun/tdk/signaturetest/**/EnumPlatformClasspathImpl.java"/>
     </javac>
 
     <antcall target="compile_remote_classes"/>
