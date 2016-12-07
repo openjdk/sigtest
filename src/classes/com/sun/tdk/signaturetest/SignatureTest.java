@@ -422,10 +422,10 @@ public class SignatureTest extends SigTest {
     private boolean isPlatformEnumerationSupported() {
         try {
             Class.forName("java.lang.module.ModuleReader").getMethod("list");
-            System.out.println("PlatformEnumeration detected");
+            //System.out.println("PlatformEnumeration detected");
             return true;
         } catch (Throwable t) {
-            System.out.println("PlatformEnumeration is NOT detected");
+            //System.out.println("PlatformEnumeration is NOT detected");
             return false;
         }
     }
