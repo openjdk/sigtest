@@ -94,17 +94,6 @@ public class F43Reader extends F42Reader {
             md.setPackages(pkSet);
         }
         {
-            List<Elem> cons = m.getElementsByTagName(CONCEAL);
-            HashSet<String> coSet = new HashSet<>();
-            for (Elem c : cons) {
-                String coName = c.getAttribute(NAME);
-                if (!coName.isEmpty()) {
-                    coSet.add(coName);
-                }
-            }
-            md.setConceals(coSet);
-        }
-        {
             List<Elem> exps = m.getElementsByTagName(EXPORTS);
             HashSet<ModuleDescription.Exports> exSet = new HashSet<>();
 
@@ -132,8 +121,8 @@ public class F43Reader extends F42Reader {
                 if (TRUE.equals(r.getAttribute(ModuleDescription.Requires.Modifier.MANDATED.name().toLowerCase()))) {
                     ms.add(ModuleDescription.Requires.Modifier.MANDATED);
                 }
-                if (TRUE.equals(r.getAttribute(ModuleDescription.Requires.Modifier.PUBLIC.name().toLowerCase()))) {
-                    ms.add(ModuleDescription.Requires.Modifier.PUBLIC);
+                if (TRUE.equals(r.getAttribute(ModuleDescription.Requires.Modifier.STATIC.name().toLowerCase()))) {
+                    ms.add(ModuleDescription.Requires.Modifier.STATIC);
                 }
                 if (TRUE.equals(r.getAttribute(ModuleDescription.Requires.Modifier.SYNTHETIC.name().toLowerCase()))) {
                     ms.add(ModuleDescription.Requires.Modifier.SYNTHETIC);

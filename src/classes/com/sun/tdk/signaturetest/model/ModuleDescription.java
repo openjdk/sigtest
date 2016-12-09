@@ -45,7 +45,6 @@ public class ModuleDescription {
     private Map<String, Provides> provides;
     private Set<ModuleDescription.Requires> requires;
     private Set<String> uses;
-    private Set<String> conceals;
     private Set<ModFeatures> features;
 
     // optional
@@ -64,7 +63,6 @@ public class ModuleDescription {
                 ", provides=" + provides +
                 ", requires=" + requires +
                 ", uses=" + uses +
-                ", conceals=" + conceals +
                 ", version='" + version + '\'' +
                 '}';
     }
@@ -133,14 +131,6 @@ public class ModuleDescription {
         this.uses = uses;
     }
 
-    public Set<String> getConceals() {
-        return conceals;
-    }
-
-    public void setConceals(Set<String> conceals) {
-        this.conceals = conceals;
-    }
-
     public String getVersion() {
         return version;
     }
@@ -166,22 +156,33 @@ public class ModuleDescription {
     public static class Requires {
 
         public enum Modifier {
-            /**
-             * The dependence was implicitly declared in the source of the module declaration.
-             */
-            MANDATED,
+
 
             /**
-             * The dependence causes any module which depends on the current module to have
-             * an implicitly declared dependence on the module named by the Requires.
+             * The dependence causes any module which depends on the <i>current
+             * module</i> to have an implicitly declared dependence on the module
+             * named by the {@code Requires}.
              */
-            PUBLIC,
+            TRANSITIVE,
 
             /**
-             * The dependence was not explicitly or implicitly declared
-             * in the source of the module declaration.
+             * The dependence is mandatory in the static phase, during compilation,
+             * but is optional in the dynamic phase, during execution.
              */
-            SYNTHETIC
+            STATIC,
+
+            /**
+             * The dependence was not explicitly or implicitly declared in the
+             * source of the module declaration.
+             */
+            SYNTHETIC,
+
+            /**
+             * The dependence was implicitly declared in the source of the module
+             * declaration.
+             */
+            MANDATED
+
         }
 
         public String name;

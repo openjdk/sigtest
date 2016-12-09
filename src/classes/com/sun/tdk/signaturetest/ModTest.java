@@ -45,7 +45,7 @@ import java.util.*;
 public class ModTest extends ModBase {
 
     private ModTestOptions mo = AppContext.getContext().getBean(ModTestOptions.class);
-    private EnumSet<ModFeatures> checkers = EnumSet.of(ModFeatures.REQUIRES_PUBLIC, ModFeatures.EXPORTS_PUBLIC);
+    private EnumSet<ModFeatures> checkers = EnumSet.of(ModFeatures.REQUIRES_STATIC, ModFeatures.EXPORTS_PUBLIC);
 
     public ModTest() {
     }
@@ -106,9 +106,7 @@ public class ModTest extends ModBase {
             result &= checkVersion(thisModule, thatModule);
             result &= checkMainClass(thisModule, thatModule);
             result &= checkPackages(thisModule, thatModule);
-            result &= checkConceals(thisModule, thatModule);
             result &= checkExports(thisModule, thatModule);
-
             result &= checkRequires(thisModule, thatModule);
             result &= checkServices(thisModule, thatModule);
             result &= checkUses(thisModule, thatModule);
@@ -183,12 +181,6 @@ public class ModTest extends ModBase {
         return compareStringSets(thisModule, thisModule.getPackages(), thatModule.getPackages(), "package");
     }
 
-    private boolean checkConceals(ModuleDescription thisModule, ModuleDescription thatModule) {
-        if (!supports(ModFeatures.CONCEAL)) return true;
-        if (!assertChecker(ModFeatures.CONCEAL, thatModule)) return false;
-        return compareStringSets(thisModule, thisModule.getConceals(), thatModule.getConceals(), "conceal");
-    }
-
 
     private boolean checkExports(ModuleDescription thisModule, ModuleDescription thatModule) {
 
@@ -257,32 +249,32 @@ public class ModTest extends ModBase {
     }
 
     private boolean checkRequires(ModuleDescription thisModule, ModuleDescription thatModule) {
-        if (!supports(ModFeatures.REQUIRES_PUBLIC) && !supports(ModFeatures.REQUIRES_ALL)) return true;
+        if (!supports(ModFeatures.REQUIRES_STATIC) && !supports(ModFeatures.REQUIRES_ALL)) return true;
 
         boolean checkAll = (checkers.contains(ModFeatures.REQUIRES_ALL) || checkers.contains(ModFeatures.ALL));
 
         if (checkAll) {
             if (!assertChecker(ModFeatures.REQUIRES_ALL, thatModule)) return false;
         } else {
-            if (!assertChecker(ModFeatures.REQUIRES_PUBLIC, thatModule)) return false;
+            if (!assertChecker(ModFeatures.REQUIRES_STATIC, thatModule)) return false;
         }
 
-        Set<String> thisPublicRequires = new HashSet<>();
+        Set<String> thisStaticRequires = new HashSet<>();
         for (ModuleDescription.Requires rq : thisModule.getRequires()) {
-            if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC)) {
+            if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.STATIC)) {
                 continue;
             }
-            thisPublicRequires.add(rq.getName());
+            thisStaticRequires.add(rq.getName());
         }
 
-        Set<String> thatPublicRequires = new HashSet<>();
+        Set<String> thatStaticRequires = new HashSet<>();
         for (ModuleDescription.Requires rq : thatModule.getRequires()) {
-            if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC)) {
+            if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.STATIC)) {
                 continue;
             }
-            thatPublicRequires.add(rq.getName());
+            thatStaticRequires.add(rq.getName());
         }
-        return compareStringSets(thisModule, thisPublicRequires, thatPublicRequires, checkAll ? "requires" : "requires public");
+        return compareStringSets(thisModule, thisStaticRequires, thatStaticRequires, checkAll ? "requires" : "requires static");
     }
 
     private boolean checkServices(ModuleDescription thisModule, ModuleDescription thatModule) {

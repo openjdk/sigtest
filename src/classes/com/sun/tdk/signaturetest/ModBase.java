@@ -137,14 +137,13 @@ public abstract class ModBase extends SigTest {
     /**
      * Filters out ModuleDescription's entities, all "nonApi" classes and packages are removed.
      * the scope is defined by -pkgInclude and -pkgExclude options.
-     * it filters out packages, conceals, requires, exports, provides and uses
+     * it filters out packages, requires, exports, provides and uses
      * @param md the module for cleaning
      * @param isReference
      * @param verbose
      */
     protected void filterModule(ModuleDescription md, boolean isReference, boolean verbose) {
         filterPackageSet(md.getPackages(), isReference, verbose, "Package");
-        filterPackageSet(md.getConceals(), isReference, verbose, "Conceal");
         filterRequires(md.getRequires(), isReference, verbose);
         filterExports(md.getExports(), isReference, verbose);
         filterProvides(md.getProvides(), isReference, verbose);

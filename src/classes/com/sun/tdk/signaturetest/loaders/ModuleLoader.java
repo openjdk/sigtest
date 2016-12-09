@@ -64,10 +64,7 @@ public class ModuleLoader implements ModuleDescriptionLoader {
                 // 3. packages
                 rmd.setPackages(new LinkedHashSet(md.packages()));
 
-                // 4. conceals ??
-                rmd.setConceals(new LinkedHashSet(md.conceals()));
-
-                // 5. exports
+                // 4. exports
                 Set<ModuleDescriptor.Exports> exports = md.exports();
                 //System.out.println("    exports:");
                 Set<ModuleDescription.Exports> rexports = new LinkedHashSet<>();
@@ -94,8 +91,8 @@ public class ModuleLoader implements ModuleDescriptionLoader {
 
                         for (ModuleDescriptor.Requires.Modifier m : r.modifiers()) {
                             switch (m) {
-                                case PUBLIC:
-                                    modifs.add(ModuleDescription.Requires.Modifier.PUBLIC);
+                                case STATIC:
+                                    modifs.add(ModuleDescription.Requires.Modifier.STATIC);
                                     break;
                                 case MANDATED:
                                     modifs.add(ModuleDescription.Requires.Modifier.MANDATED);
@@ -112,12 +109,12 @@ public class ModuleLoader implements ModuleDescriptionLoader {
                 rmd.setRequires(rereqs);
 
                 // 7. provides
-                Map<String, ModuleDescriptor.Provides> prvs = md.provides();
+                Set<ModuleDescriptor.Provides> prvs = md.provides();
                 LinkedHashMap<String, ModuleDescription.Provides> reprovides = new LinkedHashMap<>();
-                for (Map.Entry<String, ModuleDescriptor.Provides> me : prvs.entrySet()) {
+                for (ModuleDescriptor.Provides me : prvs) {
                     ModuleDescription.Provides pr = new ModuleDescription.Provides();
-                    pr.service = me.getKey();
-                    pr.providers = new LinkedHashSet<>(me.getValue().providers());
+                    pr.service = me.service();
+                    pr.providers = new LinkedHashSet<>(me.providers());
                     reprovides.put(pr.service, pr);
                 }
                 rmd.setProvides(reprovides);

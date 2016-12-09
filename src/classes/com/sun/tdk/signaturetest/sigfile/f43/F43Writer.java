@@ -126,14 +126,6 @@ public class F43Writer extends F42Writer implements ModWriter {
                     eModule.appendChild(ePack);
                 }
             }
-            if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.CONCEAL)) {
-                for (String packName : md.getConceals()) {
-                    Element ePack = doc.createElement(CONCEAL);
-                    ePack.setAttribute(NAME, packName);
-                    eModule.appendChild(ePack);
-                }
-            }
-
             if (features.contains(ModFeatures.ALL)
                     || features.contains(ModFeatures.EXPORTS_PUBLIC)
                     || features.contains(ModFeatures.EXPORTS_ALL)) {
@@ -161,7 +153,7 @@ public class F43Writer extends F42Writer implements ModWriter {
             for (ModuleDescription.Requires re : md.getRequires()) {
 
                 if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.REQUIRES_ALL) ||
-                        (features.contains(ModFeatures.REQUIRES_PUBLIC) && re.modifiers.contains(ModuleDescription.Requires.Modifier.PUBLIC))) {
+                        (features.contains(ModFeatures.REQUIRES_STATIC) && re.modifiers.contains(ModuleDescription.Requires.Modifier.STATIC))) {
 
                     Element eReq = doc.createElement(REQUIRES);
                     eReq.setAttribute(NAME, re.name);

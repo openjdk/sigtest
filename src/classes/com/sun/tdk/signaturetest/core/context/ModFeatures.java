@@ -54,11 +54,6 @@ public enum ModFeatures {
     PACKAGES,
 
     /*
-    the names of the packages defined in, but not exported by, this module
-     */
-    CONCEAL,
-
-    /*
     Not targeted ("public") module's exports
      */
     EXPORTS_PUBLIC,
@@ -69,9 +64,9 @@ public enum ModFeatures {
     EXPORTS_ALL,
 
     /*
-    The "public" dependences of this module.
+    The "static" dependences of this module.
      */
-    REQUIRES_PUBLIC,
+    REQUIRES_STATIC,
 
     /*
     The all dependences of this module (including public).
@@ -97,7 +92,7 @@ public enum ModFeatures {
      * @param fList is comma separated feature list,
      *              values are ModSetupFeatures's names (case insensitive)
      * @return Set of specified features.
-     * If fList is null or the set contains ALL it returns {MODULE_LIST, REQUIRES_PUBLIC, EXPORTS_PUBLIC}
+     * If fList is null or the set contains ALL it returns {MODULE_LIST, REQUIRES_STATIC, EXPORTS_PUBLIC}
      * @throws IllegalArgumentException in case of wrong feature name
      *                                  with name in exception message
      */
@@ -116,7 +111,7 @@ public enum ModFeatures {
             }
         }
         if (res.isEmpty()) {
-            return EnumSet.of(AVAILABILITY, REQUIRES_PUBLIC, EXPORTS_PUBLIC);
+            return EnumSet.of(AVAILABILITY, REQUIRES_STATIC, EXPORTS_PUBLIC);
         }
         return res;
     }
