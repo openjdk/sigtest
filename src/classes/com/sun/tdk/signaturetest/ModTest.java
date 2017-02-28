@@ -45,7 +45,7 @@ import java.util.*;
 public class ModTest extends ModBase {
 
     private ModTestOptions mo = AppContext.getContext().getBean(ModTestOptions.class);
-    private EnumSet<ModFeatures> checkers = EnumSet.of(ModFeatures.REQUIRES_STATIC, ModFeatures.EXPORTS_PUBLIC);
+    private EnumSet<ModFeatures> checkers = EnumSet.of(ModFeatures.REQUIRES_TRANSITIVE, ModFeatures.EXPORTS_PUBLIC);
 
     public ModTest() {
     }
@@ -249,19 +249,19 @@ public class ModTest extends ModBase {
     }
 
     private boolean checkRequires(ModuleDescription thisModule, ModuleDescription thatModule) {
-        if (!supports(ModFeatures.REQUIRES_STATIC) && !supports(ModFeatures.REQUIRES_ALL)) return true;
+        if (!supports(ModFeatures.REQUIRES_TRANSITIVE) && !supports(ModFeatures.REQUIRES_ALL)) return true;
 
         boolean checkAll = (checkers.contains(ModFeatures.REQUIRES_ALL) || checkers.contains(ModFeatures.ALL));
 
         if (checkAll) {
             if (!assertChecker(ModFeatures.REQUIRES_ALL, thatModule)) return false;
         } else {
-            if (!assertChecker(ModFeatures.REQUIRES_STATIC, thatModule)) return false;
+            if (!assertChecker(ModFeatures.REQUIRES_TRANSITIVE, thatModule)) return false;
         }
 
         Set<String> thisStaticRequires = new HashSet<>();
         for (ModuleDescription.Requires rq : thisModule.getRequires()) {
-            if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.STATIC)) {
+            if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.TRANSITIVE)) {
                 continue;
             }
             thisStaticRequires.add(rq.getName());
@@ -269,7 +269,7 @@ public class ModTest extends ModBase {
 
         Set<String> thatStaticRequires = new HashSet<>();
         for (ModuleDescription.Requires rq : thatModule.getRequires()) {
-            if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.STATIC)) {
+            if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.TRANSITIVE)) {
                 continue;
             }
             thatStaticRequires.add(rq.getName());

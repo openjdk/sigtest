@@ -127,6 +127,9 @@ public class F43Reader extends F42Reader {
                 if (TRUE.equals(r.getAttribute(ModuleDescription.Requires.Modifier.SYNTHETIC.name().toLowerCase()))) {
                     ms.add(ModuleDescription.Requires.Modifier.SYNTHETIC);
                 }
+                if (TRUE.equals(r.getAttribute(ModuleDescription.Requires.Modifier.TRANSITIVE.name().toLowerCase()))) {
+                    ms.add(ModuleDescription.Requires.Modifier.TRANSITIVE);
+                }
                 rq.modifiers = ms;
                 rqSet.add(rq);
             }

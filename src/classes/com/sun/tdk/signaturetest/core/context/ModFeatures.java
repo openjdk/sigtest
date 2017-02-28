@@ -66,7 +66,7 @@ public enum ModFeatures {
     /*
     The "static" dependences of this module.
      */
-    REQUIRES_STATIC,
+    REQUIRES_TRANSITIVE,
 
     /*
     The all dependences of this module (including public).
@@ -111,7 +111,7 @@ public enum ModFeatures {
             }
         }
         if (res.isEmpty()) {
-            return EnumSet.of(AVAILABILITY, REQUIRES_STATIC, EXPORTS_PUBLIC);
+            return EnumSet.of(AVAILABILITY, REQUIRES_TRANSITIVE, EXPORTS_PUBLIC);
         }
         return res;
     }

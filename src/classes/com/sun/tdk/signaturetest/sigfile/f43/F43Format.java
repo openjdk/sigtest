@@ -38,7 +38,6 @@ public class F43Format extends F42Format {
     static final String VERSION = "version";
     static final String MAIN_CLASS = "main-class";
     static final String PACKAGE = "package";
-    static final String CONCEAL = "conceal";
     static final String EXPORTS = "exports";
     static final String SOURCE = "source";
     static final String TARGET = "target";

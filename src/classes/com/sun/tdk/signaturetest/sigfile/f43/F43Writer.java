@@ -153,7 +153,7 @@ public class F43Writer extends F42Writer implements ModWriter {
             for (ModuleDescription.Requires re : md.getRequires()) {
 
                 if (features.contains(ModFeatures.ALL) || features.contains(ModFeatures.REQUIRES_ALL) ||
-                        (features.contains(ModFeatures.REQUIRES_STATIC) && re.modifiers.contains(ModuleDescription.Requires.Modifier.STATIC))) {
+                        (features.contains(ModFeatures.REQUIRES_TRANSITIVE) && re.modifiers.contains(ModuleDescription.Requires.Modifier.TRANSITIVE))) {
 
                     Element eReq = doc.createElement(REQUIRES);
                     eReq.setAttribute(NAME, re.name);

@@ -100,6 +100,9 @@ public class ModuleLoader implements ModuleDescriptionLoader {
                                 case SYNTHETIC:
                                     modifs.add(ModuleDescription.Requires.Modifier.SYNTHETIC);
                                     break;
+                                case TRANSITIVE:
+                                    modifs.add(ModuleDescription.Requires.Modifier.TRANSITIVE);
+                                    break;
                             }
                         }
                         req.modifiers = modifs;
