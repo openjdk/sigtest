@@ -259,22 +259,22 @@ public class ModTest extends ModBase {
             if (!assertChecker(ModFeatures.REQUIRES_TRANSITIVE, thatModule)) return false;
         }
 
-        Set<String> thisStaticRequires = new HashSet<>();
+        Set<String> thisTransRequires = new HashSet<>();
         for (ModuleDescription.Requires rq : thisModule.getRequires()) {
             if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.TRANSITIVE)) {
                 continue;
             }
-            thisStaticRequires.add(rq.getName());
+            thisTransRequires.add(rq.getName());
         }
 
-        Set<String> thatStaticRequires = new HashSet<>();
+        Set<String> thatTransRequires = new HashSet<>();
         for (ModuleDescription.Requires rq : thatModule.getRequires()) {
             if (!checkAll && !rq.modifiers.contains(ModuleDescription.Requires.Modifier.TRANSITIVE)) {
                 continue;
             }
-            thatStaticRequires.add(rq.getName());
+            thatTransRequires.add(rq.getName());
         }
-        return compareStringSets(thisModule, thisStaticRequires, thatStaticRequires, checkAll ? "requires" : "requires static");
+        return compareStringSets(thisModule, thisTransRequires, thatTransRequires, checkAll ? "requires" : "requires transitive");
     }
 
     private boolean checkServices(ModuleDescription thisModule, ModuleDescription thatModule) {
