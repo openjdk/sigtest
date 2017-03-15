@@ -294,6 +294,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
             if (mtd.getDefaultValue() != null) {
                 fid.addModifier(com.sun.tdk.signaturetest.model.Modifier.HASDEFAULT);
+                fid.setDefaultValue(mtd.getDefaultValue().toString());
             }
 
             if (mtd.isVarArgs()) {
