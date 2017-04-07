@@ -48,7 +48,9 @@ public class JimageJakeEntry extends ClasspathEntry {
     private List<DirectoryEntry> module_homes = new ArrayList<>();
     private int cur_module_index = -1;
     private Path td;
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);;
+    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+
+    private static final String MODULE_INFO_CLASS = "module-info.class";
 
     public JimageJakeEntry(ClasspathEntry previous, String name) throws IOException {
         super(previous);
@@ -111,6 +113,12 @@ public class JimageJakeEntry extends ClasspathEntry {
         DirectoryEntry prevEntry = null;
         for (File f : baseDir.listFiles()) {
             if (f.isDirectory()) {
+
+                File mi = new File(f, MODULE_INFO_CLASS);
+                if (mi.exists()) {
+                    mi.delete();
+                }
+
                 DirectoryEntry de = new DirectoryEntry(prevEntry, f.getAbsolutePath());
                 module_homes.add(de);
                 prevEntry = de;
