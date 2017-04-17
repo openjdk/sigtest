@@ -24,19 +24,14 @@
  */
 package com.sun.tdk.apicover;
 
-import com.sun.tdk.signaturetest.Merge;
 import com.sun.tdk.signaturetest.Version;
 import com.sun.tdk.signaturetest.core.context.Option;
-import com.sun.tdk.signaturetest.util.CommandLineParser;
-import com.sun.tdk.signaturetest.util.CommandLineParserException;
-import com.sun.tdk.signaturetest.util.I18NResourceBundle;
-import com.sun.tdk.signaturetest.util.OptionInfo;
+import com.sun.tdk.signaturetest.util.*;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,7 +44,6 @@ import org.xml.sax.SAXException;
 
 public class CMerge {
 
-    static final Logger lgr = Logger.getLogger(CMerge.class.getName());
     private final static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(CMerge.class);
     String oFile;
     String[] iFiles;
@@ -69,7 +63,7 @@ public class CMerge {
         if (parseParameters(args)) {
             perform();
         } else if (args.length > 0 && Option.VERSION.accept(args[0])) {
-            lgr.severe(Version.getVersionInfo());
+            System.err.println(Version.getVersionInfo());
         } else {
             usage();
         }
@@ -87,18 +81,8 @@ public class CMerge {
                 saveToXml(result, oFile);
             }
 
-        } catch (SAXException ex) {
-            lgr.log(Level.SEVERE, null, ex);
-        } catch (TransformerConfigurationException ex) {
-            lgr.log(Level.SEVERE, null, ex);
-        } catch (TransformerException ex) {
-            lgr.log(Level.SEVERE, null, ex);
-        } catch (XPathExpressionException ex) {
-            lgr.log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            lgr.log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            lgr.log(Level.SEVERE, null, ex);
+        } catch (SAXException | TransformerException | XPathExpressionException | ParserConfigurationException | IOException ex) {
+            SwissKnife.reportThrowable(ex);
         }
     }
 
@@ -409,7 +393,7 @@ public class CMerge {
             pck.appendChild(cl);
             updateCounters(pck, memberCount, testedCount);
         } catch (XPathExpressionException ex) {
-            lgr.log(Level.SEVERE, null, ex);
+            SwissKnife.reportThrowable(ex);
         }
     }
 

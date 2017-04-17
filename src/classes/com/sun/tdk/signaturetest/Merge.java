@@ -34,14 +34,10 @@ import com.sun.tdk.signaturetest.merge.MergedSigFile;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.sigfile.*;
 import com.sun.tdk.signaturetest.sigfile.Writer;
-import com.sun.tdk.signaturetest.util.CommandLineParser;
-import com.sun.tdk.signaturetest.util.CommandLineParserException;
-import com.sun.tdk.signaturetest.util.I18NResourceBundle;
-import com.sun.tdk.signaturetest.util.SwissKnife;
+import com.sun.tdk.signaturetest.util.*;
 
 import java.io.*;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 public class Merge extends SigTest {
 

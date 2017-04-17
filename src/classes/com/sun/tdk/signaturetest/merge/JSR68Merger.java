@@ -34,13 +34,10 @@ import com.sun.tdk.signaturetest.loaders.VirtualClassDescriptionLoader;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.sigfile.FeaturesHolder;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
+import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 /**
  * Merges some APIs according JSR68 rules
@@ -67,7 +64,6 @@ public class JSR68Merger extends FeaturesHolder {
     public VirtualClassDescriptionLoader merge(MergedSigFile[] files) {
         //this.mode = mode;
         VirtualClassDescriptionLoader result = new VirtualClassDescriptionLoader();
-        setLogger();
 
         for (int i = 0; i < files.length; i++) {
             MergedSigFile mf = files[i];
@@ -178,7 +174,7 @@ public class JSR68Merger extends FeaturesHolder {
                     outer.setNestedClasses(newInners);
 
                 } catch (ClassNotFoundException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    SwissKnife.reportThrowable(ex);
                 }
             }
         }
@@ -499,7 +495,7 @@ public class JSR68Merger extends FeaturesHolder {
                             break;
                         }
                     } catch (ClassNotFoundException ex) {
-                        logger.log(Level.SEVERE, null, ex);
+                        SwissKnife.reportThrowable(ex);
                     }
                 }
                 if (subSuperFound) {
@@ -510,7 +506,7 @@ public class JSR68Merger extends FeaturesHolder {
         }
 
         error(show(result) + " " + i18n.getString("Merger.error.superclassesnotrelated"));
-        logger.severe("Can't merge superclasses");
+        System.out.println("Can't merge superclasses");
         return false;
     }
 
@@ -905,21 +901,4 @@ public class JSR68Merger extends FeaturesHolder {
         return x;
     }
 
-    private void setLogger() {
-        logger.setUseParentHandlers(false);
-        logger.addHandler(new Handler() {
-            public void publish(LogRecord arg0) {
-                System.out.println(arg0.getMessage());
-            }
-
-            public void flush() {
-            }
-
-            public void close() throws SecurityException {
-            }
-        });
-        logger.setLevel(Level.SEVERE);
-
-    }
-    private static final Logger logger = Logger.getLogger("merge");
 }

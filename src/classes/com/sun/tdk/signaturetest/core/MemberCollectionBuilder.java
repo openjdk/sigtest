@@ -30,8 +30,6 @@ import com.sun.tdk.signaturetest.plugin.Transformer;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class provides methods to findByName an load a class and to compile a
@@ -56,31 +54,11 @@ public class MemberCollectionBuilder {
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MemberCollectionBuilder.class);
     private BuildMode mode = BuildMode.NORMAL;
     private ClassHierarchy secondCH;
-    /**
-     * Self-tracing can be turned on by setting FINER level for logger
-     * com.sun.tdk.signaturetest.core.MemberCollectionBuilder It can be done via
-     * custom logging config file, for example: java
-     * -Djava.util.logging.config.file=/home/ersh/wrk/st/trunk_prj/logging.properties
-     * -jar sigtest.jar where logging.properties context is:
-     * -------------------------------------------------------------------------
-     * handlers= java.util.logging.FileHandler, java.util.logging.ConsoleHandler
-     * java.util.logging.FileHandler.pattern = sigtest.log.xml
-     * java.util.logging.FileHandler.formatter = java.util.logging.XMLFormatter
-     * com.sun.tdk.signaturetest.core.MemberCollectionBuilder.level = FINER
-     * -------------------------------------------------------------------------
-     * In this case any java.util compatible log viewer can be used, for
-     * instance Apache Chainsaw (http://logging.apache.org/chainsaw)
-     */
-    static final Logger logger = Logger.getLogger(MemberCollectionBuilder.class.getName());
+
 
     public MemberCollectionBuilder(Log log) {
         this.cc = new ClassCorrector(log);
         this.log = log;
-
-        // not configured externally
-        if (logger.getLevel() == null) {
-            logger.setLevel(Level.OFF);
-        }
     }
 
     public MemberCollectionBuilder(Log log, String builderName) {
@@ -559,7 +537,6 @@ public class MemberCollectionBuilder {
 
     private MemberCollection addSuperMembers(MemberDescription[] from,
             MemberCollection to) {
-        logger.finer(" adding members");
         for (int i = 0; i < from.length; i++) {
             to.addMember(from[i]);
         }
@@ -678,25 +655,10 @@ public class MemberCollectionBuilder {
             for (Iterator it = cls.getMembersIterator(); it.hasNext();) {
                 MemberDescription mr = (MemberDescription) it.next();
 
-                boolean isBridgeMethod = mr.hasModifier(Modifier.BRIDGE);
                 boolean isSynthetic = mr.hasModifier(Modifier.ACC_SYNTHETIC);
 
                 // skip synthetic methods and constructors
                 if (isSynthetic) {
-                    if (logger.isLoggable(Level.INFO)) {
-                        if (mr.isConstructor()) {
-                            logger.info(i18n.getString("MemberCollectionBuilder.message.synthetic_constr_skipped",
-                                    mr.getQualifiedName() + "(" + mr.getArgs() + ")"));
-                        } else if (mr.isMethod()) {
-                            String signature = mr.getType() + " " + mr.getQualifiedName() + "(" + mr.getArgs() + ")";
-                            if (isBridgeMethod) {
-                                logger.info(i18n.getString("MemberCollectionBuilder.message.bridge", signature));
-                            } else {
-                                logger.info(i18n.getString("MemberCollectionBuilder.message.synthetic_method_skipped",
-                                        signature));
-                            }
-                        }
-                    }
                     it.remove();
                     continue;
                 }

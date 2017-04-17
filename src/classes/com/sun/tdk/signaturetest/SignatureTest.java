@@ -46,8 +46,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * <b>SignatureTest</b> is the main class of signature test.
@@ -169,23 +167,8 @@ public class SignatureTest extends SigTest {
     private String outFormat = null;
     private boolean extensibleInterfaces = false;
     private TreeSet orderImportant;
-    /**
-     * Self tracing can be turned on by setting FINER level for logger
-     * com.sun.tdk.signaturetest.SignatureTest It can be done via custom logging
-     * config file, for example: java
-     * -Djava.util.logging.config.file=/home/ersh/wrk/st/trunk_prj/logging.properties
-     * -jar sigtest.jar where logging.properties context is:
-     * -------------------------------------------------------------------------
-     * handlers= java.util.logging.FileHandler, java.util.logging.ConsoleHandler
-     * java.util.logging.FileHandler.pattern = sigtest.log.xml
-     * java.util.logging.FileHandler.formatter = java.util.logging.XMLFormatter
-     * com.sun.tdk.signaturetest.SignatureTest.level = FINER
-     * -------------------------------------------------------------------------
-     * In this case any java.util compatible log viewer can be used, for
-     * instance Apache Chainsaw (http://logging.apache.org/chainsaw)
-     */
-    private static final Logger logger = Logger.getLogger(SignatureTest.class.getName());
     private static I18NResourceBundle i18nSt = I18NResourceBundle.getBundleForClass(SignatureTest.class);
+
     /**
      * Log-file is not the System.err
      */
@@ -819,8 +802,6 @@ public class SignatureTest extends SigTest {
      * Check if packages being tested do not contain any extra class, which is
      * not described in the <code>signatureFile</code>. For each extra class
      * detected, error message is appended to the <code>log</code>.
-     *
-     * @see #log
      */
     private void checkAddedClasses() {
         //check that new classes are not added to the tracked packages.
@@ -944,7 +925,6 @@ public class SignatureTest extends SigTest {
      *
      * @return <code>Status.failed("...")</code> if security exception occurred;
      * or <code>Status.passed("")</code> otherwise.
-     * @see #log
      */
     protected boolean verifyClass(ClassDescription required, boolean supportNSC) {
         // checks that package from tested API
@@ -1126,8 +1106,6 @@ public class SignatureTest extends SigTest {
      * names may do not imply that they have the same <code>static</code> and
      * <code>protected</code> attributes, and <code>throws</code> clause, if the
      * chosen <code>converter</code> enables weaker equivalence.
-     *
-     * @see #log
      */
     protected void verifyClass(ClassDescription required, ClassDescription found) {
 
@@ -1220,8 +1198,6 @@ public class SignatureTest extends SigTest {
      * imply that they have the same <code>static</code> and
      * <code>protected</code> attributes, if the chosen <code>converter</code>
      * enables weaker equivalence.
-     *
-     * @see #log
      */
     private void checkClassDescription(ClassDescription required, ClassDescription found) {
 
@@ -1282,7 +1258,6 @@ public class SignatureTest extends SigTest {
      * @param parentFou ClassDesription for contained class from found set
      * @param required the required field
      * @param found the field (or lack thereof) which is present
-     * @see #log
      */
     private void trackMember(ClassDescription parentReq, ClassDescription parentFou, MemberDescription required, MemberDescription found) {
         // note: this method is also used to print out an error message

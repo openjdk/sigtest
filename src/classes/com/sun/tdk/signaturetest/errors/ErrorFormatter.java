@@ -24,11 +24,11 @@
  */
 package com.sun.tdk.signaturetest.errors;
 
+import com.sun.tdk.signaturetest.util.Level;
 import com.sun.tdk.signaturetest.model.MemberDescription;
 import com.sun.tdk.signaturetest.model.MemberType;
 
 import java.io.PrintWriter;
-import java.util.logging.Level;
 
 /**
  * This is class formats error messages reported by <b>SignatureTest</b> or

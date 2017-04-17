@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest.errors;
 
+import com.sun.tdk.signaturetest.util.Level;
 import com.sun.tdk.signaturetest.core.ClassHierarchy;
 import com.sun.tdk.signaturetest.errors.ErrorFormatter.Message;
 import com.sun.tdk.signaturetest.model.*;
@@ -32,7 +33,6 @@ import com.sun.tdk.signaturetest.util.SwissKnife;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.regex.PatternSyntaxException;
 
 /**

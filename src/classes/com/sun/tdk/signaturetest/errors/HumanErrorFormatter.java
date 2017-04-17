@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest.errors;
 
+import com.sun.tdk.signaturetest.util.Level;
 import com.sun.tdk.signaturetest.model.ConstructorDescr;
 import com.sun.tdk.signaturetest.model.MemberDescription;
 import com.sun.tdk.signaturetest.model.MemberType;
@@ -38,7 +39,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 public class HumanErrorFormatter extends SortedErrorFormatter {
 

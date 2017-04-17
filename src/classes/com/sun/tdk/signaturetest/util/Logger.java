@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -22,17 +22,22 @@
  * or visit www.oracle.com if you need additional information or have any
  * questions.
  */
-package com.sun.tdk.signaturetest.core;
 
-import com.sun.tdk.signaturetest.util.Logger;
+package com.sun.tdk.signaturetest.util;
 
 /*
+ * This is class for substitution java.util.logging
+ * which is not a member of java.base (minimal requirement for test)
+ *
  * @author Mikhail Ershov
- * @author Roman Makarchuk
+ * @author Ilya Zlatkin
  */
-public interface Log {
+public class Logger {
+    public void severe(String msg) {
+        System.out.println(msg);
+    }
 
-    void storeError(String s, Logger utilLogger);
-
-    void storeWarning(String s, Logger utilLogger);
+    public void warning(String msg) {
+        System.out.println(msg);
+    }
 }

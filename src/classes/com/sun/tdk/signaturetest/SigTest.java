@@ -38,6 +38,7 @@ import com.sun.tdk.signaturetest.sigfile.FileManager;
 import com.sun.tdk.signaturetest.sigfile.Format;
 import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
+import com.sun.tdk.signaturetest.util.Logger;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
@@ -47,8 +48,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class represents core part of the signature tests. It provides tools for
@@ -181,7 +180,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     public void storeError(String s, Logger utilLogger) {
-        if (utilLogger != null && utilLogger.isLoggable(Level.SEVERE)) {
+        if (utilLogger != null ) {
             utilLogger.severe(s);
         }
         errorMessages.add(s);
@@ -192,7 +191,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             storeError(s, utilLogger);
             return;
         }
-        if (utilLogger != null && utilLogger.isLoggable(Level.WARNING)) {
+        if (utilLogger != null ) {
             utilLogger.warning(s);
         }
         if (!nowarnings) {

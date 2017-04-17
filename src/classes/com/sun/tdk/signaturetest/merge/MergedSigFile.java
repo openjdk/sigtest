@@ -29,11 +29,10 @@ import com.sun.tdk.signaturetest.core.ClassHierarchyImpl;
 import com.sun.tdk.signaturetest.core.Log;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.sigfile.MultipleFileReader;
+import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MergedSigFile {
 
@@ -58,7 +57,7 @@ public class MergedSigFile {
                         set.put(cd.getQualifiedName(), cd);
                     }
                 } catch (IOException ex) {
-                    Logger.getLogger("global").log(Level.SEVERE, null, ex);
+                    SwissKnife.reportThrowable(ex);
                     break;
                 }
             } while (cd != null);

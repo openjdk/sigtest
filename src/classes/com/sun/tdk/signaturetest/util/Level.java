@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -22,17 +22,38 @@
  * or visit www.oracle.com if you need additional information or have any
  * questions.
  */
-package com.sun.tdk.signaturetest.core;
 
-import com.sun.tdk.signaturetest.util.Logger;
+package com.sun.tdk.signaturetest.util;
+
 
 /*
+ * This is class for substitution java.util.logging
+ * which is not a member of java.base (minimal requirement for test)
+ *
  * @author Mikhail Ershov
- * @author Roman Makarchuk
+ * @author Ilya Zlatkin
  */
-public interface Log {
+public final class Level {
 
-    void storeError(String s, Logger utilLogger);
+    public static final Level SEVERE = new Level("SEVERE",1000);
 
-    void storeWarning(String s, Logger utilLogger);
+    public static final Level WARNING = new Level("WARNING", 900);
+
+    private final String name;
+    private final int value;
+
+
+    public Level(String name, int value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public final int intValue() {
+        return value;
+    }
+
 }

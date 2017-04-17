@@ -33,21 +33,16 @@ import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.MemberDescription;
 import com.sun.tdk.signaturetest.sigfile.Format;
 import com.sun.tdk.signaturetest.sigfile.MultipleFileReader;
-import com.sun.tdk.signaturetest.util.BatchFileParser;
-import com.sun.tdk.signaturetest.util.CommandLineParser;
-import com.sun.tdk.signaturetest.util.CommandLineParserException;
-import com.sun.tdk.signaturetest.util.I18NResourceBundle;
+import com.sun.tdk.signaturetest.util.*;
 import com.sun.tdk.apicover.markup.Adapter;
 import com.sun.tdk.signaturetest.Result;
 
 import com.sun.tdk.signaturetest.core.MemberCollectionBuilder.BuildMode;
 import com.sun.tdk.signaturetest.sigfile.FileManager;
-import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Main implements Log {
 

@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest.errors;
 
+import com.sun.tdk.signaturetest.util.Level;
 import com.sun.tdk.signaturetest.core.ClassHierarchy;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
@@ -32,7 +33,6 @@ import com.sun.tdk.signaturetest.util.SwissKnife;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * This is backward compatibility postprocessor.
@@ -84,7 +84,7 @@ public class BCProcessor extends HumanErrorFormatter {
         String cl = "";
 
         for (int i = 0; i < failedMessages.size(); i++) {
-            Message current = (Message) failedMessages.get(i);
+            Message current = failedMessages.get(i);
             if (current == null) {
                 continue;
             }
