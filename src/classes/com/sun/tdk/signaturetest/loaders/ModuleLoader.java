@@ -31,7 +31,7 @@ import com.sun.tdk.signaturetest.model.ModuleDescription;
 import java.lang.module.Configuration;
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ResolvedModule;
-import java.lang.reflect.Layer;
+import java.lang.Layer;
 import java.util.*;
 import java.util.stream.Collectors;
 
