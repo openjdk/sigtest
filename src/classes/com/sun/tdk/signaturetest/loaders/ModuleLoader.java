@@ -31,7 +31,7 @@ import com.sun.tdk.signaturetest.model.ModuleDescription;
 import java.lang.module.Configuration;
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ResolvedModule;
-import java.lang.Layer;
+import java.lang.ModuleLayer;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,7 +43,7 @@ public class ModuleLoader implements ModuleDescriptionLoader {
 
         Set<ModuleDescription> result = new HashSet<>();
 
-        Layer bootL = Layer.boot();
+        ModuleLayer bootL = ModuleLayer.boot();
         Configuration c = bootL.configuration();
         if (c != null) {
             Set<ResolvedModule> rms = c.modules();
