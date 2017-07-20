@@ -40,8 +40,6 @@ import com.sun.tdk.signaturetest.sigfile.f42.F42Format;
 import com.sun.tdk.signaturetest.sigfile.f42.F42Writer;
 
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Mikhail Ershov
@@ -50,7 +48,6 @@ class SerUtil {
 
     static final String serVerUID = "serialVersionUID";
     private static final String SER_INT = "java.io.Serializable";
-    static Logger logger = Logger.getLogger(SerUtil.class.getName());
     private static Filter clsWriteFilter = new Filter() {
         public boolean accept(ClassDescription cls) {
             return isSerialized(cls);
@@ -120,9 +117,7 @@ class SerUtil {
         PluginAPI.BEFORE_TEST.setTransformer(onlyFieldsTransformer);
 
         Modifier.TRANSIENT.setTracked(true);
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("Initialized");
-        }
+        System.out.println("SerUtil Got Initialized");
     }
 
     static boolean isSerialized(ClassDescription cls) {
