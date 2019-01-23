@@ -297,6 +297,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             CONSTANT_NameAndType = 12,
             CONSTANT_MethodHandle = 15,
             CONSTANT_MethodType = 16,
+            CONSTANT_Dynamic = 17,
             CONSTANT_InvokeDynamic = 18,
             CONSTANT_ModuleId = 19,
             CONSTANT_ModuleQuery = 20;
@@ -372,6 +373,15 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                     //int descriptor_index
                     classData.readUnsignedShort();
                     info = "CONSTANT_MethodType";
+                    break;
+
+                case CONSTANT_Dynamic:
+                    // don't we need these values?
+                    //int bootstrap_method_attr_index
+                    classData.readUnsignedShort();
+                    //int name_and_type_index
+                    classData.readUnsignedShort();
+                    info = "CONSTANT_Dynamic";
                     break;
 
                 case CONSTANT_InvokeDynamic:
