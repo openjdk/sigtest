@@ -143,8 +143,7 @@ public class Updater extends DefaultHandler {
     private void fillUR(UpdateRecord ur, Attributes attributes) {
         Field[] fs = UpdateRecord.class.getDeclaredFields();
         try {
-            for (int i = 0; i < fs.length; i++) {
-                Field f = fs[i];
+            for (Field f : fs) {
                 String fName = f.getName();
                 if (fName.startsWith("a")) {
                     f.set(ur, attributes.getValue(fName.substring(1)));

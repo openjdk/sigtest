@@ -126,8 +126,8 @@ public class JSR68Merger extends FeaturesHolder {
                 try {
                     ClassDescription outer = result.load(cd.getDeclaringClassName());
                     InnerDescr[] dc = outer.getDeclaredClasses();
-                    for (int i = 0; i < dc.length; i++) {
-                        if (dc[i].getQualifiedName().equals(cd.getQualifiedName())) {
+                    for (InnerDescr innerDescr : dc) {
+                        if (innerDescr.getQualifiedName().equals(cd.getQualifiedName())) {
                             continue nextClass;
                         }
                     }
@@ -391,8 +391,8 @@ public class JSR68Merger extends FeaturesHolder {
     //  Merge modifiers for two class members and report error, if any.
     //
     private boolean mergeMod(MemberDescription[] x, MemberDescription z) {
-        for (int i = 0; i < x.length; i++) {
-            z.setModifiers(z.getModifiers() | x[i].getModifiers());
+        for (MemberDescription x3 : x) {
+            z.setModifiers(z.getModifiers() | x3.getModifiers());
         }
 
         // access modifiers - set more visible
@@ -401,8 +401,8 @@ public class JSR68Merger extends FeaturesHolder {
         z.setModifiers(z.getModifiers() & ~(visibilityBits));
 
         int vis = 0;
-        for (int i = 0; i < x.length; i++) {
-            vis = vis | (x[i].getModifiers() & visibilityBits);
+        for (MemberDescription x2 : x) {
+            vis = vis | (x2.getModifiers() & visibilityBits);
         }
 
         if ((vis & Modifier.PUBLIC.getValue()) != 0) {
@@ -418,8 +418,8 @@ public class JSR68Merger extends FeaturesHolder {
         // "final" modifier
         // If the elements differ in the "final" modifier, don't include it.
         // Note that if class is final, then all its methods are implicitly final (JLS II, 8.4.3.3).
-        for (int i = 0; i < x.length; i++) {
-            if (!x[i].isFinal()) {
+        for (MemberDescription x1 : x) {
+            if (!x1.isFinal()) {
                 z.setModifiers(z.getModifiers() & ~Modifier.FINAL.getValue());
                 break;
             }
@@ -447,8 +447,8 @@ public class JSR68Merger extends FeaturesHolder {
     private boolean mergeSuprs(ClassDescription[] similarClasses, ClassDescription result, MergedSigFile[] sigfiles) {
         ArrayList superclasses = new ArrayList();
         // collect superclasses
-        for (int i = 0; i < similarClasses.length; i++) {
-            SuperClass sc = similarClasses[i].getSuperClass();
+        for (ClassDescription similarClass : similarClasses) {
+            SuperClass sc = similarClass.getSuperClass();
             if (sc != null && !superclasses.contains(sc)) {
                 superclasses.add(sc);
             }
@@ -465,12 +465,11 @@ public class JSR68Merger extends FeaturesHolder {
             return true;
         }
 
-        for (int i = 0; i < sigfiles.length; i++) {
-            MergedSigFile file = sigfiles[i];
+        for (MergedSigFile file : sigfiles) {
             // 1) find a file which contains all superclasses
             boolean all = true;
-            for (int j = 0; j < superclasses.size(); j++) {
-                SuperClass sc = (SuperClass) superclasses.get(j);
+            for (Object superclass : superclasses) {
+                SuperClass sc = (SuperClass) superclass;
                 if (!file.getClassSet().containsKey(sc.getQualifiedName())) {
                     all = false;
                     break;
@@ -580,9 +579,7 @@ public class JSR68Merger extends FeaturesHolder {
         HashSet h = new HashSet();
         for (int i = 0; i < similarClasses.length; i++) {
             FieldDescr[] fds = similarClasses[i].getDeclaredFields();
-            for (int j = 0; j < fds.length; j++) {
-                FieldDescr fd = fds[j];
-
+            for (FieldDescr fd : fds) {
                 if (!isFeatureSupported(FeaturesHolder.NonStaticConstants) && !fd.isStatic()) {
                     fd.setConstantValue(null);
                 }
@@ -595,10 +592,10 @@ public class JSR68Merger extends FeaturesHolder {
                         continue;
                     }
                     FieldDescr[] fd2 = similarClasses[k].getDeclaredFields();
-                    for (int l = 0; l < fd2.length; l++) {
-                        if (fd2[l].getName().equals(fd.getName())) {
+                    for (FieldDescr fieldDescr : fd2) {
+                        if (fieldDescr.getName().equals(fd.getName())) {
                             isUnique = false;
-                            sameFields.add(fd2[l]);
+                            sameFields.add(fieldDescr);
                         }
                     }
                 }
@@ -665,8 +662,7 @@ public class JSR68Merger extends FeaturesHolder {
 
         for (int i = 0; i < similarClasses.length; i++) {
             MethodDescr[] mfs = similarClasses[i].getDeclaredMethods();
-            for (int j = 0; j < mfs.length; j++) {
-                MethodDescr mf = mfs[j];
+            for (MethodDescr mf : mfs) {
                 ArrayList sameMethods = new ArrayList();
                 ArrayList finalMods = new ArrayList();
                 sameMethods.add(mf);
@@ -677,11 +673,11 @@ public class JSR68Merger extends FeaturesHolder {
                         continue;
                     }
                     MethodDescr[] mfs2 = similarClasses[k].getDeclaredMethods();
-                    for (int l = 0; l < mfs2.length; l++) {
-                        if (mfs2[l].getSignature().equals(mf.getSignature())) {
+                    for (MethodDescr methodDescr : mfs2) {
+                        if (methodDescr.getSignature().equals(mf.getSignature())) {
                             isUnique = false;
-                            sameMethods.add(mfs2[l]);
-                            finalMods.add(new Boolean(mfs2[l].isFinal() || similarClasses[k].isFinal()));
+                            sameMethods.add(methodDescr);
+                            finalMods.add(new Boolean(methodDescr.isFinal() || similarClasses[k].isFinal()));
                         }
                     }
                 }
@@ -715,8 +711,7 @@ public class JSR68Merger extends FeaturesHolder {
         HashSet h = new HashSet();
         for (int i = 0; i < similarClasses.length; i++) {
             ConstructorDescr[] cds = similarClasses[i].getDeclaredConstructors();
-            for (int j = 0; j < cds.length; j++) {
-                ConstructorDescr cd = cds[j];
+            for (ConstructorDescr cd : cds) {
                 ArrayList sameConstr = new ArrayList();
                 sameConstr.add(cd);
                 boolean isUnique = true;
@@ -725,10 +720,10 @@ public class JSR68Merger extends FeaturesHolder {
                         continue;
                     }
                     ConstructorDescr[] cds2 = similarClasses[k].getDeclaredConstructors();
-                    for (int l = 0; l < cds2.length; l++) {
-                        if (cds2[l].getSignature().equals(cd.getSignature())) {
+                    for (ConstructorDescr constructorDescr : cds2) {
+                        if (constructorDescr.getSignature().equals(cd.getSignature())) {
                             isUnique = false;
-                            sameConstr.add(cds2[l]);
+                            sameConstr.add(constructorDescr);
                         }
                     }
                 }
@@ -807,8 +802,8 @@ public class JSR68Merger extends FeaturesHolder {
     private void mergeTypeParameters(MemberDescription[] similarMembers, MemberDescription result) {
         String tp = null;
         boolean unique = true;
-        for (int i = 0; i < similarMembers.length; i++) {
-            String tpp = similarMembers[i].getTypeParameters();
+        for (MemberDescription similarMember : similarMembers) {
+            String tpp = similarMember.getTypeParameters();
             if (tpp != null) {
                 if (tp == null || tpp.equals(tp)) {
                     tp = tpp;
@@ -826,10 +821,10 @@ public class JSR68Merger extends FeaturesHolder {
 
     private void mergeAnnotations(MemberDescription[] similarMembers, MemberDescription result) {
         TreeSet annotations = new TreeSet();
-        for (int i = 0; i < similarMembers.length; i++) {
-            AnnotationItem[] annos = similarMembers[i].getAnnoList();
-            for (int j = 0; j < annos.length; j++) {
-                annotations.add(annos[j]);
+        for (MemberDescription similarMember : similarMembers) {
+            AnnotationItem[] annos = similarMember.getAnnoList();
+            for (AnnotationItem anno : annos) {
+                annotations.add(anno);
             }
         }
         result.setAnnoList((AnnotationItem[]) annotations.toArray(new AnnotationItem[annotations.size()]));

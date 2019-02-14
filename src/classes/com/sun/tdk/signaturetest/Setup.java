@@ -367,17 +367,17 @@ public class Setup extends SigTest {
             ClassSet closedSetOfClasses = new ClassSet(testableHierarchy, true);
 
             // add all classes including non-accessible
-            for (Iterator i = packageClasses.iterator(); i.hasNext();) {
-                name = (String) i.next();
+            for (Object packageClass : packageClasses) {
+                name = (String) packageClass;
                 closedSetOfClasses.addClass(name);
             }
             // remove not accessible classes
 
             Set invisibleClasses = new HashSet();
             Set classes = closedSetOfClasses.getClasses();
-            for (Iterator i = classes.iterator(); i.hasNext();) {
+            for (Object aClass : classes) {
 
-                name = (String) i.next();
+                name = (String) aClass;
                 ClassDescription c = load(name);
 
                 if (!testableHierarchy.isAccessible(c)) {
@@ -385,8 +385,8 @@ public class Setup extends SigTest {
                 }
             }
 
-            for (Iterator i = invisibleClasses.iterator(); i.hasNext();) {
-                closedSetOfClasses.removeClass((String) i.next());
+            for (Object invisibleClass : invisibleClasses) {
+                closedSetOfClasses.removeClass((String) invisibleClass);
             }
 
             sortedClasses = sortClasses(closedSetOfClasses.getClasses());
@@ -425,8 +425,8 @@ public class Setup extends SigTest {
             // scan class and writes definition to the signature file
 
             // 1st analyze all the classes
-            for (Iterator i = sortedClasses.iterator(); i.hasNext();) {
-                name = (String) i.next();
+            for (Object sortedClass : sortedClasses) {
+                name = (String) sortedClass;
                 ClassDescription c = load(name);
 
                 if (!testableHierarchy.isAccessible(c)) {
@@ -514,17 +514,17 @@ public class Setup extends SigTest {
 
             boolean printHeader = true;
 
-            for (Iterator it = excludedClasses.iterator(); it.hasNext();) {
+            for (Object excludedClass : excludedClasses) {
 
-                String clsName = (String) it.next();
+                String clsName = (String) excludedClass;
 
                 String[] subClasses = testableHierarchy.getDirectSubclasses(clsName);
 
                 if (subClasses.length > 0) {
 
                     int count = 0;
-                    for (int idx = 0; idx < subClasses.length; ++idx) {
-                        if (!excludedClasses.contains(subClasses[idx])) {
+                    for (String subClass : subClasses) {
+                        if (!excludedClasses.contains(subClass)) {
 
                             if (count != 0) {
                                 getLog().print(", ");
@@ -536,7 +536,7 @@ public class Setup extends SigTest {
                                 getLog().println(i18n.getString("Setup.log.message.exclude_warning", clsName));
                             }
 
-                            getLog().print(subClasses[idx]);
+                            getLog().print(subClass);
                             ++count;
                         }
                     }
@@ -580,8 +580,8 @@ public class Setup extends SigTest {
         int nonTigerCount = 0;
 
         // create table of the nested packageClasses.
-        for (Iterator i = classes.iterator(); i.hasNext();) {
-            String name = (String) i.next();
+        for (Object aClass : classes) {
+            String name = (String) aClass;
 
             if (isPackageMember(name)) {
                 includedClassesNumber++;

@@ -110,16 +110,16 @@ class DirectoryEntry extends ClasspathEntry {
 
             StringBuffer buf = new StringBuffer();
 
-            for (int i = 0; i < files.length; i++) {
-                File current = new File(directory, files[i]);
+            for (String file : files) {
+                File current = new File(directory, file);
                 String namePrefix = packageName.equals("") ? "" : (packageName + ".");
                 if (current.isDirectory()) {
-                    scanDirectory(current, namePrefix + files[i]);
-                } else if (files[i].endsWith(JAVA_CLASSFILE_EXTENSION)) {
+                    scanDirectory(current, namePrefix + file);
+                } else if (file.endsWith(JAVA_CLASSFILE_EXTENSION)) {
 
                     buf.setLength(0);
                     buf.append(namePrefix);
-                    buf.append(files[i].substring(0, files[i].length() - JAVA_CLASSFILE_EXTENSION_LEN));
+                    buf.append(file.substring(0, file.length() - JAVA_CLASSFILE_EXTENSION_LEN));
 
                     String className = buf.toString();
                     if (!contains(className)) {

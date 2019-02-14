@@ -112,15 +112,15 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         ClassInfo info = getClassInfo(fqname);
 
         String[] intfs = info.superInterfaces;
-        for (int j = 0; j < intfs.length; ++j) {
-            implementedInterfaces.add(intfs[j]);
-            superClasses.add(intfs[j]);
+        for (String intf : intfs) {
+            implementedInterfaces.add(intf);
+            superClasses.add(intf);
         }
 
         findSuperclasses(fqname, superClasses);
 
-        for (int i = 0; i < superClasses.size(); ++i) {
-            findSuperInterfaces(superClasses.get(i), implementedInterfaces);
+        for (String superClass : superClasses) {
+            findSuperInterfaces(superClass, implementedInterfaces);
         }
     }
 
@@ -129,9 +129,9 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         ClassInfo info = getClassInfo(fqname);
 
         String[] intf = info.superInterfaces;
-        for (int i = 0; i < intf.length; i++) {
-            supers.add(intf[i]);
-            findSuperInterfaces(intf[i], supers);
+        for (String s : intf) {
+            supers.add(s);
+            findSuperInterfaces(s, supers);
         }
     }
 
@@ -291,8 +291,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
                 String aType = null;
 
-                for (int i = 0; i < mds.length; i++) {
-                    MethodDescr md = mds[i];
+                for (MethodDescr md : mds) {
                     if (md.getName().equals("value")
                             && MemberDescription.NO_ARGS.equals(c.getArgs())) {
                         aType = md.getType();
@@ -319,8 +318,8 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
                 // 4. Is it @Repeatable type?
                 AnnotationItem[] alist = a.getAnnoList();
-                for (int i = 0; i < alist.length; i++) {
-                    if (alist[i].getName().equals(AnnotationItem.ANNOTATION_REPEATABLE)) {
+                for (AnnotationItem annotationItem : alist) {
+                    if (annotationItem.getName().equals(AnnotationItem.ANNOTATION_REPEATABLE)) {
                         return true;
                     }
                 }

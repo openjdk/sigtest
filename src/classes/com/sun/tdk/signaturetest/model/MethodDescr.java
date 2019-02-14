@@ -114,9 +114,9 @@ public final class MethodDescr extends MemberDescription {
         }
 
         AnnotationItem[] annoList = getAnnoList();
-        for (int i = 0; i < annoList.length; ++i) {
+        for (AnnotationItem annotationItem : annoList) {
             buf.append("\n ");
-            buf.append(annoList[i]);
+            buf.append(annotationItem);
         }
 
         return buf.toString();

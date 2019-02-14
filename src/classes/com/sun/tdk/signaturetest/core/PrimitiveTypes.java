@@ -37,8 +37,8 @@ public class PrimitiveTypes {
 
     public static boolean isPrimitive(String jlsType) {
 
-        for (int i = 0; i < types.length; ++i) {
-            if (types[i].JLSNotation.equals(jlsType)) {
+        for (Pair type : types) {
+            if (type.JLSNotation.equals(jlsType)) {
                 return true;
             }
         }
@@ -49,9 +49,9 @@ public class PrimitiveTypes {
     //  Convert VM notation to JLS
     public static String getPrimitiveType(char vmType) {
 
-        for (int i = 0; i < types.length; ++i) {
-            if (vmType == types[i].VMNotation) {
-                return types[i].JLSNotation;
+        for (Pair type : types) {
+            if (vmType == type.VMNotation) {
+                return type.JLSNotation;
             }
         }
 
@@ -59,9 +59,9 @@ public class PrimitiveTypes {
     }
 
     public static String getVMPrimitiveType(String jlsType) {
-        for (int i = 0; i < types.length; ++i) {
-            if (types[i].JLSNotation.equals(jlsType)) {
-                return String.valueOf(types[i].VMNotation);
+        for (Pair type : types) {
+            if (type.JLSNotation.equals(jlsType)) {
+                return String.valueOf(type.VMNotation);
             }
         }
 

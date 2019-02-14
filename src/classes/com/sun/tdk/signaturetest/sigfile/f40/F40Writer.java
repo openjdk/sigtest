@@ -123,8 +123,8 @@ public class F40Writer implements Writer {
         out.println(buf.toString());
 
         int size = members.size();
-        for (int i = 0; i < size; i++) {
-            out.println(members.get(i));
+        for (Object member : members) {
+            out.println(member);
         }
 
         if (getFormat().isFeatureSupported(FeaturesHolder.ListOfHiders)) {
@@ -201,9 +201,9 @@ public class F40Writer implements Writer {
 
     protected void addAnnotations(StringBuffer buf, MemberDescription m) {
         AnnotationItem[] annoList = m.getAnnoList();
-        for (int i = 0; i < annoList.length; ++i) {
+        for (AnnotationItem annotationItem : annoList) {
             buf.append("\n ");
-            buf.append(annoList[i]);
+            buf.append(annotationItem);
         }
     }
 
@@ -385,11 +385,11 @@ public class F40Writer implements Writer {
         buf.append(prefix);
         buf.append(" ");
         int count = 0;
-        for (Iterator i = intMembers.iterator(); i.hasNext();) {
+        for (Object intMember : intMembers) {
             if (count != 0) {
                 buf.append(',');
             }
-            buf.append(i.next());
+            buf.append(intMember);
             count++;
         }
 

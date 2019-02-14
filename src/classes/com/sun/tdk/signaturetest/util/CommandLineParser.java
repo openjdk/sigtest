@@ -81,8 +81,7 @@ public class CommandLineParser {
 
         String optionStr = null;
 
-        for (int i = 0; i < args.length; ++i) {
-            String arg = args[i];
+        for (String arg : args) {
             if (knownOptions.isKnownOption(arg)) {
                 OptionInfo ki = knownOptions.get(arg);
                 optionStr = ki.toKey(arg);
@@ -210,9 +209,9 @@ public class CommandLineParser {
 
     private Method getDefaultDecoderMethod(Method[] methods, String option) {
 
-        for (int i = 0; i < methods.length; ++i) {
-            if (isDecoder(methods[i], option)) {
-                return methods[i];
+        for (Method method : methods) {
+            if (isDecoder(method, option)) {
+                return method;
             }
         }
 
@@ -221,8 +220,8 @@ public class CommandLineParser {
 
     public static String[] parseListOption(String[] args) {
         ArrayList<String> ar = new ArrayList();
-        for (int i = 0; i < args.length; i++) {
-            StringTokenizer st = new StringTokenizer(args[i], System.getProperty("path.separator"));
+        for (String arg : args) {
+            StringTokenizer st = new StringTokenizer(arg, System.getProperty("path.separator"));
             while (st.hasMoreTokens()) {
                 ar.add(st.nextToken());
             }

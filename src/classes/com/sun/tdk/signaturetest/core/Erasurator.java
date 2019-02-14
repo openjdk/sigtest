@@ -307,8 +307,8 @@ public class Erasurator {
 
         Collection<MemberDescription> result = new ArrayList<MemberDescription>();
 
-        for (Iterator it = members.iterator(); it.hasNext();) {
-            MemberDescription newFid = replaceFormalParameters(fqn, (MemberDescription) it.next(), actualTypeParamList, skipRawTypes);
+        for (Object member : members) {
+            MemberDescription newFid = replaceFormalParameters(fqn, (MemberDescription) member, actualTypeParamList, skipRawTypes);
             result.add(newFid);
         }
         return result;

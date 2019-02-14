@@ -122,8 +122,8 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
         MessageType lastType = null;
         String cl = "";
 
-        for (int i = 0; i < failedMessages.size(); i++) {
-            Message current = (Message) failedMessages.get(i);
+        for (Message failedMessage : failedMessages) {
+            Message current = (Message) failedMessage;
             if (current == null) {
                 continue;
             }

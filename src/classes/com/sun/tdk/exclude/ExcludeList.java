@@ -72,8 +72,8 @@ public class ExcludeList implements Exclude {
             signature += name.getArgs().replaceAll("<[^<>]+>", "");
             signature += ')';
         }
-        for (Iterator i = excludeList.iterator(); i.hasNext();) {
-            Pattern p = (Pattern) i.next();
+        for (Object o : excludeList) {
+            Pattern p = (Pattern) o;
             Matcher m = p.matcher(signature);
             if (m.matches()) {
                 throw new ExcludeException(p.pattern());

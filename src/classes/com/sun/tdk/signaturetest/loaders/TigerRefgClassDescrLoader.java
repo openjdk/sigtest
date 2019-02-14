@@ -240,8 +240,8 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
     private int getSyntheticMethodCount(Method[] methods) {
         int count = 0;
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].isSynthetic()) {
+        for (Method method : methods) {
+            if (method.isSynthetic()) {
                 count++;
             }
         }
@@ -250,8 +250,8 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
     private int getSyntheticConstructorCount(Constructor[] ctors) {
         int count = 0;
-        for (int i = 0; i < ctors.length; i++) {
-            if (ctors[i].isSynthetic()) {
+        for (Constructor ctor : ctors) {
+            if (ctor.isSynthetic()) {
                 count++;
             }
         }
@@ -260,8 +260,8 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
     private int getSyntheticFieldCount(Field[] flds) {
         int count = 0;
-        for (int i = 0; i < flds.length; i++) {
-            if (flds[i].isSynthetic()) {
+        for (Field fld : flds) {
+            if (fld.isSynthetic()) {
                 count++;
             }
         }
@@ -323,8 +323,8 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
     private int getSyntheticNestedCount(Class[] clss) {
         int count = 0;
-        for (int i = 0; i < clss.length; i++) {
-            if (clss[i].isSynthetic()) {
+        for (Class clss1 : clss) {
+            if (clss1.isSynthetic()) {
                 count++;
             }
         }
@@ -358,8 +358,8 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
         typeparamList.reset_count();
 
-        for (int i = 0; i < params.length; i++) {
-            typeparamList.add(params[i].getName(), declared);
+        for (TypeVariable param : params) {
+            typeparamList.add(param.getName(), declared);
         }
 
         StringBuffer sb = new StringBuffer("<");
@@ -374,8 +374,8 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
             Type[] bounds = params[i].getBounds();
             List/*String*/ tmp = new ArrayList();
-            for (int k = 0; k < bounds.length; k++) {
-                tmp.add(decodeType(typeparamList, bounds[k]));
+            for (Type bound : bounds) {
+                tmp.add(decodeType(typeparamList, bound));
             }
 
             String first = (String) tmp.remove(0);
@@ -383,8 +383,8 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
             if (tmp.size() != 0) {
                 Collections.sort(tmp);
-                for (int k = 0; k < tmp.size(); k++) {
-                    sb.append(" & ").append((String) tmp.get(k));
+                for (Object o : tmp) {
+                    sb.append(" & ").append((String) o);
                 }
             }
         }
@@ -492,9 +492,9 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         List<AnnotationItem> annolist = new ArrayList();
 
         if (xx != null) {
-            for (int i = 0; i < xx.length; i++) {
+            for (Annotation xx1 : xx) {
                 try {
-                    annolist.add(parse(c, target, xx[i]));
+                    annolist.add(parse(c, target, xx1));
                 } catch (RuntimeException ex) {
                     // Annotation can be inaccessible, see CODETOOLS-7901631
                     // So we should ignore java.lang.reflect.InaccessibleObjectException
@@ -525,9 +525,9 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
         if (mm != null && mm.length != 0) {
 
-            for (int k = 0; k < mm.length; k++) {
+            for (Method method : mm) {
                 try {
-                    Method m = mm[k];
+                    Method m = method;
 
                     AnnotationItem.Member member = new AnnotationItem.Member(
                             decodeType(tp, m.getGenericReturnType()),

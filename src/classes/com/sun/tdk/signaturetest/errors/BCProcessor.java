@@ -83,8 +83,7 @@ public class BCProcessor extends HumanErrorFormatter {
     protected void outProcessedErrors() {
         String cl = "";
 
-        for (int i = 0; i < failedMessages.size(); i++) {
-            Message current = failedMessages.get(i);
+        for (Message current : failedMessages) {
             if (current == null) {
                 continue;
             }
@@ -299,8 +298,7 @@ public class BCProcessor extends HumanErrorFormatter {
         if (md.isAbstract()) {
             initObject();
             MethodDescr[] objectMethods = objectClass.getDeclaredMethods();
-            for (int i = 0; i < objectMethods.length; i++) {
-                MethodDescr mdo = objectMethods[i];
+            for (MethodDescr mdo : objectMethods) {
                 if (!mdo.isPrivate() && md.getSignature().equals(mdo.getSignature())) {
                     return true;
                 }

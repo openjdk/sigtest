@@ -155,8 +155,8 @@ public class SetupAndTest extends Result {
 
     private void addOption(List options, String optionName, String[] optionValues) {
         options.add(optionName);
-        for (int i = 0; i < optionValues.length; i++) {
-            options.add(optionValues[i]);
+        for (String optionValue : optionValues) {
+            options.add(optionValue);
         }
     }
 

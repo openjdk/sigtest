@@ -139,8 +139,7 @@ public class F43Reader extends F42Reader {
         {
             List<Elem> prs = m.getElementsByTagName(PROVIDES);
             Map<String, ModuleDescription.Provides> prMap = new HashMap<>();
-            for (int i = 0; i < prs.size(); i++) {
-                Elem p = prs.get(i);
+            for (Elem p : prs) {
                 ModuleDescription.Provides pr = new ModuleDescription.Provides();
                 pr.service = p.getAttribute(SERVICE);
                 pr.providers = new HashSet<>();

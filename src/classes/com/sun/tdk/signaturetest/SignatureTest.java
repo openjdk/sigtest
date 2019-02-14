@@ -640,11 +640,11 @@ public class SignatureTest extends SigTest {
 
                     log.print(i18nSt.getString("SignatureTest.error.required_classes_missing"));
                     int count = 0;
-                    for (Iterator it = missingClasses.iterator(); it.hasNext();) {
+                    for (Object missingClass : missingClasses) {
                         if (count != 0) {
                             log.print(", ");
                         }
-                        log.print(it.next());
+                        log.print(missingClass);
                         ++count;
                     }
                     log.println();
@@ -871,8 +871,8 @@ public class SignatureTest extends SigTest {
     private void checkAddedPackages() {
         List wrk = new ArrayList();
 
-        for (Iterator it = trackedClassNames.iterator(); it.hasNext();) {
-            String pkg = ClassDescription.getPackageName((String) it.next());
+        for (Object trackedClassName : trackedClassNames) {
+            String pkg = ClassDescription.getPackageName((String) trackedClassName);
             if (!wrk.contains(pkg)) {
                 wrk.add(pkg);
             }
@@ -880,8 +880,8 @@ public class SignatureTest extends SigTest {
 
         Collections.sort(wrk);
 
-        for (Iterator it = wrk.iterator(); it.hasNext();) {
-            String fqn = ClassDescription.getPackageInfo((String) it.next());
+        for (Object o : wrk) {
+            String fqn = ClassDescription.getPackageInfo((String) o);
 
             if (!trackedClassNames.contains(fqn)) {
                 try {
@@ -994,8 +994,8 @@ public class SignatureTest extends SigTest {
                 SwissKnife.reportThrowable(ex);
             }
             String[] names = ex.getMissedClasses();
-            for (int i = 0; i < names.length; i++) {
-                getErrorManager().addError(MessageType.MISS_SUPERCLASSES, names[i], MemberType.CLASS, ex.getClassName(), required);
+            for (String name1 : names) {
+                getErrorManager().addError(MessageType.MISS_SUPERCLASSES, name1, MemberType.CLASS, ex.getClassName(), required);
             }
         } catch (ClassNotFoundException ex) {
             if (bo.isSet(Option.DEBUG)) {
@@ -1034,9 +1034,9 @@ public class SignatureTest extends SigTest {
         }
         SuperInterface[] sif = cl.getInterfaces();
         if (sif != null) {
-            for (int i = 0; i < sif.length; i++) {
+            for (SuperInterface superInterface : sif) {
                 try {
-                    hi.load(sif[i].getQualifiedName());
+                    hi.load(superInterface.getQualifiedName());
                 } catch (ClassNotFoundException ex) {
                     fNotFound.add(ex.getMessage());
                 }

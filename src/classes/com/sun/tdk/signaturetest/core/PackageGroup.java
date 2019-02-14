@@ -79,8 +79,8 @@ public class PackageGroup {
     }
 
     public void addPackages(String[] packageNames) {
-        for (int i = 0; i < packageNames.length; ++i) {
-            group.add(packageNames[i]);
+        for (String packageName : packageNames) {
+            group.add(packageName);
         }
     }
 

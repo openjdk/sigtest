@@ -56,8 +56,8 @@ public class SwissKnife {
         if (cd.isFinal() || constrs == null || constrs.length == 0) {
             return false;
         }
-        for (int i = 0; i < constrs.length; i++) {
-            if (constrs[i].isPublic() || constrs[i].isProtected()) {
+        for (ConstructorDescr constr : constrs) {
+            if (constr.isPublic() || constr.isProtected()) {
                 return true;
             }
         }

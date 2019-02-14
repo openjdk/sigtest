@@ -98,8 +98,8 @@ public abstract class Handler {
             result.add(source);
             return result;
         }
-        for (int i = 0; i < strA.length; i++) {
-            result.add(strA[i]);
+        for (String s : strA) {
+            result.add(s);
         }
         return result;
     }
@@ -120,8 +120,8 @@ public abstract class Handler {
         try {
             ClassDescription cd = clHier.load(newType);
             SuperInterface[] ints = cd.getInterfaces();
-            for (int i = 0; i < ints.length; i++) {
-                if (origType.equals(ints[i].getQualifiedName())) {
+            for (SuperInterface anInt : ints) {
+                if (origType.equals(anInt.getQualifiedName())) {
                     return true;
                 }
             }
@@ -364,8 +364,8 @@ class AnnotationHandler extends PairedHandler {
             return EMPTY_ARRAY_LIST;
         }
         ArrayList result = new ArrayList();
-        for (int i = 0; i < a.length; i++) {
-            result.add(a[i].getName());
+        for (AnnotationItem annotationItem : a) {
+            result.add(annotationItem.getName());
         }
         return result;
     }

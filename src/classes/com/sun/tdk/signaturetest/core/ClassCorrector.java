@@ -86,8 +86,7 @@ public class ClassCorrector implements Transformer {
             boolean ctorExists = false;
 
             ConstructorDescr[] ctors = cl.getDeclaredConstructors();
-            for (int i = 0; i < ctors.length; ++i) {
-                ConstructorDescr c = ctors[i];
+            for (ConstructorDescr c : ctors) {
                 if (c.hasModifier(Modifier.PUBLIC) || c.hasModifier(Modifier.PROTECTED)) {
                     ctorExists = true;
                     break;
@@ -99,8 +98,7 @@ public class ClassCorrector implements Transformer {
             }
 
             MethodDescr[] methods = cl.getDeclaredMethods();
-            for (int i = 0; i < methods.length; ++i) {
-                MethodDescr mr = methods[i];
+            for (MethodDescr mr : methods) {
                 if ((mr.isMethod()) && !mr.hasModifier(Modifier.PUBLIC)
                         && !mr.hasModifier(Modifier.PROTECTED) && mr.hasModifier(Modifier.ABSTRACT)) {
                     String invargs[] = {cl.getQualifiedName(), mr.toString()};
@@ -188,8 +186,8 @@ public class ClassCorrector implements Transformer {
             int visibleInterfaces = 0;
             String iName = null;
 
-            for (Iterator it = oldInt.iterator(); it.hasNext();) {
-                String nextInt = (String) it.next();
+            for (Object o : oldInt) {
+                String nextInt = (String) o;
                 if (!isInvisibleClass(nextInt)) {
                     visibleInterfaces++;
                     iName = nextInt;
@@ -216,9 +214,9 @@ public class ClassCorrector implements Transformer {
             e.printStackTrace();
         }
         currentPath.add(intFrom);
-        for (int i = 0; i < sis.length; i++) {
-            if (!sis[i].equals(intTo)) {
-                getPaths2(paths, currentPath, sis[i], intTo);
+        for (String si : sis) {
+            if (!si.equals(intTo)) {
+                getPaths2(paths, currentPath, si, intTo);
                 currentPath.remove(currentPath.size() - 1);
             } else {
                 paths.add(new ArrayList<String>(currentPath));
@@ -288,8 +286,8 @@ public class ClassCorrector implements Transformer {
 
             } else {
                 // used for exception - finds nearest visible superclass
-                for (int pos = 0; pos < supers.size(); pos++) {
-                    String name = (String) supers.get(pos);
+                for (Object aSuper : supers) {
+                    String name = (String) aSuper;
                     if (!isInvisibleClass(name)) {
                         return name;
                     }
@@ -462,8 +460,8 @@ public class ClassCorrector implements Transformer {
             }
         }
 
-        for (int i = 0; i < newMembers.size(); ++i) {
-            c.add(newMembers.get(i));
+        for (MemberDescription newMember : newMembers) {
+            c.add(newMember);
         }
     }
 
@@ -489,8 +487,8 @@ public class ClassCorrector implements Transformer {
 
                         String[] intfs = classHierarchy.getSuperInterfaces(siName);
 
-                        for (int i = 0; i < intfs.length; ++i) {
-                            makeThemDirect.add(intfs[i]);
+                        for (String intf : intfs) {
+                            makeThemDirect.add(intf);
                         }
                     }
                 }
@@ -550,8 +548,8 @@ public class ClassCorrector implements Transformer {
 
         if (intfs != null) {
 
-            for (int i = 0; i < intfs.length; ++i) {
-                SuperInterface m = (SuperInterface) c.findMember(intfs[i]);
+            for (SuperInterface intf : intfs) {
+                SuperInterface m = (SuperInterface) c.findMember(intf);
                 if (m != null) {
                     m.setDirect(true);
                     m.setDeclaringClass(c.getQualifiedName());
@@ -576,9 +574,9 @@ public class ClassCorrector implements Transformer {
 
             su.addAll(classHierarchy.getAllImplementedInterfaces(intfName));
 
-            for (int j = 0; j < su.size(); j++) {
+            for (Object o : su) {
 
-                String sui = (String) su.get(j);
+                String sui = (String) o;
 
                 if (sui.equals(intfName)) {
                     continue;
@@ -593,9 +591,9 @@ public class ClassCorrector implements Transformer {
 
         interfaces.clear();
         // remove nulls
-        for (int i = 0; i < intfs.size(); i++) {
-            if (intfs.get(i) != null && !interfaces.contains(intfs.get(i))) {
-                interfaces.add(intfs.get(i));
+        for (Object intf : intfs) {
+            if (intf != null && !interfaces.contains(intf)) {
+                interfaces.add(intf);
             }
         }
     }
@@ -654,9 +652,8 @@ public class ClassCorrector implements Transformer {
 
         if (typeparams != null) {
             ArrayList<String> params = Erasurator.splitParameters(typeparams);
-            for (int i = 0; i < params.size(); ++i) {
+            for (String param : params) {
 
-                String param = params.get(i);
                 String temp = param.substring(param.indexOf(ext) + ext.length());
                 StringTokenizer st = new StringTokenizer(temp, "&");
 
@@ -787,9 +784,9 @@ public class ClassCorrector implements Transformer {
         if (count != 0) {
             visibleAnnotations = new AnnotationItem[count];
             count = 0;
-            for (int i = 0; i < len; ++i) {
-                if (annotations[i] != null) {
-                    visibleAnnotations[count++] = annotations[i];
+            for (AnnotationItem annotation : annotations) {
+                if (annotation != null) {
+                    visibleAnnotations[count++] = annotation;
                 }
             }
         }

@@ -144,14 +144,14 @@ public class CMerge {
             throw new CommandLineParserException(i18n.getString("Merge.could.not.resolve.file", oFile));
         }
 
-        for (int i = 0; i < iFiles.length; i++) {
+        for (String iFile : iFiles) {
             try {
-                File sigFile = (new File(iFiles[i])).getCanonicalFile();
+                File sigFile = (new File(iFile)).getCanonicalFile();
                 if (canonicalFile.equals(sigFile)) {
                     throw new CommandLineParserException(i18n.getString("Merge.notunique.writefile"));
                 }
             } catch (IOException ex) {
-                throw new CommandLineParserException(i18n.getString("Merge.could.not.resolve.file", iFiles[i]));
+                throw new CommandLineParserException(i18n.getString("Merge.could.not.resolve.file", iFile));
             }
         }
 

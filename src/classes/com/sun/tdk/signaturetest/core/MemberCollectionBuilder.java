@@ -87,8 +87,8 @@ public class MemberCollectionBuilder {
 
         //add constructors
         ConstructorDescr[] constr = cl.getDeclaredConstructors();
-        for (int i = 0; i < constr.length; i++) {
-            members.addMember(constr[i]);
+        for (ConstructorDescr constructorDescr : constr) {
+            members.addMember(constructorDescr);
         }
 
         cl.setMembers(members);
@@ -172,16 +172,16 @@ public class MemberCollectionBuilder {
                 return true;
             }
             SuperInterface[] sis = c.getInterfaces();
-            for (int i = 0; i < sis.length; i++) {
-                if (superClName.equals(sis[i].getQualifiedName())) {
+            for (SuperInterface si1 : sis) {
+                if (superClName.equals(si1.getQualifiedName())) {
                     return true;
                 }
             }
             if (superCl != null && isAncestor(superCl.getQualifiedName(), superClName)) {
                 return true;
             }
-            for (int i = 0; i < sis.length; i++) {
-                if (isAncestor(sis[i].getQualifiedName(), superClName)) {
+            for (SuperInterface si : sis) {
+                if (isAncestor(si.getQualifiedName(), superClName)) {
                     return true;
                 }
             }
@@ -244,8 +244,8 @@ public class MemberCollectionBuilder {
         retVal = addSuperMembers(fields, retVal);
         retVal = addSuperMembers(classes, retVal);
 
-        for (int i = 0; i < intrfs.length; ++i) {
-            SuperInterface s = (SuperInterface) intrfs[i];
+        for (MemberDescription intrf : intrfs) {
+            SuperInterface s = (SuperInterface) intrf;
             s.setDirect(true);
             s.setDeclaringClass(cl.getQualifiedName());
         }
@@ -281,8 +281,8 @@ public class MemberCollectionBuilder {
                 if (paramList != null) {
                     coll = Erasurator.replaceFormalParameters(clsName, coll, paramList, skipRawTypes);
                 }
-                for (Iterator it = coll.iterator(); it.hasNext();) {
-                    MemberDescription supMD = (MemberDescription) it.next();
+                for (Object o : coll) {
+                    MemberDescription supMD = (MemberDescription) o;
                     if (supMD.isMethod()) {
                         if (addInheritedMethod(supMD, overridingChecker, retVal, hierarchy, superClass, cl)) {
                             continue;
@@ -328,19 +328,19 @@ public class MemberCollectionBuilder {
         SuperInterface[] interfaces = cl.getInterfaces();
 
         HashSet xfCan = new HashSet();
-        for (int i = 0; i < interfaces.length; i++) {
+        for (SuperInterface anInterface : interfaces) {
             try {
-                ClassDescription intf = hierarchy.load(interfaces[i].getQualifiedName());
-                MemberCollection h = getMembers(intf, interfaces[i].getTypeParameters(), false, true, true, checkHidding);
+                ClassDescription intf = hierarchy.load(anInterface.getQualifiedName());
+                MemberCollection h = getMembers(intf, anInterface.getTypeParameters(), false, true, true, checkHidding);
                 //MemberCollection h = getMembers(intf, interfaces[i].getTypeParameters(), false, true, false, checkHidding);
                 Collection coll = h.getAllMembers();
                 if (paramList != null) {
                     coll = Erasurator.replaceFormalParameters(clsName, coll, paramList, skipRawTypes);
                 }
                 nextMemberToAdd:
-                for (Iterator it = coll.iterator(); it.hasNext();) {
+                for (Object o : coll) {
                     // for each direct interface member do
-                    MemberDescription membToAdd = (MemberDescription) it.next();
+                    MemberDescription membToAdd = (MemberDescription) o;
                     if (membToAdd.isMethod()) {
                         MethodDescr m = (MethodDescr) membToAdd;
 
@@ -454,8 +454,8 @@ public class MemberCollectionBuilder {
             xFields = cl.getXFields();
         }
         // add inherited fields that have no conflicts with each other
-        for (Iterator it = inheritedFields.values().iterator(); it.hasNext();) {
-            MemberDescription field = (MemberDescription) it.next();
+        for (Object o : inheritedFields.values()) {
+            MemberDescription field = (MemberDescription) o;
             String fiName = field.getName();
             if (!field.isMarked() && !internalFields.contains(fiName) && !xFields.contains(fiName)) {
                 retVal.addMember(field);
@@ -537,8 +537,8 @@ public class MemberCollectionBuilder {
 
     private MemberCollection addSuperMembers(MemberDescription[] from,
             MemberCollection to) {
-        for (int i = 0; i < from.length; i++) {
-            to.addMember(from[i]);
+        for (MemberDescription memberDescription : from) {
+            to.addMember(memberDescription);
         }
         return to;
     }
@@ -622,14 +622,14 @@ public class MemberCollectionBuilder {
 
             AnnotationItem[] subClassAnnoList = subclass.getAnnoList();
 
-            for (int i = 0; i < superClassAnnoList.length; i++) {
-                if (superClassAnnoList[i].isInheritable()) {
-                    tmp.add(superClassAnnoList[i]);
+            for (AnnotationItem annotationItem1 : superClassAnnoList) {
+                if (annotationItem1.isInheritable()) {
+                    tmp.add(annotationItem1);
                 }
             }
 
-            for (int i = 0; i < subClassAnnoList.length; i++) {
-                tmp.add(subClassAnnoList[i]);
+            for (AnnotationItem annotationItem : subClassAnnoList) {
+                tmp.add(annotationItem);
             }
 
             if (tmp.size() != subClassAnnoList.length) {
@@ -705,8 +705,8 @@ class MethodOverridingChecker {
     }
 
     public void addMethods(MemberDescription[] methods, String name) {
-        for (int i = 0; i < methods.length; ++i) {
-            MethodDescr md = (MethodDescr) methods[i];
+        for (MemberDescription method : methods) {
+            MethodDescr md = (MethodDescr) method;
             if (name.equals(md.getName())) {
                 addMethod(md);
             }
@@ -714,8 +714,8 @@ class MethodOverridingChecker {
     }
 
     public void addMethods(MemberDescription[] methods) {
-        for (int i = 0; i < methods.length; ++i) {
-            MethodDescr md = (MethodDescr) methods[i];
+        for (MemberDescription method : methods) {
+            MethodDescr md = (MethodDescr) method;
             addMethod(md);
         }
     }

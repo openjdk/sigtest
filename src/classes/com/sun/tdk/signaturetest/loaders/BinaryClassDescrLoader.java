@@ -1096,16 +1096,15 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 }
                 AnnotationItem[] annoList = c.getAnnoList();
 
-                for (int k = 0; k < annoList.length; k++) {
-                    if ("java.lang.annotation.Inherited".equals(annoList[k].getName())) {
+                for (AnnotationItem annotationItem : annoList) {
+                    if ("java.lang.annotation.Inherited".equals(annotationItem.getName())) {
                         anno.setInheritable(true);
                     }
                 }
 
                 MethodDescr[] fids = c.getDeclaredMethods();
                 if (fids != null) {
-                    for (int i = 0; i < fids.length; i++) {
-                        MethodDescr fid = fids[i];
+                    for (MethodDescr fid : fids) {
                         AnnotationItem.Member member = anno.findByName(fid.getName());
                         if (member != null) {
                             anno.removeMember(member);
@@ -1367,8 +1366,8 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
                     if (bounds.size() != 0) {
                         Collections.sort(bounds);
-                        for (int k = 0; k < bounds.size(); k++) {
-                            sb.append(" & ").append((String) bounds.get(k));
+                        for (Object bound : bounds) {
+                            sb.append(" & ").append((String) bound);
                         }
                     }
                 }

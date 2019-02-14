@@ -201,8 +201,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
     public void printErrors() {
         // prints errors
-        for (Iterator it = errorMessages.iterator(); it.hasNext();) {
-            setupProblem((String) it.next());
+        for (Object errorMessage : errorMessages) {
+            setupProblem((String) errorMessage);
         }
 
         initErrors();
@@ -517,17 +517,17 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
         int count = 0;
 
-        for (int i = 0; i < len; ++i) {
+        for (AnnotationItem annotation : annotations) {
             boolean documented = true;
 
             try {
-                documented = h.isDocumentedAnnotation(annotations[i].getName());
+                documented = h.isDocumentedAnnotation(annotation.getName());
             } catch (ClassNotFoundException e) {
                 // suppress
             }
 
             if (documented) {
-                tempStorage[count++] = annotations[i];
+                tempStorage[count++] = annotation;
             }
 
         }
@@ -550,9 +550,9 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
         ArrayList<AnnotationItem> unpackedAnnotations = new ArrayList();
         ArrayList<AnnotationItem> toRemove = new ArrayList();
         AnnotationParser ap = new AnnotationParser();
-        for (int i = 0; i < annotations.length; ++i) {
+        for (AnnotationItem annotation : annotations) {
             try {
-                AnnotationItem ai = annotations[i];
+                AnnotationItem ai = annotation;
                 unpackedAnnotations.add(ai);
                 if (ch.isContainerAnnotation(ai.getName())) {
                     Member memval = ai.findByName("value");
@@ -573,14 +573,14 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     protected AnnotationItem[] normalizeArrayParaemeters(AnnotationItem[] annotations, Set exclusions, ClassHierarchy ch) {
-        for (int i = 0; i < annotations.length; ++i) {
+        for (AnnotationItem annotation : annotations) {
             try {
-                if (!ch.isContainerAnnotation(annotations[i].getName())) {
-                    AnnotationItem.normaliazeAnnotation(annotations[i], exclusions);
+                if (!ch.isContainerAnnotation(annotation.getName())) {
+                    AnnotationItem.normaliazeAnnotation(annotation, exclusions);
                 }
             } catch (ClassNotFoundException ex) {
                 // normalize by default
-                AnnotationItem.normaliazeAnnotation(annotations[i], exclusions);
+                AnnotationItem.normaliazeAnnotation(annotation, exclusions);
             }
         }
         return annotations;

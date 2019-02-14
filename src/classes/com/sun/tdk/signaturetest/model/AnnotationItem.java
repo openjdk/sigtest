@@ -290,8 +290,8 @@ public class AnnotationItem implements Comparable {
 
     public Member findByName(String name) {
         if (members != null) {
-            for (Iterator it = members.iterator(); it.hasNext();) {
-                Member m = (Member) it.next();
+            for (Object member : members) {
+                Member m = (Member) member;
                 if (m.name.equals(name)) {
                     return m;
                 }
@@ -322,8 +322,8 @@ public class AnnotationItem implements Comparable {
         sb.append(name).append('(');
         int i = 0;
         if (members != null) {
-            for (Iterator it = members.iterator(); it.hasNext();) {
-                Member m = (Member) it.next();
+            for (Object member : members) {
+                Member m = (Member) member;
                 if (i++ != 0) {
                     sb.append(", ");
                 }

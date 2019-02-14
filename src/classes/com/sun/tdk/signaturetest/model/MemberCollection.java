@@ -87,8 +87,8 @@ public class MemberCollection {
     }
 
     public MemberDescription find(MemberDescription mr) {
-        for (Iterator e = members.iterator(); e.hasNext();) {
-            MemberDescription member = (MemberDescription) e.next();
+        for (Object member1 : members) {
+            MemberDescription member = (MemberDescription) member1;
             if (member.equals(mr)) {
                 return member;
             }
@@ -97,8 +97,8 @@ public class MemberCollection {
     }
 
     public MemberDescription findSimilar(MemberDescription mr) {
-        for (Iterator e = members.iterator(); e.hasNext();) {
-            MemberDescription member = (MemberDescription) e.next();
+        for (Object member1 : members) {
+            MemberDescription member = (MemberDescription) member1;
             if (member.getType().equals(mr.getType()) && member.getName().equals(mr.getName())) {
                 return member;
             }
@@ -108,8 +108,8 @@ public class MemberCollection {
 
     public int getMembersCount(MemberType memberType, String fqname) {
         int count = 0;
-        for (Iterator e = members.iterator(); e.hasNext();) {
-            MemberDescription member = (MemberDescription) e.next();
+        for (Object member1 : members) {
+            MemberDescription member = (MemberDescription) member1;
             if ((memberType == null || memberType == member.getMemberType())
                     && fqname.equals(member.getQualifiedName())) {
                 count++;

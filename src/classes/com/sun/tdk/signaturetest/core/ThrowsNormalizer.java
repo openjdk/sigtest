@@ -137,8 +137,8 @@ public class ThrowsNormalizer {
                 int count = 0;
                 sb.setLength(0);
 
-                for (int i = 0; i < xthrows.size(); i++) {
-                    String s = (String) xthrows.get(i);
+                for (Object xthrow : xthrows) {
+                    String s = (String) xthrow;
                     if (s != null) {
                         if (count++ != 0) {
                             sb.append(MemberDescription.THROWS_DELIMITER);

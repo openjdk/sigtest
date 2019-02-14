@@ -93,8 +93,8 @@ public class ClassSet {
 
                     if (trackDependeces) {
                         Set dep = cl.getDependences();
-                        for (Iterator i = dep.iterator(); i.hasNext();) {
-                            addClass((String) i.next(), false);
+                        for (Object o : dep) {
+                            addClass((String) o, false);
                         }
                     }
 
@@ -132,8 +132,8 @@ public class ClassSet {
                         ClassDescription cl = hierarchy.load(fqname);
 
                         Set dep = cl.getDependences();
-                        for (Iterator i = dep.iterator(); i.hasNext();) {
-                            removeClass((String) i.next());
+                        for (Object o : dep) {
+                            removeClass((String) o);
                         }
 
                     } catch (ClassNotFoundException e) {

@@ -93,8 +93,8 @@ public class FileManager {
 
         List applicableFormats = new ArrayList(formats.size());
 
-        for (int i = 0; i < formats.size(); i++) {
-            Format format = (Format) formats.get(i);
+        for (Object format1 : formats) {
+            Format format = (Format) format1;
             Set formatFeatures = format.getSupportedFeatures();
             if (features.equals(formatFeatures)) {
                 applicableFormats.add(format);
@@ -104,8 +104,8 @@ public class FileManager {
         double latestVersion = 0;
         Writer latestWriter = null;
 
-        for (int i = 0; i < applicableFormats.size(); i++) {
-            Format f = (Format) applicableFormats.get(i);
+        for (Object applicableFormat : applicableFormats) {
+            Format f = (Format) applicableFormat;
 
             String[] sv = f.getVersion().split(" ");
             double v = Double.parseDouble(sv[sv.length - 1].substring(1));

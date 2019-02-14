@@ -74,9 +74,9 @@ public final class MemberType implements Comparable, Serializable {
     }
 
     public static MemberType getItemType(String def) {
-        for (int i = 0; i < knownTypes.length; ++i) {
-            if (def.startsWith(knownTypes[i].name)) {
-                return knownTypes[i];
+        for (MemberType knownType : knownTypes) {
+            if (def.startsWith(knownType.name)) {
+                return knownType;
             }
         }
         return null;
@@ -103,11 +103,9 @@ public final class MemberType implements Comparable, Serializable {
         this.applicableModifiers = applicableModifiers;
 
         modifiersMask = 0;
-        for (int i = 0; i < applicableModifiers.length; ++i) {
+        for (Modifier m : applicableModifiers) {
             // check that modifiers don't conflict with each other
-            Modifier m = applicableModifiers[i];
-
-//          assertion commented because Java 1.3 does not support them
+            //          assertion commented because Java 1.3 does not support them
 //            assert !Modifier.hasModifier(modifiersMask, m);
             modifiersMask = Modifier.addModifier(modifiersMask, m);
         }
@@ -117,8 +115,7 @@ public final class MemberType implements Comparable, Serializable {
 
     private void updateTrackedModifiersMask() {
         trackedModifiersMask = 0;
-        for (int i = 0; i < applicableModifiers.length; ++i) {
-            Modifier m = applicableModifiers[i];
+        for (Modifier m : applicableModifiers) {
             if (m.isTracked()) {
                 trackedModifiersMask = Modifier.addModifier(trackedModifiersMask, m);
             }
@@ -129,8 +126,8 @@ public final class MemberType implements Comparable, Serializable {
         // track vararg modifier only in source mode; its absence does not break binary compatibility
         Modifier.VARARGS.setTracked(!binary);
 
-        for (int i = 0; i < knownTypes.length; ++i) {
-            knownTypes[i].updateTrackedModifiersMask();
+        for (MemberType knownType : knownTypes) {
+            knownType.updateTrackedModifiersMask();
         }
     }
 

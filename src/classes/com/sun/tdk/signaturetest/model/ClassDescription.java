@@ -257,8 +257,8 @@ public class ClassDescription extends MemberDescription {
             Collection/*TypeParam*/ tmp = new ArrayList();
 
             //  Get list of parameters to be removed
-            for (Iterator it = tab.entrySet().iterator(); it.hasNext();) {
-                Map.Entry ent = (Map.Entry) it.next();
+            for (Object o1 : tab.entrySet()) {
+                Map.Entry ent = (Map.Entry) o1;
                 TypeParam e = (TypeParam) ent.getValue();
                 if (e.declared.equals(declared)) {
                     tmp.add(e);
@@ -266,8 +266,8 @@ public class ClassDescription extends MemberDescription {
             }
 
             //  Remove parameter or replace it with previously hidden
-            for (Iterator it = tmp.iterator(); it.hasNext();) {
-                TypeParam e = (TypeParam) it.next();
+            for (Object o : tmp) {
+                TypeParam e = (TypeParam) o;
                 if (e.hidden == null) {
                     tab.remove(e.ident);
                 } else {
@@ -557,8 +557,7 @@ public class ClassDescription extends MemberDescription {
         Set result = internalFields;
         if (result == null) {
             // try to find private field in the declared fields
-            for (int i = 0; i < declaredFields.length; ++i) {
-                MemberDescription m = declaredFields[i];
+            for (MemberDescription m : declaredFields) {
                 if (isInternalMember(m)) {
                     if (result == null) {
                         result = new HashSet();
@@ -616,8 +615,7 @@ public class ClassDescription extends MemberDescription {
         Set result = internalClasses;
         if (result == null) {
             // try to find private class in the declared classes
-            for (int i = 0; i < nestedClasses.length; ++i) {
-                MemberDescription m = nestedClasses[i];
+            for (MemberDescription m : nestedClasses) {
                 if (isInternalMember(m)) {
                     if (result == null) {
                         result = new HashSet();
@@ -652,9 +650,9 @@ public class ClassDescription extends MemberDescription {
         }
 
         AnnotationItem[] annoList = getAnnoList();
-        for (int i = 0; i < annoList.length; ++i) {
+        for (AnnotationItem annotationItem : annoList) {
             buf.append("\n ");
-            buf.append(annoList[i]);
+            buf.append(annotationItem);
         }
 
         return buf.toString();
@@ -676,14 +674,14 @@ public class ClassDescription extends MemberDescription {
         populateDependences(getInterfaces(), dependences);
 
         AnnotationItem[] annots = getAnnoList();
-        for (int i = 0; i < annots.length; ++i) {
+        for (AnnotationItem annot : annots) {
 
             // skip dependency to itself
-            if (annots[i].getName().equals(name)) {
+            if (annot.getName().equals(name)) {
                 continue;
             }
 
-            addDependency(dependences, annots[i].getName());
+            addDependency(dependences, annot.getName());
         }
 
         if (superClass != null) {
@@ -697,11 +695,11 @@ public class ClassDescription extends MemberDescription {
     }
 
     public void populateDependences(MemberDescription[] members, Set dependences) {
-        for (int i = 0; i < members.length; ++i) {
-            if (members[i].isPublic() || members[i].isProtected()) {
-                members[i].populateDependences(dependences);
-            } else if (members[i].isSuperInterface()) {
-                addDependency(dependences, members[i].getQualifiedName());
+        for (MemberDescription member : members) {
+            if (member.isPublic() || member.isProtected()) {
+                member.populateDependences(dependences);
+            } else if (member.isSuperInterface()) {
+                addDependency(dependences, member.getQualifiedName());
             }
         }
     }
@@ -709,8 +707,8 @@ public class ClassDescription extends MemberDescription {
     public boolean isDocumentedAnnotation() {
         if (hasModifier(Modifier.ANNOTATION)) {
             AnnotationItem[] annots = getAnnoList();
-            for (int i = 0; i < annots.length; ++i) {
-                if (AnnotationItem.ANNOTATION_DOCUMENTED.equals(annots[i].getName())) {
+            for (AnnotationItem annot : annots) {
+                if (AnnotationItem.ANNOTATION_DOCUMENTED.equals(annot.getName())) {
                     return true;
                 }
             }

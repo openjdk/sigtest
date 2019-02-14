@@ -118,8 +118,7 @@ public final class Modifier implements Serializable {
         Modifier[] applicableModifiers = type.getApplicableModifiers();
         boolean addSpace = false;
 
-        for (int i = 0; i < applicableModifiers.length; ++i) {
-            Modifier m = applicableModifiers[i];
+        for (Modifier m : applicableModifiers) {
             if ((m.value & modifiers) != 0 && (!trackedOnly || m.isTracked())) {
                 if (addSpace) {
                     buf.append(' ');
@@ -149,11 +148,11 @@ public final class Modifier implements Serializable {
         Modifier[] ms = Modifier.getAllModifiers();
         int v = 0;
 
-        for (int i = 0; i < ms.length; i++) {
-            if (ms[i].name.equals(name)) {
+        for (Modifier m : ms) {
+            if (m.name.equals(name)) {
                 throw new IllegalArgumentException("Name " + name + " is already used");
             }
-            v |= ms[i].getValue();
+            v |= m.getValue();
         }
         v = highestOneBit(~v);
         if (v == 0) {

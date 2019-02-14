@@ -78,9 +78,9 @@ public class SortedErrorFormatter extends ErrorFormatter {
 
             MemberDescription[] items = tested.getInterfaces();
             if (items != null) {
-                for (int i = 0; i < items.length; i++) {
+                for (MemberDescription item : items) {
                     //System.err.println("-interface "+tested.getName()+" "+items[I].getName());
-                    getTestedsuper().put(tested.getQualifiedName(), items[i].getQualifiedName());
+                    getTestedsuper().put(tested.getQualifiedName(), item.getQualifiedName());
                 }
             }
         }
@@ -119,8 +119,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
         int length = failedMessages.size();
         MessageType lastType = null;
         numErrors = 0;
-        for (int i = 0; i < length; i++) {
-            Message current = failedMessages.get(i);
+        for (Message current : failedMessages) {
             // recalculate num errors because of possible PluginAPI filtering
             if (!current.messageType.isWarning()) {
                 numErrors++;

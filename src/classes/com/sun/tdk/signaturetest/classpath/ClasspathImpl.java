@@ -304,9 +304,9 @@ public class ClasspathImpl implements Classpath {
         // generic names are no allowed here
         assert (name.indexOf('<') == -1 && name.indexOf('>') == -1);
 
-        for (Iterator<ClasspathEntry> e = entries.iterator(); e.hasNext();) {
+        for (ClasspathEntry entry : entries) {
             try {
-                return (e.next()).findClass(name);
+                return (entry).findClass(name);
             } catch (ClassNotFoundException exc) {
                 // just skip this entry
             }

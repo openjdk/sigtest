@@ -57,9 +57,9 @@ public class F40Parser implements Parser {
 
         int method_count = 0, field_count = 0, constructor_count = 0, inner_count = 0, interfaces_count = 0;
 
-        for (Iterator it = members.iterator(); it.hasNext();) {
+        for (Object member : members) {
 
-            String str = (String) it.next();
+            String str = (String) member;
 
             if (parseFutureSpecific(str, classDescription)) {
                 continue;
@@ -124,8 +124,8 @@ public class F40Parser implements Parser {
         inner_count = 0;
         interfaces_count = 0;
 
-        for (Iterator it = items.iterator(); it.hasNext();) {
-            m = (MemberDescription) it.next();
+        for (Object item : items) {
+            m = (MemberDescription) item;
             MemberType mt = m.getMemberType();
 
             if (mt == MemberType.METHOD) {

@@ -57,8 +57,8 @@ public class F31Parser implements Parser {
         MemberDescription member = classDescription;
         List alist = new ArrayList();
 
-        for (Iterator it = members.iterator(); it.hasNext();) {
-            String str = (String) it.next();
+        for (Object member1 : members) {
+            String str = (String) member1;
             if (str.startsWith(AnnotationItem.ANNOTATION_PREFIX)) {
                 alist.add(str);
             } else {
