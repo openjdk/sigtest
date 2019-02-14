@@ -56,7 +56,7 @@ public class F41Parser extends F40Parser {
     protected String convertFutureSpecific(String str, ClassDescription classDescription) {
         if (str.startsWith(MemberType.CONSTRUCTOR.toString() /*  toString returns prefix here */)) {
             // is it "old-style" ?
-            if (str.indexOf(ConstructorDescr.CONSTRUCTOR_NAME + "(") == -1) {
+            if (!str.contains(ConstructorDescr.CONSTRUCTOR_NAME + "(")) {
                 String name = '.' + classDescription.getName() + '(';
                 int i = str.indexOf(name);
                 // String.replace can not be used here - it appeared in 1.5

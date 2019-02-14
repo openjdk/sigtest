@@ -690,7 +690,7 @@ class MethodOverridingChecker {
 
     public void addMethod(MethodDescr m) {
         MethodDescr cloned_m = (MethodDescr) erasurator.processMember(m);
-        assert !(cloned_m.getSignature().indexOf("%") >= 0) : "wrong member after erasure: " + m;
+        assert !(cloned_m.getSignature().contains("%")) : "wrong member after erasure: " + m;
         methodSignatures.put(cloned_m.getSignature(), cloned_m);
     }
 

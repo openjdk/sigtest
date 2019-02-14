@@ -658,7 +658,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
         }
 
         // this is just memory usage optimization
-        if (args.indexOf(ARGS_DELIMITER) == -1) {
+        if (!args.contains(ARGS_DELIMITER)) {
             this.args = args.intern();
         } else {
             this.args = args;
@@ -673,7 +673,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
         }
 
         // this is just memory usage optimization
-        if (throwables.indexOf(THROWS_DELIMITER) == -1) {
+        if (!throwables.contains(THROWS_DELIMITER)) {
             this.throwables = throwables.intern();
         } else {
             this.throwables = throwables;

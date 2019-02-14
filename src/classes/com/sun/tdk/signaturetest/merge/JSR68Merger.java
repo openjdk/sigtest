@@ -122,7 +122,7 @@ public class JSR68Merger extends FeaturesHolder {
                 // this is normal that there is no classes
                 // with package name
             }
-            if (cd.getQualifiedName().indexOf("$") >= 0) {
+            if (cd.getQualifiedName().contains("$")) {
                 try {
                     ClassDescription outer = result.load(cd.getDeclaringClassName());
                     InnerDescr[] dc = outer.getDeclaredClasses();
@@ -134,7 +134,7 @@ public class JSR68Merger extends FeaturesHolder {
 
                     for (Iterator it2 = result.getClassIterator(); it2.hasNext();) {
                         ClassDescription similarInner = (ClassDescription) it2.next();
-                        if (similarInner.getQualifiedName().indexOf("$") >= 0
+                        if (similarInner.getQualifiedName().contains("$")
                                 && similarInner.getName().equals(cd.getName())) {
                             ClassDescription parent = outer;
                             while (true) {

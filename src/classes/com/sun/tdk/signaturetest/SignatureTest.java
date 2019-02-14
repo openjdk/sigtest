@@ -547,7 +547,7 @@ public class SignatureTest extends SigTest {
         PrintWriter log = getLog();
         //  Open the specified sigfile and read standard headers.
 
-        if (readMode == MultipleFileReader.MERGE_MODE && sigFileNameList != null && sigFileNameList.indexOf(File.pathSeparator) >= 0) {
+        if (readMode == MultipleFileReader.MERGE_MODE && sigFileNameList != null && sigFileNameList.contains(File.pathSeparator)) {
             try {
                 if (writeFileName == null) {
                     File tmpF = File.createTempFile("sigtest", "sig");
