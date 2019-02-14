@@ -486,7 +486,7 @@ public class SignatureTest extends SigTest {
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.formatplain", Option.FORMATPLAIN));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.extinterfaces", EXTENSIBLE_INTERFACES_OPTION));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classcachesize", new Object[]{CLASSCACHESIZE_OPTION, new Integer(DefaultCacheSize)}));
+        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classcachesize", new Object[]{CLASSCACHESIZE_OPTION, DefaultCacheSize}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.debug", Option.DEBUG.getKey()));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.error_all", ERRORALL_OPTION));
@@ -1469,7 +1469,7 @@ public class SignatureTest extends SigTest {
         }
         MemberType.setMode(BINARY_MODE.equals(mode));
 
-        isOneWayConstantChecking = isValueTracked.booleanValue() && BINARY_MODE.equals(mode) || !bo.isSet(Option.STATIC);
+        isOneWayConstantChecking = isValueTracked && BINARY_MODE.equals(mode) || !bo.isSet(Option.STATIC);
 
         if (SOURCE_MODE.equals(mode) || EXT_MODE.equals(mode)) {
             isThrowsRemoved = false;
@@ -1480,7 +1480,7 @@ public class SignatureTest extends SigTest {
         }
         MemberType.setMode(BINARY_MODE.equals(mode));
 
-        if (isValueTracked.booleanValue() && !in.isFeatureSupported(FeaturesHolder.ConstInfo)) {
+        if (isValueTracked && !in.isFeatureSupported(FeaturesHolder.ConstInfo)) {
             String errmsg = i18nSt.getString("SignatureTest.mesg.sigfile.noconst");
             log.println(errmsg);
             return failed(errmsg);
@@ -1491,7 +1491,7 @@ public class SignatureTest extends SigTest {
             isValueTracked = Boolean.FALSE;
         }
 
-        setConstantValuesTracked(isValueTracked.booleanValue());
+        setConstantValuesTracked(isValueTracked);
         FieldDescr.setConstantValuesTracked(isConstantValuesTracked());
         log.println(i18nSt.getString("SignatureTest.mesg.sigtest.report"));
         log.println(i18nSt.getString("SignatureTest.mesg.sigtest.basevers", in.getApiVersion()));
@@ -1503,7 +1503,7 @@ public class SignatureTest extends SigTest {
             log.println(i18nSt.getString("SignatureTest.mesg.sigtest.checkmode.removed", mode));
         }
 
-        if (isValueTracked.booleanValue()) {
+        if (isValueTracked) {
             log.println(i18nSt.getString("SignatureTest.mesg.sigtest.constcheck", i18nSt.getString("SignatureTest.mesg.sigtest.constcheck.on")));
         } else {
             log.println(i18nSt.getString("SignatureTest.mesg.sigtest.constcheck", i18nSt.getString("SignatureTest.mesg.sigtest.constcheck.off")));
@@ -1524,7 +1524,7 @@ public class SignatureTest extends SigTest {
         loader = getClassDescrLoader();
         AppContext.getContext().setClassLoader(loader);
 
-        if (!isValueTracked.booleanValue() && loader instanceof LoadingHints) {
+        if (!isValueTracked && loader instanceof LoadingHints) {
             ((LoadingHints) loader).addLoadingHint(LoadingHints.DONT_READ_VALUES);
         }
 
