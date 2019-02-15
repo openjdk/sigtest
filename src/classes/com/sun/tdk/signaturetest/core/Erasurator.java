@@ -55,9 +55,9 @@ import java.util.regex.Pattern;
  */
 public class Erasurator {
 
-    private Map<String, String> globalParameters = new HashMap<String, String>();
-    private Map<String, String> localParameters = new HashMap<String, String>();
-    private HashSet<String> unresolvedWarnings = new HashSet<String>();
+    private Map<String, String> globalParameters = new HashMap<>();
+    private Map<String, String> localParameters = new HashMap<>();
+    private HashSet<String> unresolvedWarnings = new HashSet<>();
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Erasurator.class);
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
@@ -263,7 +263,7 @@ public class Erasurator {
     }
 
     public static ArrayList<String> splitParameters(String actualTypeParams) {
-        ArrayList<String> paramList = new ArrayList<String>();
+        ArrayList<String> paramList = new ArrayList<>();
         int startPos = 1;
         int level = 0;
         int len = actualTypeParams.length() - 1;
@@ -305,7 +305,7 @@ public class Erasurator {
 
         assert actualTypeParamList.size() != 0;
 
-        Collection<MemberDescription> result = new ArrayList<MemberDescription>();
+        Collection<MemberDescription> result = new ArrayList<>();
 
         for (Object member : members) {
             MemberDescription newFid = replaceFormalParameters(fqn, (MemberDescription) member, actualTypeParamList, skipRawTypes);

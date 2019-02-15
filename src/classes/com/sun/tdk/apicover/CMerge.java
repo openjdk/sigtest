@@ -188,7 +188,7 @@ public class CMerge {
                 Option.INCLUDE_CONSTANT_FIELDS,
                 Option.MODE};
 
-        HashMap<String, String> confs = new HashMap<String, String>();
+        HashMap<String, String> confs = new HashMap<>();
         for (Option opt : keys) {
             confs.put(opt.getKey(), "NA");
         }
@@ -227,7 +227,7 @@ public class CMerge {
 
         // check for different versions of the same class
         // and prepare data for merging
-        HashMap<String, Element[]> allClasses = new HashMap<String, Element[]>();
+        HashMap<String, Element[]> allClasses = new HashMap<>();
         for (int i = 0; i < docs.length; i++) {
             CovDocument d = docs[i];
             for (Element cl : d.getClasses()) {
@@ -249,7 +249,7 @@ public class CMerge {
             for (Element c : similarClasses) {
                 if (c != null) {
                     classAttributes = c.getAttributes();
-                    HashSet<String> atsL = new HashSet<String>();
+                    HashSet<String> atsL = new HashSet<>();
                     for (int i = 0; i < classAttributes.getLength(); i++) {
                         String aName = classAttributes.item(i).getNodeName();
                         String aVal = classAttributes.item(i).getNodeValue();
@@ -276,7 +276,7 @@ public class CMerge {
                 }
             }
             // check members
-            HashMap<String, Element> members = new HashMap<String, Element>();
+            HashMap<String, Element> members = new HashMap<>();
             boolean firstTime = true;
             for (Element classElement : similarClasses) {
                 if (classElement != null) {
@@ -336,7 +336,7 @@ public class CMerge {
 
     private String getMemberModifsAsString(Element member) {
         // collect member's attributes
-        HashSet<String> modifS = new HashSet<String>();
+        HashSet<String> modifS = new HashSet<>();
         NamedNodeMap attrs = member.getAttributes();
         for (int j = 0; j < attrs.getLength(); j++) {
             String aName = attrs.item(j).getNodeName();
@@ -476,7 +476,7 @@ public class CMerge {
         }
 
         private Set<Element> getElementsByKind(String name) throws XPathExpressionException {
-            HashSet<Element> result = new HashSet<Element>();
+            HashSet<Element> result = new HashSet<>();
             XPath xpath = xPathfactory.newXPath();
             XPathExpression expr = xpath.compile("//" + name);
             NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);

@@ -45,7 +45,7 @@ import java.util.StringTokenizer;
 /**
  * @author Roman Makarchuk
  */
-public class MultipleFileReader extends VirtualClassDescriptionLoader {
+public class MultipleFileReader extends VirtualClassDescriptionLoader implements AutoCloseable {
 
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MultipleFileReader.class);
     public static final int CLASSPATH_MODE = 1;
@@ -112,72 +112,64 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
         String msg = null;
 
         //  Open the specified sigfile and read standard headers.
-        Reader in = fileMan.getReader(fileURL);
-
-        if (in == null) {
-            return false;
-        } else {
-            try {
-
-                if (!in.readSignatureFile(fileURL)) {
-                    msg = i18n.getString("MultipleFileReader.error.sigfile.invalid", fileURL);
-                }
-
-                if (mode == MERGE_MODE && !in.hasFeature(FeaturesHolder.MergeModeSupported)) {
-                    throw new IOException(i18n.getString("MultipleFileReader.error.cannt_merge_old_files") + fileURL);
-                }
-
-                if (!isInitialized()) { // first file
-                    setFeatures(in.getAllSupportedFeatures());
-                } else {
-                    retainFeatures(in.getAllSupportedFeatures());
-                }
-
-                apiVersion = in.getApiVersion();
-
-                ClassDescription cl;
-                while ((cl = in.readNextClass()) != null) {
-
-                    String name = cl.getQualifiedName();
-                    if (mode == CLASSPATH_MODE) {
-                        try {
-                            load(name);
-                        } catch (ClassNotFoundException ex) {
-                            // use only first class description
-                            add(cl);
-                        }
-                    } else {
-                        assert mode == MERGE_MODE;
-                    }
-                }
-                elements = in.getElems();
-            } catch (IOException e) {
-                if (bo.isSet(Option.DEBUG)) {
-                    SwissKnife.reportThrowable(e);
-                }
-                msg = i18n.getString("MultipleFileReader.error.sigfile.prob") + "\n" + e;
-            } catch (SecurityException e) {
-                if (bo.isSet(Option.DEBUG)) {
-                    SwissKnife.reportThrowable(e);
-                }
-                msg = i18n.getString("MultipleFileReader.error.sigfile.sec") + "\n" + e;
-            }
-
-            // try to close
-            try {
-                in.close();
-            } catch (IOException e) {
-            }
-
-            if (msg != null) {
-                log.println(msg);
+        try (Reader in = fileMan.getReader(fileURL)) {
+            if (in == null) {
                 return false;
             }
+
+            if (!in.readSignatureFile(fileURL)) {
+                msg = i18n.getString("MultipleFileReader.error.sigfile.invalid", fileURL);
+            }
+
+            if (mode == MERGE_MODE && !in.hasFeature(FeaturesHolder.MergeModeSupported)) {
+                throw new IOException(i18n.getString("MultipleFileReader.error.cannt_merge_old_files") + fileURL);
+            }
+
+            if (!isInitialized()) { // first file
+                setFeatures(in.getAllSupportedFeatures());
+            } else {
+                retainFeatures(in.getAllSupportedFeatures());
+            }
+
+            apiVersion = in.getApiVersion();
+
+            ClassDescription cl;
+            while ((cl = in.readNextClass()) != null) {
+
+                String name = cl.getQualifiedName();
+                if (mode == CLASSPATH_MODE) {
+                    try {
+                        load(name);
+                    } catch (ClassNotFoundException ex) {
+                        // use only first class description
+                        add(cl);
+                    }
+                } else {
+                    assert mode == MERGE_MODE;
+                }
+            }
+            elements = in.getElems();
+        } catch (IOException e) {
+            if (bo.isSet(Option.DEBUG)) {
+                SwissKnife.reportThrowable(e);
+            }
+            msg = i18n.getString("MultipleFileReader.error.sigfile.prob") + "\n" + e;
+        } catch (SecurityException e) {
+            if (bo.isSet(Option.DEBUG)) {
+                SwissKnife.reportThrowable(e);
+            }
+            msg = i18n.getString("MultipleFileReader.error.sigfile.sec") + "\n" + e;
+        }
+
+        if (msg != null) {
+            log.println(msg);
+            return false;
         }
 
         return true;
     }
 
+    @Override
     public void close() {
         classIterator = null;
         cleanUp();

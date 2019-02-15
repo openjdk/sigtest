@@ -468,9 +468,8 @@ public class MemberCollectionBuilder {
             }
         }
         if (!cl.getXClasses().isEmpty()) {
-            Iterator it = cl.getXClasses().iterator();
-            while (it.hasNext()) {
-                String xClass = (String) it.next();
+            for (Object o : cl.getXClasses()) {
+                String xClass = (String) o;
                 Iterator rvi = retVal.iterator();
                 while (rvi.hasNext()) {
                     MemberDescription rm = (MemberDescription) rvi.next();

@@ -462,7 +462,7 @@ public class SignatureTest extends SigTest {
 
         String nl = System.getProperty("line.separator");
         StringBuffer sb = new StringBuffer();
-        sb.append(getComponentName() + " - " + i18nSt.getString("SignatureTest.usage.version", Version.Number));
+        sb.append(getComponentName()).append(" - ").append(i18nSt.getString("SignatureTest.usage.version", Version.Number));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.start"));
         sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18nSt.getString("SignatureTest.usage.static", Option.STATIC));
@@ -850,13 +850,9 @@ public class SignatureTest extends SigTest {
                         getErrorManager().addError(MessageType.getAddedMessageType(c.getMemberType()), c.getQualifiedName(), c.getMemberType(), null, c);
                     }
                 }
-            } catch (ClassNotFoundException ex) {
+            } catch (ClassNotFoundException | LinkageError ex) {
                 if (bo.isSet(Option.DEBUG)) {
                     SwissKnife.reportThrowable(ex);
-                }
-            } catch (LinkageError ex1) {
-                if (bo.isSet(Option.DEBUG)) {
-                    SwissKnife.reportThrowable(ex1);
                 }
             } catch (ExcludeException e) {
                 if (isVerbose) {

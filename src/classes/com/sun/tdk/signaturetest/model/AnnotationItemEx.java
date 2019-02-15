@@ -309,24 +309,24 @@ public class AnnotationItemEx extends AnnotationItem {
     }
 
     private void addTargetType(StringBuffer sb) {
-        sb.append("[" + ANN_TARGET_TYPE + "=" + intToHex(targetType) + ";");
+        sb.append("[").append(ANN_TARGET_TYPE).append("=").append(intToHex(targetType)).append(";");
     }
 
     private void addTypeInd(StringBuffer sb) {
-        sb.append(ANN_TYPE_IND + "=" + typeIndex + ";");
+        sb.append(ANN_TYPE_IND).append("=").append(typeIndex).append(";");
     }
 
     private void addBoundInd(StringBuffer sb) {
-        sb.append(ANN_BOUND_IND + "=" + boundIndex + ";");
+        sb.append(ANN_BOUND_IND).append("=").append(boundIndex).append(";");
     }
 
     private void addParameterInd(StringBuffer sb) {
-        sb.append(ANN_PARAM_IND + "=" + parameterIndex + ";");
+        sb.append(ANN_PARAM_IND).append("=").append(parameterIndex).append(";");
     }
 
     private void addPath(StringBuffer sb) {
         if (path != null) {
-            sb.append(ANN_PATH + "=" + path + ";");
+            sb.append(ANN_PATH).append("=").append(path).append(";");
         }
     }
 

@@ -61,7 +61,7 @@ public class PackageGroup {
      */
     public PackageGroup(boolean isSubpackagesUses) {
         this.isSubpackagesUses = isSubpackagesUses;
-        group = new ArrayList<String>();
+        group = new ArrayList<>();
     }
 
     public boolean isEmpty() {

@@ -173,7 +173,7 @@ public class ModSetup extends ModBase {
      */
     protected void usage() {
         StringBuffer sb = new StringBuffer();
-        sb.append(getComponentName() + " - " + i18n.getString("MSetup.usage.version", Version.Number));
+        sb.append(getComponentName()).append(" - ").append(i18n.getString("MSetup.usage.version", Version.Number));
         sb.append(i18n.getString("MSetup.usage"));
         System.err.println(sb.toString());
     }
@@ -189,7 +189,6 @@ public class ModSetup extends ModBase {
         URL signatureFile;
 
         ModWriter writer = null;
-        FileOutputStream fos = null;
 
         ModuleDescriptionLoader mdl = getModuleLoader();
         HashMap<String, ModuleDescription> model = new HashMap<>();
@@ -210,18 +209,16 @@ public class ModSetup extends ModBase {
             }
         }
 
-        try {
+        try (Writer w = getFileManager().getDefaultFormat().getWriter();
+             FileOutputStream fos = new FileOutputStream(FileManager.getURL(mo.getValue(Option.TEST_URL), mo.getValue(Option.FILE_NAME)).getFile());
+             OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
 
-            signatureFile = FileManager.getURL(mo.getValue(Option.TEST_URL), mo.getValue(Option.FILE_NAME));
-
-            Writer w = getFileManager().getDefaultFormat().getWriter();
             if (w instanceof ModWriter) {
                 writer = (ModWriter) w;
             } else {
                 throw new IllegalStateException();
             }
-            fos = new FileOutputStream(signatureFile.getFile());
-            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+
             writer.init(new PrintWriter(osw));
             writer.addFeature(FeaturesHolder.ConstInfo);
             writer.addFeature(FeaturesHolder.TigerInfo);
@@ -238,12 +235,9 @@ public class ModSetup extends ModBase {
             }
 
             writer.writeHeader();
-            Iterator<ModuleDescription> it = model.values().iterator();
-            while (it.hasNext()) {
-                ModuleDescription md = it.next();
+            for (ModuleDescription md : model.values()) {
                 writer.write(md);
             }
-
         } catch (IOException e) {
             if (mo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
@@ -251,17 +245,6 @@ public class ModSetup extends ModBase {
             getLog().println(i18n.getString("Setup.error.message.cantcreatesigfile"));
             getLog().println(e);
             return error(i18n.getString("Setup.error.message.cantcreatesigfile"));
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException ex) {
-                SwissKnife.reportThrowable(ex);
-            }
         }
 
         return passed();

@@ -73,6 +73,7 @@ class JarFileEntry extends ClasspathEntry {
     /**
      * Closes zip/jar file.
      */
+    @Override
     public void close() {
         if (jarfile != null) {
             try {

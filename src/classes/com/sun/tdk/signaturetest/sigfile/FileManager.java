@@ -74,13 +74,11 @@ public class FileManager {
 
     private String getFormat(URL fileURL) {
         String currentLine;
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(fileURL.openStream(), StandardCharsets.UTF_8));
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(fileURL.openStream(), StandardCharsets.UTF_8))) {
             if ((currentLine = in.readLine()) == null) {
                 return null;
             }
             currentLine = currentLine.trim();
-            in.close();
         } catch (IOException e) {
             return null;
         }
@@ -122,9 +120,8 @@ public class FileManager {
     public Reader getReader(URL fileURL) {
         String format = getFormat(fileURL);
         if (format != null) {
-            Iterator it = formats.iterator();
-            while (it.hasNext()) {
-                Format f = (Format) it.next();
+            for (Object format1 : formats) {
+                Format f = (Format) format1;
                 if (f.isApplicable(format)) {
                     return f.getReader();
                 }

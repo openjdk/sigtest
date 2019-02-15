@@ -557,13 +557,11 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         List<MemberDescription> result = new ArrayList();
         try {
             BinaryClassDescription c = new BinaryClassDescription();
-            DataInputStream classData = new DataInputStream(classpath.findClass(name));
-            try {
+            try (DataInputStream classData = new DataInputStream(classpath.findClass(name))) {
                 readClass(c, classData);
                 result = c.getMethodRefs();
             } finally {
                 c.cleanup();
-                classData.close();
             }
         } catch (Throwable e) {
             if (bo.isSet(Option.DEBUG)) {
@@ -660,12 +658,16 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             tmpflds.add(attrs.signature);
 
             if (fid.isFinal() && attrs.value != null) {
-                if ("boolean".equals(type)) {
-                    attrs.value = ((Integer) attrs.value).intValue() != 0;
-                } else if ("byte".equals(type)) {
-                    attrs.value = ((Integer) attrs.value).byteValue();
-                } else if ("char".equals(type)) {
-                    attrs.value = (char) ((Integer) attrs.value).shortValue();
+                switch (type) {
+                    case "boolean":
+                        attrs.value = (Integer) attrs.value != 0;
+                        break;
+                    case "byte":
+                        attrs.value = ((Integer) attrs.value).byteValue();
+                        break;
+                    case "char":
+                        attrs.value = (char) ((Integer) attrs.value).shortValue();
+                        break;
                 }
 
                 fid.setConstantValue(MemberDescription.valueToString(attrs.value));
@@ -1130,7 +1132,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             switch (tag) {
                 case 'Z':
                     v = c.getConstantValue(is.readUnsignedShort());
-                    v = ((Integer) v).intValue() != 0;
+                    v = (Integer) v != 0;
                     break;
 
                 case 'B':

@@ -184,20 +184,16 @@ public class Updater extends DefaultHandler {
     }
 
     private void writeOut(String to, SigList sl) throws FileNotFoundException {
-        PrintWriter pw = new PrintWriter(new FileOutputStream(to));
-        Iterator it = sl.iterator();
-        while (it.hasNext()) {
-            pw.write((String) it.next() + '\n');
+        try(PrintWriter pw = new PrintWriter(new FileOutputStream(to))) {
+            for (Object o : sl) {
+                pw.write((String) o + '\n');
+            }
         }
-        pw.close();
     }
 
     private SigList readInput(String from) throws IOException {
-        FileReader fr = null;
-        LineNumberReader r = null;
-        try {
-            fr = new FileReader(from);
-            r = new LineNumberReader(new BufferedReader(fr));
+        try (FileReader fr = new FileReader(from);
+             LineNumberReader r = new LineNumberReader(new BufferedReader(fr))) {
             SigList sl = new SigList();
             String s;
             while ((s = r.readLine()) != null) {
@@ -205,13 +201,6 @@ public class Updater extends DefaultHandler {
             }
 
             return sl;
-        } finally {
-            if (r != null) {
-                r.close();
-            }
-            if (fr != null) {
-                fr.close();
-            }
         }
     }
 

@@ -382,7 +382,7 @@ public class Main implements Log {
             ClassHierarchy tsHierarchy = new ClassHierarchyImpl(tsLoader,
                     ClassHierarchy.ALL_PUBLIC);
             int size = 0;
-            List<MemberDescription> calls = new ArrayList<MemberDescription>();
+            List<MemberDescription> calls = new ArrayList<>();
             while (classpath.hasNext()) {
                 String name = classpath.nextClassName();
                 if (!isTSMember(name)) {
@@ -395,12 +395,7 @@ public class Main implements Log {
                     List<MemberDescription> fCalls = tsLoader.loadCalls(name);
                     fCalls = callFilter.filterCalls(fCalls, name);
                     calls.addAll(fCalls);
-                } catch (ClassNotFoundException e) {
-                    if (debug) {
-                        log.println(i18n.getString("Main.warning.class.invalid", name));
-                    }
-                    debug(e);
-                } catch (ClassFormatError e) {
+                } catch (ClassNotFoundException | ClassFormatError e) {
                     if (debug) {
                         log.println(i18n.getString("Main.warning.class.invalid", name));
                     }

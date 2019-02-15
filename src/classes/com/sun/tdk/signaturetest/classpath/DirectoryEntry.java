@@ -64,11 +64,12 @@ class DirectoryEntry extends ClasspathEntry {
         }
 
         this.directoryName = directoryName;
-        classes = new LinkedHashSet<String>();
+        classes = new LinkedHashSet<>();
         scanDirectory(directory, "");
         currentPosition = classes.iterator();
     }
 
+    @Override
     public void close() {
         // nothing to do
     }

@@ -154,9 +154,8 @@ public class AnnotationItem implements Comparable {
     public static void normaliazeAnnotation(AnnotationItem an, Set orderImportant) {
         // orderImportant can be null for some unit-tests
         if (orderImportant != null && !orderImportant.contains(an.name) && an.members != null) {
-            Iterator it = an.members.iterator();
-            while (it.hasNext()) {
-                normAnnMember((Member) it.next());
+            for (Object member : an.members) {
+                normAnnMember((Member) member);
             }
         }
     }

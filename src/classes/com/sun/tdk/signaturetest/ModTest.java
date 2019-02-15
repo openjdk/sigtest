@@ -143,7 +143,7 @@ public class ModTest extends ModBase {
         if (!assertChecker(ModFeatures.MAIN_CLASS, thatModule)) return false;
         String s1 = thisModule.getMainClass();
         String s2 = thatModule.getMainClass();
-        if (s1 == null ? s2 == null : s1.equals(s2)) {
+        if (Objects.equals(s1, s2)) {
             return true;
         } else {
             if (s1 == null || s1.isEmpty()) s1="n/a";
@@ -161,7 +161,7 @@ public class ModTest extends ModBase {
         if (!assertChecker(ModFeatures.VERSION, thatModule)) return false;
         String s1 = thisModule.getVersion();
         String s2 = thatModule.getVersion();
-        if (s1 == null ? s2 == null : s1.equals(s2)) {
+        if (Objects.equals(s1, s2)) {
             return true;
         } else {
             if (s1 == null || s1.isEmpty()) s1="n/a";
@@ -436,7 +436,7 @@ public class ModTest extends ModBase {
     @Override
     protected void usage() {
         StringBuffer sb = new StringBuffer();
-        sb.append(getComponentName() + " - " + i18n.getString("MTest.usage.version", Version.Number));
+        sb.append(getComponentName()).append(" - ").append(i18n.getString("MTest.usage.version", Version.Number));
         sb.append(i18n.getString("MTest.usage"));
         System.err.println(sb.toString());
     }

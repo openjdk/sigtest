@@ -77,14 +77,11 @@ public class Converter extends Result {
         reader.readSignatureFile(new File(oldFileName).toURI().toURL());
 
         //write header to the signature file
-        Writer writer = newFormat.getWriter();
-        OutputStream os = null;
-        OutputStreamWriter w = null;
-        PrintWriter pw = null;
-        try {
-            os = new FileOutputStream(newFileName);
-            w = new OutputStreamWriter(os, StandardCharsets.UTF_8);
-            pw = new PrintWriter(w);
+
+        try (Writer writer = newFormat.getWriter();
+             OutputStream os = new FileOutputStream(newFileName);
+             OutputStreamWriter w = new OutputStreamWriter(os, StandardCharsets.UTF_8);
+             PrintWriter pw = new PrintWriter(w)) {
             writer.init(pw);
 
             writer.setApiVersion(reader.getApiVersion());
@@ -98,19 +95,6 @@ public class Converter extends Result {
             ClassDescription currentClass;
             while ((currentClass = reader.readNextClass()) != null) {
                 writer.write(currentClass);
-            }
-
-            reader.close();
-        } finally {
-            writer.close();
-            if (os != null) {
-                os.close();
-            }
-            if (w != null) {
-                w.close();
-            }
-            if (pw != null) {
-                pw.close();
             }
         }
 

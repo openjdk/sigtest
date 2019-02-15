@@ -59,9 +59,7 @@ public class BatchFileParser {
         }
 
         String fName = args[filePos].substring(1).trim();
-        LineNumberReader r = null;
-        try {
-            r = new LineNumberReader(SwissKnife.approveFileReader(fName));
+        try (LineNumberReader r = new LineNumberReader(SwissKnife.approveFileReader(fName))) {
             String currLine;
             Properties props = new Properties();
             ArrayList options = new ArrayList();
@@ -107,14 +105,6 @@ public class BatchFileParser {
             throw new CommandLineParserException("File " + fName + " not found", ex);
         } catch (IOException ex) {
             throw new CommandLineParserException("Can't read file " + fName, ex);
-        } finally {
-            try {
-                if (r != null) {
-                    r.close();
-                }
-            } catch (IOException ex) {
-                SwissKnife.reportThrowable(ex);
-            }
         }
     }
 

@@ -27,7 +27,7 @@ package com.sun.tdk.signaturetest.sigfile;
 
 import java.io.PrintWriter;
 
-public interface BaseWriter {
+public interface BaseWriter extends AutoCloseable{
 
     void init(PrintWriter out);
 

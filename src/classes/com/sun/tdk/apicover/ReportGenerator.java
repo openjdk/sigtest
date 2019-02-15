@@ -638,8 +638,7 @@ class ReportPlain extends ReportGenerator {
         }
         md = erasurator.processMember(md);
         tab(p2 - 2).append(coverCount > 0 ? '+' : '-');
-        tab(p2).append(md.getName()
-                + (md.isField() ? "" : "(" + md.getSimplifiedArgs() + ")"));
+        tab(p2).append(md.getName()).append(md.isField() ? "" : "(" + md.getSimplifiedArgs() + ")");
 
         if (detail.hasCounters() && coverCount > 0) {
             tab(p5).append(String.format("%11s", coverCount));
@@ -750,9 +749,7 @@ class ReportXML extends ReportGenerator {
             /////////////////////
             //ser = stf.newTransformerHandler(new StreamSource(new File("pp.xsl")));
             //ser.getTransformer().transform(new StreamSource("out.xml"), new StreamResult(System.out));
-        } catch (TransformerException ex) {
-            SwissKnife.reportThrowable(ex);
-        } catch (SAXException ex) {
+        } catch (TransformerException | SAXException ex) {
             SwissKnife.reportThrowable(ex);
         }
     }

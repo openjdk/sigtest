@@ -150,9 +150,9 @@ public class ClasspathImpl implements Classpath {
 
     @Override
     public void init(String classPath) {
-        entries = new ArrayList<ClasspathEntry>();
-        errors = new ArrayList<String>();
-        Set<String> unique = new HashSet<String>();
+        entries = new ArrayList<>();
+        errors = new ArrayList<>();
+        Set<String> unique = new HashSet<>();
         String path = (classPath == null) ? "" : classPath;
         if (!path.equals("") && (pathSeparator == null)) {
             throw new SecurityException(i18n.getString("ClasspathImpl.error.notdefinepathsep"));
@@ -333,21 +333,12 @@ public class ClasspathImpl implements Classpath {
             findClassDescription(qualifiedClassName);
             return KIND_CLASS_DATA.DESCRIPTION;
         } catch (Exception cnfe) {
-            InputStream is = null;
-            try {
-                is = findClass(qualifiedClassName);
+            try (InputStream is = findClass(qualifiedClassName)) {
                 return KIND_CLASS_DATA.BYTE_CODE;
             } catch (Exception e) {
 
-            } finally {
-                if (is != null) {
-                    try {
-                        is.close();
-                    } catch (IOException e) {
-                        // Ok
-                    }
-                }
             }
+            // Ok
         }
         return KIND_CLASS_DATA.NOT_FOUND;
     }

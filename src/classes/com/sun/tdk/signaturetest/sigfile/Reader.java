@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * @author Mikhail Ershov
  */
-public interface Reader {
+public interface Reader extends AutoCloseable {
 
     boolean hasFeature(Format.Feature feature);
 
@@ -45,6 +45,7 @@ public interface Reader {
 
     ClassDescription readNextClass() throws IOException;
 
+    @Override
     void close() throws IOException;
 
     String getApiVersion();

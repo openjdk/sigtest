@@ -78,6 +78,7 @@ public abstract class SignatureClassLoader implements Reader {
         return features;
     }
 
+    @Override
     public void close() throws IOException {
         in.close();
     }
@@ -218,9 +219,8 @@ public abstract class SignatureClassLoader implements Reader {
 
         Format.Feature f = null;
         boolean remove = false;
-        Iterator it = features.iterator();
-        while (it.hasNext()) {
-            f = (Format.Feature) it.next();
+        for (Object feature : features) {
+            f = (Format.Feature) feature;
             if (f.match(currentLine)) {
                 remove = true;
                 break;

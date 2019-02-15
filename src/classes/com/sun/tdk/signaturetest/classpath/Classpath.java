@@ -36,7 +36,7 @@ import java.io.PrintWriter;
  * @author Roman Makarchuk
  * @author Mikhail Ershov
  */
-public interface Classpath {
+public interface Classpath extends AutoCloseable {
 
     /**
      * Initialize the module with given parameter: <code>classPath</code>.
@@ -49,6 +49,7 @@ public interface Classpath {
     /**
      * Free resources used (if any) or do nothing.
      */
+    @Override
     void close();
 
     /**

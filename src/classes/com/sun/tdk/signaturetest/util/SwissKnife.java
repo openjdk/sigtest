@@ -31,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 public class SwissKnife {
 
@@ -48,7 +49,7 @@ public class SwissKnife {
      * @return true if x equal to y
      */
     public static boolean equals(Object x, Object y) {
-        return (x == y) || (x != null && x.equals(y));
+        return Objects.equals(x, y);
     }
 
     public static boolean canBeSubclassed(ClassDescription cd) {

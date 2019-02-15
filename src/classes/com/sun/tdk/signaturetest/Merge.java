@@ -172,9 +172,8 @@ public class Merge extends SigTest {
             // why do we need to build members here ????
             MemberCollectionBuilder builder = new MemberCollectionBuilder(new SilentLog());
 
-            Iterator it = files[i].getClassSet().values().iterator();
-            while (it.hasNext()) {
-                ClassDescription c = (ClassDescription) it.next();
+            for (Object o : files[i].getClassSet().values()) {
+                ClassDescription c = (ClassDescription) o;
                 c.setHierarchy(files[i].getClassHierarchy());
                 try {
                     if (in.isFeatureSupported(FeaturesHolder.BuildMembers)) {
@@ -233,9 +232,8 @@ public class Merge extends SigTest {
                 pw = new PrintWriter(System.out);
             }
             writer.init(pw);
-            Iterator it = merger.getSupportedFeatures().iterator();
-            while (it.hasNext()) {
-                Format.Feature f = (Format.Feature) it.next();
+            for (Object o : merger.getSupportedFeatures()) {
+                Format.Feature f = (Format.Feature) o;
                 if (f != FeaturesHolder.CopyRight) // don't put copyright int merged file
                 {
                     writer.addFeature(f);
@@ -280,7 +278,7 @@ public class Merge extends SigTest {
     protected void usage() {
         String nl = System.getProperty("line.separator");
         StringBuffer sb = new StringBuffer();
-        sb.append(nl).append(getComponentName() + " - " + i18n.getString("SignatureTest.usage.version", Version.Number));
+        sb.append(nl).append(getComponentName()).append(" - ").append(i18n.getString("SignatureTest.usage.version", Version.Number));
         sb.append(nl).append(i18n.getString("Setup.usage.start"));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Merge.usage.files", Option.FILES.getKey()));

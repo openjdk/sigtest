@@ -43,10 +43,8 @@ public class RemoteLoadManager {
         Object descr;
         try {
             descr = loader.load(name);
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | RuntimeException e) {
             descr = e;
-        } catch (RuntimeException t) {
-            descr = t;
         }
 
         try {

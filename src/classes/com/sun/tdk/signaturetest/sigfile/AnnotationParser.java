@@ -172,18 +172,25 @@ public class AnnotationParser {
             assert delPos > 0;
             String name = set.substring(0, delPos);
             String val = set.substring(delPos + 1, set.length());
-            if (AnnotationItemEx.ANN_TARGET_TYPE.equals(name)) {
-                item.setTargetType(Integer.parseInt(val.substring(2), 16));
-            } else if (AnnotationItemEx.ANN_TYPE_IND.equals(name)) {
-                item.setTypeIndex(Integer.parseInt(val));
-            } else if (AnnotationItemEx.ANN_BOUND_IND.equals(name)) {
-                item.setBoundIndex(Integer.parseInt(val));
-            } else if (AnnotationItemEx.ANN_PARAM_IND.equals(name)) {
-                item.setParameterIndex(Integer.parseInt(val));
-            } else if (AnnotationItemEx.ANN_PATH.equals(name)) {
-                item.setPath(val);
-            } else {
-                assert false;
+            switch (name) {
+                case AnnotationItemEx.ANN_TARGET_TYPE:
+                    item.setTargetType(Integer.parseInt(val.substring(2), 16));
+                    break;
+                case AnnotationItemEx.ANN_TYPE_IND:
+                    item.setTypeIndex(Integer.parseInt(val));
+                    break;
+                case AnnotationItemEx.ANN_BOUND_IND:
+                    item.setBoundIndex(Integer.parseInt(val));
+                    break;
+                case AnnotationItemEx.ANN_PARAM_IND:
+                    item.setParameterIndex(Integer.parseInt(val));
+                    break;
+                case AnnotationItemEx.ANN_PATH:
+                    item.setPath(val);
+                    break;
+                default:
+                    assert false;
+                    break;
             }
 
         }

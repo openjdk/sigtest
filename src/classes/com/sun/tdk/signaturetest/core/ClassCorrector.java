@@ -219,7 +219,7 @@ public class ClassCorrector implements Transformer {
                 getPaths2(paths, currentPath, si, intTo);
                 currentPath.remove(currentPath.size() - 1);
             } else {
-                paths.add(new ArrayList<String>(currentPath));
+                paths.add(new ArrayList<>(currentPath));
             }
         }
     }
@@ -254,8 +254,8 @@ public class ClassCorrector implements Transformer {
         // if this member is from interface...
         try {
             if (classHierarchy.isInterface(clName)) {
-                ArrayList<ArrayList<String>> paths = new ArrayList<ArrayList<String>>();
-                ArrayList<String> currentPath = new ArrayList<String>();
+                ArrayList<ArrayList<String>> paths = new ArrayList<>();
+                ArrayList<String> currentPath = new ArrayList<>();
                 getPaths(paths, currentPath, replaceWithClassName, clName);
                 if (paths.size() > 0) {
                     ArrayList<String> shorterPath = paths.get(0);
@@ -429,7 +429,7 @@ public class ClassCorrector implements Transformer {
 
         List supers = classHierarchy.getSuperClasses(c.getQualifiedName());
 
-        ArrayList<MemberDescription> newMembers = new ArrayList<MemberDescription>();
+        ArrayList<MemberDescription> newMembers = new ArrayList<>();
 
         for (Iterator e = c.getMembersIterator(); e.hasNext();) {
 
@@ -482,7 +482,7 @@ public class ClassCorrector implements Transformer {
                     if (si.isDirect()) {
 
                         if (makeThemDirect == null) {
-                            makeThemDirect = new ArrayList<String>();
+                            makeThemDirect = new ArrayList<>();
                         }
 
                         String[] intfs = classHierarchy.getSuperInterfaces(siName);
@@ -609,7 +609,7 @@ public class ClassCorrector implements Transformer {
      */
     private void removeDuplicatedConstants(ClassDescription c) {
 
-        Set<String> constantNames = new HashSet<String>();
+        Set<String> constantNames = new HashSet<>();
 
         for (Iterator e = c.getMembersIterator(); e.hasNext();) {
             MemberDescription mr = (MemberDescription) e.next();

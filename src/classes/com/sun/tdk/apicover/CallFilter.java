@@ -100,9 +100,7 @@ public class CallFilter {
                 if (filter == null || filter.isEmpty()) {
                     continue;
                 }
-                Iterator<MemberDescription> mi = foundCalls.iterator();
-                while (mi.hasNext()) {
-                    MemberDescription md = mi.next();
+                for (MemberDescription md : foundCalls) {
                     String sig = getMemberSignature(md);
                     if (sig.matches(filter)) {
                         filteredSigs.add(sig);

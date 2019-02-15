@@ -55,9 +55,8 @@ class F21Reader extends SignatureClassLoader {
 
     protected List convertClassDefinitions(List definitions) {
         ArrayList newDef = new ArrayList();
-        Iterator it = definitions.iterator();
-        while (it.hasNext()) {
-            String memberDef = (String) it.next();
+        for (Object definition : definitions) {
+            String memberDef = (String) definition;
 
             // 1) skip "supr null"
             if ("supr null".equals(memberDef)) {
@@ -140,39 +139,48 @@ class F21Reader extends SignatureClassLoader {
                 int start = memberDef.lastIndexOf(' ', end - 1);
                 String type = memberDef.substring(++start, end);
                 Object oVal = null;
-                if ("java.lang.String".equals(type)) {
-                    // decode unicode
-                    Matcher uc = unicodeSim.matcher(value);
-                    while (uc.find()) {
-                        String uValue = value.substring(uc.start() + 2, uc.end());
-                        char ch = (char) Integer.parseInt(uValue, 16);
-                        String repl = "" + ch;
-                        if (ch == '\\' || ch == '$') {
-                            repl = "\\" + ch;
+                switch (type) {
+                    case "java.lang.String":
+                        // decode unicode
+                        Matcher uc = unicodeSim.matcher(value);
+                        while (uc.find()) {
+                            String uValue = value.substring(uc.start() + 2, uc.end());
+                            char ch = (char) Integer.parseInt(uValue, 16);
+                            String repl = "" + ch;
+                            if (ch == '\\' || ch == '$') {
+                                repl = "\\" + ch;
+                            }
+                            value = uc.replaceFirst(repl);
+                            uc = unicodeSim.matcher(value);
                         }
-                        value = uc.replaceFirst(repl);
-                        uc = unicodeSim.matcher(value);
-                    }
-                    oVal = value;
+                        oVal = value;
 
-                } else if ("boolean".equals(type)) {
-                    if ("0".equals(value)) {
-                        oVal = Boolean.FALSE;
-                    } else {
-                        oVal = Boolean.TRUE;
-                    }
-                } else if ("int".equals(type)) {
-                    oVal = new Integer(value);
-                } else if ("long".equals(type)) {
-                    oVal = new Long(value);
-                } else if ("char".equals(type)) {
-                    oVal = (char) Integer.parseInt(value);
-                } else if ("byte".equals(type)) {
-                    oVal = new Byte(value);
-                } else if ("double".equals(type)) {
-                    oVal = new Double(value);
-                } else if ("float".equals(type)) {
-                    oVal = new Float(value);
+                        break;
+                    case "boolean":
+                        if ("0".equals(value)) {
+                            oVal = Boolean.FALSE;
+                        } else {
+                            oVal = Boolean.TRUE;
+                        }
+                        break;
+                    case "int":
+                        oVal = new Integer(value);
+                        break;
+                    case "long":
+                        oVal = new Long(value);
+                        break;
+                    case "char":
+                        oVal = (char) Integer.parseInt(value);
+                        break;
+                    case "byte":
+                        oVal = new Byte(value);
+                        break;
+                    case "double":
+                        oVal = new Double(value);
+                        break;
+                    case "float":
+                        oVal = new Float(value);
+                        break;
                 }
 
                 if (oVal != null) {

@@ -43,10 +43,10 @@ public class Version {
 
     public static String getVersionInfo() {
         StringBuffer sb = new StringBuffer();
-        sb.append(i18n.getString("Main.usage.version", Version.Number) + '\n');
+        sb.append(i18n.getString("Main.usage.version", Version.Number)).append('\n');
         sb.append("=========================\n");
-        sb.append(i18n.getString("Version.version.build", Version.build_time) + '\n');
-        sb.append(i18n.getString("Version.version.build_on", Version.build_os) + '\n');
+        sb.append(i18n.getString("Version.version.build", Version.build_time)).append('\n');
+        sb.append(i18n.getString("Version.version.build_on", Version.build_os)).append('\n');
         sb.append(i18n.getString("Version.version.build_by", Version.build_user));
         return sb.toString();
     }

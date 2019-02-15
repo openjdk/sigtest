@@ -279,7 +279,7 @@ public class Setup extends SigTest {
         String nl = System.getProperty("line.separator");
         StringBuffer sb = new StringBuffer();
 
-        sb.append(getComponentName() + " - " + i18n.getString("Setup.usage.version", Version.Number));
+        sb.append(getComponentName()).append(" - ").append(i18n.getString("Setup.usage.version", Version.Number));
         sb.append(nl).append(i18n.getString("Setup.usage.start"));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("Setup.usage.classpath", Option.CLASSPATH));
@@ -397,13 +397,11 @@ public class Setup extends SigTest {
 
         SortedSet excludedClasses = new TreeSet();
 
-        FileOutputStream fos = null;
-        Writer writer = null;
-        try {
+        try (Writer writer = getFileManager().getDefaultFormat().getWriter();
+             FileOutputStream fos = new FileOutputStream(sigFile.getFile());
+             OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
             //write header to the signature file
-            writer = getFileManager().getDefaultFormat().getWriter();
-            fos = new FileOutputStream(sigFile.getFile());
-            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+
             writer.init(new PrintWriter(osw));
 
             writer.setApiVersion(apiVersion);
@@ -484,18 +482,8 @@ public class Setup extends SigTest {
             getLog().println(e);
             return error(i18n.getString("Setup.error.message.cantcreatesigfile"));
         } finally {
-            if (writer != null) {
-                writer.close();
-            }
             if (cp != null) {
                 cp.close();
-            }
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException ex) {
-                SwissKnife.reportThrowable(ex);
             }
         }
 

@@ -113,9 +113,8 @@ public class CommandLineParser {
             knownOptions.validate(foundOptions);
         }
 
-        Iterator it = foundOptions.keySet().iterator();
-        while (it.hasNext()) {
-            String foundOption = (String) it.next();
+        for (Object o : foundOptions.keySet()) {
+            String foundOption = (String) o;
             invokeDecoder(foundOption, (ArrayList) foundOptions.get(foundOption));
         }
     }
@@ -324,9 +323,8 @@ public class CommandLineParser {
         private void validateRequiredOptions(Set foundKeys) throws CommandLineParserException {
             Set keySet = data.keySet();
 
-            Iterator it = keySet.iterator();
-            while (it.hasNext()) {
-                String option = (String) it.next();
+            for (Object o : keySet) {
+                String option = (String) o;
                 OptionInfo ki = (OptionInfo) data.get(option);
                 if (ki.isRequired() && !foundKeys.contains(option)) {
                     throw new CommandLineParserException(i18n.getString("CommandLineParser.error.option.required", option));
@@ -358,9 +356,8 @@ public class CommandLineParser {
         private void validate(Map params) throws CommandLineParserException {
             validateRequiredOptions(params.keySet());
 
-            Iterator it = params.keySet().iterator();
-            while (it.hasNext()) {
-                String option = (String) it.next();
+            for (Object o : params.keySet()) {
+                String option = (String) o;
                 validateCount(option, ((List) params.get(option)).size());
             }
         }

@@ -79,9 +79,7 @@ public class StructWriter {
             str.setAttribute("title", "Static coverage report");
             doc.appendChild(str);
 
-            Iterator<ModuleDescription> it = model.values().iterator();
-            while (it.hasNext()) {
-                ModuleDescription md = it.next();
+            for (ModuleDescription md : model.values()) {
                 reportedModuleNames.add(md.getName());
                 processModule(md, allModulesMap, wm);
             }
@@ -118,19 +116,7 @@ public class StructWriter {
             transformer.transform(domSource, result);
             writer.close();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserConfigurationException | IOException | TransformerException e) {
             e.printStackTrace();
         }
 

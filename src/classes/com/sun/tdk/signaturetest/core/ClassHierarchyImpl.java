@@ -80,7 +80,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     }
 
     public List<String> getSuperClasses(String fqClassName) throws ClassNotFoundException {
-        List<String> superclasses = new ArrayList<String>();
+        List<String> superclasses = new ArrayList<>();
         findSuperclasses(fqClassName, superclasses);
         return superclasses;
     }
@@ -91,7 +91,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     }
 
     public Set<String> getAllImplementedInterfaces(String fqClassName) throws ClassNotFoundException {
-        Set<String> intfs = new HashSet<String>();
+        Set<String> intfs = new HashSet<>();
         findAllImplementedInterfaces(fqClassName, intfs);
         return intfs;
     }
@@ -107,7 +107,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
 
     private void findAllImplementedInterfaces(String fqname, Set<String> implementedInterfaces) throws ClassNotFoundException {
 
-        List<String> superClasses = new ArrayList<String>();
+        List<String> superClasses = new ArrayList<>();
 
         ClassInfo info = getClassInfo(fqname);
 
@@ -421,14 +421,14 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         }
         return info;
     }
-    private Map<String, List<String>> directSubClasses = new HashMap<String, List<String>>();
+    private Map<String, List<String>> directSubClasses = new HashMap<>();
 
     private void addSubClass(String superClass, String subClass) {
 
         List<String> subClasses = directSubClasses.get(superClass);
 
         if (subClasses == null) {
-            subClasses = new ArrayList<String>(3);
+            subClasses = new ArrayList<>(3);
             directSubClasses.put(superClass, subClasses);
         }
 
@@ -472,7 +472,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     public int getTrackMode() {
         return trackMode;
     }
-    private HashMap<String, ClassInfo> processedClasses = new HashMap<String, ClassInfo>();
+    private HashMap<String, ClassInfo> processedClasses = new HashMap<>();
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     class DefaultIsAccessibleFilter implements Filter {
