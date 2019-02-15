@@ -99,7 +99,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader {
             if (bo.isSet(Option.DEBUG)) {
                 SwissKnife.reportThrowable(e);
             }
-            String invargs[] = {testURL, e.getMessage()};
+            String[] invargs = {testURL, e.getMessage()};
             log.println(i18n.getString("MultipleFileReader.error.url.threwerror", invargs));
             return false;
         }

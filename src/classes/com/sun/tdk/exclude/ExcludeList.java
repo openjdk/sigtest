@@ -95,7 +95,7 @@ public class ExcludeList implements Exclude {
             }
         }
         parameters.removeAll(rest);
-        return (String[]) parameters.toArray(new String[parameters.size()]);
+        return (String[]) parameters.toArray(new String[0]);
     }
 
     public String report() {

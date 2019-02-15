@@ -281,7 +281,7 @@ public class ClassDescription extends MemberDescription {
             if (e == null) {
                 return replaceNone(id);
             } else {
-                return "{" + e.declared + '%' + String.valueOf(e.seqnb) + "}";
+                return "{" + e.declared + '%' + e.seqnb + "}";
             }
         }
 

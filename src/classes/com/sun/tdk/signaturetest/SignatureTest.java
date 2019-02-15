@@ -341,17 +341,17 @@ public class SignatureTest extends SigTest {
         }
 
         if (bo.getValue(Option.FILE_NAME) == null && !parser.isOptionSpecified(FILES_OPTION)) {
-            String invargs[] = {Option.FILE_NAME.getKey(), FILES_OPTION};
+            String[] invargs = {Option.FILE_NAME.getKey(), FILES_OPTION};
             return error(i18nSt.getString("SignatureTest.error.options.filename_options", invargs));
         }
 
         if (bo.getValue(Option.FILE_NAME) != null && parser.isOptionSpecified(FILES_OPTION)) {
-            String invargs[] = {Option.FILE_NAME.getKey(), FILES_OPTION};
+            String[] invargs = {Option.FILE_NAME.getKey(), FILES_OPTION};
             return error(i18nSt.getString("Setup.error.options.cant_be_used_together", invargs));
         }
 
         if (to.isSet(Option.BACKWARD) && to.isSet(Option.FORMATHUMAN)) {
-            String invargs[] = {Option.BACKWARD.getKey(), Option.FORMATHUMAN.getKey()};
+            String[] invargs = {Option.BACKWARD.getKey(), Option.FORMATHUMAN.getKey()};
             return error(i18nSt.getString("Setup.error.options.cant_be_used_together", invargs));
         }
 

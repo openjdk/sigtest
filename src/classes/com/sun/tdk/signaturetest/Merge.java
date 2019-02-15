@@ -37,6 +37,7 @@ import com.sun.tdk.signaturetest.sigfile.Writer;
 import com.sun.tdk.signaturetest.util.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 public class Merge extends SigTest {
@@ -226,7 +227,7 @@ public class Merge extends SigTest {
             writer.setApiVersion("");
             if (mo.getValue(Option.WRITE) != null) {
                 fos = new FileOutputStream(mo.getValue(Option.WRITE));
-                osw = new OutputStreamWriter(fos, "UTF8");
+                osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
                 pw = new PrintWriter(osw);
             } else {
                 pw = new PrintWriter(System.out);

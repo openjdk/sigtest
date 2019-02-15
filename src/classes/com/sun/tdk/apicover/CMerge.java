@@ -170,7 +170,7 @@ public class CMerge {
             while (st.hasMoreElements()) {
                 list.add(st.nextToken());
             }
-            iFiles = (String[]) list.toArray(new String[list.size()]);
+            iFiles = (String[]) list.toArray(new String[0]);
         } else if (optionName.equalsIgnoreCase(Option.WRITE.getKey())) {
             oFile = args[0];
         } else if (optionName.equalsIgnoreCase(STRICT_OPTION)) {

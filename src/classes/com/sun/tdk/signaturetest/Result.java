@@ -51,7 +51,7 @@ public class Result {
     private static final int[] exitCodes = {95, 97, 98, 99};
 
     public String toString() {
-        String invargs[] = {texts[type], (reason == null ? "" : reason)};
+        String[] invargs = {texts[type], (reason == null ? "" : reason)};
         return i18n.getString("Result.message.status", invargs);
     }
 
@@ -109,7 +109,7 @@ public class Result {
 
         // Don't change this to if(Boolean.parseBoolean(System.getProperty(NO_EXIT))) {
         // because Boolean.parseBoolean is since 1.5
-        if (new Boolean(System.getProperty(NO_EXIT)).booleanValue()) {
+        if (Boolean.valueOf(System.getProperty(NO_EXIT)).booleanValue()) {
             return isPassed();
         } else {
             System.exit(exitCodes[type]);

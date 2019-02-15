@@ -59,7 +59,7 @@ public abstract class Options {
                         assert args != null;
                         assert args.length > 0;
                         assert !args[0].isEmpty();
-                        values.put(option, Arrays.asList(args[0]));
+                        values.put(option, Collections.singletonList(args[0]));
                         break;
                     case REQ_LIST:
                         assert args != null;

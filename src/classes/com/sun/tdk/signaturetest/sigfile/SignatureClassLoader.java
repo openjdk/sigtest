@@ -32,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -173,7 +174,7 @@ public abstract class SignatureClassLoader implements Reader {
      * fields
      */
     public boolean readSignatureFile(URL fileURL) throws IOException {
-        in = new BufferedReader(new InputStreamReader(fileURL.openStream(), "UTF8"), BUFSIZE);
+        in = new BufferedReader(new InputStreamReader(fileURL.openStream(), StandardCharsets.UTF_8), BUFSIZE);
         assert in.markSupported();
         return readHeaders(in);
     }

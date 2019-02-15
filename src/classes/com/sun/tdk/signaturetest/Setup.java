@@ -47,6 +47,7 @@ import com.sun.tdk.signaturetest.util.SwissKnife;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -402,7 +403,7 @@ public class Setup extends SigTest {
             //write header to the signature file
             writer = getFileManager().getDefaultFormat().getWriter();
             fos = new FileOutputStream(sigFile.getFile());
-            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF8");
+            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
             writer.init(new PrintWriter(osw));
 
             writer.setApiVersion(apiVersion);
@@ -628,8 +629,7 @@ public class Setup extends SigTest {
      * @param classes MemberCollection which stores occurred errors. *
      */
     private List sortClasses(Collection classes) {
-        ArrayList retVal = new ArrayList();
-        retVal.addAll(classes);
+        ArrayList retVal = new ArrayList(classes);
         Collections.sort(retVal);
         return retVal;
     }

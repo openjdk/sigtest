@@ -25,6 +25,7 @@
 package com.sun.tdk.signaturetest.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -79,9 +80,7 @@ public class PackageGroup {
     }
 
     public void addPackages(String[] packageNames) {
-        for (String packageName : packageNames) {
-            group.add(packageName);
-        }
+        group.addAll(Arrays.asList(packageNames));
     }
 
     /**

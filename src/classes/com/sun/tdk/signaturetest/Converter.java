@@ -36,6 +36,7 @@ import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.OptionInfo;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Roman Makarchuk
@@ -82,7 +83,7 @@ public class Converter extends Result {
         PrintWriter pw = null;
         try {
             os = new FileOutputStream(newFileName);
-            w = new OutputStreamWriter(os, "UTF8");
+            w = new OutputStreamWriter(os, StandardCharsets.UTF_8);
             pw = new PrintWriter(w);
             writer.init(pw);
 

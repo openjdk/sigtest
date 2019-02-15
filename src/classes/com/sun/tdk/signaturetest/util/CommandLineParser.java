@@ -72,7 +72,7 @@ public class CommandLineParser {
         knownOptions.remove(option);
     }
 
-    public void processArgs(String args[]) throws CommandLineParserException {
+    public void processArgs(String[] args) throws CommandLineParserException {
 
         args = BatchFileParser.processParameters(args);
 

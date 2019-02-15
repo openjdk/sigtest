@@ -40,6 +40,7 @@ import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -220,7 +221,7 @@ public class ModSetup extends ModBase {
                 throw new IllegalStateException();
             }
             fos = new FileOutputStream(signatureFile.getFile());
-            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF8");
+            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
             writer.init(new PrintWriter(osw));
             writer.addFeature(FeaturesHolder.ConstInfo);
             writer.addFeature(FeaturesHolder.TigerInfo);

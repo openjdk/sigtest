@@ -628,9 +628,7 @@ public class MemberCollectionBuilder {
                 }
             }
 
-            for (AnnotationItem annotationItem : subClassAnnoList) {
-                tmp.add(annotationItem);
-            }
+            tmp.addAll(Arrays.asList(subClassAnnoList));
 
             if (tmp.size() != subClassAnnoList.length) {
                 AnnotationItem[] newAnnoList = new AnnotationItem[tmp.size()];

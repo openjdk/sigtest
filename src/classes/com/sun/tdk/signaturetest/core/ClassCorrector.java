@@ -101,7 +101,7 @@ public class ClassCorrector implements Transformer {
             for (MethodDescr mr : methods) {
                 if ((mr.isMethod()) && !mr.hasModifier(Modifier.PUBLIC)
                         && !mr.hasModifier(Modifier.PROTECTED) && mr.hasModifier(Modifier.ABSTRACT)) {
-                    String invargs[] = {cl.getQualifiedName(), mr.toString()};
+                    String[] invargs = {cl.getQualifiedName(), mr.toString()};
                     log.storeWarning(i18n.getString("ClassCorrector.error.class.useless_abst_public_class", invargs), null);
                 }
             }
@@ -156,7 +156,7 @@ public class ClassCorrector implements Transformer {
             } while (pos != -1);
 
             if (mustCorrect) {
-                String invargs[] = {mr.getQualifiedName(), throwables, sb.toString()};
+                String[] invargs = {mr.getQualifiedName(), throwables, sb.toString()};
                 log.storeWarning(i18n.getString("ClassCorrector.message.throwslist.changed", invargs), null);
 
                 mr.setThrowables(sb.toString());
@@ -177,7 +177,7 @@ public class ClassCorrector implements Transformer {
 
         if (oldInt.size() != 0) {
 
-            Set<? extends Object> newInt = classHierarchy.getAllImplementedInterfaces(replacement);
+            Set<?> newInt = classHierarchy.getAllImplementedInterfaces(replacement);
 
             oldInt.removeAll(newInt); // diff
 
@@ -337,19 +337,19 @@ public class ClassCorrector implements Transformer {
 
 //                if (verboseCorrector) {
                 if (!mr.isField()) {
-                    String invargs[] = {cl.getName(), mr.getName(), returnType, newName};
+                    String[] invargs = {cl.getName(), mr.getName(), returnType, newName};
                     log.storeWarning(i18n.getString("ClassCorrector.message.returntype.changed", invargs), null);
                 } else {
-                    String invargs[] = {cl.getName(), mr.getName(), returnType, newName};
+                    String[] invargs = {cl.getName(), mr.getName(), returnType, newName};
                     log.storeWarning(i18n.getString("ClassCorrector.message.fieldtype.changed", invargs), null);
                 }
 //                }
             } else {
                 if (!mr.isField()) {
-                    String invargs[] = {returnType, mr.toString()};
+                    String[] invargs = {returnType, mr.toString()};
                     log.storeError(i18n.getString("ClassCorrector.error.returntype.hidden", invargs), null);
                 } else {
-                    String invargs[] = {returnType, mr.toString()};
+                    String[] invargs = {returnType, mr.toString()};
                     log.storeError(i18n.getString("ClassCorrector.error.fieldtype.hidden", invargs), null);
                 }
 
@@ -411,7 +411,7 @@ public class ClassCorrector implements Transformer {
                         continue;
                     }
 
-                    String invargs[] = {param, mr.toString(), cl.getQualifiedName()};
+                    String[] invargs = {param, mr.toString(), cl.getQualifiedName()};
                     log.storeError(i18n.getString("ClassCorrector.error.parametertype.hidden", invargs), null);
                 }
             }
@@ -487,9 +487,7 @@ public class ClassCorrector implements Transformer {
 
                         String[] intfs = classHierarchy.getSuperInterfaces(siName);
 
-                        for (String intf : intfs) {
-                            makeThemDirect.add(intf);
-                        }
+                        makeThemDirect.addAll(Arrays.asList(intfs));
                     }
                 }
 
@@ -665,10 +663,10 @@ public class ClassCorrector implements Transformer {
                     }
                     if (isInvisibleClass(className) && !className.equals(mr.getDeclaringClassName())) {
                         if (mr.isMethod() || mr.isConstructor()) {
-                            String invargs[] = {className, mr.toString(), mr.getDeclaringClassName()};
+                            String[] invargs = {className, mr.toString(), mr.getDeclaringClassName()};
                             log.storeError(i18n.getString("ClassCorrector.error.parametertype.hidden", invargs), null);
                         } else {
-                            String invargs[] = {className, mr.getQualifiedName()};
+                            String[] invargs = {className, mr.getQualifiedName()};
                             log.storeError(i18n.getString("ClassCorrector.error.parametertype.hidden2", invargs), null);
                         }
                     }

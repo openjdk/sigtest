@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +75,7 @@ public class FileManager {
     private String getFormat(URL fileURL) {
         String currentLine;
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(fileURL.openStream(), "UTF8"));
+            BufferedReader in = new BufferedReader(new InputStreamReader(fileURL.openStream(), StandardCharsets.UTF_8));
             if ((currentLine = in.readLine()) == null) {
                 return null;
             }

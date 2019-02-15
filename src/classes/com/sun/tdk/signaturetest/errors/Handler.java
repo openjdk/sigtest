@@ -31,6 +31,7 @@ import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
@@ -98,9 +99,7 @@ public abstract class Handler {
             result.add(source);
             return result;
         }
-        for (String s : strA) {
-            result.add(s);
-        }
+        result.addAll(Arrays.asList(strA));
         return result;
     }
 

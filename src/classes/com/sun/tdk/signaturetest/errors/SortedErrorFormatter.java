@@ -198,7 +198,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
      * <code>c</code>.
      */
     protected static String space(char c, int len) {
-        char buff[] = new char[len];
+        char[] buff = new char[len];
         for (int i = 0; i < len; i++) {
             buff[i] = c;
         }

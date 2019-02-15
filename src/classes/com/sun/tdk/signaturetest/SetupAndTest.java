@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -131,13 +132,13 @@ public class SetupAndTest extends Result {
         // Run Setup
         log.println(i18n.getString("SetupAndTest.message.invoke.setup"));
         Setup setup = new Setup();
-        setup.run((String[]) setupOptions.toArray(new String[setupOptions.size()]), log, ref);
+        setup.run((String[]) setupOptions.toArray(new String[0]), log, ref);
 
         // Run SignatureTest
         if (setup.isPassed()) {
             log.println(i18n.getString("SetupAndTest.message.invoke.sigtest"));
             SignatureTest sigtest = new SignatureTest();
-            sigtest.run((String[]) testOptions.toArray(new String[testOptions.size()]), log, ref);
+            sigtest.run((String[]) testOptions.toArray(new String[0]), log, ref);
             return sigtest.exit();
         } else {
             return setup.exit();
@@ -155,9 +156,7 @@ public class SetupAndTest extends Result {
 
     private void addOption(List options, String optionName, String[] optionValues) {
         options.add(optionName);
-        for (String optionValue : optionValues) {
-            options.add(optionValue);
-        }
+        options.addAll(Arrays.asList(optionValues));
     }
 
     public void decodeOptions(String optionName, String[] args) {

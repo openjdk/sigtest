@@ -370,7 +370,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
             }
 
             //  replace type variable with its ordinal number
-            sb.append('%').append(String.valueOf(i));
+            sb.append('%').append(i);
 
             Type[] bounds = params[i].getBounds();
             List/*String*/ tmp = new ArrayList();

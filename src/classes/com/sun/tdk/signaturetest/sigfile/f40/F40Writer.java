@@ -376,8 +376,7 @@ public class F40Writer implements Writer {
     protected void writeInternalMembers(StringBuffer buf, String prefix, Set internalMembers) {
 
         // sort members
-        ArrayList intMembers = new ArrayList();
-        intMembers.addAll(internalMembers);
+        ArrayList intMembers = new ArrayList(internalMembers);
         Collections.sort(intMembers);
 
         buf.setLength(0);

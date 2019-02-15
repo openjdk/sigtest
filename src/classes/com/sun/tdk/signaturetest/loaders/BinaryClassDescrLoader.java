@@ -429,7 +429,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
         int magic = classData.readInt();
         if (magic != MAGIC) {
-            String invargs[] = {Integer.toString(magic), Integer.toString(MAGIC)};
+            String[] invargs = {Integer.toString(magic), Integer.toString(MAGIC)};
             throw new ClassFormatError(i18n.getString("BinaryClassDescrLoader.error.magicnum", invargs));
         }
 
@@ -1349,7 +1349,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 }
 
                 //  replace type variable with its ordinal number
-                sb.append('%').append(String.valueOf(i));
+                sb.append('%').append(i);
 
                 List bounds = (List) parameters.get(i);
 
@@ -1434,7 +1434,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                         return t;
                     }
 
-                    err("?TypeChar " + String.valueOf(chr));
+                    err("?TypeChar " + chr);
                     return null;
                 }
             }

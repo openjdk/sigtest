@@ -206,7 +206,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
     }
 
     private void setupNested(ClassDescription cd, Class classObject) {
-        Class nested[] = classObject.getDeclaredClasses();
+        Class[] nested = classObject.getDeclaredClasses();
         cd.createNested(nested.length);
         for (int i = 0; i < nested.length; i++) {
             InnerDescr m = new InnerDescr();
@@ -231,7 +231,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
     }
 
     private void setupInterfaces(ClassDescription cd, Class classObject) {
-        Class interfaces[] = classObject.getInterfaces();
+        Class[] interfaces = classObject.getInterfaces();
         cd.createInterfaces(interfaces.length);
         for (int i = 0; i < interfaces.length; i++) {
             SuperInterface intf = new SuperInterface();

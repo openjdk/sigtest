@@ -111,11 +111,11 @@ public class F31Parser implements Parser {
                 inners.add(md);
             }
         }
-        classDescription.setConstructors((ConstructorDescr[]) constrs.toArray(new ConstructorDescr[constrs.size()]));
-        classDescription.setMethods((MethodDescr[]) methods.toArray(new MethodDescr[methods.size()]));
-        classDescription.setFields((FieldDescr[]) fields.toArray(new FieldDescr[fields.size()]));
-        classDescription.setNestedClasses((InnerDescr[]) inners.toArray(new InnerDescr[inners.size()]));
-        classDescription.setInterfaces((SuperInterface[]) intfs.toArray(new SuperInterface[intfs.size()]));
+        classDescription.setConstructors((ConstructorDescr[]) constrs.toArray(new ConstructorDescr[0]));
+        classDescription.setMethods((MethodDescr[]) methods.toArray(new MethodDescr[0]));
+        classDescription.setFields((FieldDescr[]) fields.toArray(new FieldDescr[0]));
+        classDescription.setNestedClasses((InnerDescr[]) inners.toArray(new InnerDescr[0]));
+        classDescription.setInterfaces((SuperInterface[]) intfs.toArray(new SuperInterface[0]));
         return classDescription;
     }
 
