@@ -26,8 +26,6 @@ package com.sun.tdk.signaturetest.sigfile;
 
 import com.sun.tdk.signaturetest.model.ClassDescription;
 
-import java.io.PrintWriter;
-
 /**
  * @author Roman Makarchuk
  */

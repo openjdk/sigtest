@@ -24,8 +24,6 @@
  */
 package com.sun.tdk.signaturetest.core;
 
-import java.lang.reflect.Array;
-
 /**
  * @author Mikhail Ershov
  */

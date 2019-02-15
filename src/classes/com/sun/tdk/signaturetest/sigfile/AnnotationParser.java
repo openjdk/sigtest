@@ -158,7 +158,7 @@ public class AnnotationParser {
     }
 
     private void parseAnnData(AnnotationItem item, String specificData) {
-        item.setTarget(Integer.valueOf(specificData).intValue());
+        item.setTarget(Integer.valueOf(specificData));
     }
 
     private void parseAnnExData(AnnotationItemEx item, String specificData) {

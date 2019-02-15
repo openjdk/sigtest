@@ -269,7 +269,7 @@ public class ModSetup extends ModBase {
 
 
     public enum WriteMode {
-        SIGFILE, STRUCT_CUMULATIVE, STRUCT_PLAIN;
+        SIGFILE, STRUCT_CUMULATIVE, STRUCT_PLAIN
     }
 
 

@@ -28,7 +28,6 @@ import com.sun.tdk.signaturetest.core.ClassHierarchy;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**

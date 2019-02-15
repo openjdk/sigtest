@@ -239,7 +239,7 @@ public class SetupAndTest extends Result {
         sb.append(nl).append(i18n.getString("SignatureTest.usage.mode", SignatureTest.MODE_OPTION));
 
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.formatplain", Option.FORMATPLAIN));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.classcachesize", new Object[]{SigTest.CLASSCACHESIZE_OPTION, new Integer(SigTest.DefaultCacheSize)}));
+        sb.append(nl).append(i18n.getString("SetupAndTest.usage.classcachesize", new Object[]{SigTest.CLASSCACHESIZE_OPTION, SigTest.DefaultCacheSize}));
         sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
         sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", Option.VERSION));
         sb.append(nl).append(i18n.getString("SetupAndTest.usage.help", Option.HELP));

@@ -43,7 +43,7 @@ public interface Exclude {
      * @param args vector of all parameters
      * @return vector of parameters which can't be parsed by this extension
      */
-    public String[] parseParameters(String[] args);
+    String[] parseParameters(String[] args);
 
     /**
      * Checks if the given signature is excluded.
@@ -55,7 +55,7 @@ public interface Exclude {
      * @throws ExcludeException if signature is to be excluded with message
      * which is used by SignatureTest for diagnostic messages
      */
-    public void check(ClassDescription testedClass, MemberDescription signature) throws ExcludeException;
+    void check(ClassDescription testedClass, MemberDescription signature) throws ExcludeException;
 
     /**
      * This method is invoked after all checks, to get plugin's summary report.
@@ -63,5 +63,5 @@ public interface Exclude {
      *
      * @return report for plugin work or null if no report is needed.
      */
-    public String report();
+    String report();
 }

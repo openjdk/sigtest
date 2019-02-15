@@ -1426,7 +1426,7 @@ public class SignatureTest extends SigTest {
             }
         }
 
-        return (AnnotationItem[]) list.toArray(new AnnotationItem[]{});
+        return (AnnotationItem[]) list.toArray(AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY);
     }
 
     private void reportError(ClassDescription fromClass, MemberDescription fid, String anno, boolean added) {

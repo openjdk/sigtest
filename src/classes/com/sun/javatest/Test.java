@@ -57,6 +57,6 @@ public interface Test {
      * was previously called "out".
      * @return A {@link Status} object representing the outcome of the test.
      */
-    public Status run(String[] args, PrintWriter out1, PrintWriter out2);
+    Status run(String[] args, PrintWriter out1, PrintWriter out2);
 
 }

@@ -84,7 +84,7 @@ public interface Classpath {
     KIND_CLASS_DATA isClassPresent(String qualifiedClassName);
 
     enum KIND_CLASS_DATA {
-        DESCRIPTION, BYTE_CODE, NOT_FOUND;
+        DESCRIPTION, BYTE_CODE, NOT_FOUND
     }
 
 

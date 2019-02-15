@@ -155,16 +155,10 @@ public abstract class MemberDescription implements Cloneable, Serializable {
             return false;
         }
         final MemberDescription other = (MemberDescription) obj;
-        if (!this.type.equals(other.type)) {
-            return false;
-        }
-        if (!this.declaringClass.equals(other.declaringClass)) {
-            return false;
-        }
-        if (!this.memberType.equals(other.memberType)) {
-            return false;
-        }
-        if (!this.name.equals(other.name)) {
+        if (!this.type.equals(other.type)
+                || !this.declaringClass.equals(other.declaringClass)
+                || !this.memberType.equals(other.memberType)
+                || !this.name.equals(other.name)) {
             return false;
         }
         return true;

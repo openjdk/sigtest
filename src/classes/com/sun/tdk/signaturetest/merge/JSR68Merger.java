@@ -607,7 +607,7 @@ public class JSR68Merger extends FeaturesHolder {
                 } else {
                     // some merge
                     FieldDescr f = new FieldDescr();
-                    if (mergeFields((FieldDescr[]) sameFields.toArray(new FieldDescr[0]), f)) {
+                    if (mergeFields((FieldDescr[]) sameFields.toArray(FieldDescr.EMPTY_ARRAY), f)) {
                         if (!h.contains(f.getName())) {
                             fields.add(f);
                         }
@@ -619,7 +619,7 @@ public class JSR68Merger extends FeaturesHolder {
             }
         }
 
-        result.setFields((FieldDescr[]) fields.toArray(new FieldDescr[0]));
+        result.setFields((FieldDescr[]) fields.toArray(FieldDescr.EMPTY_ARRAY));
         return true;
     }
 
@@ -666,7 +666,7 @@ public class JSR68Merger extends FeaturesHolder {
                 ArrayList sameMethods = new ArrayList();
                 ArrayList finalMods = new ArrayList();
                 sameMethods.add(mf);
-                finalMods.add(Boolean.valueOf(mf.isFinal() || similarClasses[i].isFinal()));
+                finalMods.add(mf.isFinal() || similarClasses[i].isFinal());
                 boolean isUnique = true;
                 for (int k = 0; k < similarClasses.length; k++) {
                     if (k == i) {
@@ -677,7 +677,7 @@ public class JSR68Merger extends FeaturesHolder {
                         if (methodDescr.getSignature().equals(mf.getSignature())) {
                             isUnique = false;
                             sameMethods.add(methodDescr);
-                            finalMods.add(Boolean.valueOf(methodDescr.isFinal() || similarClasses[k].isFinal()));
+                            finalMods.add(methodDescr.isFinal() || similarClasses[k].isFinal());
                         }
                     }
                 }
@@ -689,7 +689,7 @@ public class JSR68Merger extends FeaturesHolder {
                 } else {
                     // some merge
                     MethodDescr m = new MethodDescr();
-                    if (mergeMethods((MethodDescr[]) sameMethods.toArray(new MethodDescr[0]), m, finalMods)) {
+                    if (mergeMethods((MethodDescr[]) sameMethods.toArray(MethodDescr.EMPTY_ARRAY), m, finalMods)) {
                         if (!h.contains(m.getSignature())) {
                             methods.add(m);
                         }
@@ -701,7 +701,7 @@ public class JSR68Merger extends FeaturesHolder {
             }
         }
 
-        result.setMethods((MethodDescr[]) methods.toArray(new MethodDescr[0]));
+        result.setMethods((MethodDescr[]) methods.toArray(MethodDescr.EMPTY_ARRAY));
 
         return true;
     }
@@ -736,7 +736,7 @@ public class JSR68Merger extends FeaturesHolder {
                     // some merge
                     ConstructorDescr c = new ConstructorDescr();
 
-                    if (mergeConstructors((ConstructorDescr[]) sameConstr.toArray(new ConstructorDescr[0]), c)) {
+                    if (mergeConstructors((ConstructorDescr[]) sameConstr.toArray(ConstructorDescr.EMPTY_ARRAY), c)) {
                         if (!h.contains(c.getSignature())) {
                             constr.add(c);
                         }
@@ -748,7 +748,7 @@ public class JSR68Merger extends FeaturesHolder {
             }
         }
 
-        result.setConstructors((ConstructorDescr[]) constr.toArray(new ConstructorDescr[0]));
+        result.setConstructors((ConstructorDescr[]) constr.toArray(ConstructorDescr.EMPTY_ARRAY));
         return true;
     }
 
@@ -776,7 +776,7 @@ public class JSR68Merger extends FeaturesHolder {
             if (!similarMethods[i].isAbstract()) {
                 notAbstract = true;
             }
-            if (!((Boolean) finalMods.get(i)).booleanValue()) {
+            if (!(Boolean) finalMods.get(i)) {
                 hasFinal = false;
             }
         }
@@ -825,7 +825,7 @@ public class JSR68Merger extends FeaturesHolder {
             AnnotationItem[] annos = similarMember.getAnnoList();
             annotations.addAll(Arrays.asList(annos));
         }
-        result.setAnnoList((AnnotationItem[]) annotations.toArray(new AnnotationItem[0]));
+        result.setAnnoList((AnnotationItem[]) annotations.toArray(AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY));
 
     }
 

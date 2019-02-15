@@ -36,7 +36,7 @@ import java.util.Set;
 public interface ClassHierarchy extends ClassDescriptionLoader {
 
     // track mode
-    public static final int ALL_PUBLIC = 2;
+    int ALL_PUBLIC = 2;
 
     String getSuperClass(String fqClassName) throws ClassNotFoundException;
 

@@ -353,7 +353,7 @@ public class CMerge {
         return modifS.toString();
     }
 
-    private void saveToXml(Document d, String oFile) throws TransformerConfigurationException, TransformerException {
+    private void saveToXml(Document d, String oFile) throws TransformerException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");

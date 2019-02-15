@@ -28,7 +28,7 @@ import com.sun.tdk.signaturetest.core.ClassDescriptionLoader;
 import com.sun.tdk.signaturetest.core.PrimitiveTypes;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.SwissKnife;
-import java.io.PrintWriter;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

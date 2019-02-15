@@ -251,13 +251,9 @@ public class AnnotationItem implements Comparable {
                 return false;
             }
             final Member other = (Member) obj;
-            if (!SwissKnife.equals(this.type, other.type)) {
-                return false;
-            }
-            if (!SwissKnife.equals(this.name, other.name)) {
-                return false;
-            }
-            if (!SwissKnife.equals(this.value, other.value)) {
+            if (!SwissKnife.equals(this.type, other.type)
+                    || !SwissKnife.equals(this.name, other.name)
+                    || !SwissKnife.equals(this.value, other.value)) {
                 return false;
             }
             return true;

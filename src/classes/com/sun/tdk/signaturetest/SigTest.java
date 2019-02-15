@@ -45,7 +45,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -368,7 +367,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             //  static mode
 
             loader = getLoader("com.sun.tdk.signaturetest.loaders.BinaryClassDescrLoader", new Class[]{Classpath.class, Integer.class},
-                    new Object[]{getClasspath(), new Integer(cacheSize)}, getLog());
+                    new Object[]{getClasspath(), cacheSize}, getLog());
 
             if (loader == null) {
                 throw new LinkageError(i18n.getString("SigTest.error.mgr.linkerr.loadstatic"));
@@ -569,7 +568,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             }
         }
         unpackedAnnotations.removeAll(toRemove);
-        return unpackedAnnotations.toArray(new AnnotationItem[]{});
+        return unpackedAnnotations.toArray(AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY);
     }
 
     protected AnnotationItem[] normalizeArrayParaemeters(AnnotationItem[] annotations, Set exclusions, ClassHierarchy ch) {

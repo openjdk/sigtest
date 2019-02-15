@@ -166,7 +166,7 @@ class F21Reader extends SignatureClassLoader {
                 } else if ("long".equals(type)) {
                     oVal = new Long(value);
                 } else if ("char".equals(type)) {
-                    oVal = new Character((char) Integer.parseInt(value));
+                    oVal = (char) Integer.parseInt(value);
                 } else if ("byte".equals(type)) {
                     oVal = new Byte(value);
                 } else if ("double".equals(type)) {

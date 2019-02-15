@@ -98,12 +98,12 @@ public enum Option {
     private Kind kind;
     private String alias;
 
-    private Option(String key, Kind kind) {
+    Option(String key, Kind kind) {
         this.key = key;
         this.kind = kind;
     }
 
-    private Option(String key, String alias, Kind kind) {
+    Option(String key, String alias, Kind kind) {
         this.key = key;
         this.kind = kind;
         this.alias = alias;
@@ -145,7 +145,7 @@ public enum Option {
     }
 
     public enum Kind {
-        NONE, SINGLE_OPT, SINGLE_REQ, MANY_OPT, REQ_LIST, INSTEAD_OF_ANY;
+        NONE, SINGLE_OPT, SINGLE_REQ, MANY_OPT, REQ_LIST, INSTEAD_OF_ANY
     }
 
 }

@@ -24,7 +24,6 @@
  */
 package com.sun.tdk.signaturetest.updater;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**

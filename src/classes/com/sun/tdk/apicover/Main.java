@@ -439,13 +439,13 @@ public class Main implements Log {
 
     private void error(String s) {
         log.println(s);
-        if (!Boolean.valueOf(System.getProperty(Result.NO_EXIT)).booleanValue()) {
+        if (!Boolean.valueOf(System.getProperty(Result.NO_EXIT))) {
             System.exit(1);
         }
     }
 
     private void passed() {
-        if (!Boolean.valueOf(System.getProperty(Result.NO_EXIT)).booleanValue()) {
+        if (!Boolean.valueOf(System.getProperty(Result.NO_EXIT))) {
             System.exit(0);
         }
     }

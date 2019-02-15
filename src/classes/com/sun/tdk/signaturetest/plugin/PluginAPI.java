@@ -33,15 +33,15 @@ import com.sun.tdk.signaturetest.sigfile.Format;
 public interface PluginAPI {
 
     // Injections that have default implementation
-    static final InjectionPoint IS_CLASS_ACCESSIBLE = new InjectionPoint(true, false);
-    static final InjectionPoint AFTER_BUILD_MEMBERS = new InjectionPoint(false, true);
-    static final InjectionPoint ON_CLASS_LOAD = new InjectionPoint(false, true);
-    static final InjectionPoint BEFORE_WRITE = new InjectionPoint(true, true);
+    InjectionPoint IS_CLASS_ACCESSIBLE = new InjectionPoint(true, false);
+    InjectionPoint AFTER_BUILD_MEMBERS = new InjectionPoint(false, true);
+    InjectionPoint ON_CLASS_LOAD = new InjectionPoint(false, true);
+    InjectionPoint BEFORE_WRITE = new InjectionPoint(true, true);
     // Injections only for transformers
-    static final InjectionPoint BEFORE_TEST = new InjectionPoint(true, true);
-    static final InjectionPoint AFTER_CLASS_CORRECTOR = new InjectionPoint(false, true);
-    static final InjectionPoint CLASS_CORRECTOR = new InjectionPoint(false, true);
-    static final InjectionPoint BEFORE_MESSAGE_SORT = new InjectionPoint(true);
+    InjectionPoint BEFORE_TEST = new InjectionPoint(true, true);
+    InjectionPoint AFTER_CLASS_CORRECTOR = new InjectionPoint(false, true);
+    InjectionPoint CLASS_CORRECTOR = new InjectionPoint(false, true);
+    InjectionPoint BEFORE_MESSAGE_SORT = new InjectionPoint(true);
 
     Context getContext();
 

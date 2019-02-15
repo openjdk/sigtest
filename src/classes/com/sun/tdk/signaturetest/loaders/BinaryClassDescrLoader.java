@@ -87,7 +87,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                         && constants[i].tag != CONSTANT_Fieldref) {
                     continue;
                 }
-                int refs = ((Integer) getConstant(i).info).intValue();
+                int refs = (Integer) getConstant(i).info;
                 short nameAndType = (short) refs;
                 short decl = (short) (refs >> 16);
 
@@ -138,7 +138,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             Constant c = getConstant(i);
             c.checkConstant(CONSTANT_Class);
 
-            c = getConstant(((Integer) c.info).intValue());
+            c = getConstant((Integer) c.info);
             c.checkConstant(CONSTANT_Utf8);
 
             return ((String) c.info).replace('/', '.');
@@ -151,7 +151,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
             Constant c = getConstant(i);
             c.checkConstant(CONSTANT_NameAndType);
-            return getName(((Integer) c.info).intValue() >> 16);
+            return getName((Integer) c.info >> 16);
         }
 
         private String getMethodType(int i) {
@@ -210,7 +210,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
      */
     public BinaryClassDescrLoader(Classpath classpath, Integer bufferSize) {
         this.classpath = classpath;
-        cache = new LRUCache(bufferSize.intValue());
+        cache = new LRUCache(bufferSize);
     }
 
     /**
@@ -324,37 +324,37 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             tag = classData.readByte();
             switch (tag) {
                 case CONSTANT_Class:
-                    info = new Integer(classData.readUnsignedShort());
+                    info = classData.readUnsignedShort();
                     break;
 
                 case CONSTANT_Fieldref:
                 case CONSTANT_Methodref:
                 case CONSTANT_InterfaceMethodref:
-                    info = new Integer(classData.readInt());
+                    info = classData.readInt();
                     break;
 
                 case CONSTANT_String:
-                    info = new Short(classData.readShort());
+                    info = classData.readShort();
                     break;
 
                 case CONSTANT_Integer:
-                    info = new Integer(classData.readInt());
+                    info = classData.readInt();
                     break;
 
                 case CONSTANT_Float:
-                    info = new Float(classData.readFloat());
+                    info = classData.readFloat();
                     break;
 
                 case CONSTANT_Long:
-                    info = new Long(classData.readLong());
+                    info = classData.readLong();
                     break;
 
                 case CONSTANT_Double:
-                    info = new Double(classData.readDouble());
+                    info = classData.readDouble();
                     break;
 
                 case CONSTANT_NameAndType:
-                    info = new Integer(classData.readInt());
+                    info = classData.readInt();
                     break;
 
                 case CONSTANT_Utf8:
@@ -661,11 +661,11 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
             if (fid.isFinal() && attrs.value != null) {
                 if ("boolean".equals(type)) {
-                    attrs.value = Boolean.valueOf(((Integer) attrs.value).intValue() != 0);
+                    attrs.value = ((Integer) attrs.value).intValue() != 0;
                 } else if ("byte".equals(type)) {
-                    attrs.value = new Byte(((Integer) attrs.value).byteValue());
+                    attrs.value = ((Integer) attrs.value).byteValue();
                 } else if ("char".equals(type)) {
-                    attrs.value = new Character((char) ((Integer) attrs.value).shortValue());
+                    attrs.value = (char) ((Integer) attrs.value).shortValue();
                 }
 
                 fid.setConstantValue(MemberDescription.valueToString(attrs.value));
@@ -1130,17 +1130,17 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             switch (tag) {
                 case 'Z':
                     v = c.getConstantValue(is.readUnsignedShort());
-                    v = Boolean.valueOf(((Integer) v).intValue() != 0);
+                    v = ((Integer) v).intValue() != 0;
                     break;
 
                 case 'B':
                     v = c.getConstantValue(is.readUnsignedShort());
-                    v = new Byte(((Integer) v).byteValue());
+                    v = ((Integer) v).byteValue();
                     break;
 
                 case 'C':
                     v = c.getConstantValue(is.readUnsignedShort());
-                    v = new Character((char) ((Integer) v).shortValue());
+                    v = (char) ((Integer) v).shortValue();
                     break;
 
                 case 'D':

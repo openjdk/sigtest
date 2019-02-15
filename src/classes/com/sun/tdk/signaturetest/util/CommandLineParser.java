@@ -340,12 +340,12 @@ public class CommandLineParser {
             int maxCount = info.getMaxCount();
 
             if (paramCount < minCount) {
-                throw new CommandLineParserException(i18n.getString("CommandLineParser.error.option.require_more_parameters", new Object[]{option, new Integer(minCount)}));
+                throw new CommandLineParserException(i18n.getString("CommandLineParser.error.option.require_more_parameters", new Object[]{option, minCount}));
             }
 
             if (paramCount > maxCount) {
 
-                String msg = i18n.getString("CommandLineParser.error.option.require_less_parameters", new Object[]{option, new Integer(maxCount)});
+                String msg = i18n.getString("CommandLineParser.error.option.require_less_parameters", new Object[]{option, maxCount});
 
                 if (maxCount == 0) {
                     msg = i18n.getString("CommandLineParser.error.option.require_no_parameters", option);

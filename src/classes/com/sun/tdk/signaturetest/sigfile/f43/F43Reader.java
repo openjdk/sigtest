@@ -32,7 +32,6 @@ import com.sun.tdk.signaturetest.sigfile.f42.F42Reader;
 import com.sun.tdk.signaturetest.toyxml.Elem;
 import com.sun.tdk.signaturetest.toyxml.ToyParser;
 
-import java.io.StringReader;
 import java.util.*;
 
 import static com.sun.tdk.signaturetest.core.context.ModFeatures.featureSetFromCommaList;

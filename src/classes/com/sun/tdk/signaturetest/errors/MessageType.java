@@ -136,10 +136,8 @@ public class MessageType implements Comparable {
     }
 
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null
+                || getClass() != obj.getClass()) {
             return false;
         }
         final MessageType other = (MessageType) obj;

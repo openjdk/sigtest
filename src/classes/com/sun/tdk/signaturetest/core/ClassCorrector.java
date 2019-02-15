@@ -242,8 +242,8 @@ public class ClassCorrector implements Transformer {
         // sort - shorten paths first
         Collections.sort(paths, new Comparator() {
             public int compare(Object o1, Object o2) {
-                Integer s1 = new Integer(((ArrayList) o1).size());
-                Integer s2 = new Integer(((ArrayList) o2).size());
+                Integer s1 = ((ArrayList) o1).size();
+                Integer s2 = ((ArrayList) o2).size();
                 return s1.compareTo(s2);
             }
         });

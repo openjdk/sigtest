@@ -24,7 +24,6 @@
  */
 package com.sun.tdk.signaturetest.loaders;
 
-import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.core.AppContext;
 import com.sun.tdk.signaturetest.core.ClassDescriptionLoader;
 import com.sun.tdk.signaturetest.core.PrimitiveTypes;

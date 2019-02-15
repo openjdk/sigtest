@@ -50,7 +50,7 @@ public interface LoadingHints {
      */
     Hint READ_ANY_ANNOTATIONS = new Hint("READ_ANY_ANNOTATIONS");
 
-    public static class Hint {
+    class Hint {
 
         private String name;
 

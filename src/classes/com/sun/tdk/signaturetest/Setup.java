@@ -265,7 +265,7 @@ public class Setup extends SigTest {
 
     private void afterParseParameters() {
         if (explicitlyGenConsts != null) {
-            setConstantValuesTracked(explicitlyGenConsts.booleanValue());
+            setConstantValuesTracked(explicitlyGenConsts);
         } else {
             BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
             setConstantValuesTracked(bo.isSet(Option.STATIC));
