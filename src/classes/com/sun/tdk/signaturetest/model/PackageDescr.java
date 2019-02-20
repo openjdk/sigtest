@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -29,8 +29,8 @@ import java.util.List;
 
 public class PackageDescr {
 
-    private List classes;
-    private List subpackages;
+    private List<ClassDescription> classes;
+    private List<PackageDescr> subpackages;
     private String fqname;
     private String name = "";
 
@@ -45,13 +45,13 @@ public class PackageDescr {
     public PackageDescr(String fqname) {
         this.fqname = fqname;
         this.name = fqname.lastIndexOf(".") > 0 ? fqname.substring(fqname.lastIndexOf(".") + 1) : fqname;
-        this.classes = new ArrayList();
-        this.subpackages = new ArrayList();
+        this.classes = new ArrayList<>();
+        this.subpackages = new ArrayList<>();
     }
 
     public void add(ClassDescription cd) {
         for (int i = 0; i < classes.size(); i++) {
-            if (((ClassDescription) classes.get(i)).getQualifiedName()
+            if ((classes.get(i)).getQualifiedName()
                     .compareTo(cd.getQualifiedName()) > 0) {
                 classes.add(i, cd);
                 return;
@@ -62,7 +62,7 @@ public class PackageDescr {
 
     public void add(PackageDescr pd) {
         for (int i = 0; i < subpackages.size(); i++) {
-            if (((PackageDescr) subpackages.get(i)).getQualifiedName().compareTo(pd.getQualifiedName()) > 0) {
+            if ((subpackages.get(i)).getQualifiedName().compareTo(pd.getQualifiedName()) > 0) {
                 subpackages.add(i, pd);
                 return;
             }
@@ -71,7 +71,7 @@ public class PackageDescr {
         subpackages.add(pd);
     }
 
-    public void addAll(List list) {
+    public void addAll(List<ClassDescription> list) {
         classes.addAll(list);
     }
 
@@ -79,11 +79,11 @@ public class PackageDescr {
         this.classes.clear();
     }
 
-    public List getDeclaredClasses() {
+    public List<ClassDescription> getDeclaredClasses() {
         return classes;
     }
 
-    public List getDeclaredPackages() {
+    public List<PackageDescr> getDeclaredPackages() {
         return subpackages;
     }
 

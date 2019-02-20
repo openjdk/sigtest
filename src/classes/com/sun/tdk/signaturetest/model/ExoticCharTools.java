@@ -108,7 +108,7 @@ public class ExoticCharTools {
                 sb.append(name.substring(pPos + 1));
                 return sb.toString();
             } else {
-                sb.append(name.substring(pPos + 1, nextPaund));
+                sb.append(name, pPos + 1, nextPaund);
                 exoPos = nextPaund;
             }
         }

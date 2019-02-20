@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class Modifier implements Serializable {
 
-    private static final Map knownModifiers = new HashMap();
+    private static final Map<String, Modifier> knownModifiers = new HashMap<>();
     public static final Modifier ABSTRACT = new Modifier("abstract", 0x00000400, java.lang.reflect.Modifier.ABSTRACT, true);
     public static final Modifier PUBLIC = new Modifier("public", 0x00000001, java.lang.reflect.Modifier.PUBLIC, true);
     public static final Modifier PRIVATE = new Modifier("private", 0x00000002, java.lang.reflect.Modifier.PRIVATE, true);
@@ -76,19 +76,19 @@ public final class Modifier implements Serializable {
     }
 
     public static Modifier getModifier(String name) {
-        return (Modifier) knownModifiers.get(name);
+        return knownModifiers.get(name);
     }
 
     public static Modifier[] getAllModifiers() {
-        return (Modifier[]) knownModifiers.values().toArray(new Modifier[]{});
+        return knownModifiers.values().toArray(new Modifier[]{});
     }
 
-    public static int scanModifiers(List elems) {
+    public static int scanModifiers(List<String> elems) {
 
         int result = 0;
 
         while (elems.size() > 0) {
-            Modifier m = getModifier((String) elems.get(0));
+            Modifier m = getModifier(elems.get(0));
             if (m != null) {
                 result |= m.value;
                 elems.remove(0);

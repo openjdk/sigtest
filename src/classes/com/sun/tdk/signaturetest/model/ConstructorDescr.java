@@ -143,7 +143,7 @@ public final class ConstructorDescr extends MemberDescription {
         return buf.toString();
     }
 
-    protected void populateDependences(Set set) {
+    protected void populateDependences(Set<String> set) {
         StringTokenizer st = new StringTokenizer(args, ARGS_DELIMITER);
         while (st.hasMoreTokens()) {
             addDependency(set, st.nextToken());

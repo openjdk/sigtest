@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -109,9 +109,9 @@ public class ClassDescription extends MemberDescription {
         return '0' <= c && c <= '9';
     }
 
-    public ArrayList getTypeBounds() {
+    public ArrayList<String> getTypeBounds() {
 //        assert typeParameters != null;
-        ArrayList bounds = new ArrayList();
+        ArrayList<String> bounds = new ArrayList<>();
         int startPos = 1;
         int endPos;
         do {
@@ -219,7 +219,7 @@ public class ClassDescription extends MemberDescription {
 
     public static class TypeParameterList {
 
-        Map/*String,TypeParam*/ tab = new HashMap();
+        Map<String, TypeParam> tab = new HashMap<>();
         int seqnb = 0;
 
         public TypeParameterList(TypeParameterList enclosing) {
@@ -239,7 +239,7 @@ public class ClassDescription extends MemberDescription {
         public void add(String id, String declared) {
             TypeParam e = new TypeParam(seqnb++, id, declared);
 
-            TypeParam o = (TypeParam) tab.put(id, e);
+            TypeParam o = tab.put(id, e);
             if (o == null) {
                 return;
             }
@@ -253,20 +253,18 @@ public class ClassDescription extends MemberDescription {
         }
 
         public void clear(String declared) {
-            Collection/*TypeParam*/ tmp = new ArrayList();
+            Collection<TypeParam> tmp = new ArrayList<>();
 
             //  Get list of parameters to be removed
-            for (Object o1 : tab.entrySet()) {
-                Map.Entry ent = (Map.Entry) o1;
-                TypeParam e = (TypeParam) ent.getValue();
+            for (Map.Entry<String, TypeParam> ent : tab.entrySet()) {
+                TypeParam e = ent.getValue();
                 if (e.declared.equals(declared)) {
                     tmp.add(e);
                 }
             }
 
             //  Remove parameter or replace it with previously hidden
-            for (Object o : tmp) {
-                TypeParam e = (TypeParam) o;
+            for (TypeParam e : tmp) {
                 if (e.hidden == null) {
                     tab.remove(e.ident);
                 } else {
@@ -276,7 +274,7 @@ public class ClassDescription extends MemberDescription {
         }
 
         public String replace(String id) {
-            TypeParam e = (TypeParam) tab.get(id);
+            TypeParam e = tab.get(id);
             if (e == null) {
                 return replaceNone(id);
             } else {
@@ -389,7 +387,7 @@ public class ClassDescription extends MemberDescription {
      * @see #members
      * @see MemberDescription
      */
-    public Iterator getMembersIterator() {
+    public Iterator<MemberDescription> getMembersIterator() {
         assert members != null;
         return members.iterator();
     }
@@ -397,8 +395,8 @@ public class ClassDescription extends MemberDescription {
     //  Remove the throws list completely for 'bin' mode
     public void removeThrows() {
         //  For every methods and constructors ...
-        for (Iterator e = members.iterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = members.iterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isConstructor()) {
                 mr.setThrowables(MemberDescription.EMPTY_THROW_LIST);
             }
@@ -513,10 +511,10 @@ public class ClassDescription extends MemberDescription {
     private SuperInterface[] interfaces = SuperInterface.EMPTY_ARRAY;
     private InnerDescr[] nestedClasses = InnerDescr.EMPTY_ARRAY;
     // these class's members initialized only if class description loaded from signature file
-    private Set internalFields = null;  // contains private and package access fields
-    private Set internalClasses = null; // contains private and package access nested classes
-    private Set xFields = null;  // contains fields that prevent resolve other fields by simple name
-    private Set xClasses = null;  // contains inner that prevent resolve other classes by simple name
+    private Set<String> internalFields = null;  // contains private and package access fields
+    private Set<String> internalClasses = null; // contains private and package access nested classes
+    private Set<String> xFields = null;  // contains fields that prevent resolve other fields by simple name
+    private Set<String> xClasses = null;  // contains inner that prevent resolve other classes by simple name
 
     public void setNestedClasses(InnerDescr[] ncls) {
         nestedClasses = ncls;
@@ -543,87 +541,87 @@ public class ClassDescription extends MemberDescription {
         return m.hasModifier(Modifier.PRIVATE) || (!m.hasModifier(Modifier.PUBLIC) && !m.hasModifier(Modifier.PROTECTED));
     }
 
-    public void setInternalFields(Set fields) {
+    public void setInternalFields(Set<String> fields) {
         internalFields = fields;
     }
 
-    public void setInternalClasses(Set classes) {
+    public void setInternalClasses(Set<String> classes) {
         internalClasses = classes;
     }
 
-    public Set getInternalFields() {
+    public Set<String> getInternalFields() {
 
-        Set result = internalFields;
+        Set<String> result = internalFields;
         if (result == null) {
             // try to find private field in the declared fields
             for (MemberDescription m : declaredFields) {
                 if (isInternalMember(m)) {
                     if (result == null) {
-                        result = new HashSet();
+                        result = new HashSet<>();
                     }
                     result.add(m.getName());
                 }
             }
             if (result == null) {
-                result = Collections.EMPTY_SET;
+                result = Collections.emptySet();
             }
         }
         return result;
     }
 
-    public Set getXFields() {
+    public Set<String> getXFields() {
         if (xFields == null) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         } else {
             return xFields;
         }
     }
 
-    public void setXFields(Set fileds) {
+    public void setXFields(Set<String> fileds) {
         xFields = fileds;
     }
 
     public void addXFields(String name) {
         if (xFields == null) {
-            xFields = new HashSet();
+            xFields = new HashSet<>();
         }
         xFields.add(name);
     }
 
-    public Set getXClasses() {
+    public Set<String> getXClasses() {
         if (xClasses == null) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         } else {
             return xClasses;
         }
     }
 
-    public void setXClasses(Set classes) {
+    public void setXClasses(Set<String> classes) {
         xClasses = classes;
     }
 
     public void addXClasses(String name) {
         if (xClasses == null) {
-            xClasses = new HashSet();
+            xClasses = new HashSet<>();
         }
         xClasses.add(name);
     }
 
-    public Set getInternalClasses() {
+    public Set<String> getInternalClasses() {
 
-        Set result = internalClasses;
+        Set<String> result = internalClasses;
         if (result == null) {
             // try to find private class in the declared classes
             for (MemberDescription m : nestedClasses) {
                 if (isInternalMember(m)) {
                     if (result == null) {
-                        result = new HashSet();
+                        result = new HashSet<>();
                     }
                     result.add(m.getName());
                 }
             }
             if (result == null) {
-                result = Collections.EMPTY_SET;
+                result = Collections.emptySet();
             }
         }
         return result;
@@ -661,13 +659,13 @@ public class ClassDescription extends MemberDescription {
         return NO_DECLARING_CLASS.equals(declaringClass);
     }
 
-    public Set getDependences() {
-        Set set = new HashSet();
+    public Set<String> getDependences() {
+        Set<String> set = new HashSet<>();
         populateDependences(set);
         return set;
     }
 
-    protected void populateDependences(Set dependences) {
+    protected void populateDependences(Set<String> dependences) {
 
         // Note! Nested classes do NOT tracked!
         populateDependences(getInterfaces(), dependences);
@@ -693,7 +691,7 @@ public class ClassDescription extends MemberDescription {
         }
     }
 
-    public void populateDependences(MemberDescription[] members, Set dependences) {
+    public void populateDependences(MemberDescription[] members, Set<String> dependences) {
         for (MemberDescription member : members) {
             if (member.isPublic() || member.isProtected()) {
                 member.populateDependences(dependences);

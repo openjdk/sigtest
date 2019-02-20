@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -30,7 +30,7 @@ import java.util.*;
 /**
  * @author Serguei Ivashin (isl@nbsp.nsk.su)
  */
-public class AnnotationItem implements Comparable {
+public class AnnotationItem implements Comparable<AnnotationItem> {
 
     public static final String ANNOTATION_PREFIX = "anno";
     public static final String ANNOTATION_INHERITED = "java.lang.annotation.Inherited";
@@ -50,8 +50,7 @@ public class AnnotationItem implements Comparable {
     public AnnotationItem() {
     }
 
-    public int compareTo(Object o) {
-        AnnotationItem that = (AnnotationItem) o;
+    public int compareTo(AnnotationItem that) {
         int diff = getSpecificData().compareTo(that.getSpecificData());
         if (diff == 0) {
             diff = name.compareTo(that.name);
@@ -72,11 +71,11 @@ public class AnnotationItem implements Comparable {
                 diff = members.size() - that.members.size();
                 if (diff == 0) {
 
-                    Iterator it = members.iterator();
-                    Iterator that_it = that.members.iterator();
+                    Iterator<Member> it = members.iterator();
+                    Iterator<Member> that_it = that.members.iterator();
 
                     while (it.hasNext() && diff == 0) {
-                        Member m = (Member) it.next();
+                        Member m = it.next();
                         diff = m.compareTo(that_it.next());
                     }
                 }
@@ -114,9 +113,9 @@ public class AnnotationItem implements Comparable {
     //  Type name of the annotation.
     private String name;
     //  List of the member/value pairs.
-    private SortedSet/*Member*/ members = null;
+    private SortedSet<Member> members = null;
 
-    protected Set getMembers() {
+    protected Set<Member> getMembers() {
         return members;
     }
 
@@ -138,7 +137,7 @@ public class AnnotationItem implements Comparable {
 
     public void addMember(Member m) {
         if (members == null) {
-            members = new TreeSet();
+            members = new TreeSet<>();
         }
         members.add(m);
     }
@@ -151,11 +150,11 @@ public class AnnotationItem implements Comparable {
         members.remove(m);
     }
 
-    public static void normaliazeAnnotation(AnnotationItem an, Set orderImportant) {
+    public static void normaliazeAnnotation(AnnotationItem an, Set<String> orderImportant) {
         // orderImportant can be null for some unit-tests
         if (orderImportant != null && !orderImportant.contains(an.name) && an.members != null) {
-            for (Object member : an.members) {
-                normAnnMember((Member) member);
+            for (Member member : an.members) {
+                normAnnMember(member);
             }
         }
     }
@@ -166,7 +165,7 @@ public class AnnotationItem implements Comparable {
             // sort them
             String sValues = m.value.substring(1, m.value.length() - 1);
             StringTokenizer st = new StringTokenizer(sValues, ",");
-            ArrayList ts = new ArrayList();
+            ArrayList<String> ts = new ArrayList<>();
             while (st.hasMoreTokens()) {
                 ts.add(st.nextToken().trim());
             }
@@ -186,7 +185,7 @@ public class AnnotationItem implements Comparable {
         return m;
     }
 
-    public static class Member implements Comparable {
+    public static class Member implements Comparable<Member> {
 
         public String type;
         public String name;
@@ -206,9 +205,7 @@ public class AnnotationItem implements Comparable {
         public Member() {
         }
 
-        public int compareTo(Object x) {
-            Member that = (Member) x;
-
+        public int compareTo(Member that) {
             int result = compareNullableStrings(type, that.type);
 
             if (result == 0) {
@@ -285,8 +282,7 @@ public class AnnotationItem implements Comparable {
 
     public Member findByName(String name) {
         if (members != null) {
-            for (Object member : members) {
-                Member m = (Member) member;
+            for (Member m : members) {
                 if (m.name.equals(name)) {
                     return m;
                 }
@@ -317,8 +313,7 @@ public class AnnotationItem implements Comparable {
         sb.append(name).append('(');
         int i = 0;
         if (members != null) {
-            for (Object member : members) {
-                Member m = (Member) member;
+            for (Member m : members) {
                 if (i++ != 0) {
                     sb.append(", ");
                 }

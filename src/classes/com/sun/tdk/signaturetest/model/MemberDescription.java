@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -737,10 +737,10 @@ public abstract class MemberDescription implements Cloneable, Serializable {
 
     public abstract boolean isCompatible(MemberDescription m);
 
-    protected void populateDependences(Set dependences) {
+    protected void populateDependences(Set<String> dependences) {
     }
 
-    protected void addDependency(Set dependences, String newDependency) {
+    protected void addDependency(Set<String> dependences, String newDependency) {
 
         if (newDependency.charAt(0) == '{') {
             return;

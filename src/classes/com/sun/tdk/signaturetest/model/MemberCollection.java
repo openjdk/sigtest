@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -35,10 +35,10 @@ import java.util.Set;
  */
 public class MemberCollection {
 
-    private Set members;
+    private Set<MemberDescription> members;
 
     public MemberCollection() {
-        members = new HashSet();
+        members = new HashSet<>();
     }
 
     /**
@@ -71,7 +71,7 @@ public class MemberCollection {
         return members.contains(newMember);
     }
 
-    public Iterator iterator() {
+    public Iterator<MemberDescription> iterator() {
         return members.iterator();
     }
 
@@ -87,8 +87,7 @@ public class MemberCollection {
     }
 
     public MemberDescription find(MemberDescription mr) {
-        for (Object member1 : members) {
-            MemberDescription member = (MemberDescription) member1;
+        for (MemberDescription member : members) {
             if (member.equals(mr)) {
                 return member;
             }
@@ -97,8 +96,7 @@ public class MemberCollection {
     }
 
     public MemberDescription findSimilar(MemberDescription mr) {
-        for (Object member1 : members) {
-            MemberDescription member = (MemberDescription) member1;
+        for (MemberDescription member : members) {
             if (member.getType().equals(mr.getType()) && member.getName().equals(mr.getName())) {
                 return member;
             }
@@ -108,8 +106,7 @@ public class MemberCollection {
 
     public int getMembersCount(MemberType memberType, String fqname) {
         int count = 0;
-        for (Object member1 : members) {
-            MemberDescription member = (MemberDescription) member1;
+        for (MemberDescription member : members) {
             if ((memberType == null || memberType == member.getMemberType())
                     && fqname.equals(member.getQualifiedName())) {
                 count++;

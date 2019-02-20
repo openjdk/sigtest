@@ -141,7 +141,7 @@ public class ModuleDescription {
 
 
     public static class Provides {
-        public Set<String> providers = Collections.EMPTY_SET; //Returns the set of provider names.
+        public Set<String> providers = Collections.emptySet(); //Returns the set of provider names.
         public String service;
 
         @Override
@@ -186,7 +186,7 @@ public class ModuleDescription {
         }
 
         public String name;
-        public Set<ModuleDescription.Requires.Modifier> modifiers = Collections.EMPTY_SET;
+        public Set<ModuleDescription.Requires.Modifier> modifiers = Collections.emptySet();
 
         public String getName() {
             return name;
@@ -203,7 +203,7 @@ public class ModuleDescription {
 
     public static class Exports {
         public String source;
-        public Set<String> targets = Collections.EMPTY_SET; // optional
+        public Set<String> targets = Collections.emptySet(); // optional
 
         @Override
         public String toString() {
