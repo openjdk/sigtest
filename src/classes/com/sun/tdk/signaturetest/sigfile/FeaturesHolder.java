@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -28,7 +28,7 @@ import java.util.*;
 
 public class FeaturesHolder {
 
-    private Set supportedFeatures;
+    private Set<Feature> supportedFeatures;
     public static final Feature ConstInfo = new Feature("#NoConstInfo");
     public static final Feature TigerInfo = new Feature("#NoTigerFeaturesInfo");
     public static final Feature MergeModeSupported = new Feature("#MergeModeSupported");
@@ -46,14 +46,14 @@ public class FeaturesHolder {
         supportedFeatures.add(feature);
     }
 
-    public Set getSupportedFeatures() {
+    public Set<Feature> getSupportedFeatures() {
         ensureInitialized();
         return supportedFeatures;
     }
 
     private void ensureInitialized() {
         if (supportedFeatures == null) {
-            supportedFeatures = new HashSet();
+            supportedFeatures = new HashSet<>();
         }
     }
 
@@ -71,11 +71,11 @@ public class FeaturesHolder {
         return supportedFeatures != null;
     }
 
-    public void setFeatures(Set features) {
-        supportedFeatures = new HashSet(features);
+    public void setFeatures(Set<Feature> features) {
+        supportedFeatures = new HashSet<>(features);
     }
 
-    public void retainFeatures(Set features) {
+    public void retainFeatures(Set<Feature> features) {
         supportedFeatures.retainAll(features);
     }
 

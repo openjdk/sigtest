@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -47,7 +47,7 @@ import java.util.StringTokenizer;
  */
 public class MultipleFileReader extends VirtualClassDescriptionLoader implements AutoCloseable {
 
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MultipleFileReader.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MultipleFileReader.class);
     public static final int CLASSPATH_MODE = 1;
     public static final int MERGE_MODE = 2;
     private Iterator classIterator = null;
@@ -55,7 +55,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader implements
     private int mode;
     private String apiVersion;
     private FileManager fileMan;
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
     private List<Elem> elements;
 
     public MultipleFileReader(PrintWriter log, int mode, FileManager f) {

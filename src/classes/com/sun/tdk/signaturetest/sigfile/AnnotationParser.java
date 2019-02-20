@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -39,7 +39,7 @@ import java.util.StringTokenizer;
 public class AnnotationParser {
 
     private static final String CLASS_PREFIX = "java.lang.Class";
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(AnnotationParser.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(AnnotationParser.class);
 
     // Opposite action that toString() method does.
     // TODO should be moved to the parser as well as "toString" moved to the writer
@@ -110,13 +110,13 @@ public class AnnotationParser {
     }
 
     // unpack annotations from Container's array
-    public List unpack(String annS) {
-        ArrayList res = new ArrayList();
+    public List<AnnotationItem> unpack(String annS) {
+        ArrayList<AnnotationItem> res = new ArrayList<>();
         String str = annS.trim();
         if (str.charAt(0) == '[') {
             str = str.substring(1);
         } else {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         if (str.charAt(str.length() - 1) == ']') {
@@ -171,7 +171,7 @@ public class AnnotationParser {
             int delPos = set.indexOf("=");
             assert delPos > 0;
             String name = set.substring(0, delPos);
-            String val = set.substring(delPos + 1, set.length());
+            String val = set.substring(delPos + 1);
             switch (name) {
                 case AnnotationItemEx.ANN_TARGET_TYPE:
                     item.setTargetType(Integer.parseInt(val.substring(2), 16));

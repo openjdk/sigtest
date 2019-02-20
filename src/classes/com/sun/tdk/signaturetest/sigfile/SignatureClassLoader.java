@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -46,12 +46,12 @@ import java.util.*;
  */
 public abstract class SignatureClassLoader implements Reader {
 
-    protected Format format;
-    protected Set features = new HashSet();
+    protected final Format format;
+    protected Set<FeaturesHolder.Feature> features;
     private BufferedReader in;
-    private Parser parser;
+    private final Parser parser;
     private final int BUFSIZE = 0x8000;
-    private List<Elem> elems;
+    private final List<Elem> elems;
     /**
      * API version found in <code>this</code> signature file.
      */
@@ -74,7 +74,7 @@ public abstract class SignatureClassLoader implements Reader {
         return features.contains(feature);
     }
 
-    public Set getAllSupportedFeatures() {
+    public Set<FeaturesHolder.Feature> getAllSupportedFeatures() {
         return features;
     }
 
@@ -93,7 +93,7 @@ public abstract class SignatureClassLoader implements Reader {
 
         String currentLine;
         String classDescr = null;
-        List definitions = new ArrayList();
+        List<String> definitions = new ArrayList<>();
 
         for (;;) {
             in.mark(BUFSIZE);
@@ -168,7 +168,7 @@ public abstract class SignatureClassLoader implements Reader {
 
     protected abstract String convertClassDescr(String descr);
 
-    protected abstract List convertClassDefinitions(List definitions);
+    protected abstract List<String> convertClassDefinitions(List<String> definitions);
 
     /**
      * Open <code>fileURL</code> for input, and parse comments to initialize

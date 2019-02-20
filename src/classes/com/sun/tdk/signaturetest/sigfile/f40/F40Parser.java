@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -47,13 +47,13 @@ public class F40Parser implements Parser {
     private List<String> elems;
     private String currentClassName;
 
-    public ClassDescription parseClassDescription(String classDefinition, List /*String*/ members) {
+    public ClassDescription parseClassDescription(String classDefinition, List<String> members) {
 
         ClassDescription classDescription = processClassDescription(classDefinition);
 
         MemberDescription m = classDescription;
-        List alist = new ArrayList();
-        List items = new ArrayList();
+        List<String> alist = new ArrayList<>();
+        List<MemberDescription> items = new ArrayList<>();
 
         int method_count = 0, field_count = 0, constructor_count = 0, inner_count = 0, interfaces_count = 0;
 
@@ -72,10 +72,10 @@ public class F40Parser implements Parser {
             } else if (str.startsWith(ClassDescription.OUTER_PREFIX)) {
                 processOuter(classDescription, str);
             } else if (str.startsWith(F40Format.HIDDEN_FIELDS)) {
-                Set internalFields = parseInternals(str);
+                Set<String> internalFields = parseInternals(str);
                 classDescription.setInternalFields(internalFields);
             } else if (str.startsWith(F40Format.HIDDEN_CLASSES)) {
-                Set internalClasses = parseInternals(str);
+                Set<String> internalClasses = parseInternals(str);
                 classDescription.setInternalClasses(internalClasses);
             } else {
                 appendAnnotations(m, alist);
@@ -173,9 +173,9 @@ public class F40Parser implements Parser {
     protected void processOuter(ClassDescription classDescription, String str) {
     }
 
-    protected Set parseInternals(String str) {
+    protected Set<String> parseInternals(String str) {
 
-        Set result = new HashSet();
+        Set<String> result = new HashSet<>();
         int startPos = str.indexOf(' ') + 1;
         int nextPos;
         do {
@@ -195,14 +195,14 @@ public class F40Parser implements Parser {
         return result;
     }
 
-    protected void appendAnnotations(MemberDescription fid, List/*String*/ alist) {
+    protected void appendAnnotations(MemberDescription fid, List<String> alist) {
         if (alist.size() != 0) {
 
             AnnotationItem[] tmp = new AnnotationItem[alist.size()];
             AnnotationParser par = new AnnotationParser();
 
             for (int i = 0; i < alist.size(); ++i) {
-                tmp[i] = par.parse((String) alist.get(i));
+                tmp[i] = par.parse(alist.get(i));
             }
 
             fid.setAnnoList(tmp);
@@ -429,7 +429,7 @@ public class F40Parser implements Parser {
     }
 
     private void scanElems() {
-        elems = new LinkedList();
+        elems = new LinkedList<>();
 
         for (;;) {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -39,11 +39,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -54,15 +51,15 @@ import java.util.*;
  */
 public class StructWriter {
 
-    private ModSetupOptions mo = AppContext.getContext().getBean(ModSetupOptions.class);
-    private ArrayDeque<ModuleDescription> modulesToWrite = new ArrayDeque<>();
-    private HashSet<String> moduleNames = new HashSet<>();
-    private HashSet<String> reportedModuleNames = new HashSet<>();
+    private final ModSetupOptions mo = AppContext.getContext().getBean(ModSetupOptions.class);
+    private final ArrayDeque<ModuleDescription> modulesToWrite = new ArrayDeque<>();
+    private final HashSet<String> moduleNames = new HashSet<>();
+    private final HashSet<String> reportedModuleNames = new HashSet<>();
 
     // Generate structure file for APICover
     public boolean createStructFile(ModSetup.WriteMode wm, HashMap<String, ModuleDescription> model, Set<ModuleDescription> allModules) {
 
-        URL signatureFile = null;
+        URL signatureFile;
         Map<String, ModuleDescription> allModulesMap = new HashMap<>();
         for (ModuleDescription md : allModules) {
             allModulesMap.put(md.getName(), md);

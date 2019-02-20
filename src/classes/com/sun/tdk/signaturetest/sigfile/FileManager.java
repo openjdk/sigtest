@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -39,7 +39,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -88,13 +87,12 @@ public class FileManager {
     /**
      * Returns the latest Writer for format supported given set of features
      */
-    public Writer getWriter(Set features) {
+    public Writer getWriter(Set<FeaturesHolder.Feature> features) {
 
-        List applicableFormats = new ArrayList(formats.size());
+        List<Format> applicableFormats = new ArrayList<>(formats.size());
 
-        for (Object format1 : formats) {
-            Format format = (Format) format1;
-            Set formatFeatures = format.getSupportedFeatures();
+        for (Format format : formats) {
+            Set<FeaturesHolder.Feature> formatFeatures = format.getSupportedFeatures();
             if (features.equals(formatFeatures)) {
                 applicableFormats.add(format);
             }
@@ -147,7 +145,7 @@ public class FileManager {
         defaultFormat = frm;
     }
     private Format defaultFormat = new F43Format();
-    private List formats = new ArrayList();
+    private final List<Format> formats = new ArrayList<>();
 
     public FileManager() {
         formats.add(defaultFormat);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -30,7 +30,6 @@ import com.sun.tdk.signaturetest.sigfile.Parser;
 import com.sun.tdk.signaturetest.sigfile.SignatureClassLoader;
 import com.sun.tdk.signaturetest.sigfile.f31.F31Parser;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,11 +52,9 @@ class F21Reader extends SignatureClassLoader {
         return descr;
     }
 
-    protected List convertClassDefinitions(List definitions) {
-        ArrayList newDef = new ArrayList();
-        for (Object definition : definitions) {
-            String memberDef = (String) definition;
-
+    protected List<String> convertClassDefinitions(List<String> definitions) {
+        ArrayList<String> newDef = new ArrayList<>();
+        for (String memberDef : definitions) {
             // 1) skip "supr null"
             if ("supr null".equals(memberDef)) {
                 continue;
@@ -192,9 +189,9 @@ class F21Reader extends SignatureClassLoader {
         }
         return memberDef;
     }
-    private static Pattern constantDeclaration = Pattern.compile("<constant> <value=\".*\">");
-    private static Pattern valueDeclaration = Pattern.compile("\".*\"");
-    private static Pattern arrayDeclaration = Pattern.compile("\\[+[BCDFIJSZVL]");
-    private static Pattern constructorName = Pattern.compile("\\.\\w+\\(");
-    private static Pattern unicodeSim = Pattern.compile("\\\\u(?i)[\\da-f]{4}");
+    private static final Pattern constantDeclaration = Pattern.compile("<constant> <value=\".*\">");
+    private static final Pattern valueDeclaration = Pattern.compile("\".*\"");
+    private static final Pattern arrayDeclaration = Pattern.compile("\\[+[BCDFIJSZVL]");
+    private static final Pattern constructorName = Pattern.compile("\\.\\w+\\(");
+    private static final Pattern unicodeSim = Pattern.compile("\\\\u(?i)[\\da-f]{4}");
 }

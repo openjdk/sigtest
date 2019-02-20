@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -45,20 +45,19 @@ public class F31Parser implements Parser {
     private int linesz;
     private int idx;
     private char chr;
-    private List elems;
+    private List<String> elems;
     private int directInterfaceCount;
 
-    public ClassDescription parseClassDescription(String classDefinition, List members) {
+    public ClassDescription parseClassDescription(String classDefinition, List<String> members) {
 
         directInterfaceCount = 0;
 
         ClassDescription classDescription = (ClassDescription) parse(classDefinition);
         MemberCollection classMembers = new MemberCollection();
         MemberDescription member = classDescription;
-        List alist = new ArrayList();
+        List<String> alist = new ArrayList<>();
 
-        for (Object member1 : members) {
-            String str = (String) member1;
+        for (String str : members) {
             if (str.startsWith(AnnotationItem.ANNOTATION_PREFIX)) {
                 alist.add(str);
             } else {
@@ -86,36 +85,36 @@ public class F31Parser implements Parser {
             }
         }
 
-        ArrayList methods = new ArrayList();
-        ArrayList fields = new ArrayList();
-        ArrayList constrs = new ArrayList();
-        ArrayList inners = new ArrayList();
-        ArrayList intfs = new ArrayList();
+        ArrayList<MethodDescr> methods = new ArrayList<>();
+        ArrayList<FieldDescr> fields = new ArrayList<>();
+        ArrayList<ConstructorDescr> constrs = new ArrayList<>();
+        ArrayList<InnerDescr> inners = new ArrayList<>();
+        ArrayList<SuperInterface> intfs = new ArrayList<>();
         for (Iterator it = classMembers.iterator(); it.hasNext();) {
             MemberDescription md = (MemberDescription) it.next();
             if (md instanceof SuperClass) {
                 classDescription.setSuperClass((SuperClass) md);
             } else if (md instanceof SuperInterface) {
-                intfs.add(md);
+                intfs.add((SuperInterface) md);
             }
             if (!md.getDeclaringClassName().equals(classDescription.getQualifiedName())) {
                 continue;
             }
             if (md instanceof MethodDescr) {
-                methods.add(md);
+                methods.add((MethodDescr) md);
             } else if (md instanceof ConstructorDescr) {
-                constrs.add(md);
+                constrs.add((ConstructorDescr) md);
             } else if (md instanceof FieldDescr) {
-                fields.add(md);
+                fields.add((FieldDescr) md);
             } else if (md instanceof InnerDescr) {
-                inners.add(md);
+                inners.add((InnerDescr) md);
             }
         }
-        classDescription.setConstructors((ConstructorDescr[]) constrs.toArray(ConstructorDescr.EMPTY_ARRAY));
-        classDescription.setMethods((MethodDescr[]) methods.toArray(MethodDescr.EMPTY_ARRAY));
-        classDescription.setFields((FieldDescr[]) fields.toArray(FieldDescr.EMPTY_ARRAY));
-        classDescription.setNestedClasses((InnerDescr[]) inners.toArray(InnerDescr.EMPTY_ARRAY));
-        classDescription.setInterfaces((SuperInterface[]) intfs.toArray(SuperInterface.EMPTY_ARRAY));
+        classDescription.setConstructors(constrs.toArray(ConstructorDescr.EMPTY_ARRAY));
+        classDescription.setMethods(methods.toArray(MethodDescr.EMPTY_ARRAY));
+        classDescription.setFields(fields.toArray(FieldDescr.EMPTY_ARRAY));
+        classDescription.setNestedClasses(inners.toArray(InnerDescr.EMPTY_ARRAY));
+        classDescription.setInterfaces(intfs.toArray(SuperInterface.EMPTY_ARRAY));
         return classDescription;
     }
 
@@ -292,7 +291,7 @@ public class F31Parser implements Parser {
         if (n == 0) {
             err();
         }
-        superCls.setupGenericClassName((String) elems.get(n - 1));
+        superCls.setupGenericClassName(elems.get(n - 1));
 
         return superCls;
     }
@@ -310,7 +309,7 @@ public class F31Parser implements Parser {
             superIntf.setDirect(true);
         }
 
-        superIntf.setupGenericClassName((String) elems.get(n - 1));
+        superIntf.setupGenericClassName(elems.get(n - 1));
         return superIntf;
     }
 
@@ -335,7 +334,7 @@ public class F31Parser implements Parser {
         String s = null;
 
         if (elems.size() != 0) {
-            s = (String) elems.get(0);
+            s = elems.get(0);
             elems.remove(0);
         }
 
@@ -347,7 +346,7 @@ public class F31Parser implements Parser {
     }
 
     private void scanElems() {
-        elems = new LinkedList();
+        elems = new LinkedList<>();
 
         for (;;) {
 

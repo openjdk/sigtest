@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -37,13 +37,13 @@ import java.util.*;
  */
 public class F40Writer implements Writer {
 
-    private Set features = new HashSet();
+    private final Set<FeaturesHolder.Feature> features = new HashSet<>();
     private Format format;
     private PrintWriter out;
     private boolean isConstantValuesSaved = true;
     private String apiVersion;
-    private StringBuffer buf = new StringBuffer(512);
-    private ArrayList members = new ArrayList();
+    private final StringBuffer buf = new StringBuffer(512);
+    private final ArrayList<String> members = new ArrayList<>();
 
     public F40Writer() {
         setFormat(new F40Format());
@@ -61,7 +61,7 @@ public class F40Writer implements Writer {
         return format;
     }
 
-    public void addFeature(Format.Feature feature) {
+    public void addFeature(FeaturesHolder.Feature feature) {
         assert getFormat().isFeatureSupported(feature);
         features.add(feature);
     }
@@ -373,10 +373,10 @@ public class F40Writer implements Writer {
         }
     }
 
-    protected void writeInternalMembers(StringBuffer buf, String prefix, Set internalMembers) {
+    protected void writeInternalMembers(StringBuffer buf, String prefix, Set<String> internalMembers) {
 
         // sort members
-        ArrayList intMembers = new ArrayList(internalMembers);
+        ArrayList<String> intMembers = new ArrayList<>(internalMembers);
         Collections.sort(intMembers);
 
         buf.setLength(0);
@@ -384,7 +384,7 @@ public class F40Writer implements Writer {
         buf.append(prefix);
         buf.append(" ");
         int count = 0;
-        for (Object intMember : intMembers) {
+        for (String intMember : intMembers) {
             if (count != 0) {
                 buf.append(',');
             }
