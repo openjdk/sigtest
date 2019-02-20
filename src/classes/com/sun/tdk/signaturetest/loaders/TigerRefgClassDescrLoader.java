@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -75,9 +75,9 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
     }
 
     // final because of security reasons
-    private final void load2(final ClassDescription cd, final String name2) throws ClassNotFoundException, GenericSignatureFormatError {
+    private void load2(final ClassDescription cd, final String name2) throws ClassNotFoundException, GenericSignatureFormatError {
         try {
-            AccessController.doPrivileged(new PrivilegedExceptionAction() {
+            AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
                 public Object run() throws Exception {
                     readClass(cd, Class.forName(name2, false, ldr));
                     return null;
@@ -226,7 +226,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
             c.getTypeparamList().clear("%");
 
             //  Parse the annotation set present
-            List alist = parse(c, 0, ctor.getDeclaredAnnotations());
+            List<AnnotationItem> alist = parse(c, 0, ctor.getDeclaredAnnotations());
             Annotation[][] aas = ctor.getParameterAnnotations();
             if (aas != null && aas.length != 0) {
                 for (int k = 0; k < aas.length; k++) {
@@ -309,7 +309,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
             c.getTypeparamList().clear("%");
 
             //  Parse the annotation set present
-            List alist = parse(c, 0, mtd.getDeclaredAnnotations());
+            List<AnnotationItem> alist = parse(c, 0, mtd.getDeclaredAnnotations());
             Annotation[][] aas = mtd.getParameterAnnotations();
             if (aas != null && aas.length != 0) {
                 for (int k = 0; k < aas.length; k++) {
@@ -372,18 +372,18 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
             sb.append('%').append(i);
 
             Type[] bounds = params[i].getBounds();
-            List/*String*/ tmp = new ArrayList();
+            List<String> tmp = new ArrayList<>();
             for (Type bound : bounds) {
                 tmp.add(decodeType(typeparamList, bound));
             }
 
-            String first = (String) tmp.remove(0);
+            String first = tmp.remove(0);
             sb.append(" extends ").append(first);
 
             if (tmp.size() != 0) {
                 Collections.sort(tmp);
-                for (Object o : tmp) {
-                    sb.append(" & ").append((String) o);
+                for (String o : tmp) {
+                    sb.append(" & ").append(o);
                 }
             }
         }
@@ -488,7 +488,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 //  Annotation parsing methods
 //
     List<AnnotationItem> parse(ClassDescription c, int target, Annotation[] xx) {
-        List<AnnotationItem> annolist = new ArrayList();
+        List<AnnotationItem> annolist = new ArrayList<>();
 
         if (xx != null) {
             for (Annotation xx1 : xx) {
@@ -557,7 +557,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
         return anno;
     }
-    private HashSet hints = new HashSet();
+    private HashSet<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);

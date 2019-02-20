@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -115,10 +115,10 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
     }
 
     // final because of security reasons
-    private final ClassDescription load2(final String name2) throws ClassNotFoundException {
+    private ClassDescription load2(final String name2) throws ClassNotFoundException {
         try {
-            return (ClassDescription) AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                public Object run() throws Exception {
+            return AccessController.doPrivileged(new PrivilegedExceptionAction<ClassDescription>() {
+                public ClassDescription run() throws Exception {
                     try {
                         if (forName == null) {
                             return loadClass(Class.forName(name2));
@@ -332,7 +332,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
 
         return sb.toString();
     }
-    private HashSet hints = new HashSet();
+    private HashSet<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);

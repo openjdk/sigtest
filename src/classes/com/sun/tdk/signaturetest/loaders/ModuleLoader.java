@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -62,7 +62,7 @@ public class ModuleLoader implements ModuleDescriptionLoader {
                 }
 
                 // 3. packages
-                rmd.setPackages(new LinkedHashSet(md.packages()));
+                rmd.setPackages(new LinkedHashSet<>(md.packages()));
 
                 // 4. exports
                 Set<ModuleDescriptor.Exports> exports = md.exports();
@@ -123,7 +123,7 @@ public class ModuleLoader implements ModuleDescriptionLoader {
                 rmd.setProvides(reprovides);
 
                 // 8. uses
-                Set<String> us = new LinkedHashSet(md.uses());
+                Set<String> us = new LinkedHashSet<>(md.uses());
                 rmd.setUses(us);
 
                 result.add(rmd);

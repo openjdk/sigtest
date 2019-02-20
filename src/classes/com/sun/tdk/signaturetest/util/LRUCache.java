@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * @author Roman Makarchuk
  */
-public class LRUCache extends java.util.LinkedHashMap {
+public class LRUCache<K, V> extends java.util.LinkedHashMap<K, V> {
 
     private static float LOAD_FACTOR = 0.75f;
     protected int maxSize;
@@ -39,7 +39,8 @@ public class LRUCache extends java.util.LinkedHashMap {
         this.maxSize = maxsize;
     }
 
-    protected boolean removeEldestEntry(Map.Entry eldest) {
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
         return size() > maxSize;
     }
 }

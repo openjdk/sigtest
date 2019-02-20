@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -76,7 +76,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
 
         List<MemberDescription> getMethodRefs() {
-            ArrayList<MemberDescription> memberList = new ArrayList();
+            ArrayList<MemberDescription> memberList = new ArrayList<>();
             int n = constants.length;
             for (int i = 1; i < n; i++) {
                 if (constants[i].tag == CONSTANT_Long || constants[i].tag == CONSTANT_Double) {
@@ -194,13 +194,13 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     /**
      * cache of the loaded classes.
      */
-    private LRUCache cache;
+    private LRUCache<String, BinaryClassDescription> cache;
     /**
      * This stack is used to prevent infinite recursive calls of load(String
      * name) method. E.g. the annotation Documented is one example of such
      * recursion
      */
-    private Map stack = new HashMap();
+    private Map<String, BinaryClassDescription> stack = new HashMap<>();
 
     /**
      * creates new instance.
@@ -210,7 +210,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
      */
     public BinaryClassDescrLoader(Classpath classpath, Integer bufferSize) {
         this.classpath = classpath;
-        cache = new LRUCache(bufferSize);
+        cache = new LRUCache<>(bufferSize);
     }
 
     /**
@@ -224,14 +224,14 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         assert className.indexOf('<') == -1 : className;
 
         // search in the cache
-        BinaryClassDescription c = (BinaryClassDescription) cache.get(className);
+        BinaryClassDescription c = cache.get(className);
 
         if (c != null) {
             return c;
         }
 
         // check recursive call
-        c = (BinaryClassDescription) stack.get(className);
+        c = stack.get(className);
         if (c != null) {
             return c;
         }
@@ -535,7 +535,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                     c.createInterfaces(num);
                     for (int i = 0; i < num; i++) {
                         SuperInterface fid = new SuperInterface();
-                        fid.setupGenericClassName((String) parser.class_intfs.get(i));
+                        fid.setupGenericClassName(parser.class_intfs.get(i));
                         fid.setDirect(true);
                         c.setInterface(i, fid);
                     }
@@ -554,7 +554,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     public List<MemberDescription> loadCalls(String name) throws ClassNotFoundException {
 
         // String name = ClassCorrector.stripGenerics(className);
-        List<MemberDescription> result = new ArrayList();
+        List<MemberDescription> result;
         try {
             BinaryClassDescription c = new BinaryClassDescription();
             try (DataInputStream classData = new DataInputStream(classpath.findClass(name))) {
@@ -578,7 +578,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
         void check(BinaryClassDescription c, String s) throws IOException {
             if (s.equals("InnerClasses")) {
-                List tmp = null;
+                List<InnerDescr> tmp = null;
 
                 String fqname = c.getQualifiedName();
 
@@ -609,7 +609,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                     // so additional check inner.indexOf(outer) added!
                     if (outer != null && outer.equals(fqname) && inner != null && inner.indexOf(outer) == 0) {
                         if (tmp == null) {
-                            tmp = new ArrayList();
+                            tmp = new ArrayList<>();
                         }
 
                         tmp.add(new InnerDescr(inner, outer, x));
@@ -617,7 +617,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 }
 
                 if (tmp != null) {
-                    c.setNestedClasses((InnerDescr[]) tmp.toArray(InnerDescr.EMPTY_ARRAY));
+                    c.setNestedClasses(tmp.toArray(InnerDescr.EMPTY_ARRAY));
                 }
             }
         }
@@ -628,8 +628,8 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
         int n = classData.readUnsignedShort();
 
-        List flds = new ArrayList();
-        List tmpflds = new ArrayList();
+        List<FieldDescr> flds = new ArrayList<>();
+        List<String> tmpflds = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
 
@@ -675,8 +675,8 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
 
         if ((n = flds.size()) != 0) {
-            c.setFields((FieldDescr[]) flds.toArray(FieldDescr.EMPTY_ARRAY));
-            c.sigfields = (String[]) tmpflds.toArray(EMPTY_STRING_ARRAY);
+            c.setFields(flds.toArray(FieldDescr.EMPTY_ARRAY));
+            c.sigfields = tmpflds.toArray(EMPTY_STRING_ARRAY);
         }
     }
 
@@ -715,11 +715,11 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     private static String[] EMPTY_STRING_ARRAY = new String[0];
 
     private void readMethods(BinaryClassDescription c, DataInput classData) throws IOException {
-        List ctors = new ArrayList(),
-                mthds = new ArrayList();
+        List<MemberDescription> ctors = new ArrayList<>(),
+                mthds = new ArrayList<>();
 
-        List tmpctors = new ArrayList(),
-                tmpmthds = new ArrayList();
+        List<String> tmpctors = new ArrayList<>(),
+                tmpmthds = new ArrayList<>();
 
         int n = classData.readUnsignedShort();
         for (int i = 0; i < n; i++) {
@@ -795,13 +795,13 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
 
         if ((n = ctors.size()) != 0) {
-            c.setConstructors((ConstructorDescr[]) ctors.toArray(ConstructorDescr.EMPTY_ARRAY));
-            c.sigctors = (String[]) tmpctors.toArray(EMPTY_STRING_ARRAY);
+            c.setConstructors(ctors.toArray(ConstructorDescr.EMPTY_ARRAY));
+            c.sigctors = tmpctors.toArray(EMPTY_STRING_ARRAY);
         }
 
         if ((n = mthds.size()) != 0) {
-            c.setMethods((MethodDescr[]) mthds.toArray(MethodDescr.EMPTY_ARRAY));
-            c.sigmethods = (String[]) tmpmthds.toArray(EMPTY_STRING_ARRAY);
+            c.setMethods(mthds.toArray(MethodDescr.EMPTY_ARRAY));
+            c.sigmethods = tmpmthds.toArray(EMPTY_STRING_ARRAY);
         }
     }
 
@@ -952,7 +952,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         boolean synthetic = false,
                 deprecated = false;
         String signature = null;
-        List/*AnnotationItem*/ annolist = null;
+        List<AnnotationItem> annolist = null;
         Object annodef = null;
 
         void read(BinaryClassDescription c, DataInput classData) throws IOException {
@@ -1016,7 +1016,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 return;
             }
             if (annolist == null) {
-                annolist = new ArrayList();
+                annolist = new ArrayList<>();
             }
 
             int m = is.readUnsignedShort();
@@ -1031,7 +1031,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 return;
             }
             if (annolist == null) {
-                annolist = new ArrayList();
+                annolist = new ArrayList<>();
             }
             int m = readShort();
             for (int l = 0; l < m; l++) {
@@ -1231,9 +1231,9 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
         String generic_pars;
         String class_supr;
-        List/*String*/ class_intfs;
+        List<String> class_intfs;
         String field_type;
-        List/*String*/ method_args,
+        List<String> method_args,
                 method_throws;
         //  - end of results area
         final String ownname;
@@ -1258,7 +1258,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             generic_pars = scanFormalTypeParameters(ownname);
             class_supr = scanFieldTypeSignature(true);
 
-            class_intfs = new ArrayList();
+            class_intfs = new ArrayList<>();
             while (!eol()) {
                 String intf = scanFieldTypeSignature(true);
                 class_intfs.add(intf);
@@ -1284,7 +1284,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
             generic_pars = scanFormalTypeParameters("%");
 
-            method_args = new ArrayList();
+            method_args = new ArrayList<>();
             scanChar('(');
             while (chr != ')') {
                 String t = scanFieldTypeSignature(true);
@@ -1294,7 +1294,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
             field_type = scanFieldTypeSignature(true);
 
-            method_throws = new ArrayList();
+            method_throws = new ArrayList<>();
             while (chr == '^') {
                 scanChar();
                 String t = scanFieldTypeSignature(true);
@@ -1309,7 +1309,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 return null;
             }
 
-            List/*List*/ parameters = new ArrayList();
+            List<List<String>> parameters = new ArrayList<>();
 
             //  First pass:scan all parameters and store bounds because they may
             //  contain forward references
@@ -1317,7 +1317,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             scanChar('<');
             for (;;) {
                 String ident = scanIdent(":>");
-                List/*String*/ bounds = new ArrayList();
+                List<String> bounds = new ArrayList<>();
 
                 while (chr == ':') {
                     scanChar();
@@ -1353,17 +1353,17 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 //  replace type variable with its ordinal number
                 sb.append('%').append(i);
 
-                List bounds = (List) parameters.get(i);
+                List<String> bounds = parameters.get(i);
 
                 //  replace possible forward refs '{ident}'
                 for (int k = 0; k < bounds.size(); k++) {
-                    bounds.set(k, typeparams.replaceForwards((String) bounds.get(k)));
+                    bounds.set(k, typeparams.replaceForwards(bounds.get(k)));
                 }
 
                 //  first bound is erasure and must stay in place
                 //  remaining bounds (if any) are sorted
                 if (bounds.size() > 0) {
-                    String first = (String) bounds.remove(0);
+                    String first = bounds.remove(0);
                     sb.append(" extends ").append(first);
 
                     if (bounds.size() != 0) {
@@ -1535,7 +1535,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     public void setIgnoreAnnotations(boolean value) {
         ignoreAnnotations = value;
     }
-    private HashSet hints = new HashSet();
+    private HashSet<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);
@@ -1556,5 +1556,5 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         this.log = log;
     }
     private PrintWriter log;
-    private HashSet notFoundAnnotations = new HashSet();
+    private HashSet<String> notFoundAnnotations = new HashSet<>();
 }

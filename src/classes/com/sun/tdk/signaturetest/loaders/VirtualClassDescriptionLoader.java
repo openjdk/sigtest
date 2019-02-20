@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -41,14 +41,14 @@ import java.util.TreeMap;
  */
 public class VirtualClassDescriptionLoader extends FeaturesHolder implements ClassDescriptionLoader {
 
-    private Map classDescriptions;
+    private Map<String, ClassDescription> classDescriptions;
 
     public VirtualClassDescriptionLoader() {
-        this.classDescriptions = new TreeMap();
+        this.classDescriptions = new TreeMap<>();
     }
 
     public ClassDescription load(String className) throws ClassNotFoundException {
-        ClassDescription cl = (ClassDescription) classDescriptions.get(className);
+        ClassDescription cl = classDescriptions.get(className);
         if (cl == null) {
             throw new ClassNotFoundException(className);
         }
