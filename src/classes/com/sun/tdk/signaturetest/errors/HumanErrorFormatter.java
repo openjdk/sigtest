@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -68,7 +68,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
         Chain ch = new Chain(failedMessages);
 
         for (int i = 0; i < length; i++) {
-            Message e1 = (Message) failedMessages.get(i);
+            Message e1 = failedMessages.get(i);
             if (e1 == null) {
                 continue;
             }
@@ -76,7 +76,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
             int j = i;
 
             while (j + 1 < failedMessages.size()) {
-                Message e2 = (Message) failedMessages.get(j + 1);
+                Message e2 = failedMessages.get(j + 1);
                 if (ec.compare(e1, e2) == 0) {
                     j++;
                 } else {
@@ -84,7 +84,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
                 }
             }
 
-            List currentGroup = failedMessages.subList(i, j + 1);
+            List<Message> currentGroup = failedMessages.subList(i, j + 1);
 
             Handler h = constructHandlerChain();
 
@@ -98,12 +98,12 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
 
         supressExtraErrors();
 
-        Iterator it = failedMessages.iterator();
+        Iterator<Message> it = failedMessages.iterator();
         numErrors = 0;
         numWarnings = 0;
 
         while (it.hasNext()) {
-            Message m = (Message) it.next();
+            Message m = it.next();
             if (level.intValue() <= m.getLevel().intValue()) {
                 numErrors++;
             } else {
@@ -122,8 +122,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
         MessageType lastType = null;
         String cl = "";
 
-        for (Message failedMessage : failedMessages) {
-            Message current = (Message) failedMessage;
+        for (Message current : failedMessages) {
             if (current == null) {
                 continue;
             }
@@ -202,15 +201,13 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
     }
 
     private void sortErrorsForOutput() {
-        Collections.sort(failedMessages, new Comparator() {
+        Collections.sort(failedMessages, new Comparator<Message>() {
             // 1 - By class
             // 2 - By object (CLSS, method, field, other)
             // 3 - By message type
             // 4 - By definition
-            public int compare(Object o1, Object o2) {
-                Message m1 = (Message) o1;
-                Message m2 = (Message) o2;
-
+            @Override
+            public int compare(Message m1, Message m2) {
                 if (m1 == null && m2 == null) {
                     return 0;
                 }
@@ -255,10 +252,9 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
 
     // Issue 39 - Suppress similar messages in human-readable formatter
     private void supressExtraErrors() {
-        Collections.sort(failedMessages, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Message m1 = (Message) o1;
-                Message m2 = (Message) o2;
+        Collections.sort(failedMessages, new Comparator<Message>() {
+            @Override
+            public int compare(Message m1, Message m2) {
                 if (!isSameKind(m1, m2)) {
                     return -1;  //bad practice, but...
                 }
@@ -266,14 +262,14 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
             }
         });
 
-        ArrayList toRemove = new ArrayList();
+        ArrayList<Message> toRemove = new ArrayList<>();
 
         loop:
         for (int i = 0; i < failedMessages.size(); i++) {
-            Message m1 = (Message) failedMessages.get(i);
+            Message m1 = failedMessages.get(i);
             int last = i;
             for (int j = i + 1; j < failedMessages.size(); j++) {
-                Message m2 = (Message) failedMessages.get(j);
+                Message m2 = failedMessages.get(j);
                 if (!isSameKind(m1, m2)) {
                     if (last == i) {
                         i = j;
@@ -286,9 +282,9 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
                 }
             }
             boolean found = false;
-            ArrayList rem = new ArrayList();
+            ArrayList<Message> rem = new ArrayList<>();
             for (int k = i; k <= last; k++) {
-                Message m = (Message) failedMessages.get(k);
+                Message m = failedMessages.get(k);
                 if (m.className.equals(m.errorObject.getDeclaringClassName())) {
                     found = true;
                 } else {
@@ -317,11 +313,10 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
                 && m1.messageType.equals(m2.messageType);
     }
 
-    private static class ErrorComparator implements Comparator {
+    private static class ErrorComparator implements Comparator<Message> {
 
-        public int compare(Object o1, Object o2) {
-            Message msg1 = (Message) o1;
-            Message msg2 = (Message) o2;
+        @Override
+        public int compare(Message msg1, Message msg2) {
             MemberDescription md1 = msg1.errorObject;
             MemberDescription md2 = msg2.errorObject;
 

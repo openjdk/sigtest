@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -115,16 +115,16 @@ public class BCProcessor extends HumanErrorFormatter {
         Rule1_1() {
             setLevel(Level.WARNING);
         }
-        private ErrorFormatter.Message m;
+        private Message m;
         private Handler r5 = new Rule5_2_3();
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
 
             if (l.size() != 1) {
                 return false;
             }
 
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
 
             // annotation fields are exceptions.
             // checked by the others rules depends on their default value
@@ -162,7 +162,7 @@ public class BCProcessor extends HumanErrorFormatter {
                     || (m.messageType == MessageType.ADD_METHS);
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             if (!bin) {
                 m.definition = i18n.getString("BCProcessor.error.1_1"); //"W1.1 - API type added";
                 setMessageLevel(m);
@@ -181,13 +181,13 @@ public class BCProcessor extends HumanErrorFormatter {
 
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
 
             if (l.size() != 1) {
                 return false;
             }
 
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
 
             boolean retval = (m.messageType == MessageType.MISS_CLASSES)
                     || (m.messageType == MessageType.MISS_FIELDS)
@@ -201,7 +201,7 @@ public class BCProcessor extends HumanErrorFormatter {
             return retval;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.1_2");  //"E1.2 - API type removed";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -245,13 +245,13 @@ public class BCProcessor extends HumanErrorFormatter {
 
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
 
             if (l.size() != 1) {
                 return false;
             }
 
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             if (m.messageType == MessageType.ADD_METHS && m.errorObject instanceof MethodDescr) {
                 MethodDescr md = (MethodDescr) m.errorObject;
                 try {
@@ -277,7 +277,7 @@ public class BCProcessor extends HumanErrorFormatter {
             return false;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.2_1"); //"E2.1 - Interface method added";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -320,13 +320,13 @@ public class BCProcessor extends HumanErrorFormatter {
             setLevel(Level.WARNING);
         }
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
 
             if (l.size() != 1) {
                 return false;
             }
 
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             if (m.messageType == MessageType.ADD_FLD && m.errorObject instanceof FieldDescr) {
                 FieldDescr md = (FieldDescr) m.errorObject;
                 // see 2.3 for other case
@@ -341,7 +341,7 @@ public class BCProcessor extends HumanErrorFormatter {
             return false;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.2_2"); //"W2.2 - Interface field added";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -357,7 +357,7 @@ public class BCProcessor extends HumanErrorFormatter {
 
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (l.size() != 1) {
                 return false;
             }
@@ -366,7 +366,7 @@ public class BCProcessor extends HumanErrorFormatter {
                 return false;
             }
 
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             if (m.messageType == MessageType.ADD_FLD && m.errorObject instanceof FieldDescr) {
                 FieldDescr md = (FieldDescr) m.errorObject;
                 // see 2.2 for other case
@@ -381,7 +381,7 @@ public class BCProcessor extends HumanErrorFormatter {
             return false;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.2_3");  //"W2.3 - Adding interfaces with constants ";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -397,16 +397,16 @@ public class BCProcessor extends HumanErrorFormatter {
 
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (l.size() != 1) {
                 return false;
             }
 
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             return m.messageType == MessageType.MISS_SUPERCLASSES && m.errorObject instanceof SuperInterface;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.2_4"); //"E2.4 - Contracting superinterface set (direct or inherited) ";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -417,13 +417,13 @@ public class BCProcessor extends HumanErrorFormatter {
 
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
 
             if (l.size() != 1 || bin) {
                 return false;
             }
 
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             if (m.messageType == MessageType.ADD_METHS && m.errorObject instanceof MethodDescr) {
                 MethodDescr md = (MethodDescr) m.errorObject;
                 try {
@@ -440,7 +440,7 @@ public class BCProcessor extends HumanErrorFormatter {
             }
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.2_5"); //"E2.5 - Adding member without default value to annotation type";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -451,13 +451,13 @@ public class BCProcessor extends HumanErrorFormatter {
 
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
 
             if (l.size() != 1) {
                 return false;
             }
 
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             if (m.messageType == MessageType.MISS_METHS && m.errorObject instanceof MethodDescr) {
                 MethodDescr md = (MethodDescr) m.errorObject;
                 try {
@@ -473,7 +473,7 @@ public class BCProcessor extends HumanErrorFormatter {
             }
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.2_7"); //"E2.7 - Removing member from annotation type";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -511,7 +511,7 @@ public class BCProcessor extends HumanErrorFormatter {
 
     class Rule3_3 extends MethodPairedHandler {
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             return !bin && super.acceptMessageList(l);
         }
 
@@ -528,7 +528,7 @@ public class BCProcessor extends HumanErrorFormatter {
 
     class Rule3_4 extends PairedHandler {
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             return super.acceptMessageList(l) && !bin;
         }
 
@@ -644,7 +644,7 @@ public class BCProcessor extends HumanErrorFormatter {
             setLevel(Level.WARNING);
         }
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (!super.acceptMessageList(l)
                     || r46.acceptMessageList(l)
                     || r47.acceptMessageList(l)
@@ -675,7 +675,7 @@ public class BCProcessor extends HumanErrorFormatter {
 
     static class Rule4_6 extends FieldPairedHandler {
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (!super.acceptMessageList(l)) {
                 return false;
             }
@@ -692,7 +692,7 @@ public class BCProcessor extends HumanErrorFormatter {
 
     static class Rule4_7 extends FieldPairedHandler {
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (!super.acceptMessageList(l)) {
                 return false;
             }
@@ -709,7 +709,7 @@ public class BCProcessor extends HumanErrorFormatter {
 
     static class Rule4_8 extends FieldPairedHandler {
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (!super.acceptMessageList(l)) {
                 return false;
             }
@@ -736,11 +736,11 @@ public class BCProcessor extends HumanErrorFormatter {
             setLevel(Level.WARNING);
         }
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (l.size() != 1) {
                 return false;
             }
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             if (m.messageType == MessageType.ADD_METHS && m.errorObject instanceof MethodDescr) {
                 try {
                     return !(clHier.isInterface(m.className) || clHier.isAnnotation(m.className));
@@ -752,7 +752,7 @@ public class BCProcessor extends HumanErrorFormatter {
             return false;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             try {
                 ClassDescription cd = clHier.load(m.className);
                 MethodDescr md = (MethodDescr) m.errorObject;
@@ -777,11 +777,11 @@ public class BCProcessor extends HumanErrorFormatter {
 
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (l.size() != 1) {
                 return false;
             }
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             if (m.messageType == MessageType.ADD_METHS && m.errorObject instanceof MethodDescr) {
                 try {
                     return !(clHier.isInterface(m.className) || clHier.isAnnotation(m.className));
@@ -793,7 +793,7 @@ public class BCProcessor extends HumanErrorFormatter {
             return false;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             try {
                 ClassDescription cd = clHier.load(m.className);
                 MethodDescr md = (MethodDescr) m.errorObject;
@@ -827,15 +827,15 @@ public class BCProcessor extends HumanErrorFormatter {
 
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (l.size() != 1) {
                 return false;
             }
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             return m.messageType == MessageType.MISS_CONSTRUCTORS;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.5_4"); // "E5.4 - Removing constructor";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -853,11 +853,11 @@ public class BCProcessor extends HumanErrorFormatter {
         }
         private ErrorFormatter.Message m;
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             if (l.size() != 1) {
                 return false;
             }
-            m = (ErrorFormatter.Message) l.get(0);
+            m = l.get(0);
             if (m.messageType == MessageType.ADD_FLD) {
                 try {
                     ClassDescription cd = clHier.load(m.className);
@@ -870,7 +870,7 @@ public class BCProcessor extends HumanErrorFormatter {
             return false;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             m.definition = i18n.getString("BCProcessor.error.5_6"); // "W5.6 - Adding fields";
             setMessageLevel(m);
             ch.addMessage(m);
@@ -906,11 +906,11 @@ public class BCProcessor extends HumanErrorFormatter {
 
     static class Terminator extends Handler {
 
-        boolean acceptMessageList(List l) {
+        boolean acceptMessageList(List<Message> l) {
             return true;
         }
 
-        protected void writeMessage(List l, Chain ch) {
+        protected void writeMessage(List<Message> l, Chain ch) {
             ch.setMessagesProcessed(l);
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest.errors;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.FieldDescr;
 import com.sun.tdk.signaturetest.model.MethodDescr;
+import com.sun.tdk.signaturetest.errors.ErrorFormatter.Message;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ abstract class FieldPairedHandler extends PairedHandler {
     protected FieldDescr f1;
     protected FieldDescr f2;
 
-    boolean acceptMessageList(List l) {
+    boolean acceptMessageList(List<Message> l) {
         if (!super.acceptMessageList(l)) {
             return false;
         }
@@ -59,7 +60,7 @@ abstract class MethodPairedHandler extends PairedHandler {
     protected MethodDescr meth1;
     protected MethodDescr meth2;
 
-    boolean acceptMessageList(List l) {
+    boolean acceptMessageList(List<Message> l) {
         if (!super.acceptMessageList(l)) {
             return false;
         }
@@ -78,7 +79,7 @@ abstract class ClassPairedHandler extends PairedHandler {
     protected ClassDescription c1;
     protected ClassDescription c2;
 
-    boolean acceptMessageList(List l) {
+    boolean acceptMessageList(List<Message> l) {
         if (!super.acceptMessageList(l)) {
             return false;
         }

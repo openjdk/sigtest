@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -52,7 +52,7 @@ public abstract class Handler {
         return this;
     }
 
-    void process(List l, Chain ch) {
+    void process(List<Message> l, Chain ch) {
         if (acceptMessageList(l)) {
             writeMessage(l, ch);
         }
@@ -67,32 +67,32 @@ public abstract class Handler {
      *  messages and "short" lists
      *  handler which have to process such cases have to override this method.
      */
-    boolean acceptMessageList(List l) {
+    boolean acceptMessageList(List<Message> l) {
         if (l.size() < 2) {
             return false;
         }
-        Message e1 = (Message) l.get(0);
-        Message e2 = (Message) l.get(1);
+        Message e1 = l.get(0);
+        Message e2 = l.get(1);
 
         return !(isAnnotationMessage(e1) || isAnnotationMessage(e2));
 
     }
 
-    protected abstract void writeMessage(List l, Chain ch);
+    protected abstract void writeMessage(List<Message> l, Chain ch);
 
     boolean isAnnotationMessage(Message m) {
         return (m.messageType == MessageType.ADD_ANNO
                 || m.messageType == MessageType.MISS_ANNO);
     }
-    protected static final ArrayList EMPTY_ARRAY_LIST = new ArrayList();
+    protected static final ArrayList<String>  EMPTY_ARRAY_LIST = new ArrayList<>();
 
-    protected static ArrayList stringToArrayList(String source, String delimiter) {
+    protected static ArrayList<String> stringToArrayList(String source, String delimiter) {
         if ((source == null) || source.length() == 0) {
             return EMPTY_ARRAY_LIST;
         }
 
         String[] strA;
-        ArrayList result = new ArrayList();
+        ArrayList<String> result = new ArrayList<>();
         try {
             strA = source.split(delimiter);
         } catch (PatternSyntaxException e) {
@@ -151,7 +151,7 @@ abstract class PairedHandler extends Handler {
     protected MemberDescription m2;
     protected Message newM;
 
-    final protected void writeMessage(List l, Chain ch) {
+    final protected void writeMessage(List<Message> l, Chain ch) {
 
         init(l);
 
@@ -172,9 +172,9 @@ abstract class PairedHandler extends Handler {
 
     }
 
-    protected void init(List l) {
-        me1 = (Message) l.get(0);
-        me2 = (Message) l.get(1);
+    protected void init(List<Message>  l) {
+        me1 = l.get(0);
+        me2 = l.get(1);
 
         m1 = me1.errorObject;
         m2 = me2.errorObject;
@@ -191,11 +191,11 @@ class ModifiersHandler extends PairedHandler {
 
     protected boolean proc() {
 
-        Collection c1 = Handler.stringToArrayList(Modifier.toString(m1.getMemberType(), m1.getModifiers(), true), " ");
-        Collection c2 = Handler.stringToArrayList(Modifier.toString(m2.getMemberType(), m2.getModifiers(), true), " ");
+        Collection<String> c1 = Handler.stringToArrayList(Modifier.toString(m1.getMemberType(), m1.getModifiers(), true), " ");
+        Collection<String> c2 = Handler.stringToArrayList(Modifier.toString(m2.getMemberType(), m2.getModifiers(), true), " ");
 
         if (!c1.equals(c2)) {
-            Collection c3 = new ArrayList(c2);
+            Collection<String> c3 = new ArrayList<>(c2);
             c2.removeAll(c1);
             c1.removeAll(c3);
 
@@ -232,10 +232,10 @@ class ReturnTypeHandler extends PairedHandler {
 
 class ConstantValueHandler extends PairedHandler {
 
-    boolean acceptMessageList(List l) {
+    boolean acceptMessageList(List<Message> l) {
         if (l.size() >= 2) {
-            MemberDescription m1 = ((Message) l.get(0)).errorObject;
-            MemberDescription m2 = ((Message) l.get(1)).errorObject;
+            MemberDescription m1 = (l.get(0)).errorObject;
+            MemberDescription m2 = (l.get(1)).errorObject;
 
             if (m1 instanceof FieldDescr && m2 instanceof FieldDescr) {
                 FieldDescr f1 = (FieldDescr) m1;
@@ -272,11 +272,11 @@ class TypeParametersHandler extends PairedHandler {
 
     protected boolean proc() {
 
-        Collection c1 = Handler.stringToArrayList(trimTypeParameter(m1.getTypeParameters()), ", ");
-        Collection c2 = Handler.stringToArrayList(trimTypeParameter(m2.getTypeParameters()), ", ");
+        Collection<String> c1 = Handler.stringToArrayList(trimTypeParameter(m1.getTypeParameters()), ", ");
+        Collection<String> c2 = Handler.stringToArrayList(trimTypeParameter(m2.getTypeParameters()), ", ");
 
         if (!c1.equals(c2)) {
-            Collection c3 = new ArrayList(c2);
+            Collection<String> c3 = new ArrayList<>(c2);
             c2.removeAll(c1);
             c1.removeAll(c3);
 
@@ -313,12 +313,12 @@ class ThrowsHandler extends PairedHandler {
 
     protected boolean proc() {
 
-        Collection c1 = Handler.stringToArrayList(m1.getThrowables(), ",");
-        Collection c2 = Handler.stringToArrayList(m2.getThrowables(), ",");
+        Collection<String> c1 = Handler.stringToArrayList(m1.getThrowables(), ",");
+        Collection<String> c2 = Handler.stringToArrayList(m2.getThrowables(), ",");
 
         if (c1 != null && !c1.equals(c2)) {
 
-            Collection c3 = new ArrayList(c2);
+            Collection<String> c3 = new ArrayList<>(c2);
             c2.removeAll(c1);
             c1.removeAll(c3);
 
@@ -338,11 +338,11 @@ class AnnotationHandler extends PairedHandler {
 
     protected boolean proc() {
 
-        Collection c1 = annotationListToArrayList(m1.getAnnoList());
-        Collection c2 = annotationListToArrayList(m2.getAnnoList());
+        Collection<String> c1 = annotationListToArrayList(m1.getAnnoList());
+        Collection<String> c2 = annotationListToArrayList(m2.getAnnoList());
 
         if (!c1.equals(c2)) {
-            Collection c3 = new ArrayList(c2);
+            Collection<String> c3 = new ArrayList<>(c2);
             c2.removeAll(c1);
             c1.removeAll(c3);
 
@@ -358,11 +358,11 @@ class AnnotationHandler extends PairedHandler {
 
     }
 
-    private ArrayList annotationListToArrayList(AnnotationItem[] a) {
+    private ArrayList<String> annotationListToArrayList(AnnotationItem[] a) {
         if (a == null) {
             return EMPTY_ARRAY_LIST;
         }
-        ArrayList result = new ArrayList();
+        ArrayList<String> result = new ArrayList<>();
         for (AnnotationItem annotationItem : a) {
             result.add(annotationItem.getName());
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -49,7 +49,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
     /**
      * Headers for message groups by error type.
      */
-    private Map<String,String> testedsuper = new HashMap<>();
+    private Map<String, String> testedsuper = new HashMap<>();
     private boolean verbose = false;
     /**
      * Messages buffer.
@@ -65,7 +65,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
      */
     public SortedErrorFormatter(PrintWriter out, boolean isv) {
         super(out);
-        failedMessages = new ArrayList();
+        failedMessages = new ArrayList<>();
         verbose = isv;
     }
 
@@ -160,13 +160,12 @@ public class SortedErrorFormatter extends ErrorFormatter {
     }
 
     protected void sortErrors() {
-        Collections.sort(failedMessages, new Comparator() {
-            public int compare(Object o1, Object o2) {
+        Collections.sort(failedMessages, new Comparator<Message>() {
+            @Override
+            public int compare(Message m1, Message m2) {
                 // Full Messages compare. Note that Message.compareTo does not do it!
                 // Full compare required to guarantee identical output from one execution to another
                 // in different modes
-                Message m1 = (Message) o1;
-                Message m2 = (Message) o2;
 
                 int comp = m1.messageType.compareTo(m2.messageType);
 
@@ -210,17 +209,17 @@ public class SortedErrorFormatter extends ErrorFormatter {
         int excludedMessages = 0;
 
         int i, k, n;
-        List /*Vector(Vector(Message))*/ vv = new ArrayList();
+        List<List<Message>> /*Vector(Vector(Message))*/ vv = new ArrayList<>();
 
         for (i = 0; i < failedMessages.size(); i++) {
             Message msgi = failedMessages.get(i);
 
-            List /*(Message)*/ v = null;
+            List<Message> v = null;
 
             for (n = 0; n < vv.size(); n++) {
-                List x = (ArrayList) vv.get(n);
-                if (msgCompare((Message) x.get(0), msgi)) {
-                    v = (ArrayList) vv.get(n);
+                List<Message> x = vv.get(n);
+                if (msgCompare(x.get(0), msgi)) {
+                    v = vv.get(n);
                     break;
                 }
             }
@@ -231,7 +230,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
 
                     if (msgCompare(msgk, msgi)) {
                         if (v == null) {
-                            v = new ArrayList();
+                            v = new ArrayList<>();
                             vv.add(v);
                             v.add(msgi);
                         }
@@ -241,21 +240,21 @@ public class SortedErrorFormatter extends ErrorFormatter {
             }
         }
 
-        List exclude = new ArrayList();
+        List<Message> exclude = new ArrayList<>();
 
         for (n = 0; n < vv.size(); n++) {
-            List v = (List) vv.get(n);
+            List<Message> v = vv.get(n);
             //System.out.println("-Duplicate group-");
 
             for (k = 0; k < v.size(); k++) {
                 rep:
                 for (boolean flag = true; flag;) {
                     flag = false;
-                    Message msgk = (Message) v.get(k);
+                    Message msgk = v.get(k);
                     String supk = (String) supernames.get(msgk.className);
                     if (supk != null) {
                         for (i = k + 1; i < v.size(); i++) {
-                            Message msgi = (Message) v.get(i);
+                            Message msgi = v.get(i);
                             if (msgi.className.equals(supk)) {
                                 v.set(k, msgi);
                                 v.set(i, msgk);
@@ -269,12 +268,12 @@ public class SortedErrorFormatter extends ErrorFormatter {
             }
 
             for (k = v.size(); --k >= 0;) {
-                Message msgk = (Message) v.get(k);
+                Message msgk = v.get(k);
                 //System.out.println(MsgShow(msgk));
                 String supk = (String) supernames.get(msgk.className);
                 if (supk != null) {
                     for (i = k; --i >= 0;) {
-                        Message msgi = (Message) v.get(i);
+                        Message msgi = v.get(i);
                         if (msgi.className.equals(supk)) {
                             if (msgi.tail.length() != 0) {
                                 msgi.tail += ",";
@@ -297,7 +296,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
             Message msgi = failedMessages.get(i);
 
             for (k = 0; k < exclude.size(); k++) {
-                Message msgk = (Message) exclude.get(k);
+                Message msgk = exclude.get(k);
                 if (msgi == msgk) {
                     //System.out.println(MsgShow(msgi)+"-removed");
                     failedMessages.remove(i);
@@ -314,7 +313,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
                 && m1.definition.equals(m2.definition);
     }
 
-    protected Map getTestedsuper() {
+    protected Map<String, String> getTestedsuper() {
         return testedsuper;
     }
 

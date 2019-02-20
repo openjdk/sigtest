@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,6 +26,7 @@ package com.sun.tdk.signaturetest.errors;
 
 import java.util.List;
 import java.util.TreeSet;
+import com.sun.tdk.signaturetest.errors.ErrorFormatter.Message;
 
 /**
  *
@@ -34,11 +35,11 @@ import java.util.TreeSet;
  */
 public class Chain {
 
-    private List mainList;
-    private TreeSet processedMessages;
-    private TreeSet newMessages;
+    private List<Message> mainList;
+    private TreeSet<Message> processedMessages;
+    private TreeSet<Message> newMessages;
 
-    void setMessageProcessed(ErrorFormatter.Message m) {
+    void setMessageProcessed(Message m) {
         processedMessages.add(m);
     }
 
@@ -49,17 +50,17 @@ public class Chain {
         newMessages.clear();
     }
 
-    void addMessage(ErrorFormatter.Message newM) {
+    void addMessage(Message newM) {
         newMessages.add(newM);
     }
 
-    Chain(List failedMessages) {
+    Chain(List<Message> failedMessages) {
         mainList = failedMessages;
-        processedMessages = new TreeSet();
-        newMessages = new TreeSet();
+        processedMessages = new TreeSet<>();
+        newMessages = new TreeSet<>();
     }
 
-    public void setMessagesProcessed(List l) {
+    public void setMessagesProcessed(List<Message> l) {
         processedMessages.addAll(l);
     }
 }
