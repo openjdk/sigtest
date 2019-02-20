@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -64,7 +64,7 @@ import java.util.Iterator;
  */
 public class AMerge extends ASuperBase {
 
-    private ArrayList files = new ArrayList();
+    private final ArrayList<AFile> files = new ArrayList<>();
     private String write;
     private boolean binary = false;
 
@@ -83,20 +83,20 @@ public class AMerge extends ASuperBase {
     }
 
     private String[] createParams() {
-        ArrayList params = new ArrayList();
+        ArrayList<String> params = new ArrayList<>();
 
         params.add(Option.FILES.getKey());
 
-        Iterator it = files.iterator();
-        StringBuffer files = new StringBuffer();
+        Iterator<AFile> it = files.iterator();
+        StringBuffer filesValues = new StringBuffer();
         while (it.hasNext()) {
-            AFile af = (AFile) it.next();
-            files.append(af.value);
+            AFile af = it.next();
+            filesValues.append(af.value);
             if (it.hasNext()) {
-                files.append(File.pathSeparatorChar);
+                filesValues.append(File.pathSeparatorChar);
             }
         }
-        params.add(files.toString());
+        params.add(filesValues.toString());
 
         params.add(Option.WRITE.getKey());
 
@@ -106,7 +106,7 @@ public class AMerge extends ASuperBase {
             params.add(Option.BINARY.getKey());
         }
 
-        return (String[]) params.toArray(new String[]{});
+        return params.toArray(new String[]{});
     }
 
     private void checkParams() throws BuildException {

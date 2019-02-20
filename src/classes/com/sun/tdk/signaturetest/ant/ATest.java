@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -111,7 +111,7 @@ public class ATest extends ABase {
     private boolean human = false;
     private String out;
     private boolean debug = false;
-    private boolean errorAll = false;
+    private final boolean errorAll = false;
 
     public void execute() throws BuildException {
         checkParams();
@@ -133,7 +133,7 @@ public class ATest extends ABase {
     }
 
     private String[] createParams() {
-        ArrayList params = new ArrayList();
+        ArrayList<String> params = new ArrayList<>();
         createBaseParameters(params);
         params.add(Option.STATIC.getKey());
         if (binary) {
@@ -158,7 +158,7 @@ public class ATest extends ABase {
             params.add(SigTest.ERRORALL_OPTION);
         }
 
-        return (String[]) params.toArray(new String[]{});
+        return params.toArray(new String[]{});
     }
 
     private void checkParams() throws BuildException {

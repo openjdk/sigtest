@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -113,12 +113,12 @@ public class ASetup extends ABase {
     }
 
     private String[] createParams() {
-        ArrayList params = new ArrayList();
+        ArrayList<String> params = new ArrayList<>();
         createBaseParameters(params);
         if (nonclosedfile) {
             params.add(Setup.NONCLOSEDFILE_OPTION);
         }
-        return (String[]) params.toArray(new String[]{});
+        return params.toArray(new String[]{});
     }
 
     private void checkParams() throws BuildException {

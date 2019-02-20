@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -32,7 +32,6 @@ import org.apache.tools.ant.types.Path;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Base class for ant wrappers such as ASetup and ATest
@@ -42,12 +41,12 @@ import java.util.Iterator;
 public class ABase extends ASuperBase {
 
     Path classpath;
-    ArrayList pac = new ArrayList();
-    private ArrayList exclude = new ArrayList();
+    final ArrayList<APackage> pac = new ArrayList<>();
+    private final ArrayList<AExclude> exclude = new ArrayList<>();
     String fileName;
     private String apiVersion;
 
-    void createBaseParameters(ArrayList params) {
+    void createBaseParameters(ArrayList<String> params) {
         params.add(Option.FILE_NAME.getKey());
         params.add(fileName);
         params.add(Option.CLASSPATH.getKey());
@@ -64,17 +63,13 @@ public class ABase extends ASuperBase {
             params.add(SigTest.APIVERSION_OPTION);
             params.add(apiVersion);
         }
-        Iterator it = pac.iterator();
-        while (it.hasNext()) {
+        for (APackage aPackage : pac) {
             params.add(Option.PACKAGE.getKey());
-            APackage ap = (APackage) it.next();
-            params.add(ap.value);
+            params.add(aPackage.value);
         }
-        it = exclude.iterator();
-        while (it.hasNext()) {
+        for (AExclude aExclude : exclude) {
             params.add(Option.EXCLUDE.getKey());
-            AExclude ae = (AExclude) it.next();
-            params.add(ae.value);
+            params.add(aExclude.value);
         }
     }
 
