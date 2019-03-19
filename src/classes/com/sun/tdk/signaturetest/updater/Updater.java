@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -185,8 +185,8 @@ public class Updater extends DefaultHandler {
 
     private void writeOut(String to, SigList sl) throws FileNotFoundException {
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(to))) {
-            for (Object o : sl) {
-                pw.write((String) o + '\n');
+            for (String o : sl) {
+                pw.write(o + '\n');
             }
         }
     }
@@ -204,7 +204,7 @@ public class Updater extends DefaultHandler {
         }
     }
 
-    class SigList extends ArrayList {
+    class SigList extends ArrayList<String> {
 
         private int startPos = -1;
 
@@ -212,7 +212,7 @@ public class Updater extends DefaultHandler {
             startPos = -1;
             int i = 0;
             while (i < size()) {
-                String l = (String) get(i);
+                String l = get(i);
                 if (l.startsWith("CLSS ") && l.endsWith(" " + className)) {
                     startPos = i;
                     return true;
@@ -224,7 +224,7 @@ public class Updater extends DefaultHandler {
 
         public void removeCurrentClass() {
             if (startPos >= 0) {
-                while (!"".equals(((String) get(startPos)).trim())) {
+                while (!"".equals(get(startPos).trim())) {
                     remove(startPos);
                 }
             }
@@ -244,7 +244,7 @@ public class Updater extends DefaultHandler {
             int i = 0;
             final String pSig = " " + packageName + ".";
             while (i < size()) {
-                String l = (String) get(i);
+                String l = get(i);
                 if (l.startsWith("CLSS ")) {
                     int x = l.indexOf('<');
                     int y = l.indexOf(pSig);
@@ -261,7 +261,7 @@ public class Updater extends DefaultHandler {
         public boolean removeMember(String memberName) {
             if (startPos >= 0) {
                 for (int i = startPos; i < size(); i++) {
-                    String l = ((String) get(i)).trim();
+                    String l = get(i).trim();
                     if (memberName.equals(l)) {
                         remove(i);
                         return true;
@@ -278,7 +278,7 @@ public class Updater extends DefaultHandler {
         public boolean changeMember(String oldMember, String newMember) {
             if (startPos >= 0) {
                 for (int i = startPos; i < size(); i++) {
-                    String l = ((String) get(i)).trim();
+                    String l = get(i).trim();
                     if (oldMember.equals(l)) {
                         set(i, newMember);
                         return true;
@@ -295,7 +295,7 @@ public class Updater extends DefaultHandler {
         public void pack() {
             boolean empty = false;
             for (int i = 0; i < size(); i++) {
-                String l = (String) get(i);
+                String l = get(i);
                 if ("".equals(l.trim())) {
                     if (empty) {
                         remove(i--);
@@ -312,7 +312,7 @@ public class Updater extends DefaultHandler {
         public boolean addMember(String memberName) {
             if (startPos >= 0) {
                 for (int i = startPos + 1; i < size(); i++) {
-                    String l = ((String) get(i)).trim();
+                    String l = get(i).trim();
                     if (!l.startsWith(AnnotationItem.ANNOTATION_PREFIX)) {
                         add(i, memberName);
                         return true;

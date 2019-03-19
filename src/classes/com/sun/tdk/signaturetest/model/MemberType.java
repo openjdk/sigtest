@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -29,7 +29,7 @@ import java.io.Serializable;
 /**
  * @author Roman Makarchuk
  */
-public final class MemberType implements Comparable, Serializable {
+public final class MemberType implements Comparable<MemberType>, Serializable {
 
     /**
      * NOTE: changing order of modifiers in these arrays affects order of
@@ -148,8 +148,7 @@ public final class MemberType implements Comparable, Serializable {
         return true;
     }
 
-    public int compareTo(Object o) {
-        MemberType other = (MemberType) o;
+    public int compareTo(MemberType other) {
         return name.compareTo(other.name);
     }
 

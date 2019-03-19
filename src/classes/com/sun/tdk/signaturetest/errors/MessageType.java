@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,22 +27,18 @@ package com.sun.tdk.signaturetest.errors;
 import com.sun.tdk.signaturetest.model.MemberType;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 
-public class MessageType implements Comparable {
+public class MessageType implements Comparable<MessageType> {
 
     private final String text;
     private final int id;
     private final boolean thisIsWarning;
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MessageType.class);
 
-    public int compareTo(Object o) {
-        if (o instanceof MessageType) {
-            MessageType mt = (MessageType) o;
-            if (id == mt.id) {
-                return 0;
-            }
-            return (id - mt.id) > 0 ? 1 : -1;
+    public int compareTo(MessageType mt) {
+        if (id == mt.id) {
+            return 0;
         }
-        return 0;
+        return (id - mt.id) > 0 ? 1 : -1;
     }
 
     public boolean isWarning() {

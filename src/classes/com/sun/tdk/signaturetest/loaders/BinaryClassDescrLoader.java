@@ -1368,8 +1368,8 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
                     if (bounds.size() != 0) {
                         Collections.sort(bounds);
-                        for (Object bound : bounds) {
-                            sb.append(" & ").append((String) bound);
+                        for (String bound : bounds) {
+                            sb.append(" & ").append(bound);
                         }
                     }
                 }

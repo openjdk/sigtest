@@ -555,7 +555,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
         modifiers = Modifier.removeModifier(modifiers, mod);
     }
 
-    public static String getTypeName(Class c) {
+    public static String getTypeName(Class<?> c) {
         String className = c.getName();
 
         if (!className.startsWith("[")) {

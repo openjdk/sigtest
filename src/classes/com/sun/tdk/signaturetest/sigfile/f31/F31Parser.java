@@ -74,8 +74,8 @@ public class F31Parser implements Parser {
         if (directInterfaceCount > 0) {
             classDescription.createInterfaces(directInterfaceCount);
             int count = 0;
-            for (Iterator it = classMembers.iterator(); it.hasNext();) {
-                MemberDescription mr = (MemberDescription) it.next();
+            for (Iterator<MemberDescription> it = classMembers.iterator(); it.hasNext();) {
+                MemberDescription mr = it.next();
                 if (mr.isSuperInterface()) {
                     SuperInterface si = (SuperInterface) mr;
                     if (si.isDirect()) {
@@ -90,8 +90,8 @@ public class F31Parser implements Parser {
         ArrayList<ConstructorDescr> constrs = new ArrayList<>();
         ArrayList<InnerDescr> inners = new ArrayList<>();
         ArrayList<SuperInterface> intfs = new ArrayList<>();
-        for (Iterator it = classMembers.iterator(); it.hasNext();) {
-            MemberDescription md = (MemberDescription) it.next();
+        for (Iterator<MemberDescription> it = classMembers.iterator(); it.hasNext();) {
+            MemberDescription md = it.next();
             if (md instanceof SuperClass) {
                 classDescription.setSuperClass((SuperClass) md);
             } else if (md instanceof SuperInterface) {
@@ -118,14 +118,14 @@ public class F31Parser implements Parser {
         return classDescription;
     }
 
-    private void appendAnnotations(MemberDescription fid, List/*String*/ alist) {
+    private void appendAnnotations(MemberDescription fid, List<String> alist) {
         if (alist.size() != 0) {
 
             AnnotationItem[] tmp = new AnnotationItem[alist.size()];
             AnnotationParser par = new AnnotationParser();
 
             for (int i = 0; i < alist.size(); ++i) {
-                tmp[i] = par.parse((String) alist.get(i));
+                tmp[i] = par.parse(alist.get(i));
             }
 
             fid.setAnnoList(tmp);

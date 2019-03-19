@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -111,7 +111,7 @@ public class ErrorFormatter {
      * This class formats some error message reported by <b>SignatureTest</b> or
      * other similar tests.
      */
-    public static class Message implements Comparable {
+    public static class Message implements Comparable<Message> {
 
         /**
          * Message templates for different error types.
@@ -155,8 +155,7 @@ public class ErrorFormatter {
          * <code>className</code> fields also equals, than compare
          * <code>definition</code> fields.
          */
-        public int compareTo(Object o) {
-            Message ob = (Message) o;
+        public int compareTo(Message ob) {
             int comp = 0;
             if (ob.messageType == this.messageType) {
                 comp = this.className.compareTo(ob.className);

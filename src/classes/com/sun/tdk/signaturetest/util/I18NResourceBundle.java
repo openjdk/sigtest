@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -46,7 +46,7 @@ public class I18NResourceBundle extends ResourceBundle {
      * @param c the class for which to obtain the resource bundle
      * @return the appropriate resource bundle for the class
      */
-    public static I18NResourceBundle getBundleForClass(Class c) {
+    public static I18NResourceBundle getBundleForClass(Class<?> c) {
         String cn = c.getName();
         int dot = cn.lastIndexOf('.');
         String rn = (dot == -1 ? "i18n" : cn.substring(0, dot) + ".i18n");
@@ -160,7 +160,7 @@ public class I18NResourceBundle extends ResourceBundle {
      * bundle, if it has not yet been loaded, then hand the request off to that
      * bundle.
      */
-    public Enumeration getKeys() {
+    public Enumeration<String> getKeys() {
         if (delegate == null) {
             delegate = ResourceBundle.getBundle(name);
         }

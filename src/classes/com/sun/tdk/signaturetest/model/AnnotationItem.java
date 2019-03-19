@@ -171,9 +171,9 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
             }
             StringBuffer newV = new StringBuffer("[");
             Collections.sort(ts);
-            Iterator it = ts.iterator();
+            Iterator<String> it = ts.iterator();
             while (it.hasNext()) {
-                newV.append((String) it.next());
+                newV.append(it.next());
                 if (it.hasNext()) {
                     newV.append(",");
                 }
@@ -330,7 +330,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
         inheritable = inh;
     }
 
-    public static AnnotationItem[] toArray(List/*AnnotationItem*/ alist) {
+    public static AnnotationItem[] toArray(List<AnnotationItem> alist) {
         if (alist == null || alist.size() == 0) {
             return EMPTY_ANNOTATIONITEM_ARRAY;
         }
@@ -338,7 +338,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
         final int asize = alist.size();
         AnnotationItem[] tmp = new AnnotationItem[asize];
         for (int i = 0; i < asize; ++i) {
-            tmp[i] = (AnnotationItem) alist.get(i);
+            tmp[i] = alist.get(i);
         }
         return tmp;
     }

@@ -219,8 +219,8 @@ public abstract class SignatureClassLoader implements Reader {
 
         Format.Feature f = null;
         boolean remove = false;
-        for (Object feature : features) {
-            f = (Format.Feature) feature;
+        for (Format.Feature feature : features) {
+            f = feature;
             if (f.match(currentLine)) {
                 remove = true;
                 break;

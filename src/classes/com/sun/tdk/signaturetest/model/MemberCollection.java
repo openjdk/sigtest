@@ -63,7 +63,7 @@ public class MemberCollection {
         members.add(member);
     }
 
-    public Collection getAllMembers() {
+    public Collection<MemberDescription> getAllMembers() {
         return members;
     }
 

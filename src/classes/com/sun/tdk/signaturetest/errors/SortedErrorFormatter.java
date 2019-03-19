@@ -204,12 +204,12 @@ public class SortedErrorFormatter extends ErrorFormatter {
         return new String(buff);
     }
 
-    public int msgExclude(Map supernames) {
+    public int msgExclude(Map<String, String> supernames) {
 
         int excludedMessages = 0;
 
         int i, k, n;
-        List<List<Message>> /*Vector(Vector(Message))*/ vv = new ArrayList<>();
+        List<List<Message>> vv = new ArrayList<>();
 
         for (i = 0; i < failedMessages.size(); i++) {
             Message msgi = failedMessages.get(i);
@@ -251,7 +251,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
                 for (boolean flag = true; flag;) {
                     flag = false;
                     Message msgk = v.get(k);
-                    String supk = (String) supernames.get(msgk.className);
+                    String supk = supernames.get(msgk.className);
                     if (supk != null) {
                         for (i = k + 1; i < v.size(); i++) {
                             Message msgi = v.get(i);
@@ -270,7 +270,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
             for (k = v.size(); --k >= 0;) {
                 Message msgk = v.get(k);
                 //System.out.println(MsgShow(msgk));
-                String supk = (String) supernames.get(msgk.className);
+                String supk = supernames.get(msgk.className);
                 if (supk != null) {
                     for (i = k; --i >= 0;) {
                         Message msgi = v.get(i);

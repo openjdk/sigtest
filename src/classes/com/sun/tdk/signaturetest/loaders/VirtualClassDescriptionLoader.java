@@ -59,7 +59,7 @@ public class VirtualClassDescriptionLoader extends FeaturesHolder implements Cla
         classDescriptions.put(cls.getQualifiedName(), cls);
     }
 
-    public Iterator getClassIterator() {
+    public Iterator<ClassDescription> getClassIterator() {
         return classDescriptions.values().iterator();
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +61,7 @@ public class BatchFileParser {
         try (LineNumberReader r = new LineNumberReader(SwissKnife.approveFileReader(fName))) {
             String currLine;
             Properties props = new Properties();
-            ArrayList options = new ArrayList();
+            ArrayList<String> options = new ArrayList<>();
             if (filePos > 0) {
                 options.addAll(Arrays.asList(args).subList(0, filePos));
             }
@@ -100,7 +99,7 @@ public class BatchFileParser {
             }
             options.addAll(Arrays.asList(args).subList(filePos + 1, args.length));
             resolveParams(options, props);
-            return (String[]) options.toArray(new String[]{});
+            return options.toArray(new String[]{});
         } catch (FileNotFoundException ex) {
             throw new CommandLineParserException("File " + fName + " not found", ex);
         } catch (IOException ex) {
@@ -108,7 +107,7 @@ public class BatchFileParser {
         }
     }
 
-    private static void resolveParams(ArrayList options, Properties props)
+    private static void resolveParams(ArrayList<String> options, Properties props)
             throws CommandLineParserException {
         Pattern macro = Pattern.compile("(\\$\\{(.+?)\\})");
 
@@ -117,9 +116,8 @@ public class BatchFileParser {
         do {
             subst = false;
             resolved = true;
-            Iterator keys = props.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = (String) keys.next();
+            for (Object o : props.keySet()) {
+                String key = (String) o;
                 String val = props.getProperty(key);
                 Matcher m = macro.matcher(val);
                 if (m.find()) {
@@ -147,7 +145,7 @@ public class BatchFileParser {
 
         // resolve ops
         for (int i = 0; i < options.size(); i++) {
-            String o = (String) options.get(i);
+            String o = options.get(i);
             Matcher m = macro.matcher(o);
             if (m.find()) {
                 String newVal = props.getProperty(m.group(2));

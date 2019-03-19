@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -38,9 +38,9 @@ public class CommandLineParser {
 
     private Object servicedObject;
     private KnownOptions knownOptions;
-    private Map decoders = new HashMap();
+    private Map<String, String> decoders = new HashMap<>();
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(CommandLineParser.class);
-    private Map foundOptions = new HashMap();
+    private Map<String, List<String>> foundOptions = new HashMap<>();
 
     public CommandLineParser(Object servicedObject, String optionPrefix) {
         this.servicedObject = servicedObject;
@@ -86,10 +86,10 @@ public class CommandLineParser {
                 OptionInfo ki = knownOptions.get(arg);
                 optionStr = ki.toKey(arg);
 
-                ArrayList params = (ArrayList) foundOptions.get(optionStr);
+                List<String> params = foundOptions.get(optionStr);
 
                 if (params == null) {
-                    foundOptions.put(optionStr, new ArrayList());
+                    foundOptions.put(optionStr, new ArrayList<String>());
                 } else if (!ki.isMultiple()) {
                     throw new CommandLineParserException(i18n.getString("CommandLineParser.error.option.duplicate", optionStr));
                 }
@@ -101,7 +101,7 @@ public class CommandLineParser {
 
             } else if (!knownOptions.isOption(arg)) {
                 if (optionStr != null) {
-                    ((List) foundOptions.get(optionStr)).add(arg);
+                    foundOptions.get(optionStr).add(arg);
                 }
             } else {
 //                optionStr = null;
@@ -113,9 +113,8 @@ public class CommandLineParser {
             knownOptions.validate(foundOptions);
         }
 
-        for (Object o : foundOptions.keySet()) {
-            String foundOption = (String) o;
-            invokeDecoder(foundOption, (ArrayList) foundOptions.get(foundOption));
+        for (String foundOption : foundOptions.keySet()) {
+            invokeDecoder(foundOption, foundOptions.get(foundOption));
         }
     }
 
@@ -136,9 +135,9 @@ public class CommandLineParser {
         return foundOptions.get(temp) != null;
     }
 
-    private void invokeDecoder(String option, ArrayList params) throws CommandLineParserException {
+    private void invokeDecoder(String option, List<String> params) throws CommandLineParserException {
 
-        String decoder = (String) decoders.get(option);
+        String decoder = decoders.get(option);
         if (decoder != null) {
             invokeExplicitDecoder(decoder, option, params);
         } else {
@@ -146,18 +145,18 @@ public class CommandLineParser {
         }
     }
 
-    private void invokeExplicitDecoder(String decoder, String option, ArrayList params) throws CommandLineParserException {
+    private void invokeExplicitDecoder(String decoder, String option, List<String> params) throws CommandLineParserException {
 
-        Class cl = servicedObject.getClass();
+        Class<?> cl = servicedObject.getClass();
 
         String[] stemp = new String[params.size()];
         for (int i = 0; i < params.size(); ++i) {
-            stemp[i] = (String) params.get(i);
+            stemp[i] = params.get(i);
         }
 
         try {
-            Method method = cl.getMethod(decoder, new Class[]{String.class, String[].class});
-            method.invoke(servicedObject, new Object[]{option, stemp});
+            Method method = cl.getMethod(decoder, String.class, String[].class);
+            method.invoke(servicedObject, option, stemp);
 
         } catch (NoSuchMethodException nsme) {
             throw new CommandLineParserException(i18n.getString("CommandLineParser.error.decoder.explicit.notfound", new Object[]{decoder, option, cl.getName()}), nsme);
@@ -175,11 +174,11 @@ public class CommandLineParser {
         }
     }
 
-    private void invokeDefaultDecoder(String option, ArrayList params) throws CommandLineParserException {
+    private void invokeDefaultDecoder(String option, List<String> params) throws CommandLineParserException {
         try {
             String[] stemp = new String[params.size()];
             for (int i = 0; i < params.size(); ++i) {
-                stemp[i] = (String) params.get(i);
+                stemp[i] = params.get(i);
             }
 
             getDefaultDecoderMethod(option).invoke(servicedObject, new Object[]{stemp});
@@ -218,7 +217,7 @@ public class CommandLineParser {
     }
 
     public static String[] parseListOption(String[] args) {
-        ArrayList<String> ar = new ArrayList();
+        ArrayList<String> ar = new ArrayList<>();
         for (String arg : args) {
             StringTokenizer st = new StringTokenizer(arg, System.getProperty("path.separator"));
             while (st.hasMoreTokens()) {
@@ -267,7 +266,7 @@ public class CommandLineParser {
 
     private static class KnownOptions {
 
-        private Map data = new HashMap();
+        private Map<String, OptionInfo> data = new HashMap<>();
         private final String optionPrefix;
 
         public KnownOptions(String optionPrefix) {
@@ -281,7 +280,7 @@ public class CommandLineParser {
 
                 if (!data.containsKey(temp)) {
                     temp = temp.toLowerCase();
-                    OptionInfo ki = (OptionInfo) data.get(temp);
+                    OptionInfo ki = data.get(temp);
                     if (ki != null) {
                         return !ki.isCaseSentitive();
                     }
@@ -306,11 +305,11 @@ public class CommandLineParser {
         private OptionInfo get(String option) {
 
             String temp = option;
-            OptionInfo ki = (OptionInfo) data.get(temp);
+            OptionInfo ki = data.get(temp);
 
             if (ki == null) {
                 temp = temp.toLowerCase();
-                ki = (OptionInfo) data.get(temp);
+                ki = data.get(temp);
 
                 if (ki == null || ki.isCaseSentitive()) {
                     return null;
@@ -320,12 +319,11 @@ public class CommandLineParser {
             return ki;
         }
 
-        private void validateRequiredOptions(Set foundKeys) throws CommandLineParserException {
-            Set keySet = data.keySet();
+        private void validateRequiredOptions(Set<String> foundKeys) throws CommandLineParserException {
+            Set<String> keySet = data.keySet();
 
-            for (Object o : keySet) {
-                String option = (String) o;
-                OptionInfo ki = (OptionInfo) data.get(option);
+            for (String option : keySet) {
+                OptionInfo ki = data.get(option);
                 if (ki.isRequired() && !foundKeys.contains(option)) {
                     throw new CommandLineParserException(i18n.getString("CommandLineParser.error.option.required", option));
                 }
@@ -333,7 +331,7 @@ public class CommandLineParser {
         }
 
         private void validateCount(String option, int paramCount) throws CommandLineParserException {
-            OptionInfo info = (OptionInfo) data.get(option);
+            OptionInfo info = data.get(option);
             int minCount = info.getMinCount();
             int maxCount = info.getMaxCount();
 
@@ -353,12 +351,11 @@ public class CommandLineParser {
             }
         }
 
-        private void validate(Map params) throws CommandLineParserException {
+        private void validate(Map<String, List<String>> params) throws CommandLineParserException {
             validateRequiredOptions(params.keySet());
 
-            for (Object o : params.keySet()) {
-                String option = (String) o;
-                validateCount(option, ((List) params.get(option)).size());
+            for (String option : params.keySet()) {
+                validateCount(option, params.get(option).size());
             }
         }
 

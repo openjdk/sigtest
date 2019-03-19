@@ -50,7 +50,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader implements
     private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MultipleFileReader.class);
     public static final int CLASSPATH_MODE = 1;
     public static final int MERGE_MODE = 2;
-    private Iterator classIterator = null;
+    private Iterator<ClassDescription> classIterator = null;
     private PrintWriter log;
     private int mode;
     private String apiVersion;
@@ -186,7 +186,7 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader implements
     public ClassDescription nextClass() throws IOException {
         ClassDescription cl = null;
         if (classIterator != null && classIterator.hasNext()) {
-            cl = (ClassDescription) classIterator.next();
+            cl = classIterator.next();
         }
         return cl; // cl == null ? null : (ClassDescription) cl.clone();
     }

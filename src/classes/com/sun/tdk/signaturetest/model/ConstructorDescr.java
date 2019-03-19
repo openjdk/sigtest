@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -44,7 +44,7 @@ public final class ConstructorDescr extends MemberDescription {
     }
 
     // for reflection
-    public ConstructorDescr(Class clazz, int modifiers) {
+    public ConstructorDescr(Class<?> clazz, int modifiers) {
         super(MemberType.CONSTRUCTOR, MEMBER_DELIMITER);
         setupConstuctorName(clazz.getName());
         setModifiers(modifiers);

@@ -232,7 +232,7 @@ public class ClassDescription extends MemberDescription {
             seqnb = 0;
         }
 
-        public Map getTab() {
+        public Map<String, TypeParam> getTab() {
             return tab;
         }
 

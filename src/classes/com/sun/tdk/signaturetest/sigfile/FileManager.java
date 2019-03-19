@@ -101,8 +101,7 @@ public class FileManager {
         double latestVersion = 0;
         Writer latestWriter = null;
 
-        for (Object applicableFormat : applicableFormats) {
-            Format f = (Format) applicableFormat;
+        for (Format f : applicableFormats) {
 
             String[] sv = f.getVersion().split(" ");
             double v = Double.parseDouble(sv[sv.length - 1].substring(1));
@@ -118,8 +117,7 @@ public class FileManager {
     public Reader getReader(URL fileURL) {
         String format = getFormat(fileURL);
         if (format != null) {
-            for (Object format1 : formats) {
-                Format f = (Format) format1;
+            for (Format f : formats) {
                 if (f.isApplicable(format)) {
                     return f.getReader();
                 }
