@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -38,16 +38,16 @@ public class MergedSigFile {
 
     private ClassHierarchy ch;
     private MultipleFileReader loader;
-    private HashMap set;
+    private HashMap<String, ClassDescription> set;
 
     public MergedSigFile(MultipleFileReader loader, Log log) {
         this.loader = loader;
         ch = new ClassHierarchyImpl(loader, ClassHierarchy.ALL_PUBLIC);
     }
 
-    public HashMap getClassSet() {
+    public HashMap<String, ClassDescription> getClassSet() {
         if (set == null) {
-            set = new HashMap();
+            set = new HashMap<>();
             loader.rewind();
             ClassDescription cd = null;
             do {
