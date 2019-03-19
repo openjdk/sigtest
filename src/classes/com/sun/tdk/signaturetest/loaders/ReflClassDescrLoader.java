@@ -38,6 +38,7 @@ import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <b>ReflClassDescrLoader</b> is intended to compile information about classes
@@ -332,7 +333,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
 
         return sb.toString();
     }
-    private HashSet<Hint> hints = new HashSet<>();
+    private Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);

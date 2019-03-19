@@ -53,7 +53,7 @@ class F21Reader extends SignatureClassLoader {
     }
 
     protected List<String> convertClassDefinitions(List<String> definitions) {
-        ArrayList<String> newDef = new ArrayList<>();
+        List<String> newDef = new ArrayList<>();
         for (String memberDef : definitions) {
             // 1) skip "supr null"
             if ("supr null".equals(memberDef)) {

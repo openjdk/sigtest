@@ -52,12 +52,12 @@ import java.util.*;
 public class StructWriter {
 
     private final ModSetupOptions mo = AppContext.getContext().getBean(ModSetupOptions.class);
-    private final ArrayDeque<ModuleDescription> modulesToWrite = new ArrayDeque<>();
-    private final HashSet<String> moduleNames = new HashSet<>();
-    private final HashSet<String> reportedModuleNames = new HashSet<>();
+    private final Deque<ModuleDescription> modulesToWrite = new ArrayDeque<>();
+    private final Set<String> moduleNames = new HashSet<>();
+    private final Set<String> reportedModuleNames = new HashSet<>();
 
     // Generate structure file for APICover
-    public boolean createStructFile(ModSetup.WriteMode wm, HashMap<String, ModuleDescription> model, Set<ModuleDescription> allModules) {
+    public boolean createStructFile(ModSetup.WriteMode wm, Map<String, ModuleDescription> model, Set<ModuleDescription> allModules) {
 
         URL signatureFile;
         Map<String, ModuleDescription> allModulesMap = new HashMap<>();

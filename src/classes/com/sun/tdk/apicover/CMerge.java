@@ -227,7 +227,7 @@ public class CMerge {
 
         // check for different versions of the same class
         // and prepare data for merging
-        HashMap<String, Element[]> allClasses = new HashMap<>();
+        Map<String, Element[]> allClasses = new HashMap<>();
         for (int i = 0; i < docs.length; i++) {
             CovDocument d = docs[i];
             for (Element cl : d.getClasses()) {
@@ -243,7 +243,7 @@ public class CMerge {
         for (Map.Entry<String, Element[]> en : allClasses.entrySet()) {
             String qName = en.getKey();
             Element[] similarClasses = en.getValue();
-            HashSet<String> atsG = null;
+            Set<String> atsG = null;
             NamedNodeMap classAttributes = null;
 
             for (Element c : similarClasses) {
@@ -476,7 +476,7 @@ public class CMerge {
         }
 
         private Set<Element> getElementsByKind(String name) throws XPathExpressionException {
-            HashSet<Element> result = new HashSet<>();
+            Set<Element> result = new HashSet<>();
             XPath xpath = xPathfactory.newXPath();
             XPathExpression expr = xpath.compile("//" + name);
             NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);

@@ -409,7 +409,7 @@ public abstract class ReportGenerator extends APIVisitor {
     }
 
     private List<ClassDescription> filterRefs(Structure.Section section, List<ClassDescription> allApi) {
-        ArrayList<ClassDescription> res = new ArrayList<>();
+        List<ClassDescription> res = new ArrayList<>();
         for (ClassDescription cd : allApi) {
             for ( String pkg  : section.getPkgInclude()) {
                 if ( cd.getQualifiedName().startsWith(pkg)) {

@@ -109,7 +109,7 @@ public class JSR68Merger extends FeaturesHolder {
         }
 
         Iterator<ClassDescription> it = result.getClassIterator();
-        ArrayList<ClassDescription> innersToRemove = new ArrayList<>();
+        List<ClassDescription> innersToRemove = new ArrayList<>();
         nextClass:
         while (it.hasNext()) {
             ClassDescription cd = it.next();
@@ -239,7 +239,7 @@ public class JSR68Merger extends FeaturesHolder {
         MethodDescr[] genMeth = eResult.getDeclaredMethods();
         FieldDescr[] genFld = eResult.getDeclaredFields();
 
-        HashSet<String> sims = new HashSet<>();
+        Set<String> sims = new HashSet<>();
 
         for (int i = 0; i < genCostr.length; i++) {
             String s = genCostr[i].getSignature();
@@ -508,7 +508,7 @@ public class JSR68Merger extends FeaturesHolder {
 
     private boolean mergeInterfaces(ClassDescription[] similarClasses, ClassDescription result) {
 
-        TreeSet<SuperInterface> ts = new TreeSet<>(new Comparator<SuperInterface>() {
+        Set<SuperInterface> ts = new TreeSet<>(new Comparator<SuperInterface>() {
             public int compare(SuperInterface s1, SuperInterface s2) {
                 return s1.getQualifiedName().compareTo(s2.getQualifiedName());
             }
@@ -551,10 +551,10 @@ public class JSR68Merger extends FeaturesHolder {
 
     private boolean makeHiders(ClassDescription[] similarClasses, ClassDescription result) {
         // result should be intersection
-        HashSet<String> internalFields = new HashSet<>(similarClasses[0].getInternalFields());
-        HashSet<String> internalClasses = new HashSet<>(similarClasses[0].getInternalClasses());
-        HashSet<String> xFields = new HashSet<>(similarClasses[0].getXFields());
-        HashSet<String> xClasses = new HashSet<>(similarClasses[0].getXClasses());
+        Set<String> internalFields = new HashSet<>(similarClasses[0].getInternalFields());
+        Set<String> internalClasses = new HashSet<>(similarClasses[0].getInternalClasses());
+        Set<String> xFields = new HashSet<>(similarClasses[0].getXFields());
+        Set<String> xClasses = new HashSet<>(similarClasses[0].getXClasses());
         for (int i = 1; i < similarClasses.length; i++) {
             internalFields.retainAll(similarClasses[i].getInternalFields());
             internalClasses.retainAll(similarClasses[i].getInternalClasses());
@@ -571,7 +571,7 @@ public class JSR68Merger extends FeaturesHolder {
 
     private boolean makeFields(ClassDescription[] similarClasses, ClassDescription result) {
         ArrayList<FieldDescr> fields = new ArrayList<>();
-        HashSet<String> h = new HashSet<>();
+        Set<String> h = new HashSet<>();
         for (int i = 0; i < similarClasses.length; i++) {
             FieldDescr[] fds = similarClasses[i].getDeclaredFields();
             for (FieldDescr fd : fds) {
@@ -653,7 +653,7 @@ public class JSR68Merger extends FeaturesHolder {
 
         // methods
         ArrayList<MethodDescr> methods = new ArrayList<>();
-        HashSet<String> h = new HashSet<>();
+        Set<String> h = new HashSet<>();
 
         for (int i = 0; i < similarClasses.length; i++) {
             MethodDescr[] mfs = similarClasses[i].getDeclaredMethods();
@@ -703,7 +703,7 @@ public class JSR68Merger extends FeaturesHolder {
 
     private boolean makeCtors(ClassDescription[] similarClasses, ClassDescription result) {
         ArrayList<ConstructorDescr> constr = new ArrayList<>();
-        HashSet<String> h = new HashSet<>();
+        Set<String> h = new HashSet<>();
         for (int i = 0; i < similarClasses.length; i++) {
             ConstructorDescr[] cds = similarClasses[i].getDeclaredConstructors();
             for (ConstructorDescr cd : cds) {

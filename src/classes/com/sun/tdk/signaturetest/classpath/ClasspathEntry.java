@@ -28,7 +28,7 @@ import com.sun.tdk.signaturetest.model.ClassDescription;
 
 import java.io.PrintWriter;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author Maxim Sokolnikov
@@ -47,7 +47,7 @@ public abstract class ClasspathEntry implements Classpath {
      * Qualified names for all those classes found in <code>this</code>
      * directory.
      */
-    protected LinkedHashSet<String> classes;
+    protected Set<String> classes;
     /**
      * This <code>currentPosition</code> iterator is used to browse
      * <code>classes</code>

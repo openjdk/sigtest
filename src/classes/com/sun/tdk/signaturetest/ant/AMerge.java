@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * <pre>
@@ -64,7 +65,7 @@ import java.util.Iterator;
  */
 public class AMerge extends ASuperBase {
 
-    private final ArrayList<AFile> files = new ArrayList<>();
+    private final List<AFile> files = new ArrayList<>();
     private String write;
     private boolean binary = false;
 

@@ -32,7 +32,7 @@ import java.util.TreeMap;
 public class Elem {
     private String nodeName;
     private TreeMap<String, String> attributes = new TreeMap<>();
-    private ArrayList<Elem> children = new ArrayList<>();
+    private List<Elem> children = new ArrayList<>();
 
     public String getNodeName() {
         return nodeName;
@@ -50,7 +50,7 @@ public class Elem {
 
     public List<Elem> getElementsByTagName(String name) {
         assert name != null && !name.isEmpty();
-        ArrayList<Elem> res = new ArrayList<>();
+        List<Elem> res = new ArrayList<>();
         getElementsByTagName(this, name, res);
         return res;
     }

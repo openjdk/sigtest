@@ -111,7 +111,7 @@ public class AnnotationParser {
 
     // unpack annotations from Container's array
     public List<AnnotationItem> unpack(String annS) {
-        ArrayList<AnnotationItem> res = new ArrayList<>();
+        List<AnnotationItem> res = new ArrayList<>();
         String str = annS.trim();
         if (str.charAt(0) == '[') {
             str = str.substring(1);

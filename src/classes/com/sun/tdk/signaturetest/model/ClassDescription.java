@@ -109,9 +109,9 @@ public class ClassDescription extends MemberDescription {
         return '0' <= c && c <= '9';
     }
 
-    public ArrayList<String> getTypeBounds() {
+    public List<String> getTypeBounds() {
 //        assert typeParameters != null;
-        ArrayList<String> bounds = new ArrayList<>();
+        List<String> bounds = new ArrayList<>();
         int startPos = 1;
         int endPos;
         do {

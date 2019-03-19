@@ -38,6 +38,7 @@ import java.lang.module.ModuleReader;
 import java.lang.module.ModuleReference;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -46,7 +47,7 @@ import java.util.stream.Collectors;
 public class EnumPlatformClasspathImpl implements Classpath {
 
 
-    private ArrayList<String> classes;
+    private List<String> classes;
     private Iterator<String> it;
 
     @Override

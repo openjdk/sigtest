@@ -76,7 +76,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
 
         List<MemberDescription> getMethodRefs() {
-            ArrayList<MemberDescription> memberList = new ArrayList<>();
+            List<MemberDescription> memberList = new ArrayList<>();
             int n = constants.length;
             for (int i = 1; i < n; i++) {
                 if (constants[i].tag == CONSTANT_Long || constants[i].tag == CONSTANT_Double) {
@@ -1535,7 +1535,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     public void setIgnoreAnnotations(boolean value) {
         ignoreAnnotations = value;
     }
-    private HashSet<Hint> hints = new HashSet<>();
+    private Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);
@@ -1556,5 +1556,5 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         this.log = log;
     }
     private PrintWriter log;
-    private HashSet<String> notFoundAnnotations = new HashSet<>();
+    private Set<String> notFoundAnnotations = new HashSet<>();
 }

@@ -322,7 +322,7 @@ public class Setup extends SigTest {
         }
 
         // create list of all classes available
-        HashSet<String> allClasses = new HashSet<>();
+        Set<String> allClasses = new HashSet<>();
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         getLog().println(i18n.getString("Setup.log.classpath", bo.getValue(Option.CLASSPATH)));
 
@@ -554,7 +554,7 @@ public class Setup extends SigTest {
      * required to be tracked.
      */
     private Collection<String> getPackageClasses(Collection<String> classes) {
-        HashSet<String> packageClasses = new HashSet<>();
+        Set<String> packageClasses = new HashSet<>();
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         int nonTigerCount = 0;
 
@@ -606,7 +606,7 @@ public class Setup extends SigTest {
      * @param classes MemberCollection which stores occurred errors. *
      */
     private List<String> sortClasses(Collection<String> classes) {
-        ArrayList<String> retVal = new ArrayList<>(classes);
+        List<String> retVal = new ArrayList<>(classes);
         Collections.sort(retVal);
         return retVal;
     }

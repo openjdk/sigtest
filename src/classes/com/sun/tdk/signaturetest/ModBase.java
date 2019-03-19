@@ -33,10 +33,7 @@ import com.sun.tdk.signaturetest.model.ModuleDescription;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Common part for ModTest and ModSetup
@@ -260,7 +257,7 @@ public abstract class ModBase extends SigTest {
 
     class SimpleErrorFormatter {
 
-        private ArrayList<String> errors = new ArrayList<>();
+        private List<String> errors = new ArrayList<>();
 
         void addError(String formatStr, Object... args) {
             errors.add(String.format(formatStr, args));

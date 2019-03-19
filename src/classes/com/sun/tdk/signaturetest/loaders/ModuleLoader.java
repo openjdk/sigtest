@@ -113,7 +113,7 @@ public class ModuleLoader implements ModuleDescriptionLoader {
 
                 // 7. provides
                 Set<ModuleDescriptor.Provides> prvs = md.provides();
-                LinkedHashMap<String, ModuleDescription.Provides> reprovides = new LinkedHashMap<>();
+                Map<String, ModuleDescription.Provides> reprovides = new LinkedHashMap<>();
                 for (ModuleDescriptor.Provides me : prvs) {
                     ModuleDescription.Provides pr = new ModuleDescription.Provides();
                     pr.service = me.service();

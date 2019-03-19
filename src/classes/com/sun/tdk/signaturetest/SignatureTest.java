@@ -166,7 +166,7 @@ public class SignatureTest extends SigTest {
     private String logName = null;
     private String outFormat = null;
     private boolean extensibleInterfaces = false;
-    private TreeSet<String> orderImportant;
+    private Set<String> orderImportant;
     private static I18NResourceBundle i18nSt = I18NResourceBundle.getBundleForClass(SignatureTest.class);
 
     /**

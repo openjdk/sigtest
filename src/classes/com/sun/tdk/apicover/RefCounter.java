@@ -51,7 +51,7 @@ public class RefCounter {
     }
 
     public void addClass(ClassDescription cd) {
-        ArrayList<MemberDescription> modified = new ArrayList<>();
+        List<MemberDescription> modified = new ArrayList<>();
         boolean hasTracked = false;
         Iterator i = cd.getMembersIterator();
         boolean hasMembers = i.hasNext();

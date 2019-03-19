@@ -262,7 +262,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
             }
         });
 
-        ArrayList<Message> toRemove = new ArrayList<>();
+        List<Message> toRemove = new ArrayList<>();
 
         loop:
         for (int i = 0; i < failedMessages.size(); i++) {
@@ -282,7 +282,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
                 }
             }
             boolean found = false;
-            ArrayList<Message> rem = new ArrayList<>();
+            List<Message> rem = new ArrayList<>();
             for (int k = i; k <= last; k++) {
                 Message m = failedMessages.get(k);
                 if (m.className.equals(m.errorObject.getDeclaringClassName())) {

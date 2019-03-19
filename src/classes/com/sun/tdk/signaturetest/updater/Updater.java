@@ -43,7 +43,7 @@ import com.sun.tdk.signaturetest.util.SwissKnife;
 public class Updater extends DefaultHandler {
 
     private UpdateRecord ur;
-    private LinkedList<Command> commands;
+    private List<Command> commands;
     private String lastData;
     private PrintWriter log;
 

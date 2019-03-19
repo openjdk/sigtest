@@ -83,7 +83,7 @@ public class F43Reader extends F42Reader {
         }
         {
             List<Elem> pkgs = m.getElementsByTagName(PACKAGE);
-            HashSet<String> pkSet = new HashSet<>();
+            Set<String> pkSet = new HashSet<>();
             for (Elem p : pkgs) {
                 String pkgName = p.getAttribute(NAME);
                 if (!pkgName.isEmpty()) {
@@ -94,12 +94,12 @@ public class F43Reader extends F42Reader {
         }
         {
             List<Elem> exps = m.getElementsByTagName(EXPORTS);
-            HashSet<ModuleDescription.Exports> exSet = new HashSet<>();
+            Set<ModuleDescription.Exports> exSet = new HashSet<>();
 
             for (Elem e : exps) {
                 ModuleDescription.Exports export = new ModuleDescription.Exports();
                 export.source = e.getAttribute(SOURCE);
-                HashSet<String> taSet = new HashSet<>();
+                Set<String> taSet = new HashSet<>();
 
                 List<Elem> targs = e.getElementsByTagName(TARGET);
                 for (Elem t : targs) {
@@ -112,7 +112,7 @@ public class F43Reader extends F42Reader {
         }
         {
             List<Elem> reqs = m.getElementsByTagName(REQUIRES);
-            HashSet<ModuleDescription.Requires> rqSet = new HashSet<>();
+            Set<ModuleDescription.Requires> rqSet = new HashSet<>();
             for (Elem r : reqs) {
                 ModuleDescription.Requires rq = new ModuleDescription.Requires();
                 rq.name = r.getAttribute(NAME);

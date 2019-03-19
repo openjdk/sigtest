@@ -43,6 +43,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class ModSetup extends ModBase {
@@ -190,7 +191,7 @@ public class ModSetup extends ModBase {
         ModWriter writer = null;
 
         ModuleDescriptionLoader mdl = getModuleLoader();
-        HashMap<String, ModuleDescription> model = new HashMap<>();
+        Map<String, ModuleDescription> model = new HashMap<>();
         {
             Set<ModuleDescription> modules = mdl.loadBootModules();
             for (ModuleDescription md : modules) {

@@ -326,7 +326,7 @@ public class MemberCollectionBuilder {
         // findMember direct interfaces
         SuperInterface[] interfaces = cl.getInterfaces();
 
-        HashSet<String> xfCan = new HashSet<>();
+        Set<String> xfCan = new HashSet<>();
         for (SuperInterface anInterface : interfaces) {
             try {
                 ClassDescription intf = hierarchy.load(anInterface.getQualifiedName());
@@ -444,7 +444,7 @@ public class MemberCollectionBuilder {
 
     }
 
-    private void postProcessInterfaceFields(ClassDescription cl, boolean checkHidding, MemberCollection retVal, Map<String, MemberDescription> inheritedFields, HashSet<String> xfCan) {
+    private void postProcessInterfaceFields(ClassDescription cl, boolean checkHidding, MemberCollection retVal, Map<String, MemberDescription> inheritedFields, Set<String> xfCan) {
         Set<String> internalFields = Collections.emptySet();
         Set<String> xFields = Collections.emptySet();
         if (checkHidding) {

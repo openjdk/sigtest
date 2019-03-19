@@ -25,6 +25,7 @@
 package com.sun.tdk.signaturetest.errors;
 
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import com.sun.tdk.signaturetest.errors.ErrorFormatter.Message;
 
@@ -36,8 +37,8 @@ import com.sun.tdk.signaturetest.errors.ErrorFormatter.Message;
 public class Chain {
 
     private List<Message> mainList;
-    private TreeSet<Message> processedMessages;
-    private TreeSet<Message> newMessages;
+    private Set<Message> processedMessages;
+    private Set<Message> newMessages;
 
     void setMessageProcessed(Message m) {
         processedMessages.add(m);

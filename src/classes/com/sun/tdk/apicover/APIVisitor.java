@@ -90,7 +90,7 @@ class APIVisitor {
 
         // XXX
         // hand-made sort of members
-        ArrayList<MemberDescription> list = new ArrayList<>();
+        List<MemberDescription> list = new ArrayList<>();
         for (Iterator i = x.getMembersIterator(); i.hasNext();) {
             boolean isInserted = false;
             MemberDescription md = (MemberDescription) i.next();

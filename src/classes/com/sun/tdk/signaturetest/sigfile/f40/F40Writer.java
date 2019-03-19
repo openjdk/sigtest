@@ -43,7 +43,7 @@ public class F40Writer implements Writer {
     private boolean isConstantValuesSaved = true;
     private String apiVersion;
     private final StringBuffer buf = new StringBuffer(512);
-    private final ArrayList<String> members = new ArrayList<>();
+    private final List<String> members = new ArrayList<>();
 
     public F40Writer() {
         setFormat(new F40Format());
@@ -376,7 +376,7 @@ public class F40Writer implements Writer {
     protected void writeInternalMembers(StringBuffer buf, String prefix, Set<String> internalMembers) {
 
         // sort members
-        ArrayList<String> intMembers = new ArrayList<>(internalMembers);
+        List<String> intMembers = new ArrayList<>(internalMembers);
         Collections.sort(intMembers);
 
         buf.setLength(0);

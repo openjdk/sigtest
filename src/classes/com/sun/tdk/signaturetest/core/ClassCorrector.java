@@ -226,7 +226,7 @@ public class ClassCorrector implements Transformer {
     private void getPaths(List<ArrayList<String>> paths, List<String> currentPath, String intFrom, String intTo) {
         getPaths2(paths, currentPath, intFrom, intTo);
         // remove invisible elements
-        for (ArrayList<String> path : paths) {
+        for (List<String> path : paths) {
             for (Iterator<String> it2 = path.iterator(); it2.hasNext();) {
                 String cl = it2.next();
                 try {
@@ -254,7 +254,7 @@ public class ClassCorrector implements Transformer {
         try {
             if (classHierarchy.isInterface(clName)) {
                 ArrayList<ArrayList<String>> paths = new ArrayList<>();
-                ArrayList<String> currentPath = new ArrayList<>();
+                List<String> currentPath = new ArrayList<>();
                 getPaths(paths, currentPath, replaceWithClassName, clName);
                 if (paths.size() > 0) {
                     ArrayList<String> shorterPath = paths.get(0);
@@ -427,7 +427,7 @@ public class ClassCorrector implements Transformer {
 
         List<String> supers = classHierarchy.getSuperClasses(c.getQualifiedName());
 
-        ArrayList<MemberDescription> newMembers = new ArrayList<>();
+        List<MemberDescription> newMembers = new ArrayList<>();
 
         for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
 
@@ -644,7 +644,7 @@ public class ClassCorrector implements Transformer {
         String typeparams = mr.getTypeParameters();
 
         if (typeparams != null) {
-            ArrayList<String> params = Erasurator.splitParameters(typeparams);
+            List<String> params = Erasurator.splitParameters(typeparams);
             for (String param : params) {
 
                 String temp = param.substring(param.indexOf(ext) + ext.length());

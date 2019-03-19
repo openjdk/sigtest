@@ -165,7 +165,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
             // sort them
             String sValues = m.value.substring(1, m.value.length() - 1);
             StringTokenizer st = new StringTokenizer(sValues, ",");
-            ArrayList<String> ts = new ArrayList<>();
+            List<String> ts = new ArrayList<>();
             while (st.hasMoreTokens()) {
                 ts.add(st.nextToken().trim());
             }

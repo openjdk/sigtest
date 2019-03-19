@@ -40,10 +40,7 @@ import java.lang.reflect.*;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * This is J2SE 1.5 (Tiger) loader
@@ -557,7 +554,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
         return anno;
     }
-    private HashSet<Hint> hints = new HashSet<>();
+    private Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);

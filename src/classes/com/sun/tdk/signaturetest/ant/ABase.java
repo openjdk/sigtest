@@ -32,6 +32,7 @@ import org.apache.tools.ant.types.Path;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for ant wrappers such as ASetup and ATest
@@ -41,12 +42,12 @@ import java.util.ArrayList;
 public class ABase extends ASuperBase {
 
     Path classpath;
-    final ArrayList<APackage> pac = new ArrayList<>();
-    private final ArrayList<AExclude> exclude = new ArrayList<>();
+    final List<APackage> pac = new ArrayList<>();
+    private final List<AExclude> exclude = new ArrayList<>();
     String fileName;
     private String apiVersion;
 
-    void createBaseParameters(ArrayList<String> params) {
+    void createBaseParameters(List<String> params) {
         params.add(Option.FILE_NAME.getKey());
         params.add(fileName);
         params.add(Option.CLASSPATH.getKey());

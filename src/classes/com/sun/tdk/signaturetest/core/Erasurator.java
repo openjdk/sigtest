@@ -57,7 +57,7 @@ public class Erasurator {
 
     private Map<String, String> globalParameters = new HashMap<>();
     private Map<String, String> localParameters = new HashMap<>();
-    private HashSet<String> unresolvedWarnings = new HashSet<>();
+    private Set<String> unresolvedWarnings = new HashSet<>();
     private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Erasurator.class);
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
@@ -262,8 +262,8 @@ public class Erasurator {
         return cloned_m;
     }
 
-    public static ArrayList<String> splitParameters(String actualTypeParams) {
-        ArrayList<String> paramList = new ArrayList<>();
+    public static List<String> splitParameters(String actualTypeParams) {
+        List<String> paramList = new ArrayList<>();
         int startPos = 1;
         int level = 0;
         int len = actualTypeParams.length() - 1;

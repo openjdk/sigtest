@@ -95,7 +95,7 @@ public class CallFilter {
         }
 
         if (sigFilters != null && !sigFilters.isEmpty()) {
-            TreeSet<String> filteredSigs = new TreeSet<>();
+            Set<String> filteredSigs = new TreeSet<>();
             for (String filter : sigFilters) {
                 if (filter == null || filter.isEmpty()) {
                     continue;

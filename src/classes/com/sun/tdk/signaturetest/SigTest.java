@@ -546,8 +546,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     protected AnnotationItem[] unpackContainerAnnotations(AnnotationItem[] annotations, ClassHierarchy ch) {
-        ArrayList<AnnotationItem> unpackedAnnotations = new ArrayList<>();
-        ArrayList<AnnotationItem> toRemove = new ArrayList<>();
+        List<AnnotationItem> unpackedAnnotations = new ArrayList<>();
+        List<AnnotationItem> toRemove = new ArrayList<>();
         AnnotationParser ap = new AnnotationParser();
         for (AnnotationItem annotation : annotations) {
             try {
