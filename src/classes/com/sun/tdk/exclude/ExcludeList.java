@@ -41,10 +41,10 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ExcludeList implements Exclude {
 
-    private List excludeList;
+    private List<Pattern> excludeList;
 
     public ExcludeList() {
-        excludeList = new ArrayList();
+        excludeList = new ArrayList<>();
     }
 
 
@@ -82,20 +82,20 @@ public class ExcludeList implements Exclude {
     }
 
     public String[] parseParameters(String[] args) {
-        Set rest = new HashSet();
-        List parameters = new ArrayList(Arrays.asList(args));
-        Iterator i = parameters.iterator();
+        Set<String> rest = new HashSet<>();
+        List<String> parameters = new ArrayList<>(Arrays.asList(args));
+        Iterator<String> i = parameters.iterator();
         while (i.hasNext()) {
-            String parameter = (String) i.next();
+            String parameter = i.next();
             if (parameter.equalsIgnoreCase("-excludesig")) {
                 rest.add(parameter);
-                parameter = (String) i.next();
+                parameter = i.next();
                 addSignature(parameter);
                 rest.add(parameter);
             }
         }
         parameters.removeAll(rest);
-        return (String[]) parameters.toArray(new String[0]);
+        return parameters.toArray(new String[0]);
     }
 
     public String report() {

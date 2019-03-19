@@ -91,9 +91,9 @@ class APIVisitor {
         // XXX
         // hand-made sort of members
         List<MemberDescription> list = new ArrayList<>();
-        for (Iterator i = x.getMembersIterator(); i.hasNext();) {
+        for (Iterator<MemberDescription> i = x.getMembersIterator(); i.hasNext();) {
             boolean isInserted = false;
-            MemberDescription md = (MemberDescription) i.next();
+            MemberDescription md = i.next();
             for (int j = 0; j < list.size(); j++) {
                 if ((list.get(j).getName() + list.get(j).getArgs())
                         .compareTo(md.getName() + md.getArgs()) > 0) {

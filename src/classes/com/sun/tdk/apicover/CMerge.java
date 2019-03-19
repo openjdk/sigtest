@@ -166,11 +166,11 @@ public class CMerge {
     public void decodeOptions(String optionName, String[] args) throws CommandLineParserException {
         if (optionName.equalsIgnoreCase(Option.FILES.getKey())) {
             StringTokenizer st = new StringTokenizer(args[0], File.pathSeparator);
-            ArrayList list = new ArrayList();
+            List<String> list = new ArrayList<>();
             while (st.hasMoreElements()) {
                 list.add(st.nextToken());
             }
-            iFiles = (String[]) list.toArray(new String[0]);
+            iFiles = list.toArray(new String[0]);
         } else if (optionName.equalsIgnoreCase(Option.WRITE.getKey())) {
             oFile = args[0];
         } else if (optionName.equalsIgnoreCase(STRICT_OPTION)) {

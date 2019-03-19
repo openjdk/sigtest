@@ -53,10 +53,10 @@ public class RefCounter {
     public void addClass(ClassDescription cd) {
         List<MemberDescription> modified = new ArrayList<>();
         boolean hasTracked = false;
-        Iterator i = cd.getMembersIterator();
+        Iterator<MemberDescription> i = cd.getMembersIterator();
         boolean hasMembers = i.hasNext();
         while (i.hasNext()) {
-            MemberDescription md = (MemberDescription) i.next();
+            MemberDescription md = i.next();
             if (md.hasModifier(Adapter.coverIgnore)) {
                 i.remove();
                 continue;
@@ -109,8 +109,8 @@ public class RefCounter {
             ClassDescription apiClass = api.get(calledCl);
             if (apiClass != null) {
                 erasurator.parseTypeParameters(apiClass);
-                for (Iterator j = apiClass.getMembersIterator(); j.hasNext();) {
-                    MemberDescription orig = (MemberDescription) j.next();
+                for (Iterator<MemberDescription> j = apiClass.getMembersIterator(); j.hasNext();) {
+                    MemberDescription orig = j.next();
                     MemberDescription erased = erasurator.processMember(orig);
                     if (erased.equals(call)) {
                         Integer count = results.get(orig.toString());
@@ -205,8 +205,8 @@ public class RefCounter {
 
     private void clearInherited() {
         for (ClassDescription cd : api.values()) {
-            for (Iterator i = cd.getMembersIterator(); i.hasNext();) {
-                MemberDescription md = (MemberDescription) i.next();
+            for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext();) {
+                MemberDescription md = i.next();
                 if (!(md.isConstructor() || md.isField() || md.isMethod())) {
                     i.remove();
                     continue;

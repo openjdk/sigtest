@@ -282,8 +282,8 @@ public abstract class ReportGenerator extends APIVisitor {
         top = new PackageDescr("");
         APIVisitor calc = new APIVisitor() {
             protected void visit(ClassDescription cd) {
-                for (Iterator i = cd.getMembersIterator(); i.hasNext();) {
-                    MemberDescription md = (MemberDescription) i.next();
+                for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext();) {
+                    MemberDescription md = i.next();
                     if (!(md.isConstructor() || md.isField() || md.isMethod())) {
                         i.remove();
                         continue;
@@ -316,8 +316,8 @@ public abstract class ReportGenerator extends APIVisitor {
                 }
                 int members = 0;
                 int tested = 0;
-                for (Iterator i = cd.getMembersIterator(); i.hasNext();) {
-                    MemberDescription md = (MemberDescription) i.next();
+                for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext();) {
+                    MemberDescription md = i.next();
                     members++;
                     if (refCounter.isCovered(md)) {
                         tested++;
