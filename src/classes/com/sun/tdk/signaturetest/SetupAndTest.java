@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -52,8 +52,8 @@ public class SetupAndTest extends Result {
     public static final String REFERENCE_OPTION = "-Reference";
     public static final String TEST_OPTION = "-Test";
     // Sets of command line options for:
-    private final List setupOptions = new ArrayList();
-    private final List testOptions = new ArrayList();
+    private final List<String> setupOptions = new ArrayList<>();
+    private final List<String> testOptions = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -132,29 +132,29 @@ public class SetupAndTest extends Result {
         // Run Setup
         log.println(i18n.getString("SetupAndTest.message.invoke.setup"));
         Setup setup = new Setup();
-        setup.run((String[]) setupOptions.toArray(new String[0]), log, ref);
+        setup.run(setupOptions.toArray(new String[0]), log, ref);
 
         // Run SignatureTest
         if (setup.isPassed()) {
             log.println(i18n.getString("SetupAndTest.message.invoke.sigtest"));
             SignatureTest sigtest = new SignatureTest();
-            sigtest.run((String[]) testOptions.toArray(new String[0]), log, ref);
+            sigtest.run(testOptions.toArray(new String[0]), log, ref);
             return sigtest.exit();
         } else {
             return setup.exit();
         }
     }
 
-    private void addOption(List options, String optionName, String optionValue) {
+    private void addOption(List<String> options, String optionName, String optionValue) {
         options.add(optionName);
         options.add(optionValue);
     }
 
-    private void addFlag(List options, String flag) {
+    private void addFlag(List<String> options, String flag) {
         options.add(flag);
     }
 
-    private void addOption(List options, String optionName, String[] optionValues) {
+    private void addOption(List<String> options, String optionName, String[] optionValues) {
         options.add(optionName);
         options.addAll(Arrays.asList(optionValues));
     }

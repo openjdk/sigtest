@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -166,7 +166,7 @@ public class SignatureTest extends SigTest {
     private String logName = null;
     private String outFormat = null;
     private boolean extensibleInterfaces = false;
-    private TreeSet orderImportant;
+    private TreeSet<String> orderImportant;
     private static I18NResourceBundle i18nSt = I18NResourceBundle.getBundleForClass(SignatureTest.class);
 
     /**
@@ -177,7 +177,7 @@ public class SignatureTest extends SigTest {
      * When signature test checks API, this table collects names of that classes
      * present in both signature file and in the API being tested.
      */
-    private Set trackedClassNames;
+    private Set<String> trackedClassNames;
     /**
      * Enable constant checking whenever possible, starting with sigtest 1.2.1
      */
@@ -374,7 +374,7 @@ public class SignatureTest extends SigTest {
             //setClasspath(new ClasspathImpl(bo.getValue(Option.CLASSPATH)));
             if (!bo.isSet(Option.STATIC) && isPlatformEnumerationSupported()) {
                 try {
-                    Class epci = Class.forName("com.sun.tdk.signaturetest.classpath.EnumPlatformClasspathImpl");
+                    Class<?> epci = Class.forName("com.sun.tdk.signaturetest.classpath.EnumPlatformClasspathImpl");
                     Classpath cp = (Classpath) epci.getConstructor().newInstance();
                     setClasspath(cp);
                 } catch (Exception e) {
@@ -445,7 +445,7 @@ public class SignatureTest extends SigTest {
             readMode = MultipleFileReader.CLASSPATH_MODE;
         } else if (optionName.equalsIgnoreCase(ORDANN_OPTION)) {
             if (orderImportant == null) {
-                orderImportant = new TreeSet();
+                orderImportant = new TreeSet<>();
             }
             orderImportant.addAll(Arrays.asList(CommandLineParser.parseListOption(args)));
         } else if (optionName.equalsIgnoreCase(SECURE_PACKAGES_OPTION)) {
@@ -501,7 +501,7 @@ public class SignatureTest extends SigTest {
 
     private void initDefaultAnnotations() {
         if (orderImportant == null) {
-            orderImportant = new TreeSet();
+            orderImportant = new TreeSet<>();
             orderImportant.add("javax.xml.bind.annotation.XmlType");
             orderImportant.add("java.beans.ConstructorProperties");
         }
@@ -635,12 +635,12 @@ public class SignatureTest extends SigTest {
                     closedSet.addClass(currentClass.getQualifiedName());
                 }
 
-                Set missingClasses = closedSet.getMissingClasses();
+                Set<String> missingClasses = closedSet.getMissingClasses();
                 if (!missingClasses.isEmpty() && !allowMissingSuperclasses()) {
 
                     log.print(i18nSt.getString("SignatureTest.error.required_classes_missing"));
                     int count = 0;
-                    for (Object missingClass : missingClasses) {
+                    for (String missingClass : missingClasses) {
                         if (count != 0) {
                             log.print(", ");
                         }
@@ -865,10 +865,10 @@ public class SignatureTest extends SigTest {
     }
 
     private void checkAddedPackages() {
-        List wrk = new ArrayList();
+        List<String> wrk = new ArrayList<>();
 
-        for (Object trackedClassName : trackedClassNames) {
-            String pkg = ClassDescription.getPackageName((String) trackedClassName);
+        for (String trackedClassName : trackedClassNames) {
+            String pkg = ClassDescription.getPackageName(trackedClassName);
             if (!wrk.contains(pkg)) {
                 wrk.add(pkg);
             }
@@ -876,8 +876,8 @@ public class SignatureTest extends SigTest {
 
         Collections.sort(wrk);
 
-        for (Object o : wrk) {
-            String fqn = ClassDescription.getPackageInfo((String) o);
+        for (String o : wrk) {
+            String fqn = ClassDescription.getPackageInfo(o);
 
             if (!trackedClassNames.contains(fqn)) {
                 try {
@@ -1018,7 +1018,7 @@ public class SignatureTest extends SigTest {
     }
 
     private void checkSupers(ClassDescription cl) throws SuperClassesNotFoundException {
-        ArrayList fNotFound = new ArrayList();
+        ArrayList<String> fNotFound = new ArrayList<>();
         SuperClass sc = cl.getSuperClass();
         ClassHierarchy hi = cl.getClassHierarchy();
         if (sc != null) {
@@ -1038,7 +1038,7 @@ public class SignatureTest extends SigTest {
                 }
             }
         }
-        String[] fProblems = (String[]) fNotFound.toArray(new String[]{});
+        String[] fProblems = fNotFound.toArray(new String[]{});
         if (fProblems.length > 0) {
             throw new SuperClassesNotFoundException(fProblems, cl.getQualifiedName());
         }
@@ -1049,8 +1049,8 @@ public class SignatureTest extends SigTest {
         boolean result = (tp != null) && (!"".equals(tp));
         // check all the members also
         if (!result) {
-            for (Iterator e = cl.getMembersIterator(); e.hasNext();) {
-                MemberDescription mr = (MemberDescription) e.next();
+            for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext();) {
+                MemberDescription mr = e.next();
                 String tpM = mr.getTypeParameters();
                 if ((tpM != null) && (!"".equals(tpM))) {
                     result = true;
@@ -1117,8 +1117,8 @@ public class SignatureTest extends SigTest {
         checkClassDescription(required, found);
 
         // track members declared in the signature file.
-        for (Iterator e = required.getMembersIterator(); e.hasNext();) {
-            MemberDescription requiredMember = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = required.getMembersIterator(); e.hasNext();) {
+            MemberDescription requiredMember = e.next();
             try {
                 excluded(required, requiredMember);
                 trackMember(required, found, requiredMember, found.findMember(requiredMember));
@@ -1135,8 +1135,8 @@ public class SignatureTest extends SigTest {
 
         // track members which are added in the current implementation.
         if (!isSupersettingEnabled) {
-            for (Iterator e = found.getMembersIterator(); e.hasNext();) {
-                MemberDescription foundMember = (MemberDescription) e.next();
+            for (Iterator<MemberDescription> e = found.getMembersIterator(); e.hasNext();) {
+                MemberDescription foundMember = e.next();
                 if (!required.containsMember(foundMember)) {
                     try {
                         excluded(found, foundMember);
@@ -1413,8 +1413,8 @@ public class SignatureTest extends SigTest {
             return AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY;
         }
 
-        List list = new ArrayList(Arrays.asList(baseAnnotList));
-        Iterator it = list.iterator();
+        List<AnnotationItem> list = new ArrayList<>(Arrays.asList(baseAnnotList));
+        Iterator<AnnotationItem> it = list.iterator();
 
         while (it.hasNext()) {
             if (it.next() instanceof AnnotationItemEx) {
@@ -1422,7 +1422,7 @@ public class SignatureTest extends SigTest {
             }
         }
 
-        return (AnnotationItem[]) list.toArray(AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY);
+        return list.toArray(AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY);
     }
 
     private void reportError(ClassDescription fromClass, MemberDescription fid, String anno, boolean added) {
@@ -1432,13 +1432,13 @@ public class SignatureTest extends SigTest {
             String defenition;
             if (fromClass == null) {
                 className = fid.getQualifiedName();
-                defenition = anno.toString();
+                defenition = anno;
             } else {
                 className = fromClass.getQualifiedName();
                 if (fid.isMethod()) {
-                    defenition = ((MethodDescr) fid).getSignature() + ":" + anno.toString();
+                    defenition = ((MethodDescr) fid).getSignature() + ":" + anno;
                 } else {
-                    defenition = fid.getName() + ":" + anno.toString();
+                    defenition = fid.getName() + ":" + anno;
                 }
             }
 
@@ -1513,7 +1513,7 @@ public class SignatureTest extends SigTest {
 
         getClasspath().printErrors(log);
 
-        trackedClassNames = new HashSet();
+        trackedClassNames = new HashSet<>();
 
         ClassDescriptionLoader loader = getClassDescrLoader();
         setupLoaders(loader, in);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -172,8 +172,7 @@ public class Merge extends SigTest {
             // why do we need to build members here ????
             MemberCollectionBuilder builder = new MemberCollectionBuilder(new SilentLog());
 
-            for (Object o : files[i].getClassSet().values()) {
-                ClassDescription c = (ClassDescription) o;
+            for (ClassDescription c : files[i].getClassSet().values()) {
                 c.setHierarchy(files[i].getClassHierarchy());
                 try {
                     if (in.isFeatureSupported(FeaturesHolder.BuildMembers)) {
@@ -195,13 +194,13 @@ public class Merge extends SigTest {
         }
 
         ClassHierarchy ch = new ClassHierarchyImpl(result, ClassHierarchy.ALL_PUBLIC);
-        for (Iterator i = result.getClassIterator(); i.hasNext();) {
-            ClassDescription c = (ClassDescription) i.next();
+        for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext();) {
+            ClassDescription c = i.next();
             c.setHierarchy(ch);
         }
         MemberCollectionBuilder builder = new MemberCollectionBuilder(new SilentLog());
-        for (Iterator i = result.getClassIterator(); i.hasNext();) {
-            ClassDescription c = (ClassDescription) i.next();
+        for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext();) {
+            ClassDescription c = i.next();
             try {
                 builder.createMembers(c, false, true, false);
                 normalizer.normThrows(c, true);
@@ -232,8 +231,7 @@ public class Merge extends SigTest {
                 pw = new PrintWriter(System.out);
             }
             writer.init(pw);
-            for (Object o : merger.getSupportedFeatures()) {
-                Format.Feature f = (Format.Feature) o;
+            for (Format.Feature f : merger.getSupportedFeatures()) {
                 if (f != FeaturesHolder.CopyRight) // don't put copyright int merged file
                 {
                     writer.addFeature(f);
@@ -243,8 +241,8 @@ public class Merge extends SigTest {
 
             // scan class and writes definition to the signature file
             // 1st analyze all the classes
-            for (Iterator i = result.getClassIterator(); i.hasNext();) {
-                ClassDescription c = (ClassDescription) i.next();
+            for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext();) {
+                ClassDescription c = i.next();
                 writer.write(c);
             }
 

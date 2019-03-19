@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -170,7 +170,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected boolean isVerbose = false;
     static boolean Xverbose = false;
     protected ClassHierarchy testableHierarchy;
-    protected Set errorMessages = new HashSet();
+    protected Set<String> errorMessages = new HashSet<>();
     private ClassDescriptionLoader loader;
     protected boolean reportWarningAsError = false;
 
@@ -200,8 +200,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
     public void printErrors() {
         // prints errors
-        for (Object errorMessage : errorMessages) {
-            setupProblem((String) errorMessage);
+        for (String errorMessage : errorMessages) {
+            setupProblem(errorMessage);
         }
 
         initErrors();
@@ -427,8 +427,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             Constructor ctor = Class.forName(name).getConstructor(pars);
             ClassDescriptionLoader cl = (ClassDescriptionLoader) ctor.newInstance(args);
             try {
-                Method setLog = cl.getClass().getDeclaredMethod("setLog", new Class[]{PrintWriter.class});
-                setLog.invoke(cl, new Object[]{log});
+                Method setLog = cl.getClass().getDeclaredMethod("setLog", PrintWriter.class);
+                setLog.invoke(cl, log);
             } catch (NoSuchMethodException e) {
             }
             return cl;
@@ -546,20 +546,19 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     protected AnnotationItem[] unpackContainerAnnotations(AnnotationItem[] annotations, ClassHierarchy ch) {
-        ArrayList<AnnotationItem> unpackedAnnotations = new ArrayList();
-        ArrayList<AnnotationItem> toRemove = new ArrayList();
+        ArrayList<AnnotationItem> unpackedAnnotations = new ArrayList<>();
+        ArrayList<AnnotationItem> toRemove = new ArrayList<>();
         AnnotationParser ap = new AnnotationParser();
         for (AnnotationItem annotation : annotations) {
             try {
-                AnnotationItem ai = annotation;
-                unpackedAnnotations.add(ai);
-                if (ch.isContainerAnnotation(ai.getName())) {
-                    Member memval = ai.findByName("value");
+                unpackedAnnotations.add(annotation);
+                if (ch.isContainerAnnotation(annotation.getName())) {
+                    Member memval = annotation.findByName("value");
                     if (memval != null) {
-                        List newAnns = ap.unpack(memval.value);
+                        List<AnnotationItem> newAnns = ap.unpack(memval.value);
                         if (newAnns != null && newAnns.size() > 0) {
                             unpackedAnnotations.addAll(newAnns);
-                            toRemove.add(ai);
+                            toRemove.add(annotation);
                         }
                     }
                 }
@@ -571,7 +570,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
         return unpackedAnnotations.toArray(AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY);
     }
 
-    protected AnnotationItem[] normalizeArrayParaemeters(AnnotationItem[] annotations, Set exclusions, ClassHierarchy ch) {
+    protected AnnotationItem[] normalizeArrayParaemeters(AnnotationItem[] annotations, Set<String> exclusions, ClassHierarchy ch) {
         for (AnnotationItem annotation : annotations) {
             try {
                 if (!ch.isContainerAnnotation(annotation.getName())) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2015, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -322,7 +322,7 @@ public class Setup extends SigTest {
         }
 
         // create list of all classes available
-        HashSet allClasses = new HashSet();
+        HashSet<String> allClasses = new HashSet<>();
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         getLog().println(i18n.getString("Setup.log.classpath", bo.getValue(Option.CLASSPATH)));
 
@@ -339,153 +339,145 @@ public class Setup extends SigTest {
 
         getClasspath().printErrors(getLog());
 
-        String name;
-        Classpath cp = getClasspath();
-        while (cp.hasNext()) {
-            name = cp.nextClassName();
-            if (!allClasses.add(name)) {
-                getLog().println(i18n.getString("Setup.log.duplicate.class", name));
-            }
-        }
+        SortedSet<String> excludedClasses = new TreeSet<>();
 
-        cp.setListToBegin();
-
-        ClassDescriptionLoader testableLoader = getClassDescrLoader();
-        testableHierarchy = new ClassHierarchyImpl(testableLoader);
-        testableMCBuilder = new MemberCollectionBuilder(this, "source:setup");
-
-        // adds classes which are member of classes from tracked package
-        // and sorts class names
-        getLog().println(i18n.getString("Setup.log.constantchecking",
-                isConstantValuesTracked() ? i18n.getString("Setup.msg.ConstantValuesTracked.on")
-                : i18n.getString("Setup.msg.ConstantValuesTracked.off")));
-        getLog().println(i18n.getString("Setup.log.message.numclasses", Integer.toString(allClasses.size())));
-
-        List sortedClasses;
-        Collection packageClasses = getPackageClasses(allClasses);
-
-        if (isClosedFile) {
-            ClassSet closedSetOfClasses = new ClassSet(testableHierarchy, true);
-
-            // add all classes including non-accessible
-            for (Object packageClass : packageClasses) {
-                name = (String) packageClass;
-                closedSetOfClasses.addClass(name);
-            }
-            // remove not accessible classes
-
-            Set invisibleClasses = new HashSet();
-            Set classes = closedSetOfClasses.getClasses();
-            for (Object aClass : classes) {
-
-                name = (String) aClass;
-                ClassDescription c = load(name);
-
-                if (!testableHierarchy.isAccessible(c)) {
-                    invisibleClasses.add(name);
+        try(Classpath cp = getClasspath()) {
+            while (cp.hasNext()) {
+                String name = cp.nextClassName();
+                if (!allClasses.add(name)) {
+                    getLog().println(i18n.getString("Setup.log.duplicate.class", name));
                 }
             }
 
-            for (Object invisibleClass : invisibleClasses) {
-                closedSetOfClasses.removeClass((String) invisibleClass);
-            }
+            cp.setListToBegin();
 
-            sortedClasses = sortClasses(closedSetOfClasses.getClasses());
-        } else {
-            sortedClasses = sortClasses(packageClasses);
-        }
+            ClassDescriptionLoader testableLoader = getClassDescrLoader();
+            testableHierarchy = new ClassHierarchyImpl(testableLoader);
+            testableMCBuilder = new MemberCollectionBuilder(this, "source:setup");
 
-        SortedSet excludedClasses = new TreeSet();
+            // adds classes which are member of classes from tracked package
+            // and sorts class names
+            getLog().println(i18n.getString("Setup.log.constantchecking",
+                    isConstantValuesTracked() ? i18n.getString("Setup.msg.ConstantValuesTracked.on")
+                            : i18n.getString("Setup.msg.ConstantValuesTracked.off")));
+            getLog().println(i18n.getString("Setup.log.message.numclasses", Integer.toString(allClasses.size())));
 
-        try (Writer writer = getFileManager().getDefaultFormat().getWriter();
-             FileOutputStream fos = new FileOutputStream(sigFile.getFile());
-             OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
-            //write header to the signature file
+            List<String> sortedClasses;
+            Collection<String> packageClasses = getPackageClasses(allClasses);
 
-            writer.init(new PrintWriter(osw));
+            if (isClosedFile) {
+                ClassSet closedSetOfClasses = new ClassSet(testableHierarchy, true);
 
-            writer.setApiVersion(apiVersion);
-            if (isConstantValuesTracked()) {
-                writer.addFeature(FeaturesHolder.ConstInfo);
-            }
-
-            if (isTigerFeaturesTracked) {
-                writer.addFeature(FeaturesHolder.TigerInfo);
-            }
-
-            if (copyrightStr != null) {
-                FeaturesHolder.CopyRight.setText("# " + copyrightStr);
-                writer.addFeature(FeaturesHolder.CopyRight);
-            }
-
-            writer.writeHeader();
-
-            Erasurator erasurator = new Erasurator();
-            // scan class and writes definition to the signature file
-
-            // 1st analyze all the classes
-            for (Object sortedClass : sortedClasses) {
-                name = (String) sortedClass;
-                ClassDescription c = load(name);
-
-                if (!testableHierarchy.isAccessible(c)) {
-                    continue;
+                // add all classes including non-accessible
+                for (String name : packageClasses) {
+                    closedSetOfClasses.addClass(name);
                 }
+                // remove not accessible classes
 
-                // do not write excluded classes
-                if (excludedPackages.checkName(name) || apiExcl.checkName(name)) {
-                    excludedClasses.add(name);
-                    continue;
-                }
+                Set<String> invisibleClasses = new HashSet<>();
+                Set<String> classes = closedSetOfClasses.getClasses();
+                for (String name : classes) {
+                    ClassDescription c = load(name);
 
-                if (name.indexOf('$') < 0) {
-                    outerClassesNumber++;
-                } else {
-                    innerClassesNumber++;
-                }
-
-                try {
-                    testableMCBuilder.createMembers(c, addInherited(), true, false);
-                    normalizer.normThrows(c, true);
-                    removeUndocumentedAnnotations(c, testableHierarchy);
-                } catch (ClassNotFoundException e) {
-                    if (bo.isSet(Option.DEBUG)) {
-                        SwissKnife.reportThrowable(e);
+                    if (!testableHierarchy.isAccessible(c)) {
+                        invisibleClasses.add(name);
                     }
-                    setupProblem(i18n.getString("Setup.error.message.classnotfound", e.getMessage()));
                 }
 
-                if (useErasurator()) {
-                    c = erasurator.erasure(c);
+                for (String invisibleClass : invisibleClasses) {
+                    closedSetOfClasses.removeClass(invisibleClass);
                 }
 
-                Transformer t = PluginAPI.BEFORE_WRITE.getTransformer();
-                if (t != null) {
+                sortedClasses = sortClasses(closedSetOfClasses.getClasses());
+            } else {
+                sortedClasses = sortClasses(packageClasses);
+            }
+
+            try (Writer writer = getFileManager().getDefaultFormat().getWriter();
+                 FileOutputStream fos = new FileOutputStream(sigFile.getFile());
+                 OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
+                //write header to the signature file
+
+                writer.init(new PrintWriter(osw));
+
+                writer.setApiVersion(apiVersion);
+                if (isConstantValuesTracked()) {
+                    writer.addFeature(FeaturesHolder.ConstInfo);
+                }
+
+                if (isTigerFeaturesTracked) {
+                    writer.addFeature(FeaturesHolder.TigerInfo);
+                }
+
+                if (copyrightStr != null) {
+                    FeaturesHolder.CopyRight.setText("# " + copyrightStr);
+                    writer.addFeature(FeaturesHolder.CopyRight);
+                }
+
+                writer.writeHeader();
+
+                Erasurator erasurator = new Erasurator();
+                // scan class and writes definition to the signature file
+
+                // 1st analyze all the classes
+                for (String name : sortedClasses) {
+                    ClassDescription c = load(name);
+
+                    if (!testableHierarchy.isAccessible(c)) {
+                        continue;
+                    }
+
+                    // do not write excluded classes
+                    if (excludedPackages.checkName(name) || apiExcl.checkName(name)) {
+                        excludedClasses.add(name);
+                        continue;
+                    }
+
+                    if (name.indexOf('$') < 0) {
+                        outerClassesNumber++;
+                    } else {
+                        innerClassesNumber++;
+                    }
+
                     try {
-                        c = t.transform(c);
-                    } catch (ClassNotFoundException ex) {
-                        // nothing
+                        testableMCBuilder.createMembers(c, addInherited(), true, false);
+                        normalizer.normThrows(c, true);
+                        removeUndocumentedAnnotations(c, testableHierarchy);
+                    } catch (ClassNotFoundException e) {
+                        if (bo.isSet(Option.DEBUG)) {
+                            SwissKnife.reportThrowable(e);
+                        }
+                        setupProblem(i18n.getString("Setup.error.message.classnotfound", e.getMessage()));
+                    }
+
+                    if (useErasurator()) {
+                        c = erasurator.erasure(c);
+                    }
+
+                    Transformer t = PluginAPI.BEFORE_WRITE.getTransformer();
+                    if (t != null) {
+                        try {
+                            c = t.transform(c);
+                        } catch (ClassNotFoundException ex) {
+                            // nothing
+                        }
+                    }
+
+                    Filter f = PluginAPI.BEFORE_WRITE.getFilter();
+                    if (f == null || f.accept(c)) {
+                        writer.write(c);
                     }
                 }
 
-                Filter f = PluginAPI.BEFORE_WRITE.getFilter();
-                if (f == null || f.accept(c)) {
-                    writer.write(c);
+            } catch (IOException e) {
+                if (bo.isSet(Option.DEBUG)) {
+                    SwissKnife.reportThrowable(e);
                 }
+                getLog().println(i18n.getString("Setup.error.message.cantcreatesigfile"));
+                getLog().println(e);
+                return error(i18n.getString("Setup.error.message.cantcreatesigfile"));
             }
-
-        } catch (IOException e) {
-            if (bo.isSet(Option.DEBUG)) {
-                SwissKnife.reportThrowable(e);
-            }
-            getLog().println(i18n.getString("Setup.error.message.cantcreatesigfile"));
-            getLog().println(e);
-            return error(i18n.getString("Setup.error.message.cantcreatesigfile"));
-        } finally {
-            if (cp != null) {
-                cp.close();
-            }
-        }
+        } // cp t-w-r
 
         printErrors();
 
@@ -503,9 +495,7 @@ public class Setup extends SigTest {
 
             boolean printHeader = true;
 
-            for (Object excludedClass : excludedClasses) {
-
-                String clsName = (String) excludedClass;
+            for (String clsName : excludedClasses) {
 
                 String[] subClasses = testableHierarchy.getDirectSubclasses(clsName);
 
@@ -553,8 +543,8 @@ public class Setup extends SigTest {
 
     private void removeUndocumentedAnnotations(ClassDescription c, ClassHierarchy classHierarchy) {
         c.setAnnoList(removeUndocumentedAnnotations(c.getAnnoList(), classHierarchy));
-        for (Iterator e = c.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             mr.setAnnoList(removeUndocumentedAnnotations(mr.getAnnoList(), classHierarchy));
         }
     }
@@ -563,14 +553,13 @@ public class Setup extends SigTest {
      * initialize table of the nested classes and returns Vector of the names
      * required to be tracked.
      */
-    private Collection getPackageClasses(Collection classes) {
-        HashSet packageClasses = new HashSet();
+    private Collection<String> getPackageClasses(Collection<String> classes) {
+        HashSet<String> packageClasses = new HashSet<>();
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         int nonTigerCount = 0;
 
         // create table of the nested packageClasses.
-        for (Object aClass : classes) {
-            String name = (String) aClass;
+        for (String name : classes) {
 
             if (isPackageMember(name)) {
                 includedClassesNumber++;
@@ -616,8 +605,8 @@ public class Setup extends SigTest {
      *
      * @param classes MemberCollection which stores occurred errors. *
      */
-    private List sortClasses(Collection classes) {
-        ArrayList retVal = new ArrayList(classes);
+    private List<String> sortClasses(Collection<String> classes) {
+        ArrayList<String> retVal = new ArrayList<>(classes);
         Collections.sort(retVal);
         return retVal;
     }
