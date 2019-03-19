@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -114,8 +114,8 @@ public class ClassCorrector implements Transformer {
      */
     private void replaceInvisibleExceptions(ClassDescription c) throws ClassNotFoundException {
 
-        for (Iterator e = c.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isConstructor()) {
                 replaceInvisibleExceptions(mr);
             }
@@ -146,7 +146,7 @@ public class ClassCorrector implements Transformer {
                 }
 
                 if (isInvisibleClass(exceptionName)) {
-                    List supers = classHierarchy.getSuperClasses(exceptionName);
+                    List<String> supers = classHierarchy.getSuperClasses(exceptionName);
                     exceptionName = findVisibleReplacement(exceptionName, supers, "java.lang.Throwable", true);
                     mustCorrect = true;
                 }
@@ -164,7 +164,7 @@ public class ClassCorrector implements Transformer {
         }
     }
 
-    private String findVisibleReplacementAndCheckInterfaces(String clName, List supers, String replaceWithClassName) throws ClassNotFoundException {
+    private String findVisibleReplacementAndCheckInterfaces(String clName, List<String> supers, String replaceWithClassName) throws ClassNotFoundException {
 
         // is it public inner class of hidden outer?
         if (isPublicInner(clName)) {
@@ -173,11 +173,11 @@ public class ClassCorrector implements Transformer {
 
         String replacement = findVisibleReplacement(clName, supers, replaceWithClassName, true);
 
-        Set oldInt = classHierarchy.getAllImplementedInterfaces(clName);
+        Set<String> oldInt = classHierarchy.getAllImplementedInterfaces(clName);
 
         if (oldInt.size() != 0) {
 
-            Set<?> newInt = classHierarchy.getAllImplementedInterfaces(replacement);
+            Set<String> newInt = classHierarchy.getAllImplementedInterfaces(replacement);
 
             oldInt.removeAll(newInt); // diff
 
@@ -186,8 +186,7 @@ public class ClassCorrector implements Transformer {
             int visibleInterfaces = 0;
             String iName = null;
 
-            for (Object o : oldInt) {
-                String nextInt = (String) o;
+            for (String nextInt : oldInt) {
                 if (!isInvisibleClass(nextInt)) {
                     visibleInterfaces++;
                     iName = nextInt;
@@ -240,16 +239,16 @@ public class ClassCorrector implements Transformer {
             }
         }
         // sort - shorten paths first
-        Collections.sort(paths, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Integer s1 = ((ArrayList) o1).size();
-                Integer s2 = ((ArrayList) o2).size();
+        Collections.sort(paths, new Comparator<List<?>>() {
+            public int compare(List<?> o1, List<?> o2) {
+                Integer s1 = o1.size();
+                Integer s2 = o2.size();
                 return s1.compareTo(s2);
             }
         });
     }
 
-    private String findVisibleReplacement(String clName, List supers, String replaceWithClassName, boolean findToSuper) {
+    private String findVisibleReplacement(String clName, List<String> supers, String replaceWithClassName, boolean findToSuper) {
 
         // if this member is from interface...
         try {
@@ -278,7 +277,7 @@ public class ClassCorrector implements Transformer {
                 }
 
                 for (int pos = i - 1; pos >= 0; pos--) {
-                    String name = (String) supers.get(pos);
+                    String name = supers.get(pos);
                     if (!isInvisibleClass(name)) {
                         return name;
                     }
@@ -286,8 +285,7 @@ public class ClassCorrector implements Transformer {
 
             } else {
                 // used for exception - finds nearest visible superclass
-                for (Object aSuper : supers) {
-                    String name = (String) aSuper;
+                for (String name : supers) {
                     if (!isInvisibleClass(name)) {
                         return name;
                     }
@@ -303,8 +301,8 @@ public class ClassCorrector implements Transformer {
      */
     private void fixMethods(ClassDescription cl) throws ClassNotFoundException {
 
-        for (Iterator e = cl.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isField()) {
                 fixType(cl, mr);
             }
@@ -320,7 +318,7 @@ public class ClassCorrector implements Transformer {
 
             String cleanReturnType = stripTypesAndArrays(returnType);
 
-            List supers = Collections.EMPTY_LIST;
+            List<String> supers = Collections.emptyList();
 
             // is it interface or class ? If invisible interface found replace it with java.lang.Object!!!
             if (!classHierarchy.isInterface(cleanReturnType)) {
@@ -427,13 +425,13 @@ public class ClassCorrector implements Transformer {
 
         String className = c.getQualifiedName();
 
-        List supers = classHierarchy.getSuperClasses(c.getQualifiedName());
+        List<String> supers = classHierarchy.getSuperClasses(c.getQualifiedName());
 
         ArrayList<MemberDescription> newMembers = new ArrayList<>();
 
-        for (Iterator e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
 
-            MemberDescription mr = (MemberDescription) e.next();
+            MemberDescription mr = e.next();
 
             // process methods, constructors and fields only
             if (mr.isSuperClass() || mr.isSuperInterface()) {
@@ -469,8 +467,8 @@ public class ClassCorrector implements Transformer {
 
         List<String> makeThemDirect = null;
 
-        for (Iterator e = c.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isSuperInterface()) {
 
                 SuperInterface si = (SuperInterface) mr;
@@ -499,8 +497,8 @@ public class ClassCorrector implements Transformer {
 
         if (makeThemDirect != null) {
 
-            for (Iterator it = c.getMembersIterator(); it.hasNext();) {
-                MemberDescription mr = (MemberDescription) it.next();
+            for (Iterator<MemberDescription> it = c.getMembersIterator(); it.hasNext();) {
+                MemberDescription mr = it.next();
                 if (mr.isSuperInterface() && makeThemDirect.contains(mr.getQualifiedName())) {
                     // NOTE: clone not required here, because MemberCollectionBuilder clone
                     // all non-direct superinterfaces!
@@ -515,14 +513,14 @@ public class ClassCorrector implements Transformer {
         SuperInterface[] intfs = null;
         MemberDescription newMember = null;
 
-        for (Iterator e = c.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isSuperClass()) {
                 if (isInvisibleClass(mr.getQualifiedName())) {
 
                     ClassDescription cS = classHierarchy.load(mr.getQualifiedName());
 
-                    List supers = classHierarchy.getSuperClasses(cS.getQualifiedName());
+                    List<String> supers = classHierarchy.getSuperClasses(cS.getQualifiedName());
                     String newName = findVisibleReplacement(mr.getQualifiedName(), supers, "java.lang.Object", true);
                     newMember = (MemberDescription) mr.clone();
                     newMember.setupClassName(newName);
@@ -556,13 +554,13 @@ public class ClassCorrector implements Transformer {
         }
     }
 
-    protected void removeSuperInterfaces(Set interfaces) throws ClassNotFoundException {
+    protected void removeSuperInterfaces(Set<String> interfaces) throws ClassNotFoundException {
 
-        List intfs = new ArrayList(interfaces);
-        List su = new ArrayList();
+        List<String> intfs = new ArrayList<>(interfaces);
+        List<String> su = new ArrayList<>();
 
         for (int i = 0; i < intfs.size(); i++) {
-            String intfName = (String) intfs.get(i);
+            String intfName = intfs.get(i);
 
             if (intfName == null || isInvisibleClass(intfName)) {
                 continue;
@@ -572,10 +570,7 @@ public class ClassCorrector implements Transformer {
 
             su.addAll(classHierarchy.getAllImplementedInterfaces(intfName));
 
-            for (Object o : su) {
-
-                String sui = (String) o;
-
+            for (String sui : su) {
                 if (sui.equals(intfName)) {
                     continue;
                 }
@@ -589,7 +584,7 @@ public class ClassCorrector implements Transformer {
 
         interfaces.clear();
         // remove nulls
-        for (Object intf : intfs) {
+        for (String intf : intfs) {
             if (intf != null && !interfaces.contains(intf)) {
                 interfaces.add(intf);
             }
@@ -611,8 +606,8 @@ public class ClassCorrector implements Transformer {
 
         Set<String> constantNames = new HashSet<>();
 
-        for (Iterator e = c.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isField() && mr.isPublic()) {
                 if (((FieldDescr) mr).isConstant()) {
                     String constName = mr.getQualifiedName();
@@ -623,8 +618,8 @@ public class ClassCorrector implements Transformer {
             }
         }
 
-        for (Iterator e = c.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isField()) {
                 if (((FieldDescr) mr).isConstant() && constantNames.contains(mr.getQualifiedName())) {
                     e.remove();
@@ -635,8 +630,8 @@ public class ClassCorrector implements Transformer {
 
     private void checkClassTypeParameters(ClassDescription cl) {
         checkTypeParameters(cl, cl);
-        for (Iterator e = cl.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isConstructor()) {
                 checkTypeParameters(cl, mr);
             }

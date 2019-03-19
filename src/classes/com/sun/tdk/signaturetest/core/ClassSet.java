@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -55,7 +55,7 @@ public class ClassSet {
     }
     private ClassHierarchy hierarchy;
     private boolean trackDependeces;
-    private Map classNamesInProcess = new HashMap<String, Object>();
+    private Map<String, Object> classNamesInProcess = new HashMap<>();
 
     public ClassSet(ClassHierarchy hierarchy, boolean trackDependeces) {
         this.hierarchy = hierarchy;
@@ -92,9 +92,9 @@ public class ClassSet {
                     classes.put(fqname, new Counter(0));
 
                     if (trackDependeces) {
-                        Set dep = cl.getDependences();
-                        for (Object o : dep) {
-                            addClass((String) o, false);
+                        Set<String> dep = cl.getDependences();
+                        for (String o : dep) {
+                            addClass(o, false);
                         }
                     }
 
@@ -131,9 +131,9 @@ public class ClassSet {
                     try {
                         ClassDescription cl = hierarchy.load(fqname);
 
-                        Set dep = cl.getDependences();
-                        for (Object o : dep) {
-                            removeClass((String) o);
+                        Set<String> dep = cl.getDependences();
+                        for (String o : dep) {
+                            removeClass(o);
                         }
 
                     } catch (ClassNotFoundException e) {
@@ -161,6 +161,6 @@ public class ClassSet {
     public Set<String> getMissingClasses() {
         return Collections.unmodifiableSet(missingClasses);
     }
-    private Map<String, Counter> classes = new HashMap();
-    private Set<String> missingClasses = new HashSet();
+    private Map<String, Counter> classes = new HashMap<>();
+    private Set<String> missingClasses = new HashSet<>();
 }

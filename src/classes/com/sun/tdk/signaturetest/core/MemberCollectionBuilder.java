@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -138,9 +138,9 @@ public class MemberCollectionBuilder {
         // outside the java.lang package. So in this case RuntimePermission should have no inherited members
         MemberCollection cleaned = new MemberCollection();
         int memcount = 0;
-        for (Iterator e = cl.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext();) {
             memcount++;
-            MemberDescription mr = (MemberDescription) e.next();
+            MemberDescription mr = e.next();
             MemberType mt = mr.getMemberType();
             if (mt != MemberType.SUPERCLASS) {
                 if (!isAccessible(mr.getDeclaringClassName())) {
@@ -211,7 +211,7 @@ public class MemberCollectionBuilder {
         // required for correct overriding checking
         erasurator.parseTypeParameters(cl);
 
-        List paramList = null;
+        List<String> paramList = null;
         MemberCollection retVal = new MemberCollection();
 
         // creates declared members
@@ -229,7 +229,7 @@ public class MemberCollectionBuilder {
             fields = Erasurator.replaceFormalParameters(clsName, fields, paramList, skipRawTypes);
             classes = Erasurator.replaceFormalParameters(clsName, classes, paramList, skipRawTypes);
         } else if (callErasurator && cl.getTypeParameters() != null) {
-            List boundsList = cl.getTypeBounds();
+            List<String> boundsList = cl.getTypeBounds();
             methods = Erasurator.replaceFormalParameters(clsName, methods, boundsList, false);
             fields = Erasurator.replaceFormalParameters(clsName, fields, boundsList, false);
             classes = Erasurator.replaceFormalParameters(clsName, classes, boundsList, false);
@@ -261,12 +261,12 @@ public class MemberCollectionBuilder {
         return retVal;
     }
 
-    private void addInherited(boolean checkHidding, ClassDescription cl, ClassHierarchy hierarchy, List paramList, boolean skipRawTypes, MethodOverridingChecker overridingChecker, MemberCollection retVal) throws ClassNotFoundException {
+    private void addInherited(boolean checkHidding, ClassDescription cl, ClassHierarchy hierarchy, List<String> paramList, boolean skipRawTypes, MethodOverridingChecker overridingChecker, MemberCollection retVal) throws ClassNotFoundException {
 
         String clsName = cl.getQualifiedName();
-        Set internalClasses = cl.getInternalClasses();
+        Set<String> internalClasses = cl.getInternalClasses();
 
-        Map inheritedFields = new HashMap();
+        Map<String, MemberDescription> inheritedFields = new HashMap<>();
         SuperClass superClassDescr = cl.getSuperClass();
         if (superClassDescr != null) {
             try {
@@ -277,12 +277,11 @@ public class MemberCollectionBuilder {
                 //exclude non-accessible members
                 superMembers = getAccessibleMembers(superMembers, cl, superClass);
                 // process superclass methods
-                Collection coll = superMembers.getAllMembers();
+                Collection<MemberDescription> coll = superMembers.getAllMembers();
                 if (paramList != null) {
                     coll = Erasurator.replaceFormalParameters(clsName, coll, paramList, skipRawTypes);
                 }
-                for (Object o : coll) {
-                    MemberDescription supMD = (MemberDescription) o;
+                for (MemberDescription supMD : coll) {
                     if (supMD.isMethod()) {
                         if (addInheritedMethod(supMD, overridingChecker, retVal, hierarchy, superClass, cl)) {
                             continue;
@@ -318,29 +317,28 @@ public class MemberCollectionBuilder {
     // addInheritedFromInterfaces - getMembers - addInherited - addInheritedFromInterfaces - ...
     private void addInheritedFromInterfaces(ClassDescription cl,
             ClassHierarchy hierarchy, boolean checkHidding,
-            List paramList, boolean skipRawTypes,
+            List<String> paramList, boolean skipRawTypes,
             MethodOverridingChecker overridingChecker,
-            MemberCollection retVal, Map inheritedFields,
-            Set internalClasses) throws ClassNotFoundException {
+            MemberCollection retVal, Map<String, MemberDescription> inheritedFields,
+            Set<String> internalClasses) throws ClassNotFoundException {
 
         String clsName = cl.getQualifiedName();
         // findMember direct interfaces
         SuperInterface[] interfaces = cl.getInterfaces();
 
-        HashSet xfCan = new HashSet();
+        HashSet<String> xfCan = new HashSet<>();
         for (SuperInterface anInterface : interfaces) {
             try {
                 ClassDescription intf = hierarchy.load(anInterface.getQualifiedName());
                 MemberCollection h = getMembers(intf, anInterface.getTypeParameters(), false, true, true, checkHidding);
                 //MemberCollection h = getMembers(intf, interfaces[i].getTypeParameters(), false, true, false, checkHidding);
-                Collection coll = h.getAllMembers();
+                Collection<MemberDescription> coll = h.getAllMembers();
                 if (paramList != null) {
                     coll = Erasurator.replaceFormalParameters(clsName, coll, paramList, skipRawTypes);
                 }
                 nextMemberToAdd:
-                for (Object o : coll) {
+                for (MemberDescription membToAdd : coll) {
                     // for each direct interface member do
-                    MemberDescription membToAdd = (MemberDescription) o;
                     if (membToAdd.isMethod()) {
                         MethodDescr m = (MethodDescr) membToAdd;
 
@@ -404,7 +402,7 @@ public class MemberCollectionBuilder {
                             }
                         }
                     } else if (membToAdd.isField()) {
-                        MemberDescription storedFid = (MemberDescription) inheritedFields.get(membToAdd.getName());
+                        MemberDescription storedFid = inheritedFields.get(membToAdd.getName());
                         if (storedFid != null) {
                             // the same constant can processed several times (e.g. if the same interface is extended/implemented twice)
                             if (!storedFid.getQualifiedName().equals(membToAdd.getQualifiedName())) {
@@ -446,16 +444,15 @@ public class MemberCollectionBuilder {
 
     }
 
-    private void postProcessInterfaceFields(ClassDescription cl, boolean checkHidding, MemberCollection retVal, Map inheritedFields, HashSet xfCan) {
-        Set internalFields = Collections.EMPTY_SET;
-        Set xFields = Collections.EMPTY_SET;
+    private void postProcessInterfaceFields(ClassDescription cl, boolean checkHidding, MemberCollection retVal, Map<String, MemberDescription> inheritedFields, HashSet<String> xfCan) {
+        Set<String> internalFields = Collections.emptySet();
+        Set<String> xFields = Collections.emptySet();
         if (checkHidding) {
             internalFields = cl.getInternalFields();
             xFields = cl.getXFields();
         }
         // add inherited fields that have no conflicts with each other
-        for (Object o : inheritedFields.values()) {
-            MemberDescription field = (MemberDescription) o;
+        for (MemberDescription field : inheritedFields.values()) {
             String fiName = field.getName();
             if (!field.isMarked() && !internalFields.contains(fiName) && !xFields.contains(fiName)) {
                 retVal.addMember(field);
@@ -468,11 +465,10 @@ public class MemberCollectionBuilder {
             }
         }
         if (!cl.getXClasses().isEmpty()) {
-            for (Object o : cl.getXClasses()) {
-                String xClass = (String) o;
-                Iterator rvi = retVal.iterator();
+            for (String xClass : cl.getXClasses()) {
+                Iterator<MemberDescription> rvi = retVal.iterator();
                 while (rvi.hasNext()) {
-                    MemberDescription rm = (MemberDescription) rvi.next();
+                    MemberDescription rm = rvi.next();
                     if (rm.isInner() && rm.getName().equals(xClass)) {
                         System.err.println("Phantom class found " + rm.getQualifiedName());
                         rvi.remove();
@@ -600,8 +596,8 @@ public class MemberCollectionBuilder {
         boolean isSamePackage = pkg.equals(superClass.getPackageName());
         MemberCollection retVal = new MemberCollection();
 
-        for (Iterator e = members.iterator(); e.hasNext();) {
-            MemberDescription mbr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = members.iterator(); e.hasNext();) {
+            MemberDescription mbr = e.next();
             if ((mbr.isPublic() || mbr.isProtected() || isSamePackage || mbr.isSuperInterface()) && !mbr.isPrivate()) {
                 retVal.addMember(mbr);
             }
@@ -617,7 +613,7 @@ public class MemberCollectionBuilder {
 
         if (superClassAnnoList.length != 0) {
 
-            Set tmp = new TreeSet();
+            Set<AnnotationItem> tmp = new TreeSet<>();
 
             AnnotationItem[] subClassAnnoList = subclass.getAnnoList();
 
@@ -649,8 +645,8 @@ public class MemberCollectionBuilder {
 
         public ClassDescription transform(ClassDescription cls) {
 
-            for (Iterator it = cls.getMembersIterator(); it.hasNext();) {
-                MemberDescription mr = (MemberDescription) it.next();
+            for (Iterator<MemberDescription> it = cls.getMembersIterator(); it.hasNext();) {
+                MemberDescription mr = it.next();
 
                 boolean isSynthetic = mr.hasModifier(Modifier.ACC_SYNTHETIC);
 
@@ -678,7 +674,7 @@ public class MemberCollectionBuilder {
  */
 class MethodOverridingChecker {
 
-    private Map /*<String, MethodDescr>*/ methodSignatures = new HashMap();
+    private Map<String, MethodDescr> methodSignatures = new HashMap<>();
     private Erasurator erasurator;
 
     public MethodOverridingChecker(Erasurator er) {
@@ -694,7 +690,7 @@ class MethodOverridingChecker {
     public MethodDescr getOverridingMethod(MethodDescr m, boolean autoAdd) {
         MethodDescr cloned_m = (MethodDescr) erasurator.processMember(m);
         String signature = cloned_m.getSignature();
-        MethodDescr isOverriding = (MethodDescr) methodSignatures.get(signature);
+        MethodDescr isOverriding = methodSignatures.get(signature);
         if (isOverriding == null && autoAdd) {
             methodSignatures.put(signature, cloned_m);
         }

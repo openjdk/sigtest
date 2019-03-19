@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -48,8 +48,8 @@ public class ThrowsNormalizer {
     public void normThrows(ClassDescription c, boolean removeJLE, boolean allowMissingTh) throws ClassNotFoundException {
         ClassHierarchy h = c.getClassHierarchy();
 
-        for (Iterator e = c.getMembersIterator(); e.hasNext();) {
-            MemberDescription mr = (MemberDescription) e.next();
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+            MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isConstructor()) {
                 normThrows(h, mr, removeJLE, allowMissingTh);
             }
@@ -87,7 +87,7 @@ public class ThrowsNormalizer {
 
             //  Scan over all throws ...
             for (int i = 0; i < xthrows.size(); i++) {
-                String s = (String) xthrows.get(i);
+                String s = xthrows.get(i);
 
                 if (s == null) {
                     continue;
@@ -111,7 +111,7 @@ public class ThrowsNormalizer {
                         superfluousExceptionCount++;
                     } else {
                         for (int k = i + 1; k < xthrows.size(); ++k) {
-                            String anotherThrowable = (String) xthrows.get(k);
+                            String anotherThrowable = xthrows.get(k);
 
                             if (anotherThrowable == null) {
                                 continue;
@@ -137,8 +137,7 @@ public class ThrowsNormalizer {
                 int count = 0;
                 sb.setLength(0);
 
-                for (Object xthrow : xthrows) {
-                    String s = (String) xthrow;
+                for (String s : xthrows) {
                     if (s != null) {
                         if (count++ != 0) {
                             sb.append(MemberDescription.THROWS_DELIMITER);
@@ -155,6 +154,6 @@ public class ThrowsNormalizer {
             }
         }
     }
-    private List/*String*/ xthrows = new ArrayList();
+    private List<String> xthrows = new ArrayList<>();
     private StringBuffer sb = new StringBuffer();
 }

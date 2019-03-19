@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -196,8 +196,8 @@ public class Erasurator {
 
         MemberCollection newMembers = new MemberCollection();
 
-        for (Iterator e = clz.getMembersIterator(); e.hasNext();) {
-            newMembers.addMember(processMember((MemberDescription) e.next()));
+        for (Iterator<MemberDescription> e = clz.getMembersIterator(); e.hasNext();) {
+            newMembers.addMember(processMember(e.next()));
         }
 
         clz.setMembers(newMembers);
@@ -290,7 +290,7 @@ public class Erasurator {
         return paramList;
     }
 
-    public static MemberDescription[] replaceFormalParameters(String fqn, MemberDescription[] members, List actualTypeParamList, boolean skipRawTypes) {
+    public static MemberDescription[] replaceFormalParameters(String fqn, MemberDescription[] members, List<String> actualTypeParamList, boolean skipRawTypes) {
 
         MemberDescription[] result = new MemberDescription[members.length];
 
@@ -301,25 +301,25 @@ public class Erasurator {
         return result;
     }
 
-    public static Collection<MemberDescription> replaceFormalParameters(String fqn, Collection members, List actualTypeParamList, boolean skipRawTypes) {
+    public static Collection<MemberDescription> replaceFormalParameters(String fqn, Collection<MemberDescription> members, List<String> actualTypeParamList, boolean skipRawTypes) {
 
         assert actualTypeParamList.size() != 0;
 
         Collection<MemberDescription> result = new ArrayList<>();
 
-        for (Object member : members) {
-            MemberDescription newFid = replaceFormalParameters(fqn, (MemberDescription) member, actualTypeParamList, skipRawTypes);
+        for (MemberDescription member : members) {
+            MemberDescription newFid = replaceFormalParameters(fqn, member, actualTypeParamList, skipRawTypes);
             result.add(newFid);
         }
         return result;
 
     }
 
-    private static MemberDescription replaceFormalParameters(String fqn, MemberDescription fid, List actualTypeParamList, boolean skipRawTypes) {
+    private static MemberDescription replaceFormalParameters(String fqn, MemberDescription fid, List<String> actualTypeParamList, boolean skipRawTypes) {
 
         MemberDescription newFid = (MemberDescription) fid.clone();
         for (int i = 0; i < actualTypeParamList.size(); ++i) {
-            String actual = (String) actualTypeParamList.get(i);
+            String actual = actualTypeParamList.get(i);
 
             if (skipRawTypes && actual.indexOf('%') == -1) {
                 continue;

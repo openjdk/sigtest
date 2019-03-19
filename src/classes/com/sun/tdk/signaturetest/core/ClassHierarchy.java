@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -40,11 +40,11 @@ public interface ClassHierarchy extends ClassDescriptionLoader {
 
     String getSuperClass(String fqClassName) throws ClassNotFoundException;
 
-    List /* String */ getSuperClasses(String fqClassName) throws ClassNotFoundException;
+    List<String> getSuperClasses(String fqClassName) throws ClassNotFoundException;
 
     String[] getSuperInterfaces(String fqClassName) throws ClassNotFoundException;
 
-    Set /* String */ getAllImplementedInterfaces(String fqClassName) throws ClassNotFoundException;
+    Set<String> getAllImplementedInterfaces(String fqClassName) throws ClassNotFoundException;
 
     String[] getDirectSubclasses(String fqClassName);
 
