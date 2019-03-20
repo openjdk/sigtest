@@ -50,7 +50,7 @@ public abstract class SignatureClassLoader implements Reader {
     protected final Set<FeaturesHolder.Feature> features;
     private BufferedReader in;
     private final Parser parser;
-    private final int BUFSIZE = 0x8000;
+    private static final int BUFSIZE = 0x8000;
     private final List<Elem> elems;
     /**
      * API version found in <code>this</code> signature file.

@@ -58,7 +58,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
     /**
      * Tabulator position.
      */
-    protected final int tabSize = 20;
+    protected static final int tabSize = 20;
 
     /**
      * Assign the given <b>PrintWriter</b> to print error messages.

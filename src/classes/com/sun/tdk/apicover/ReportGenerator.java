@@ -426,7 +426,7 @@ public abstract class ReportGenerator extends APIVisitor {
 class ReportPlain extends ReportGenerator {
 
     private final static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ReportPlain.class);
-    final int p0 = 0,
+    static final int p0 = 0,
             p1 = 4,
             p2 = 8,
             p3 = 40,
