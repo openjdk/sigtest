@@ -294,19 +294,18 @@ public class Status {
     }
 
     /**
-     * Convenience exit() function for the main() of tests to exit in such a way
+     * <p>Convenience exit() function for the main() of tests to exit in such a way
      * that the status passes up across process boundaries without losing
      * information (ie exit codes don't give the associated text of the status
      * and return codes when exceptions are thrown could cause unintended
-     * results).
-     * <p>
+     * results).</p>
      * <p>
      * An identifying marker is written to the error stream, which the script
      * running the test watches for as the last output before returning,
-     * followed by the type and reason
+     * followed by the type and reason</p>
      * <p>
      * The method does not return. It calls System.exit with a value dependent
-     * on the type.
+     * on the type.</p>
      */
     public void exit() {
         if (System.err != null) {
@@ -380,8 +379,8 @@ public class Status {
      * Exit codes used by Status.exit corresponding to PASSED, FAILED, ERROR,
      * NOT_RUN. The only values that should normally be returned from a test are
      * the first three; the other value is provided for completeness.
-     * <font size=-1> Note: The assignment is historical and cannot easily be
-     * changed. </font>
+     * Note: The assignment is historical and cannot easily be
+     * changed.
      */
     public static final int[] exitCodes = {95, 97, 98, 99};
 }

@@ -40,7 +40,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * <b>ClasspathImpl</b> provides access to all classes placed inside directories
+ * <p><b>ClasspathImpl</b> provides access to all classes placed inside directories
  * and/or jar-files listed in the classpath, which is given to the constructor
  * for new <b>ClasspathImpl</b> instance. </p>
  * <p>
@@ -51,12 +51,12 @@ import java.util.*;
  * and jar-files are virtually enumerated in the same order as they are found.
  * The methods <code>nextClassName()</code> and <code>setListToBegin()</code>
  * provide access to this classes enumeration.
- * <p/>
+ * </p>
  * <p>
  * Also, the method <code>findClass(name)</code> provides access to class
  * directly by its qualified name. Note however, that the names class must
  * belong to some directory or zip-file pointed to the <b>ClasspathImpl</b>
- * instance.
+ * instance.</p>
  *
  * @author Maxim Sokolnikov
  * @author Roman Makarchuk

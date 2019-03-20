@@ -116,9 +116,8 @@ public class Main implements Log {
      * to <b>SigTest</b> parameters parser.
      *
      * @param args Same as <code>args[]</code> passes to <code>main()</code>.
-     * @throws Exception
      */
-    protected boolean parseParameters(String[] args) throws Exception {
+    protected boolean parseParameters(String[] args) {
 
         if (args.length == 0) {
             version();

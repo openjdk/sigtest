@@ -59,7 +59,7 @@ import java.util.List;
  *   "binary" - Sets binary merge mode. Corresponds to "-Binary" option. Default is false.
  *   "failonerror" - Stop the build process if the command exits with an error. Default is "false".
  *   "negative" - inverts result (that is passed status treats as failed and vice versa, default is "false"
- *
+ * </pre>
  *
  * @author Mikhail Ershov
  */

@@ -32,6 +32,7 @@ import com.sun.tdk.signaturetest.ant.ATest;
  * <pre>
  * Ant wrapper for APICheck
  * All parameters are similar to ATest
+ * </pre>
  *
  * @see com.sun.tdk.signaturetest.ant.ATest
  * @author Mikhail Ershov

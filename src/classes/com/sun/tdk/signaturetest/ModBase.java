@@ -108,7 +108,7 @@ public abstract class ModBase extends SigTest {
      * @param model       the model (ModuleDescriptions map)
      * @param isReference true for reference model (from data file), false for tested model
      * @param verbose     prints extra info (what was filtered out) if -debug option was specified
-     * @return
+     * @return filtered model as map with String as key and ModuleDescription as value
      */
     protected Map<String, ModuleDescription> filterModuleSet(Map<String, ModuleDescription> model, boolean isReference, boolean verbose) {
         assert model != null;
@@ -137,8 +137,8 @@ public abstract class ModBase extends SigTest {
      * it filters out packages, requires, exports, provides and uses
      *
      * @param md          the module for cleaning
-     * @param isReference
-     * @param verbose
+     * @param isReference is not used
+     * @param verbose  prints additional info is true
      */
     protected void filterModule(ModuleDescription md, boolean isReference, boolean verbose) {
         filterPackageSet(md.getPackages(), isReference, verbose, "Package");
@@ -176,8 +176,8 @@ public abstract class ModBase extends SigTest {
     /**
      * Checks module name for consistency according to -modInclude and -modExclude
      *
-     * @param modName
-     * @return
+     * @param modName - module name
+     * @return true if module is consistent
      */
     protected boolean isAPiModule(String modName) {
         boolean excluded = modExcl.checkModuleName(modName);
@@ -189,8 +189,8 @@ public abstract class ModBase extends SigTest {
     /**
      * Checks package name for consistency according to -modInclude and -modExclude
      *
-     * @param packName
-     * @return
+     * @param packName package name
+     * @return true is package is consistent
      */
     protected boolean isApiPackage(String packName) {
         return pkgIncl.checkName(packName) && !pkgExcl.checkName(packName);

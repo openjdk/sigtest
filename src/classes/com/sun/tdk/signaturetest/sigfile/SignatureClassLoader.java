@@ -84,7 +84,7 @@ public abstract class SignatureClassLoader implements Reader {
     }
 
     /**
-     * Return the next <b>SigFileClassDescription</code> read from
+     * Return the next <code>SigFileClassDescription</code> read from
      * <code>this</code> signature file.
      *
      * @see ClassDescription

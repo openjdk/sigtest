@@ -35,7 +35,7 @@ import java.util.*;
  * or interface. Given some <b>MemberDescription</b> instance, it is possible to
  * findMember a <b>List</b> of <b>MemberDescription</b> references for all
  * members characterized with that shorter <b>MemberDescription</b>.
- * <p/>
+ * <br>
  * <p>
  * Several abstract methods for finding nested classes are declared in
  * <b>ClassDescription</b>, which are implemented in the following two classes:

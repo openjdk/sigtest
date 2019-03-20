@@ -593,7 +593,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
      * java.lang referenced by their simple name 2. Classes from the same
      * package referenced by their simple name 3. The others are qualified.
      *
-     * @return
+     * @return simplified type as String
      */
     public String getSimplifiedType() {
         return simplifyType(type);
@@ -604,7 +604,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
      * package java.lang referenced by their simple name 2. Classes from the
      * same package referenced by their simple name 3. The others are qualified.
      *
-     * @return
+     * @return simplified arguments as String
      */
     public String getSimplifiedArgs() {
         if (args == null || args.equals("")) {

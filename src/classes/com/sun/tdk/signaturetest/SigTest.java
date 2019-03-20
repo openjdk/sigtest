@@ -50,10 +50,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This class represents core part of the signature tests. It provides tools for
+ * <p>This class represents core part of the signature tests. It provides tools for
  * parsing core parameters and defining core attributes of the classes such as
- * accessibility and appurtenance to the required packages.
- * <p/>
+ * accessibility and appurtenance to the required packages.</p>
  * <p>
  * This class parses the following options core for signature tests: <dl>
  * <dt><code>-Package</code> &lt;package&gt;

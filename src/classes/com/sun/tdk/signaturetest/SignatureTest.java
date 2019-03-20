@@ -50,7 +50,6 @@ import java.util.*;
 /**
  * <b>SignatureTest</b> is the main class of signature test.
  * <p>
- * <p/>
  * The main purpose of signature test is to ensure that programs written in Java
  * using the class libraries of one Java implementation of a specific API
  * version (ie. 1.1, 1.2, etc.) can rely on having the same and only the same
@@ -60,89 +59,74 @@ import java.util.*;
  * binary compatibility requirement. Therefore, third party implementations of
  * the Java API library must retain binary compatibility with the JavaSoft API.
  * Also, the JavaSoft API implementation must retain binary compatibility with
- * the Java API library under test.<p>
- * <p/>
+ * the Java API library under test.</p>
+ * <p>
  * <b>SignatureTest</b> implements the standard JavaTest 3.0
  * <code>com.sun.javatest.Test</code> interface and uses the standard
  * <code>main()</code> method implementation. <b>SignatureTest</b> allows to
  * check only specified by command line the package or packages.
+ * </p>
  * <p>
- * <p/>
  * SignatureTest tracks the following aspects of binary compatibility: <ul>
  * <li>Fully qualified name of class or interface <li>Class modifiers abstract
  * and final <li>Superclasses and superinterfaces <li>Public and protected class
  * members </ul>
- * <p/>
- * <b>SignatureTest</b> tracks all of the super classes and all of the super
+ * <p><b>SignatureTest</b> tracks all of the super classes and all of the super
  * interfaces of each public class and public interface within required
  * packages.
+ * </p>
  * <p>
- * <p/>
  * <b>SignatureTest</b> tracks all of the public and protected class members for
- * each public class and interface.<p>
- * <p/>
+ * each public class and interface.</p>
+ * <p>
  * For each constructor or method tracked, <b>SignatureTest</b> tracks all
  * modifiers except native and synchronized. It also tracks other attributes for
  * constructors and methods: method name, argument types and order, return type,
- * and the declared throwables.<p>
- * <p/>
+ * and the declared throwables.</p>
+ * <p>
  * For each field tracked, <b>SignatureTest</b> tracks all modifiers except
  * transient. It also tracks these other attributes for fields: data type, and
  * field name.
+ * </p>
  * <p>
- * <p/>
  * Usage: <code>java com.sun.tdk.signaturetest.SignatureTest</code>
  * &lt;options&gt;
- * <p>
- * <p/>
- * where &lt;options&gt; includes:
- * <p/>
- * <dl> <dt><code><b>-TestURL</b></code> &lt;URL&gt; <dd> URL of signature file.
- * <p/>
- * <dt><code><b>-FileName</b></code> &lt;n&gt; <dd> Path name of signature file
+ * <br>where &lt;options&gt; includes:
+ * <br><dl> <dt><code><b>-TestURL</b></code> &lt;URL&gt; <dd> URL of signature file.
+ * <br><dt><code><b>-FileName</b></code> &lt;n&gt; <dd> Path name of signature file
  * name.
- * <p/>
- * <dt><code><b>-Package</b></code> &lt;package&gt; <dd> Name of the package to
+ * <br><dt><code><b>-Package</b></code> &lt;package&gt; <dd> Name of the package to
  * be tested. It is implied, that all subpackages the specified package should
  * also be tested. Such option should be included for each package (but
  * subpackages), which is required to be tested.
- * <p/>
- * <dt><code><b>-PackageWithoutSubpackages</b></code> &lt;package&gt; <dd> Name
+ * <br><dt><code><b>-PackageWithoutSubpackages</b></code> &lt;package&gt; <dd> Name
  * of the package, which is to be traced itself excluding its subpackages. Such
  * option should be included for each package required to be traced excluding
  * subpackages.
- * <p/>
- * <dt><code><b>-Exclude</b></code> &lt;package_or_class_name&gt; <dd> Name of
+ * <br><dt><code><b>-Exclude</b></code> &lt;package_or_class_name&gt; <dd> Name of
  * the package or class, which is not required to be traced, despite of it is
  * implied by <code>-Package</code> or by
  * <code>-PackageWithoutSubpackages</code> options. If the specified parameter
  * names a package, all its subpackages are implied to be also excluded. Such
  * option should be included for each package (but subpackages) or class, which
  * is not required to be traced.
- * <p/>
- * <dt><code><b>-FormatPlain</b></code> <dd> Do not reorder errors report.
- * <p/>
- * <dt><code><b>-AllPublic</b></code> <dd> Trace public nested classes, which
+ * <br><dt><code><b>-FormatPlain</b></code> <dd> Do not reorder errors report.
+ * <br><dt><code><b>-AllPublic</b></code> <dd> Trace public nested classes, which
  * are member of classes having default scope.
- * <p/>
- * <dt><code><b>-Classpath</b></code> &lt;path&gt; <dd> Path to packages being
+ * <br><dt><code><b>-Classpath</b></code> &lt;path&gt; <dd> Path to packages being
  * tested. If there are several directories and/or zip-files containing the
  * required packages, all of them should be specified here. Use
  * <code>java.io.File.pathSeparator</code> to separate directory and/or zip-file
  * names in the specified path. Only classes from &lt;path&gt; will be used for
  * tracking adding classes.
- * <p/>
- * <dt><code><b>-static</b></code> <dd> Run signature test in static mode.
- * <p/>
- * <dt><code><b>-Version</b></code> &lt;version&gt; <dd> Specify API version. If
+ * <br><dt><code><b>-static</b></code> <dd> Run signature test in static mode.
+ * <br><dt><code><b>-Version</b></code> &lt;version&gt; <dd> Specify API version. If
  * this parameter is not specified, API version is assumed to be that reported
  * by <code>getProperty("java.version")</code>.
- * <p/>
- * <dt><code><b>-CheckValue</b><code>
+ * <br><dt><code><b>-CheckValue</b></code>
  * <dd> Check values of primitive constant. This option can be used in static
  * mode only.
- * <p/>
- * <dt><code><b>-Verbose</b><code>
+ * <br><dt><code><b>-Verbose</b></code>
  * <dd> Enable error diagnostic for inherited class members.
  * </dl>
  *
@@ -208,6 +192,7 @@ public class SignatureTest extends SigTest {
      * Run the test using command-line; return status via numeric exit code.
      *
      * @see #run(String[], PrintWriter, PrintWriter)
+     * @param args arguments
      */
     public static void main(String[] args) {
         SignatureTest t = SignatureTest.getInstance();
@@ -222,6 +207,7 @@ public class SignatureTest extends SigTest {
     /**
      * This is the gate to run the test with the JavaTest application.
      *
+     * @param args arguments.
      * @param log This log-file is used for error messages.
      * @param ref This reference-file is ignored here.
      * @see #main(String[])

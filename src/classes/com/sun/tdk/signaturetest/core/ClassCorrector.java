@@ -31,10 +31,10 @@ import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import java.util.*;
 
 /**
- * <b>ClassCorrector</b> is the main part of solving problems related with
- * hidden language elements<p>
+ * <p><b>ClassCorrector</b> is the main part of solving problems related with
+ * hidden language elements</p>
  *
- * <li><b>public class (interface) extends package local class
+ * <ul><li><b>public class (interface) extends package local class
  * (interface)</b><br> Sigtest should ignore base class and/or implemented
  * interfaces and move all visible base's members to the nearest visible
  * SUBclass like Javadoc do since version 1.5.</li> <li><b>public inner class
@@ -42,7 +42,7 @@ import java.util.*;
  * such classes and it looks like a bug in Javadoc </li> <li><b>public method
  * throws private exception</b><br> Sigtest should substitute invisible
  * exception to the nearest visible SUPERclass. Javadoc doesn't do it and as
- * result it generates insufficient documentation </li>
+ * result it generates insufficient documentation </li></ul>
  *
  * @author Mikhail Ershov
  * @author Roman Makarchuk
