@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest.sigfile.f31;
 import com.sun.tdk.signaturetest.sigfile.Format;
 import com.sun.tdk.signaturetest.sigfile.Parser;
 import com.sun.tdk.signaturetest.sigfile.SignatureClassLoader;
+
 import java.util.List;
 
 class F31Reader extends SignatureClassLoader {

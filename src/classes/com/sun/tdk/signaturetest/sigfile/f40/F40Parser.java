@@ -382,7 +382,7 @@ public class F40Parser implements Parser {
         if (n == 0) {
             err();
         }
-        superCls.setupGenericClassName( elems.get(n - 1));
+        superCls.setupGenericClassName(elems.get(n - 1));
 
         return superCls;
     }
@@ -395,7 +395,7 @@ public class F40Parser implements Parser {
         if (n == 0) {
             err();
         }
-        superIntf.setupGenericClassName( elems.get(n - 1));
+        superIntf.setupGenericClassName(elems.get(n - 1));
 
         return superIntf;
     }
@@ -430,7 +430,7 @@ public class F40Parser implements Parser {
     private void scanElems() {
         elems = new LinkedList<>();
 
-        for (;;) {
+        for (; ; ) {
 
             //  skip leading blanks at the start of lexeme
             while (idx < linesz && (chr = line.charAt(idx)) == ' ') {
@@ -489,7 +489,7 @@ public class F40Parser implements Parser {
     }
 
     private void skip(char term) {
-        for (;;) {
+        for (; ; ) {
             if (idx >= linesz) {
                 err();
             }

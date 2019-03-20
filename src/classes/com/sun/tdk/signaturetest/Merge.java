@@ -48,7 +48,7 @@ public class Merge extends SigTest {
     /**
      * Run the test using command-line; return status via numeric exit code.
      *
-     * @see #run(String[],PrintWriter,PrintWriter)
+     * @see #run(String[], PrintWriter, PrintWriter)
      */
     public static void main(String[] args) {
         Merge m = Merge.getInstance();
@@ -63,7 +63,7 @@ public class Merge extends SigTest {
     /**
      * This is the gate to run the test with the JavaTest application.
      *
-     * @param pw This log-file is used for error messages.
+     * @param pw  This log-file is used for error messages.
      * @param ref This reference-file is ignored here.
      * @see #main(String[])
      */
@@ -117,7 +117,7 @@ public class Merge extends SigTest {
             throw new CommandLineParserException(i18n.getString("Merge.could.not.resolve.file", mo.getValue(Option.WRITE)));
         }
 
-        for (String inFile : mo.getValues(Option.FILES) ) {
+        for (String inFile : mo.getValues(Option.FILES)) {
             try {
                 File sigFile = (new File(inFile)).getCanonicalFile();
                 if (canonicalFile.equals(sigFile)) {
@@ -194,12 +194,12 @@ public class Merge extends SigTest {
         }
 
         ClassHierarchy ch = new ClassHierarchyImpl(result, ClassHierarchy.ALL_PUBLIC);
-        for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext();) {
+        for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext(); ) {
             ClassDescription c = i.next();
             c.setHierarchy(ch);
         }
         MemberCollectionBuilder builder = new MemberCollectionBuilder(new SilentLog());
-        for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext();) {
+        for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext(); ) {
             ClassDescription c = i.next();
             try {
                 builder.createMembers(c, false, true, false);
@@ -241,7 +241,7 @@ public class Merge extends SigTest {
 
             // scan class and writes definition to the signature file
             // 1st analyze all the classes
-            for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext();) {
+            for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext(); ) {
                 ClassDescription c = i.next();
                 writer.write(c);
             }

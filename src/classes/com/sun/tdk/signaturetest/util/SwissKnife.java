@@ -26,6 +26,7 @@ package com.sun.tdk.signaturetest.util;
 
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.ConstructorDescr;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

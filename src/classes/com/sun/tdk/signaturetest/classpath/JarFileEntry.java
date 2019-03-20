@@ -29,6 +29,7 @@ import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.ExoticCharTools;
 import com.sun.tdk.signaturetest.util.SwissKnife;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -95,7 +96,7 @@ class JarFileEntry extends ClasspathEntry {
      *
      * @param name Qualified name of the class requested.
      * @throws ClassNotFoundException if the class was not found inside this
-     * <code>JarFileEntry</code>.
+     *                                <code>JarFileEntry</code>.
      */
     public InputStream findClass(String name) throws IOException, ClassNotFoundException {
 

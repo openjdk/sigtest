@@ -196,7 +196,7 @@ public class Erasurator {
 
         MemberCollection newMembers = new MemberCollection();
 
-        for (Iterator<MemberDescription> e = clz.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = clz.getMembersIterator(); e.hasNext(); ) {
             newMembers.addMember(processMember(e.next()));
         }
 
@@ -378,6 +378,7 @@ public class Erasurator {
 
         return result.toString();
     }
+
     // begin of line + % + any numbers
     private static final Pattern simpleParamName = Pattern.compile("^%\\d+?");
     //    private static Pattern simpleParamUsage = Pattern.compile("<.+?>");

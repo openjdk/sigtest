@@ -29,6 +29,7 @@ import com.sun.tdk.signaturetest.sigfile.Format;
 import com.sun.tdk.signaturetest.sigfile.Parser;
 import com.sun.tdk.signaturetest.sigfile.SignatureClassLoader;
 import com.sun.tdk.signaturetest.sigfile.f31.F31Parser;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -189,6 +190,7 @@ class F21Reader extends SignatureClassLoader {
         }
         return memberDef;
     }
+
     private static final Pattern constantDeclaration = Pattern.compile("<constant> <value=\".*\">");
     private static final Pattern valueDeclaration = Pattern.compile("\".*\"");
     private static final Pattern arrayDeclaration = Pattern.compile("\\[+[BCDFIJSZVL]");

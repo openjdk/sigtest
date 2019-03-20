@@ -43,6 +43,7 @@ public class AnnotationItemEx extends AnnotationItem {
     // for parser
     public AnnotationItemEx() {
     }
+
     private int targetType;
     private int parameterIndex;
     private int boundIndex;
@@ -351,7 +352,7 @@ public class AnnotationItemEx extends AnnotationItem {
 
         StringBuffer b = new StringBuffer();
         b.append('[');
-        for (int i = 0;; i++) {
+        for (int i = 0; ; i++) {
             b.append(a[i]);
             if (i == iMax) {
                 return b.append(']').toString();

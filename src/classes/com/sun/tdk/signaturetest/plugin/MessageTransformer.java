@@ -33,5 +33,5 @@ import java.util.List;
  */
 public interface MessageTransformer {
 
-    List<ErrorFormatter.Message>  changeMessageList(List<ErrorFormatter.Message> messages);
+    List<ErrorFormatter.Message> changeMessageList(List<ErrorFormatter.Message> messages);
 }

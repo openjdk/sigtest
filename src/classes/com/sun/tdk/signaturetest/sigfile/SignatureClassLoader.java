@@ -95,7 +95,7 @@ public abstract class SignatureClassLoader implements Reader {
         String classDescr = null;
         List<String> definitions = new ArrayList<>();
 
-        for (;;) {
+        for (; ; ) {
             in.mark(BUFSIZE);
             if ((currentLine = in.readLine()) == null) {
                 break;

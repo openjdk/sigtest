@@ -31,7 +31,6 @@ import java.io.PrintWriter;
  * JavaTest interface.
  *
  * @author Serguei Ivashin
- *
  * @test
  * @executeClass com.sun.tdk.signaturetest.Test
  */

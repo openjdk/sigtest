@@ -26,6 +26,7 @@ package com.sun.tdk.signaturetest.model;
 
 import com.sun.tdk.signaturetest.core.PrimitiveTypes;
 import com.sun.tdk.signaturetest.util.SwissKnife;
+
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -129,6 +130,7 @@ public final class MethodDescr extends MemberDescription {
                 args +
                 ')';
     }
+
     //  Default value for annotation member or null;
     private Object annoDef;
 

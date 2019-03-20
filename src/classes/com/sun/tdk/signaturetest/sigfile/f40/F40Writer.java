@@ -103,7 +103,7 @@ public class F40Writer implements Writer {
         String clsName = classDescription.getQualifiedName();
 
         // sorts members
-        for (Iterator<MemberDescription> e = classDescription.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = classDescription.getMembersIterator(); e.hasNext(); ) {
 
             MemberDescription mr = e.next();
 

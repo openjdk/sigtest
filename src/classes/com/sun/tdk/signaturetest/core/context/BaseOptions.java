@@ -36,7 +36,7 @@ public class BaseOptions extends Options {
     private final EnumSet<Option> options = EnumSet.of(Option.X_JIMAGE, Option.DEBUG,
             Option.PACKAGE, Option.PURE_PACKAGE, Option.EXCLUDE, Option.FILE_NAME, Option.TEST_URL,
             Option.API_EXCLUDE, Option.API_INCLUDE, Option.CLASSPATH,
-            Option.ALL_PUBLIC,  Option.HELP, Option.VERSION, Option.STATIC, Option.MODULES);
+            Option.ALL_PUBLIC, Option.HELP, Option.VERSION, Option.STATIC, Option.MODULES);
 
     @Override
     public EnumSet<Option> getOptions() {

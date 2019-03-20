@@ -37,12 +37,12 @@ public interface ModuleDescriptionLoader {
 
     /**
      * Loads all available for bool layer configuration modules
+     *
      * @return set of ModuleDescriptions
      */
     Set<ModuleDescription> loadBootModules();
 
     /**
-     *
      * @return set of public exported packages by specified modules
      */
     List<String> getExportedPackages(List<String> modules);

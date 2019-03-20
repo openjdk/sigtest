@@ -63,14 +63,14 @@ public class BCProcessor extends HumanErrorFormatter {
     protected Handler constructHandlerChain() {
 
         Handler[] handlers = {
-            new Rule1_1(), new Rule1_2(), new Rule1_3(), new Rule2_1(),
-            new Rule2_2(), new Rule2_3(), new Rule2_4(), new Rule2_5(),
-            new Rule2_7(), new Rule2_8(), new Rule3_1(), new Rule3_3(), new Rule3_4(),
-            new Rule3_6(), new Rule3_8(), new Rule3_10(), new Rule3_11(),
-            new Rule3_12(), new Rule4_1(), new Rule4_2(), new Rule4_6(),
-            new Rule4_7(), new Rule4_8(), new Rule5_1_2(), new Rule5_2_3(),
-            new Rule5_4(), new Rule5_6(), new Rule5_12(), new Rule5_14(),
-            new Terminator()
+                new Rule1_1(), new Rule1_2(), new Rule1_3(), new Rule2_1(),
+                new Rule2_2(), new Rule2_3(), new Rule2_4(), new Rule2_5(),
+                new Rule2_7(), new Rule2_8(), new Rule3_1(), new Rule3_3(), new Rule3_4(),
+                new Rule3_6(), new Rule3_8(), new Rule3_10(), new Rule3_11(),
+                new Rule3_12(), new Rule4_1(), new Rule4_2(), new Rule4_6(),
+                new Rule4_7(), new Rule4_8(), new Rule5_1_2(), new Rule5_2_3(),
+                new Rule5_4(), new Rule5_6(), new Rule5_12(), new Rule5_14(),
+                new Terminator()
         };
 
         // link them
@@ -116,6 +116,7 @@ public class BCProcessor extends HumanErrorFormatter {
         Rule1_1() {
             setLevel(Level.WARNING);
         }
+
         private Message m;
         private final Handler r5 = new Rule5_2_3();
 
@@ -852,6 +853,7 @@ public class BCProcessor extends HumanErrorFormatter {
         Rule5_6() {
             setLevel(Level.WARNING);
         }
+
         private ErrorFormatter.Message m;
 
         boolean acceptMessageList(List<Message> l) {

@@ -101,7 +101,6 @@ import java.util.ArrayList;
  * &lt;/setup&gt;
  * </pre>
  *
- *
  * @author Mikhail Ershov
  */
 public class ATest extends ABase {

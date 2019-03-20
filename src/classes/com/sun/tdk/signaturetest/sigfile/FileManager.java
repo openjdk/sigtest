@@ -142,6 +142,7 @@ public class FileManager {
         formats.add(frm);
         defaultFormat = frm;
     }
+
     private Format defaultFormat = new F43Format();
     private final List<Format> formats = new ArrayList<>();
 

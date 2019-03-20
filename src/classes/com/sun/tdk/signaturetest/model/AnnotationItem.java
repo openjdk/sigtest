@@ -25,6 +25,7 @@
 package com.sun.tdk.signaturetest.model;
 
 import com.sun.tdk.signaturetest.util.SwissKnife;
+
 import java.util.*;
 
 /**
@@ -104,6 +105,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
         hash = 79 * hash + (this.members != null ? this.members.hashCode() : 0);
         return hash;
     }
+
     public final static AnnotationItem[] EMPTY_ANNOTATIONITEM_ARRAY = new AnnotationItem[0];
     // If this annotation imposed on a method/constructor parameter, then target
     // is number of the parameter + 1, otherwise 0.

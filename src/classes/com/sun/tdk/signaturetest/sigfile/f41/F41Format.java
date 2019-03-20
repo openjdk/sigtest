@@ -48,6 +48,7 @@ public class F41Format extends F40Format {
     public Writer getWriter() {
         return new F41Writer();
     }
+
     public static final String X_FIELDS = "x-fds";
     public static final String X_CLASSES = "x-cls";
 }

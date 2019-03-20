@@ -114,7 +114,7 @@ public class ClassCorrector implements Transformer {
      */
     private void replaceInvisibleExceptions(ClassDescription c) throws ClassNotFoundException {
 
-        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isConstructor()) {
                 replaceInvisibleExceptions(mr);
@@ -227,7 +227,7 @@ public class ClassCorrector implements Transformer {
         getPaths2(paths, currentPath, intFrom, intTo);
         // remove invisible elements
         for (List<String> path : paths) {
-            for (Iterator<String> it2 = path.iterator(); it2.hasNext();) {
+            for (Iterator<String> it2 = path.iterator(); it2.hasNext(); ) {
                 String cl = it2.next();
                 try {
                     if (!classHierarchy.isAccessible(cl)) {
@@ -301,7 +301,7 @@ public class ClassCorrector implements Transformer {
      */
     private void fixMethods(ClassDescription cl) throws ClassNotFoundException {
 
-        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isField()) {
                 fixType(cl, mr);
@@ -429,7 +429,7 @@ public class ClassCorrector implements Transformer {
 
         List<MemberDescription> newMembers = new ArrayList<>();
 
-        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
 
             MemberDescription mr = e.next();
 
@@ -467,7 +467,7 @@ public class ClassCorrector implements Transformer {
 
         List<String> makeThemDirect = null;
 
-        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isSuperInterface()) {
 
@@ -497,7 +497,7 @@ public class ClassCorrector implements Transformer {
 
         if (makeThemDirect != null) {
 
-            for (Iterator<MemberDescription> it = c.getMembersIterator(); it.hasNext();) {
+            for (Iterator<MemberDescription> it = c.getMembersIterator(); it.hasNext(); ) {
                 MemberDescription mr = it.next();
                 if (mr.isSuperInterface() && makeThemDirect.contains(mr.getQualifiedName())) {
                     // NOTE: clone not required here, because MemberCollectionBuilder clone
@@ -513,7 +513,7 @@ public class ClassCorrector implements Transformer {
         SuperInterface[] intfs = null;
         MemberDescription newMember = null;
 
-        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isSuperClass()) {
                 if (isInvisibleClass(mr.getQualifiedName())) {
@@ -606,7 +606,7 @@ public class ClassCorrector implements Transformer {
 
         Set<String> constantNames = new HashSet<>();
 
-        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isField() && mr.isPublic()) {
                 if (((FieldDescr) mr).isConstant()) {
@@ -618,7 +618,7 @@ public class ClassCorrector implements Transformer {
             }
         }
 
-        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isField()) {
                 if (((FieldDescr) mr).isConstant() && constantNames.contains(mr.getQualifiedName())) {
@@ -630,7 +630,7 @@ public class ClassCorrector implements Transformer {
 
     private void checkClassTypeParameters(ClassDescription cl) {
         checkTypeParameters(cl, cl);
-        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isConstructor()) {
                 checkTypeParameters(cl, mr);

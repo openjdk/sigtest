@@ -66,6 +66,7 @@ public abstract class ReportGenerator extends APIVisitor {
         EXCLUDEINTERFACES, EXCLUDEABSTRACTCLASSES,
         EXCLUDEABSTRACTMETHODS, EXCLUDEFIELD
     }
+
     DETAIL_LEVEL detail = DETAIL_LEVEL.NOT_COVERED_MEMB;
     FIELD_MODE fieldMode = FIELD_MODE.NOCONST;
     Set<EXLUDE_MODE> excludeMode = new HashSet<>();
@@ -209,15 +210,15 @@ public abstract class ReportGenerator extends APIVisitor {
      * The possible types of consts. They are included/excluded by option -includeConstantFields
      */
     private static final String[] consttypes = {
-        "boolean",
-        "byte",
-        "short",
-        "int",
-        "long",
-        "char",
-        "float",
-        "double",
-        "java.lang.String",};
+            "boolean",
+            "byte",
+            "short",
+            "int",
+            "long",
+            "char",
+            "float",
+            "double",
+            "java.lang.String",};
 
     protected boolean isConstType(String s) {
         for (String consttype : consttypes) {
@@ -282,7 +283,7 @@ public abstract class ReportGenerator extends APIVisitor {
         top = new PackageDescr("");
         APIVisitor calc = new APIVisitor() {
             protected void visit(ClassDescription cd) {
-                for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext();) {
+                for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext(); ) {
                     MemberDescription md = i.next();
                     if (!(md.isConstructor() || md.isField() || md.isMethod())) {
                         i.remove();
@@ -303,7 +304,7 @@ public abstract class ReportGenerator extends APIVisitor {
                     }
                     if (md.hasModifier(Modifier.FINAL)
                             && !md.getDeclaringClassName().equals(
-                                    cd.getQualifiedName())) {
+                            cd.getQualifiedName())) {
                         i.remove();
                         continue;
                     }
@@ -316,7 +317,7 @@ public abstract class ReportGenerator extends APIVisitor {
                 }
                 int members = 0;
                 int tested = 0;
-                for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext();) {
+                for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext(); ) {
                     MemberDescription md = i.next();
                     members++;
                     if (refCounter.isCovered(md)) {
@@ -350,7 +351,7 @@ public abstract class ReportGenerator extends APIVisitor {
             }
         };
 
-        for (Iterator<ClassDescription> it = api.iterator(); it.hasNext();) {
+        for (Iterator<ClassDescription> it = api.iterator(); it.hasNext(); ) {
             ClassDescription cd = it.next();
             if (excludeMode.contains(EXLUDE_MODE.EXCLUDEABSTRACTCLASSES)
                     && cd.isAbstract()) {
@@ -381,14 +382,14 @@ public abstract class ReportGenerator extends APIVisitor {
         }
 
         if (!structure.isActive()) {
-            api =  new ArrayList<>(refCounter.getClasses());
+            api = new ArrayList<>(refCounter.getClasses());
             filter();
             printHeader(null);
             print();
             printFooter();
             close();
         } else {
-            List<ClassDescription> allApi =  new ArrayList<>(refCounter.getClasses());
+            List<ClassDescription> allApi = new ArrayList<>(refCounter.getClasses());
             printHeader(structure.getTitle());
             for (Structure.Section s : structure.getSections()) {
                 if (!s.isHidden()) {
@@ -411,8 +412,8 @@ public abstract class ReportGenerator extends APIVisitor {
     private List<ClassDescription> filterRefs(Structure.Section section, List<ClassDescription> allApi) {
         List<ClassDescription> res = new ArrayList<>();
         for (ClassDescription cd : allApi) {
-            for ( String pkg  : section.getPkgInclude()) {
-                if ( cd.getQualifiedName().startsWith(pkg)) {
+            for (String pkg : section.getPkgInclude()) {
+                if (cd.getQualifiedName().startsWith(pkg)) {
                     res.add(cd);
                     break;
                 }
@@ -594,6 +595,7 @@ class ReportPlain extends ReportGenerator {
 
         super.visit(pd);
     }
+
     final Erasurator erasurator = new Erasurator();
 
     @Override
@@ -646,6 +648,7 @@ class ReportPlain extends ReportGenerator {
 
         println();
     }
+
     final StringBuffer line = new StringBuffer(120);
 
     StringBuffer tab(int p) {

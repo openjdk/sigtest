@@ -71,7 +71,7 @@ public class I18NResourceBundle extends ResourceBundle {
      *
      * @param key the name of the entry to be returned
      * @param arg an argument to be formatted into the result using
-     * {@link java.text.MessageFormat#format}
+     *            {@link java.text.MessageFormat#format}
      * @return the formatted string
      */
     public String getString(String key, Object arg) {
@@ -85,7 +85,7 @@ public class I18NResourceBundle extends ResourceBundle {
      *
      * @param key the name of the entry to be returned
      * @param arg an Option to be formatted into the result using
-     * {@link java.text.MessageFormat#format}
+     *            {@link java.text.MessageFormat#format}
      * @return the formatted string
      */
     public String getString(String key, Option arg) {
@@ -97,9 +97,9 @@ public class I18NResourceBundle extends ResourceBundle {
      * message is printed to the console and the result will be a string
      * containing the method parameters.
      *
-     * @param key the name of the entry to be returned
+     * @param key  the name of the entry to be returned
      * @param args an array of arguments to be formatted into the result using
-     * {@link java.text.MessageFormat#format}
+     *             {@link java.text.MessageFormat#format}
      * @return the formatted string
      */
     public String getString(String key, Object[] args) {
@@ -176,6 +176,7 @@ public class I18NResourceBundle extends ResourceBundle {
     public String getName() {
         return name;
     }
+
     private final String name;
     private ResourceBundle delegate;
     private final ClassLoader classLoader;

@@ -201,7 +201,7 @@ public class ModSetup extends ModBase {
         filterModuleSet(model, true, mo.isSet(Option.DEBUG));
 
         if (wm == WriteMode.STRUCT_PLAIN || wm == WriteMode.STRUCT_CUMULATIVE) {
-            if ( new StructWriter().createStructFile(wm, model, mdl.loadBootModules()) ) {
+            if (new StructWriter().createStructFile(wm, model, mdl.loadBootModules())) {
                 return passed();
             } else {
                 return failed("");

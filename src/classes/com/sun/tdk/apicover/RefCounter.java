@@ -29,6 +29,7 @@ import com.sun.tdk.signaturetest.core.Erasurator;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.MemberDescription;
 import com.sun.tdk.signaturetest.util.SwissKnife;
+
 import java.util.*;
 
 public class RefCounter {
@@ -39,6 +40,7 @@ public class RefCounter {
 
         REAL, WORST
     }
+
     private MODE mode = MODE.WORST;
     private final Erasurator erasurator = new Erasurator();
     private final Map<String, ClassDescription> ts = new HashMap<>();
@@ -109,7 +111,7 @@ public class RefCounter {
             ClassDescription apiClass = api.get(calledCl);
             if (apiClass != null) {
                 erasurator.parseTypeParameters(apiClass);
-                for (Iterator<MemberDescription> j = apiClass.getMembersIterator(); j.hasNext();) {
+                for (Iterator<MemberDescription> j = apiClass.getMembersIterator(); j.hasNext(); ) {
                     MemberDescription orig = j.next();
                     MemberDescription erased = erasurator.processMember(orig);
                     if (erased.equals(call)) {
@@ -205,7 +207,7 @@ public class RefCounter {
 
     private void clearInherited() {
         for (ClassDescription cd : api.values()) {
-            for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext();) {
+            for (Iterator<MemberDescription> i = cd.getMembersIterator(); i.hasNext(); ) {
                 MemberDescription md = i.next();
                 if (!(md.isConstructor() || md.isField() || md.isMethod())) {
                     i.remove();

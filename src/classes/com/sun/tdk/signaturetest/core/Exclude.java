@@ -49,11 +49,11 @@ public interface Exclude {
      * Checks if the given signature is excluded.
      *
      * @param testedClass the full qualified name of class being testing now
-     * @param signature full qualified signature of class, method or field which
-     * is tested, for methods and fields signature includes the name of class
-     * where this member is declared, for classes this signature is it name
+     * @param signature   full qualified signature of class, method or field which
+     *                    is tested, for methods and fields signature includes the name of class
+     *                    where this member is declared, for classes this signature is it name
      * @throws ExcludeException if signature is to be excluded with message
-     * which is used by SignatureTest for diagnostic messages
+     *                          which is used by SignatureTest for diagnostic messages
      */
     void check(ClassDescription testedClass, MemberDescription signature) throws ExcludeException;
 

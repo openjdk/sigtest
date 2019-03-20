@@ -29,6 +29,7 @@ import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.ConstructorDescr;
 import com.sun.tdk.signaturetest.model.MemberDescription;
 import com.sun.tdk.signaturetest.model.MemberType;
+
 import java.util.Set;
 
 /**

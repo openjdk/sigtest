@@ -81,9 +81,9 @@ class DirectoryEntry extends ClasspathEntry {
      * <code>directory</code> are collected in <code>this</code>
      * <b>DirectoryEntry</b> instance.
      *
-     * @param directory Directory to scan.
+     * @param directory   Directory to scan.
      * @param packageName Package name for classes inside the given
-     * <code>directory</code>.
+     *                    <code>directory</code>.
      */
     private void scanDirectory(File directory, String packageName) {
         // check for infinite loop which could occurs in the case of
@@ -142,7 +142,7 @@ class DirectoryEntry extends ClasspathEntry {
      *
      * @param name Qualified name of the class required.
      * @throws ClassNotFoundException The named class is not found in
-     * <code>this</code> <b>DirectoryEntry</b>.
+     *                                <code>this</code> <b>DirectoryEntry</b>.
      * @see java.io.FileInputStream
      */
     public InputStream findClass(String name) throws IOException, ClassNotFoundException {

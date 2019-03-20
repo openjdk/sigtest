@@ -25,6 +25,7 @@
 package com.sun.tdk.signaturetest.model;
 
 import com.sun.tdk.signaturetest.util.SwissKnife;
+
 import java.util.Set;
 
 /**
@@ -38,6 +39,7 @@ public final class FieldDescr extends MemberDescription {
     public static void setConstantValuesTracked(boolean cvt) {
         isConstantValuesTracked = cvt;
     }
+
     public static final FieldDescr[] EMPTY_ARRAY = new FieldDescr[0];
 
     public FieldDescr() {
@@ -57,6 +59,7 @@ public final class FieldDescr extends MemberDescription {
     public boolean isConstant() {
         return isFinal() && constantValue != null/*isStatic()*/;
     }
+
     //  constant value representation or null
     private String constantValue;
 

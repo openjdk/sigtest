@@ -84,7 +84,8 @@ public abstract class Handler {
         return (m.messageType == MessageType.ADD_ANNO
                 || m.messageType == MessageType.MISS_ANNO);
     }
-    protected static final ArrayList<String>  EMPTY_ARRAY_LIST = new ArrayList<>();
+
+    protected static final ArrayList<String> EMPTY_ARRAY_LIST = new ArrayList<>();
 
     protected static ArrayList<String> stringToArrayList(String source, String delimiter) {
         if ((source == null) || source.length() == 0) {
@@ -172,7 +173,7 @@ abstract class PairedHandler extends Handler {
 
     }
 
-    protected void init(List<Message>  l) {
+    protected void init(List<Message> l) {
         me1 = l.get(0);
         me2 = l.get(1);
 

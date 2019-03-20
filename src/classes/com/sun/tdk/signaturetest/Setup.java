@@ -304,6 +304,7 @@ public class Setup extends SigTest {
     protected String getComponentName() {
         return "Setup";
     }
+
     private int outerClassesNumber = 0,
             innerClassesNumber = 0,
             includedClassesNumber = 0,
@@ -339,7 +340,7 @@ public class Setup extends SigTest {
 
         SortedSet<String> excludedClasses = new TreeSet<>();
 
-        try(Classpath cp = getClasspath()) {
+        try (Classpath cp = getClasspath()) {
             while (cp.hasNext()) {
                 String name = cp.nextClassName();
                 if (!allClasses.add(name)) {
@@ -541,7 +542,7 @@ public class Setup extends SigTest {
 
     private void removeUndocumentedAnnotations(ClassDescription c, ClassHierarchy classHierarchy) {
         c.setAnnoList(removeUndocumentedAnnotations(c.getAnnoList(), classHierarchy));
-        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             mr.setAnnoList(removeUndocumentedAnnotations(mr.getAnnoList(), classHierarchy));
         }

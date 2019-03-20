@@ -32,8 +32,6 @@ import java.util.List;
 
 /**
  * APIVisitor is used to go through api.
- *
- *
  */
 class APIVisitor {
 
@@ -91,7 +89,7 @@ class APIVisitor {
         // XXX
         // hand-made sort of members
         List<MemberDescription> list = new ArrayList<>();
-        for (Iterator<MemberDescription> i = x.getMembersIterator(); i.hasNext();) {
+        for (Iterator<MemberDescription> i = x.getMembersIterator(); i.hasNext(); ) {
             boolean isInserted = false;
             MemberDescription md = i.next();
             for (int j = 0; j < list.size(); j++) {

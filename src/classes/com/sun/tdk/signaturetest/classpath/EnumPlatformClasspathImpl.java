@@ -118,7 +118,7 @@ public class EnumPlatformClasspathImpl implements Classpath {
                     String ext = ".class";
                     int eLen = ext.length();
                     classes.addAll(reader.list()
-                            .filter(e -> e.endsWith(ext) && ! e.equals("module-info.class"))
+                            .filter(e -> e.endsWith(ext) && !e.equals("module-info.class"))
                             .map(e -> e.replace('/', '.').substring(0, e.length() - eLen))
                             .collect(Collectors.toList()));
                 } catch (IOException e) {

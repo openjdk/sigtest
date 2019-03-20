@@ -80,7 +80,7 @@ public class Main implements Log {
     /**
      * Run the test using command-line; return status via numeric exit code.
      *
-     * @see #run(String[],PrintWriter,PrintWriter)
+     * @see #run(String[], PrintWriter, PrintWriter)
      */
     public static void main(String[] args) {
         Main main = new Main();

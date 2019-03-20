@@ -101,7 +101,6 @@ public class SortedErrorFormatter extends ErrorFormatter {
 
     /**
      * Print all error messages collected by <code>failedMessages</code>.
-     *
      */
     public void printErrors() {
 
@@ -248,7 +247,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
 
             for (k = 0; k < v.size(); k++) {
                 rep:
-                for (boolean flag = true; flag;) {
+                for (boolean flag = true; flag; ) {
                     flag = false;
                     Message msgk = v.get(k);
                     String supk = supernames.get(msgk.className);
@@ -267,12 +266,12 @@ public class SortedErrorFormatter extends ErrorFormatter {
                 }
             }
 
-            for (k = v.size(); --k >= 0;) {
+            for (k = v.size(); --k >= 0; ) {
                 Message msgk = v.get(k);
                 //System.out.println(MsgShow(msgk));
                 String supk = supernames.get(msgk.className);
                 if (supk != null) {
-                    for (i = k; --i >= 0;) {
+                    for (i = k; --i >= 0; ) {
                         Message msgi = v.get(i);
                         if (msgi.className.equals(supk)) {
                             if (msgi.tail.length() != 0) {
@@ -292,7 +291,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
             }
         }
 
-        for (i = failedMessages.size(); --i >= 0;) {
+        for (i = failedMessages.size(); --i >= 0; ) {
             Message msgi = failedMessages.get(i);
 
             for (k = 0; k < exclude.size(); k++) {

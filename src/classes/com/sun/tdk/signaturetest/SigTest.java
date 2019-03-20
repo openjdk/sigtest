@@ -40,6 +40,7 @@ import com.sun.tdk.signaturetest.util.CommandLineParserException;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.Logger;
 import com.sun.tdk.signaturetest.util.SwissKnife;
+
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -118,7 +119,6 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected String apiVersion = "";
     /**
      * Either static or reflections-based class descriptions finder.
-     *
      */
     protected MemberCollectionBuilder testableMCBuilder;
     protected final ThrowsNormalizer normalizer = new ThrowsNormalizer();
@@ -164,6 +164,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             // suppress the exception
         }
     }
+
     /**
      * Enable diagnostics for inherited class members.
      */
@@ -179,7 +180,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     public void storeError(String s, Logger utilLogger) {
-        if (utilLogger != null ) {
+        if (utilLogger != null) {
             utilLogger.severe(s);
         }
         errorMessages.add(s);
@@ -190,7 +191,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             storeError(s, utilLogger);
             return;
         }
-        if (utilLogger != null ) {
+        if (utilLogger != null) {
             utilLogger.warning(s);
         }
         if (!nowarnings) {
@@ -206,6 +207,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
         initErrors();
     }
+
     /**
      * number of the errors.
      */
@@ -236,8 +238,8 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
 
         if (bo.readOptions(optionName, args)) {
             // convert -modules to -package
-            if (Option.MODULES.accept(optionName) && bo.getValue(Option.MODULES)  != null) {
-                if(isModuleSupportAvailable()) {
+            if (Option.MODULES.accept(optionName) && bo.getValue(Option.MODULES) != null) {
+                if (isModuleSupportAvailable()) {
                     List<String> moduleSet = new ArrayList<>();
                     for (String m : bo.getValue(Option.MODULES).split(",")) {
                         m = m.trim();
@@ -498,7 +500,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      * Removes undocumented annotations
      */
     protected AnnotationItem[] removeUndocumentedAnnotations(AnnotationItem[] annotations,
-            ClassHierarchy h) {
+                                                             ClassHierarchy h) {
 
         if (annotations == null) {
             return AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY;

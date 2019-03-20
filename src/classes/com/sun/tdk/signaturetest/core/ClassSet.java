@@ -53,6 +53,7 @@ public class ClassSet {
             return count;
         }
     }
+
     private final ClassHierarchy hierarchy;
     private final boolean trackDependeces;
     private final Map<String, Object> classNamesInProcess = new HashMap<>();
@@ -161,6 +162,7 @@ public class ClassSet {
     public Set<String> getMissingClasses() {
         return Collections.unmodifiableSet(missingClasses);
     }
+
     private final Map<String, Counter> classes = new HashMap<>();
     private final Set<String> missingClasses = new HashSet<>();
 }

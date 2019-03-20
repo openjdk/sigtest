@@ -138,7 +138,7 @@ public class MemberCollectionBuilder {
         // outside the java.lang package. So in this case RuntimePermission should have no inherited members
         MemberCollection cleaned = new MemberCollection();
         int memcount = 0;
-        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext(); ) {
             memcount++;
             MemberDescription mr = e.next();
             MemberType mt = mr.getMemberType();
@@ -204,7 +204,7 @@ public class MemberCollectionBuilder {
     }
 
     private MemberCollection getMembers(ClassDescription cl, String actualTypeParams,
-            boolean skipRawTypes, boolean callErasurator, boolean addInherited, boolean checkHidding) throws ClassNotFoundException {
+                                        boolean skipRawTypes, boolean callErasurator, boolean addInherited, boolean checkHidding) throws ClassNotFoundException {
 
         assert cl != null;
 
@@ -316,11 +316,11 @@ public class MemberCollectionBuilder {
     // this method invokes recursively
     // addInheritedFromInterfaces - getMembers - addInherited - addInheritedFromInterfaces - ...
     private void addInheritedFromInterfaces(ClassDescription cl,
-            ClassHierarchy hierarchy, boolean checkHidding,
-            List<String> paramList, boolean skipRawTypes,
-            MethodOverridingChecker overridingChecker,
-            MemberCollection retVal, Map<String, MemberDescription> inheritedFields,
-            Set<String> internalClasses) throws ClassNotFoundException {
+                                            ClassHierarchy hierarchy, boolean checkHidding,
+                                            List<String> paramList, boolean skipRawTypes,
+                                            MethodOverridingChecker overridingChecker,
+                                            MemberCollection retVal, Map<String, MemberDescription> inheritedFields,
+                                            Set<String> internalClasses) throws ClassNotFoundException {
 
         String clsName = cl.getQualifiedName();
         // findMember direct interfaces
@@ -479,11 +479,11 @@ public class MemberCollectionBuilder {
     }
 
     private boolean addInheritedMethod(MemberDescription supMD,
-            MethodOverridingChecker overridingChecker,
-            MemberCollection retVal,
-            ClassHierarchy hierarchy,
-            ClassDescription superClass,
-            ClassDescription cl) {
+                                       MethodOverridingChecker overridingChecker,
+                                       MemberCollection retVal,
+                                       ClassHierarchy hierarchy,
+                                       ClassDescription superClass,
+                                       ClassDescription cl) {
 
         MethodDescr m = (MethodDescr) supMD;
         MethodDescr overriden = overridingChecker.getOverridingMethod(m, true);
@@ -531,7 +531,7 @@ public class MemberCollectionBuilder {
     }
 
     private MemberCollection addSuperMembers(MemberDescription[] from,
-            MemberCollection to) {
+                                             MemberCollection to) {
         for (MemberDescription memberDescription : from) {
             to.addMember(memberDescription);
         }
@@ -589,14 +589,14 @@ public class MemberCollectionBuilder {
      * @see MemberDescription
      */
     private MemberCollection getAccessibleMembers(MemberCollection members,
-            ClassDescription subclass,
-            ClassDescription superClass) {
+                                                  ClassDescription subclass,
+                                                  ClassDescription superClass) {
 
         String pkg = subclass.getPackageName();
         boolean isSamePackage = pkg.equals(superClass.getPackageName());
         MemberCollection retVal = new MemberCollection();
 
-        for (Iterator<MemberDescription> e = members.iterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = members.iterator(); e.hasNext(); ) {
             MemberDescription mbr = e.next();
             if ((mbr.isPublic() || mbr.isProtected() || isSamePackage || mbr.isSuperInterface()) && !mbr.isPrivate()) {
                 retVal.addMember(mbr);
@@ -645,7 +645,7 @@ public class MemberCollectionBuilder {
 
         public ClassDescription transform(ClassDescription cls) {
 
-            for (Iterator<MemberDescription> it = cls.getMembersIterator(); it.hasNext();) {
+            for (Iterator<MemberDescription> it = cls.getMembersIterator(); it.hasNext(); ) {
                 MemberDescription mr = it.next();
 
                 boolean isSynthetic = mr.hasModifier(Modifier.ACC_SYNTHETIC);

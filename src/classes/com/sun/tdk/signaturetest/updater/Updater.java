@@ -67,7 +67,7 @@ public class Updater extends DefaultHandler {
     }
 
     public void startElement(String uri, String localName, String qName,
-            Attributes attributes) throws SAXException {
+                             Attributes attributes) throws SAXException {
         if (qName.equalsIgnoreCase("update")) {
             ur = new UpdateRecord();
             fillUR(ur, attributes);
@@ -153,7 +153,7 @@ public class Updater extends DefaultHandler {
     }
 
     private void processCommands(Collection<Command> commands, Updater.SigList sl) {
-        for (Command command: commands) {
+        for (Command command : commands) {
             command.perform(sl);
         }
     }
@@ -182,7 +182,7 @@ public class Updater extends DefaultHandler {
     }
 
     private void writeOut(String to, SigList sl) throws FileNotFoundException {
-        try(PrintWriter pw = new PrintWriter(new FileOutputStream(to))) {
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream(to))) {
             for (String o : sl) {
                 pw.write(o + '\n');
             }

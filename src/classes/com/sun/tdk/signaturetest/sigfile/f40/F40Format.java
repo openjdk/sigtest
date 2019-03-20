@@ -54,6 +54,7 @@ public class F40Format extends Format {
     public Writer getWriter() {
         return new F40Writer();
     }
+
     public static final String HIDDEN_FIELDS = "hfds";
     public static final String HIDDEN_CLASSES = "hcls";
 }

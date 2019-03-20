@@ -130,7 +130,7 @@ public class JSR68Merger extends FeaturesHolder {
                         }
                     }
 
-                    for (Iterator<ClassDescription> it2 = result.getClassIterator(); it2.hasNext();) {
+                    for (Iterator<ClassDescription> it2 = result.getClassIterator(); it2.hasNext(); ) {
                         ClassDescription similarInner = it2.next();
                         if (similarInner.getQualifiedName().contains("$")
                                 && similarInner.getName().equals(cd.getName())) {

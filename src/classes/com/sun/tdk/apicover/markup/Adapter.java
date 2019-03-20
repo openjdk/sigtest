@@ -69,6 +69,7 @@ public class Adapter {
         });
         fm.addFormat(f, false);
     }
+
     // pseudo-modifier
     public static final Modifier coverIgnore = new Modifier("!cover-ignore", true);
 }

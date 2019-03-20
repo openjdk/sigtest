@@ -78,6 +78,7 @@ public final class SuperInterface extends MemberDescription {
     public void setDirect(boolean direct) {
         this.direct = direct;
     }
+
     private boolean direct;
 
     public String toString() {

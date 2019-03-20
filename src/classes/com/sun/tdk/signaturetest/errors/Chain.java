@@ -27,10 +27,10 @@ package com.sun.tdk.signaturetest.errors;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
 import com.sun.tdk.signaturetest.errors.ErrorFormatter.Message;
 
 /**
- *
  * @author Sergey Glazyrin
  * @author Mikhail Ershov
  */

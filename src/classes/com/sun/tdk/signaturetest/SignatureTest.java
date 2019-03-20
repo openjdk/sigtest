@@ -207,7 +207,7 @@ public class SignatureTest extends SigTest {
     /**
      * Run the test using command-line; return status via numeric exit code.
      *
-     * @see #run(String[],PrintWriter,PrintWriter)
+     * @see #run(String[], PrintWriter, PrintWriter)
      */
     public static void main(String[] args) {
         SignatureTest t = SignatureTest.getInstance();
@@ -399,8 +399,8 @@ public class SignatureTest extends SigTest {
 
 
     /*
-    * Detects if the current platform supports Java9's
-    * ModuleReader::list for enumerating available classes
+     * Detects if the current platform supports Java9's
+     * ModuleReader::list for enumerating available classes
      */
     private boolean isPlatformEnumerationSupported() {
         try {
@@ -421,7 +421,7 @@ public class SignatureTest extends SigTest {
 
         if (optionName.equalsIgnoreCase(FILES_OPTION)) {
             sigFileNameList = args[0];
-        }  else if (optionName.equalsIgnoreCase(EXTENSIBLE_INTERFACES_OPTION)) {
+        } else if (optionName.equalsIgnoreCase(EXTENSIBLE_INTERFACES_OPTION)) {
             extensibleInterfaces = true;
         } else if (optionName.equalsIgnoreCase(CHECKVALUE_OPTION)) {
             // default is true as of 1.2.1
@@ -659,7 +659,7 @@ public class SignatureTest extends SigTest {
                     getLog().println(i18nSt.getString("SignatureTest.mesg.verbose.check", currentClass.getQualifiedName()));
                     getLog().flush();
                 }
-                if ( to.isSet(Option.CHECK_EXCESS_CLASSES_ONLY)) {
+                if (to.isSet(Option.CHECK_EXCESS_CLASSES_ONLY)) {
                     trackedClassNames.add(currentClass.getQualifiedName());
                 } else {
                     if (buildMembers && sigfileMCBuilder != null) {
@@ -787,7 +787,7 @@ public class SignatureTest extends SigTest {
 
     // for APICheck
     protected void setupLoaders(ClassDescriptionLoader loader,
-            ClassDescriptionLoader second) {
+                                ClassDescriptionLoader second) {
     }
 
     /**
@@ -884,7 +884,7 @@ public class SignatureTest extends SigTest {
     }
 
     private void transformPair(ClassDescription parentReq, MemberDescription required,
-            ClassDescription parentFou, MemberDescription found) {
+                               ClassDescription parentFou, MemberDescription found) {
         // number of simple transformations for found - required pair
 
         // Issue 54
@@ -1041,7 +1041,7 @@ public class SignatureTest extends SigTest {
         boolean result = (tp != null) && (!"".equals(tp));
         // check all the members also
         if (!result) {
-            for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext();) {
+            for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext(); ) {
                 MemberDescription mr = e.next();
                 String tpM = mr.getTypeParameters();
                 if ((tpM != null) && (!"".equals(tpM))) {
@@ -1109,7 +1109,7 @@ public class SignatureTest extends SigTest {
         checkClassDescription(required, found);
 
         // track members declared in the signature file.
-        for (Iterator<MemberDescription> e = required.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = required.getMembersIterator(); e.hasNext(); ) {
             MemberDescription requiredMember = e.next();
             try {
                 excluded(required, requiredMember);
@@ -1118,8 +1118,8 @@ public class SignatureTest extends SigTest {
                 if (isVerbose) {
                     getLog().println(i18nSt.getString("SignatureTest.mesg.verbose.verifyMember",
                             new Object[]{required.getQualifiedName(),
-                                requiredMember.toString(),
-                                e1.getMessage()}));
+                                    requiredMember.toString(),
+                                    e1.getMessage()}));
                     getLog().flush();
                 }
             }
@@ -1127,7 +1127,7 @@ public class SignatureTest extends SigTest {
 
         // track members which are added in the current implementation.
         if (!isSupersettingEnabled) {
-            for (Iterator<MemberDescription> e = found.getMembersIterator(); e.hasNext();) {
+            for (Iterator<MemberDescription> e = found.getMembersIterator(); e.hasNext(); ) {
                 MemberDescription foundMember = e.next();
                 if (!required.containsMember(foundMember)) {
                     try {
@@ -1137,8 +1137,8 @@ public class SignatureTest extends SigTest {
                         if (isVerbose) {
                             getLog().println(i18nSt.getString("SignatureTest.mesg.verbose.verifyMember2",
                                     new Object[]{found.getQualifiedName(),
-                                        foundMember.toString(),
-                                        e1.getMessage()}));
+                                            foundMember.toString(),
+                                            e1.getMessage()}));
                             getLog().flush();
                         }
                     }
@@ -1244,8 +1244,8 @@ public class SignatureTest extends SigTest {
      *
      * @param parentReq ClassDesription for contained class from required set
      * @param parentFou ClassDesription for contained class from found set
-     * @param required the required field
-     * @param found the field (or lack thereof) which is present
+     * @param required  the required field
+     * @param found     the field (or lack thereof) which is present
      */
     private void trackMember(ClassDescription parentReq, ClassDescription parentFou, MemberDescription required, MemberDescription found) {
         // note: this method is also used to print out an error message
@@ -1301,7 +1301,7 @@ public class SignatureTest extends SigTest {
 
                 // reflection can't read values (couldn't make it accessible ) - it's ok
                 // is it bug or according to the specification?
-                if (fConstValue == null && rConstValue != null ) {
+                if (fConstValue == null && rConstValue != null) {
                     if (((FieldDescr) required).isCompatible(found, true)) {
 //        Fortify
 //                        if (logger.isLoggable(Level.FINE)) {
@@ -1335,8 +1335,8 @@ public class SignatureTest extends SigTest {
     }
 
     private void checkAnnotations(MemberDescription base, MemberDescription test,
-            ClassDescription baseCl, ClassDescription testCl,
-            ClassHierarchy baseCh, ClassHierarchy testCh) {
+                                  ClassDescription baseCl, ClassDescription testCl,
+                                  ClassHierarchy baseCh, ClassHierarchy testCh) {
 
         if (!isTigerFeaturesTracked) {
             return;

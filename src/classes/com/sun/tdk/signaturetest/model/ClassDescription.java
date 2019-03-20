@@ -84,6 +84,7 @@ public class ClassDescription extends MemberDescription {
         return memberType.isCompatible(getModifiers(), m.getModifiers())
                 && SwissKnife.equals(typeParameters, m.typeParameters);
     }
+
     private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClassDescription.class);
 
     public boolean containsMember(MemberDescription newMember) {
@@ -199,6 +200,7 @@ public class ClassDescription extends MemberDescription {
             this.ident = ident;
             this.declared = declared;
         }
+
         final int seqnb;
         final String ident;
         final String declared;
@@ -214,6 +216,7 @@ public class ClassDescription extends MemberDescription {
         public String getDeclared() {
             return declared;
         }
+
         TypeParam hidden = null; // hidden type parameter
     }
 
@@ -303,6 +306,7 @@ public class ClassDescription extends MemberDescription {
             return s;
         }
     }
+
     //  List of type parameters (type variables) declared by the class
     // this member must be used only loaders!
     // TODO remove this member out of ClassDescription!
@@ -315,6 +319,7 @@ public class ClassDescription extends MemberDescription {
     public void setTypeparamList(TypeParameterList typeparamList) {
         this.typeparamList = typeparamList;
     }
+
     /**
      * List of members of that class described by <code>this</code> instance.
      * This is a hashtable indexed by
@@ -357,6 +362,7 @@ public class ClassDescription extends MemberDescription {
     public boolean isTiger() {
         return isTiger;
     }
+
     private boolean isTiger = false;
 
     public void setTiger(boolean tiger) {
@@ -395,7 +401,7 @@ public class ClassDescription extends MemberDescription {
     //  Remove the throws list completely for 'bin' mode
     public void removeThrows() {
         //  For every methods and constructors ...
-        for (Iterator<MemberDescription> e = members.iterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = members.iterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isConstructor()) {
                 mr.setThrowables(MemberDescription.EMPTY_THROW_LIST);
@@ -505,6 +511,7 @@ public class ClassDescription extends MemberDescription {
     public ConstructorDescr getConstructor(int i) {
         return declaredConstructors[i];
     }
+
     private MethodDescr[] declaredMethods = MethodDescr.EMPTY_ARRAY;
     private FieldDescr[] declaredFields = FieldDescr.EMPTY_ARRAY;
     private ConstructorDescr[] declaredConstructors = ConstructorDescr.EMPTY_ARRAY;
@@ -523,6 +530,7 @@ public class ClassDescription extends MemberDescription {
     public void setNested(int i, InnerDescr m) {
         nestedClasses[i] = m;
     }
+
     private SuperClass superClass = null;
 
     public void setSuperClass(SuperClass m) {
@@ -722,5 +730,6 @@ public class ClassDescription extends MemberDescription {
     public void setHierarchy(ClassHierarchy hierarchy) {
         this.hierarchy = hierarchy;
     }
+
     static final long serialVersionUID = -3431812619261695131L;
 }

@@ -35,28 +35,28 @@ public final class MemberType implements Comparable<MemberType>, Serializable {
      * NOTE: changing order of modifiers in these arrays affects order of
      * modifiers in string returned via method <code>Modifier.toString()</code>
      *
-     * @see Modifier#toString(MemberType,int,boolean)
+     * @see Modifier#toString(MemberType, int, boolean)
      */
     // Classes including nested and interfaces
     private static final Modifier[] classModifiers = {
-        Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE,
-        Modifier.ABSTRACT, Modifier.FINAL, Modifier.INTERFACE,
-        Modifier.STATIC, Modifier.ANNOTATION, Modifier.ENUM, Modifier.ACC_STRICT,
-        Modifier.ACC_SUPER, Modifier.ACC_SYNTHETIC, Modifier.ACC_MODULE
+            Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE,
+            Modifier.ABSTRACT, Modifier.FINAL, Modifier.INTERFACE,
+            Modifier.STATIC, Modifier.ANNOTATION, Modifier.ENUM, Modifier.ACC_STRICT,
+            Modifier.ACC_SUPER, Modifier.ACC_SYNTHETIC, Modifier.ACC_MODULE
     };
     private static final Modifier[] constructorModifiers = {
-        Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE,
-        Modifier.VARARGS, Modifier.ACC_SYNTHETIC, Modifier.ACC_STRICT
+            Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE,
+            Modifier.VARARGS, Modifier.ACC_SYNTHETIC, Modifier.ACC_STRICT
     };
     private static final Modifier[] methodModifiers = {
-        Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE, Modifier.ABSTRACT,
-        Modifier.NATIVE, Modifier.VARARGS, Modifier.BRIDGE, Modifier.FINAL, Modifier.HASDEFAULT,
-        Modifier.STATIC, Modifier.SYNCHRONIZED, Modifier.ACC_SYNTHETIC, Modifier.ACC_STRICT
+            Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE, Modifier.ABSTRACT,
+            Modifier.NATIVE, Modifier.VARARGS, Modifier.BRIDGE, Modifier.FINAL, Modifier.HASDEFAULT,
+            Modifier.STATIC, Modifier.SYNCHRONIZED, Modifier.ACC_SYNTHETIC, Modifier.ACC_STRICT
     };
     private static final Modifier[] fieldModifiers = {
-        Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE, Modifier.FINAL,
-        Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE,
-        Modifier.FIELD_ENUM, Modifier.ACC_SYNTHETIC
+            Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE, Modifier.FINAL,
+            Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE,
+            Modifier.FIELD_ENUM, Modifier.ACC_SYNTHETIC
     };
     private static final Modifier[] noneModifiers = {};
     public static final MemberType CLASS = new MemberType("CLSS", classModifiers);

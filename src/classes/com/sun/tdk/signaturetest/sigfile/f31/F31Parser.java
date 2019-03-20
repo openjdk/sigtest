@@ -74,7 +74,7 @@ public class F31Parser implements Parser {
         if (directInterfaceCount > 0) {
             classDescription.createInterfaces(directInterfaceCount);
             int count = 0;
-            for (Iterator<MemberDescription> it = classMembers.iterator(); it.hasNext();) {
+            for (Iterator<MemberDescription> it = classMembers.iterator(); it.hasNext(); ) {
                 MemberDescription mr = it.next();
                 if (mr.isSuperInterface()) {
                     SuperInterface si = (SuperInterface) mr;
@@ -90,7 +90,7 @@ public class F31Parser implements Parser {
         ArrayList<ConstructorDescr> constrs = new ArrayList<>();
         ArrayList<InnerDescr> inners = new ArrayList<>();
         ArrayList<SuperInterface> intfs = new ArrayList<>();
-        for (Iterator<MemberDescription> it = classMembers.iterator(); it.hasNext();) {
+        for (Iterator<MemberDescription> it = classMembers.iterator(); it.hasNext(); ) {
             MemberDescription md = it.next();
             if (md instanceof SuperClass) {
                 classDescription.setSuperClass((SuperClass) md);
@@ -348,7 +348,7 @@ public class F31Parser implements Parser {
     private void scanElems() {
         elems = new LinkedList<>();
 
-        for (;;) {
+        for (; ; ) {
 
             //  skip leading blanks at the start of lexeme
             while (idx < linesz && (chr = line.charAt(idx)) == ' ') {
@@ -407,7 +407,7 @@ public class F31Parser implements Parser {
     }
 
     private void skip(char term) {
-        for (;;) {
+        for (; ; ) {
             if (idx >= linesz) {
                 err();
             }

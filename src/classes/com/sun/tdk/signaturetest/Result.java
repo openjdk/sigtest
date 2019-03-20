@@ -46,8 +46,8 @@ public class Result {
     private static final int ERROR = 2;
     private static final int NOT_RUN = 3;
     private static final String[] texts = {i18n.getString("Result.code.passed"),
-        i18n.getString("Result.code.failed"), i18n.getString("Result.code.error"),
-        i18n.getString("Result.code.notrun")};
+            i18n.getString("Result.code.failed"), i18n.getString("Result.code.error"),
+            i18n.getString("Result.code.notrun")};
     private static final int[] exitCodes = {95, 97, 98, 99};
 
     public String toString() {

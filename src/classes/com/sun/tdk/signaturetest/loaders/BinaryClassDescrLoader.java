@@ -186,6 +186,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             constants = null;
         }
     }
+
     private boolean ignoreAnnotations = false;
     /**
      * findByName and open class files as InputStream.
@@ -205,7 +206,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     /**
      * creates new instance.
      *
-     * @param classpath contains class files.
+     * @param classpath  contains class files.
      * @param bufferSize size of the class cache.
      */
     public BinaryClassDescrLoader(Classpath classpath, Integer bufferSize) {
@@ -302,7 +303,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             CONSTANT_ModuleId = 19,
             CONSTANT_ModuleQuery = 20;
 
-//  Constant pool entry
+    //  Constant pool entry
     private static class Constant {
 
         byte tag;
@@ -623,7 +624,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
     }
 
-//  Process fields
+    //  Process fields
     private void readFields(BinaryClassDescription c, DataInput classData) throws IOException {
 
         int n = classData.readUnsignedShort();
@@ -711,7 +712,8 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             }
         }
     }
-//  Process methods and constructors
+
+    //  Process methods and constructors
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     private void readMethods(BinaryClassDescription c, DataInput classData) throws IOException {
@@ -1203,7 +1205,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         abstract void check(BinaryClassDescription c, String name) throws IOException;
     } //end of abstract class AttrsIter
 
-//    private Constant getConstant(short I) {
+    //    private Constant getConstant(short I) {
 //        return getConstant(((int) I) & 0xFFFF);
 //    }
     //  Convert JVM type notation (as described in the JVM II 4.3.2, p.100)
@@ -1386,7 +1388,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                     StringBuffer sb = new StringBuffer();
                     StringBuffer sb1 = new StringBuffer();
 
-                    for (;;) {
+                    for (; ; ) {
                         sb.append(scanIdent("<.;").replace('/', '.'));
 
                         if (chr == '<') {
@@ -1532,6 +1534,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     public void setIgnoreAnnotations(boolean value) {
         ignoreAnnotations = value;
     }
+
     private final Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
@@ -1552,6 +1555,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     public void setLog(PrintWriter log) {
         this.log = log;
     }
+
     private PrintWriter log;
     private final Set<String> notFoundAnnotations = new HashSet<>();
 }

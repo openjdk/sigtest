@@ -35,7 +35,7 @@ package com.sun.tdk.signaturetest.util;
  */
 public final class Level {
 
-    public static final Level SEVERE = new Level("SEVERE",1000);
+    public static final Level SEVERE = new Level("SEVERE", 1000);
 
     public static final Level WARNING = new Level("WARNING", 900);
 

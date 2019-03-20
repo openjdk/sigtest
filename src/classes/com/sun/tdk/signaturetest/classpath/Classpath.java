@@ -42,7 +42,7 @@ public interface Classpath extends AutoCloseable {
      * Initialize the module with given parameter: <code>classPath</code>.
      *
      * @param classPath parameter provided to initialize module (usually a
-     * directory or file classPath).
+     *                  directory or file classPath).
      */
     void init(String classPath) throws IOException;
 

@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Application's context holder
  * Stores environmental values such as options and settings
+ *
  * @author Mikhail Ershov
  */
 public abstract class AppContext {

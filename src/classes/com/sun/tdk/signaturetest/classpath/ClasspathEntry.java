@@ -43,6 +43,7 @@ public abstract class ClasspathEntry implements Classpath {
     protected ClasspathEntry(ClasspathEntry previousEntry) {
         this.previousEntry = previousEntry;
     }
+
     /**
      * Qualified names for all those classes found in <code>this</code>
      * directory.

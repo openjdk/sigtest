@@ -33,6 +33,7 @@ import com.sun.tdk.signaturetest.model.Modifier;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
+
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
@@ -344,7 +345,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         }
     }
 
-//
+    //
 //  Generic types helper methods
 //
     private String scanFormalTypeParameters(ClassDescription.TypeParameterList typeparamList, TypeVariable[] params, String declared) {
@@ -481,7 +482,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         return (sb.length() == 0) ? "" : '<' + sb.toString() + '>';
     }
 
-//
+    //
 //  Annotation parsing methods
 //
     List<AnnotationItem> parse(ClassDescription c, int target, Annotation[] xx) {
@@ -552,6 +553,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
         return anno;
     }
+
     private final Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
@@ -572,5 +574,6 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
     public void setLog(PrintWriter log) {
         this.log = log;
     }
+
     private PrintWriter log;
 }

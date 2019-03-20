@@ -60,14 +60,14 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
      * newer Java implementations. If only simpler <code>forName()</code> method
      * is available, then this field is incarnated with <code>null</code>.
      *
-     * @see Class#forName(String,boolean,ClassLoader)
+     * @see Class#forName(String, boolean, ClassLoader)
      */
     private Method forName;
     /**
      * Arguments prepared to invoke advanced <code>forName()</code> method via
      * reflection.
      *
-     * @see Method#invoke(Object,Object[])
+     * @see Method#invoke(Object, Object[])
      */
     private final Object[] args;
 
@@ -78,21 +78,21 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
      * <code>this</code> instance to use simpler version of the method
      * <code>forName()</code>, which must be available anyway.
      *
-     * @see Class#forName(String,boolean,ClassLoader)
+     * @see Class#forName(String, boolean, ClassLoader)
      * @see Class#forName(String)
      */
     public ReflClassDescrLoader() {
 
         args = new Object[]{
-            "",
-            Boolean.FALSE,
-            this.getClass().getClassLoader()
+                "",
+                Boolean.FALSE,
+                this.getClass().getClassLoader()
         };
 
         Class[] param = {
-            String.class,
-            Boolean.TYPE,
-            ClassLoader.class
+                String.class,
+                Boolean.TYPE,
+                ClassLoader.class
         };
         try {
             forName = Class.class.getDeclaredMethod("forName", param);
@@ -106,7 +106,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
      * <code>name</code>.
      *
      * @throws ClassNotFoundException If <b>Class</b>.<code>forName(name)</code>
-     * fails to load the required class.
+     *                                fails to load the required class.
      * @see Class#forName(String)
      */
     public ClassDescription load(final String name) throws ClassNotFoundException {
@@ -333,6 +333,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
 
         return sb.toString();
     }
+
     private final Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {

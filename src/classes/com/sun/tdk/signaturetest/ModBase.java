@@ -104,9 +104,10 @@ public abstract class ModBase extends SigTest {
      * 1. - Filters out modules from the model which is not meet -modInclude and -modExclude options
      * 2. - For each unfiltered modules calls filterModule for filtering modules content
      * according to -pkgInclude and -pkgExclude options
-     * @param model the model (ModuleDescriptions map)
+     *
+     * @param model       the model (ModuleDescriptions map)
      * @param isReference true for reference model (from data file), false for tested model
-     * @param verbose prints extra info (what was filtered out) if -debug option was specified
+     * @param verbose     prints extra info (what was filtered out) if -debug option was specified
      * @return
      */
     protected Map<String, ModuleDescription> filterModuleSet(Map<String, ModuleDescription> model, boolean isReference, boolean verbose) {
@@ -134,7 +135,8 @@ public abstract class ModBase extends SigTest {
      * Filters out ModuleDescription's entities, all "nonApi" classes and packages are removed.
      * the scope is defined by -pkgInclude and -pkgExclude options.
      * it filters out packages, requires, exports, provides and uses
-     * @param md the module for cleaning
+     *
+     * @param md          the module for cleaning
      * @param isReference
      * @param verbose
      */
@@ -173,6 +175,7 @@ public abstract class ModBase extends SigTest {
 
     /**
      * Checks module name for consistency according to -modInclude and -modExclude
+     *
      * @param modName
      * @return
      */
@@ -185,6 +188,7 @@ public abstract class ModBase extends SigTest {
 
     /**
      * Checks package name for consistency according to -modInclude and -modExclude
+     *
      * @param packName
      * @return
      */

@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest.sigfile;
 import com.sun.tdk.signaturetest.model.AnnotationItem;
 import com.sun.tdk.signaturetest.model.AnnotationItemEx;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

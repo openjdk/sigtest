@@ -31,6 +31,7 @@ package com.sun.tdk.signaturetest.loaders;
 public interface LoadingHints {
 
     void addLoadingHint(Hint hint);
+
     /**
      * Says that loader should not read constant values for preventing
      * unnecessary class initialization Can be used in reflection loaders

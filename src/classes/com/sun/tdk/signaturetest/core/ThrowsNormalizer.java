@@ -35,7 +35,6 @@ import java.util.List;
  * Normalize the throws list completely for 'src' mode
  *
  * @author Maxim Sokolnikov
- *
  * @author Mikhail Ershov
  * @author Roman Makarchuk
  */
@@ -48,7 +47,7 @@ public class ThrowsNormalizer {
     public void normThrows(ClassDescription c, boolean removeJLE, boolean allowMissingTh) throws ClassNotFoundException {
         ClassHierarchy h = c.getClassHierarchy();
 
-        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext();) {
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isMethod() || mr.isConstructor()) {
                 normThrows(h, mr, removeJLE, allowMissingTh);
@@ -154,6 +153,7 @@ public class ThrowsNormalizer {
             }
         }
     }
+
     private final List<String> xthrows = new ArrayList<>();
     private final StringBuffer sb = new StringBuffer();
 }

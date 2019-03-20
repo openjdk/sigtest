@@ -25,6 +25,7 @@
 package com.sun.tdk.signaturetest.model;
 
 import com.sun.tdk.signaturetest.util.SwissKnife;
+
 import java.util.Set;
 import java.util.StringTokenizer;
 

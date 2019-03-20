@@ -146,8 +146,8 @@ public class ModTest extends ModBase {
         if (Objects.equals(s1, s2)) {
             return true;
         } else {
-            if (s1 == null || s1.isEmpty()) s1="n/a";
-            if (s2 == null || s2.isEmpty()) s2="n/a";
+            if (s1 == null || s1.isEmpty()) s1 = "n/a";
+            if (s2 == null || s2.isEmpty()) s2 = "n/a";
 
             // i18n "Module %s - different main class: %s and %s\n"
             errorFormatter.addError(i18n.getString("MTest.error.main.class"),
@@ -164,8 +164,8 @@ public class ModTest extends ModBase {
         if (Objects.equals(s1, s2)) {
             return true;
         } else {
-            if (s1 == null || s1.isEmpty()) s1="n/a";
-            if (s2 == null || s2.isEmpty()) s2="n/a";
+            if (s1 == null || s1.isEmpty()) s1 = "n/a";
+            if (s2 == null || s2.isEmpty()) s2 = "n/a";
 
             // i18n "Module %s - different versions: %s and %s\n"
             errorFormatter.addError(i18n.getString("MTest.error.version"),

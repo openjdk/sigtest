@@ -61,6 +61,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
         this.memberType = memberType;
         this.delimiter = delimiter;
     }
+
     protected final char delimiter;
     /**
      * All modifiers assigned to <code>this</code> item.
@@ -228,7 +229,6 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     /**
      * Display return-type if <code>this</code> describes some method, or type
      * of the field if <code>this</code> describes some field.
-     *
      */
     public String getType() {
         return type;
@@ -375,11 +375,11 @@ public abstract class MemberDescription implements Cloneable, Serializable {
      * Returns list of exception names separated by commas declared in the
      * <I><b>throws</b></I> clause for that method or constructor described by
      * <code>this</code> item.
-     *
      */
     public String getThrowables() {
         return throwables;
     }
+
     private boolean marked = false;
 
     public void mark() {
@@ -397,7 +397,6 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     /**
      * Check if modifiers list for <code>this</code> item contains the
      * <code>"protected"</code> string.
-     *
      */
     public boolean isProtected() {
         return Modifier.hasModifier(modifiers, Modifier.PROTECTED);
@@ -406,7 +405,6 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     /**
      * Check if modifiers list for <code>this</code> item contains the
      * <code>"public"</code> string.
-     *
      */
     public boolean isPublic() {
         return Modifier.hasModifier(modifiers, Modifier.PUBLIC);
@@ -415,7 +413,6 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     /**
      * Check if modifiers list for <code>this</code> item contains the
      * <code>"private"</code> string.
-     *
      */
     public boolean isPrivate() {
         return Modifier.hasModifier(modifiers, Modifier.PRIVATE);
@@ -424,7 +421,6 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     /**
      * Check if modifiers list for <code>this</code> item contains the
      * <code>"abstract"</code> string.
-     *
      */
     public boolean isAbstract() {
         return Modifier.hasModifier(modifiers, Modifier.ABSTRACT);
@@ -433,7 +429,6 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     /**
      * Check if modifiers list for <code>this</code> item contains the
      * <code>"static"</code> string.
-     *
      */
     public boolean isStatic() {
         return Modifier.hasModifier(modifiers, Modifier.STATIC);
@@ -446,7 +441,6 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     /**
      * Check if modifiers list for <code>this</code> item contains the
      * <code>"interface"</code> string.
-     *
      */
     public boolean isInterface() {
         return Modifier.hasModifier(modifiers, Modifier.INTERFACE);

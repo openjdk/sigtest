@@ -62,6 +62,7 @@ public class MessageType implements Comparable<MessageType> {
     String getLocMessage() {
         return text;
     }
+
     final public static MessageType ERROR_UNKNOWN = new MessageType(i18n.getString("ErrorFormatter.error.unknown"), -1);
     final public static MessageType MISS_CLASSES = new MessageType(i18n.getString("ErrorFormatter.error.missing.classes"), 1);
     final public static MessageType MISS_NESTED_CLASSES = new MessageType(i18n.getString("ErrorFormatter.error.missing.nested.classes"), 2);

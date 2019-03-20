@@ -61,7 +61,6 @@ import java.util.*;
  * @author Maxim Sokolnikov
  * @author Roman Makarchuk
  * @author Mikhail Ershov
- *
  * @see com.sun.tdk.signaturetest.classpath.ClasspathEntry
  */
 public class ClasspathImpl implements Classpath {
@@ -138,7 +137,7 @@ public class ClasspathImpl implements Classpath {
      *
      * @param classPath Path string listing directories and/or zip files.
      * @throws SecurityException The <code>classPath</code> string has invalid
-     * format.
+     *                           format.
      * @see #findClass(String)
      * @see #nextClassName()
      * @see #setListToBegin()
@@ -292,8 +291,8 @@ public class ClasspathImpl implements Classpath {
      *
      * @param name Qualified name of the class requested.
      * @throws ClassNotFoundException Not found in any <b>ClasspathEntry</b> in
-     * <code>this</code>
-     * <b>ClasspathImpl</b> instance.
+     *                                <code>this</code>
+     *                                <b>ClasspathImpl</b> instance.
      * @see java.io.FileInputStream
      */
     @Override
@@ -318,7 +317,7 @@ public class ClasspathImpl implements Classpath {
         for (ClasspathEntry ce : entries) {
             try {
                 if (ce instanceof ClassDescriptionLoader) {
-                    return ((ClassDescriptionLoader)ce).load(qualifiedClassName);
+                    return ((ClassDescriptionLoader) ce).load(qualifiedClassName);
                 }
             } catch (ClassNotFoundException cnfe) {
 
@@ -356,7 +355,7 @@ public class ClasspathImpl implements Classpath {
         try {
             if (new File(name).isDirectory()) {
                 return new DirectoryEntry(previosEntry, name);
-            } else if ( new File(name).getName().equals("modules") || name.endsWith(".jimage")) {
+            } else if (new File(name).getName().equals("modules") || name.endsWith(".jimage")) {
                 return new JimageJakeEntry(previosEntry, name);
             } else if (isSigFile(name)) {
                 return new SigFileEntry(previosEntry, name);

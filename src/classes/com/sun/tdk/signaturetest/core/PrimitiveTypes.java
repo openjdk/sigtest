@@ -81,7 +81,7 @@ public class PrimitiveTypes {
                 sb.append(',');
             }
             // trim sb
-            if (sb.charAt(sb.length()-1) == ',') {
+            if (sb.charAt(sb.length() - 1) == ',') {
                 sb.deleteCharAt(sb.length() - 1);
             }
             sb.append("]");
@@ -107,7 +107,7 @@ public class PrimitiveTypes {
             return "";
         }
         if (defValueAsString.startsWith("\"") && defValueAsString.endsWith("\"")) {
-            return defValueAsString.substring(1, defValueAsString.length()-1);
+            return defValueAsString.substring(1, defValueAsString.length() - 1);
         }
         return defValueAsString;
     }
@@ -119,19 +119,20 @@ public class PrimitiveTypes {
             VMNotation = vm;
             JLSNotation = jls;
         }
+
         final char VMNotation;
         final String JLSNotation;
     }
 
     private static final Pair[] types = {
-        new Pair('Z', "boolean"),
-        new Pair('V', "void"),
-        new Pair('I', "int"),
-        new Pair('J', "long"),
-        new Pair('C', "char"),
-        new Pair('B', "byte"),
-        new Pair('D', "double"),
-        new Pair('S', "short"),
-        new Pair('F', "float")
+            new Pair('Z', "boolean"),
+            new Pair('V', "void"),
+            new Pair('I', "int"),
+            new Pair('J', "long"),
+            new Pair('C', "char"),
+            new Pair('B', "byte"),
+            new Pair('D', "double"),
+            new Pair('S', "short"),
+            new Pair('F', "float")
     };
 }

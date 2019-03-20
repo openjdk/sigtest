@@ -54,7 +54,7 @@ public enum Option {
 
     // APICOV
     API("-api", Kind.SINGLE_OPT),
-    TS("-ts" , Kind.SINGLE_REQ),
+    TS("-ts", Kind.SINGLE_REQ),
     TS_ICNLUDE("-tsInclude", Kind.MANY_OPT),
     TS_ICNLUDEW("-tsIncludeW", Kind.MANY_OPT),
     TS_EXCLUDE("-tsExclude", Kind.MANY_OPT),
@@ -137,7 +137,7 @@ public enum Option {
     public static Option byKey(String key) {
         assert key != null;
         for (Option o : Option.values()) {
-            if (key.equalsIgnoreCase(o.getKey()) || ( o.hasAlias() && key.equalsIgnoreCase(o.getAlias()))) {
+            if (key.equalsIgnoreCase(o.getKey()) || (o.hasAlias() && key.equalsIgnoreCase(o.getAlias()))) {
                 return o;
             }
         }

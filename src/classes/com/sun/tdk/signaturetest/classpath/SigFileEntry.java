@@ -105,13 +105,13 @@ public class SigFileEntry extends ClasspathEntry implements ClassDescriptionLoad
 
     @Override
     public boolean hasNext() {
-        assert  it != null;
+        assert it != null;
         return it.hasNext();
     }
 
     @Override
     public String nextClassName() {
-        assert  it != null;
+        assert it != null;
         return it.next().getKey();
     }
 

@@ -212,11 +212,13 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         }
         return isAnonimouse(md.getDeclaringClassName());
     }
+
     private final Pattern anonimouse = Pattern.compile("\\$\\d+$");
 
     private boolean isAnonimouse(String clName) {
         return anonimouse.matcher(clName).find();
     }
+
     private static final Pattern simpleParamUsage = Pattern.compile("<[^<>]+?>");
 
     private ClassDescription load(String name, boolean no_cache) throws ClassNotFoundException {
@@ -420,6 +422,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         }
         return info;
     }
+
     private final Map<String, List<String>> directSubClasses = new HashMap<>();
 
     private void addSubClass(String superClass, String subClass) {
@@ -471,6 +474,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     public int getTrackMode() {
         return trackMode;
     }
+
     private final HashMap<String, ClassInfo> processedClasses = new HashMap<>();
     private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 

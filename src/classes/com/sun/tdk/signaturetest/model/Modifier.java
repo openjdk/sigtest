@@ -177,6 +177,7 @@ public final class Modifier implements Serializable {
         i |= (i >> 16);
         return i - (i >>> 1);
     }
+
     private final String name;
     private final int value;
     // true if the modifier has an influence on compatibility

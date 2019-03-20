@@ -27,6 +27,7 @@ package com.sun.tdk.signaturetest.sigfile.f40;
 import com.sun.tdk.signaturetest.sigfile.Format;
 import com.sun.tdk.signaturetest.sigfile.Parser;
 import com.sun.tdk.signaturetest.sigfile.SignatureClassLoader;
+
 import java.util.List;
 
 public class F40Reader extends SignatureClassLoader {
