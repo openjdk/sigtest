@@ -30,8 +30,8 @@ import com.sun.tdk.signaturetest.model.ClassDescription;
 
 public class CombinedLoader implements ClassDescriptionLoader, LoadingHints {
 
-    private ClassDescriptionLoader mainLoader;
-    private ClassDescriptionLoader secondLoader;
+    private final ClassDescriptionLoader mainLoader;
+    private final ClassDescriptionLoader secondLoader;
 
     CombinedLoader(ClassDescriptionLoader main, ClassDescriptionLoader second) {
         this.mainLoader = main;

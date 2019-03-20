@@ -80,9 +80,9 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static final String ERRORALL_OPTION = "-ErrorAll";
     public static final String NOWARN = "nowarn";
     public static final String NOERR = "noerr";
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(SigTest.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(SigTest.class);
     protected String sigFileNameList = null;  // value of -Files option
-    private FileManager fm = new FileManager();
+    private final FileManager fm = new FileManager();
 
     protected PackageGroup packages;
     protected PackageGroup purePackages;
@@ -121,7 +121,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      *
      */
     protected MemberCollectionBuilder testableMCBuilder;
-    protected ThrowsNormalizer normalizer = new ThrowsNormalizer();
+    protected final ThrowsNormalizer normalizer = new ThrowsNormalizer();
     //protected boolean isStatic = false;
     protected boolean nowarnings = false;
     protected boolean noerrors = false;
@@ -170,7 +170,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected boolean isVerbose = false;
     static boolean Xverbose = false;
     protected ClassHierarchy testableHierarchy;
-    protected Set<String> errorMessages = new HashSet<>();
+    protected final Set<String> errorMessages = new HashSet<>();
     private ClassDescriptionLoader loader;
     protected boolean reportWarningAsError = false;
 
@@ -280,9 +280,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
             if (args.length > 0) {
                 if (args[0].equalsIgnoreCase(NOWARN)) {
                     nowarnings = true;
-                }
-            } else if (args.length > 0) {
-                if (args[0].equalsIgnoreCase(NOERR)) {
+                } else if (args[0].equalsIgnoreCase(NOERR)) {
                     noerrors = true;
                 }
             } else {
@@ -450,7 +448,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected Plugin loadPlugin(String pluginClassName) {
         BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
         try {
-            Constructor ctor = Class.forName(pluginClassName).getConstructor(new Class[0]);
+            Constructor ctor = Class.forName(pluginClassName).getConstructor();
             return (Plugin) ctor.newInstance(new Object[0]);
         } catch (Throwable t) {
             if (bo.isSet(Option.DEBUG)) {

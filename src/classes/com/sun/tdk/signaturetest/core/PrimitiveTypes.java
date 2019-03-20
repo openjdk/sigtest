@@ -119,11 +119,11 @@ public class PrimitiveTypes {
             VMNotation = vm;
             JLSNotation = jls;
         }
-        char VMNotation;
-        String JLSNotation;
+        final char VMNotation;
+        final String JLSNotation;
     }
 
-    private static Pair[] types = {
+    private static final Pair[] types = {
         new Pair('Z', "boolean"),
         new Pair('V', "void"),
         new Pair('I', "int"),

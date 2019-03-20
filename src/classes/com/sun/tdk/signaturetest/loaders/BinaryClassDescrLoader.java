@@ -51,7 +51,7 @@ import java.util.*;
 public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHints {
 
     public static final boolean ANNOTATION_DEFAULT_VALUES_ON = true;
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     private class BinaryClassDescription extends ClassDescription {
 
@@ -190,17 +190,17 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     /**
      * findByName and open class files as InputStream.
      */
-    private Classpath classpath;
+    private final Classpath classpath;
     /**
      * cache of the loaded classes.
      */
-    private LRUCache<String, BinaryClassDescription> cache;
+    private final LRUCache<String, BinaryClassDescription> cache;
     /**
      * This stack is used to prevent infinite recursive calls of load(String
      * name) method. E.g. the annotation Documented is one example of such
      * recursion
      */
-    private Map<String, BinaryClassDescription> stack = new HashMap<>();
+    private final Map<String, BinaryClassDescription> stack = new HashMap<>();
 
     /**
      * creates new instance.
@@ -278,7 +278,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         throw new ClassNotFoundException(className);
     }
 
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(BinaryClassDescrLoader.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(BinaryClassDescrLoader.class);
     // Magic number identifying class file format
     private static final int MAGIC = 0xCAFEBABE;
     private static final int TIGER_CLASS_VERSION = 49;
@@ -712,7 +712,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
     }
 //  Process methods and constructors
-    private static String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     private void readMethods(BinaryClassDescription c, DataInput classData) throws IOException {
         List<MemberDescription> ctors = new ArrayList<>(),
@@ -1315,7 +1315,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             //  contain forward references
             typeparams.reset_count();
             scanChar('<');
-            for (;;) {
+            do {
                 String ident = scanIdent(":>");
                 List<String> bounds = new ArrayList<>();
 
@@ -1336,10 +1336,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 parameters.add(bounds);
                 typeparams.add(ident, declared);
 
-                if (chr == '>') {
-                    break;
-                }
-            }
+            } while (chr != '>');
             scanChar('>');
 
             //  Second pass: findByName and replace possible forward links and sort bounds
@@ -1535,7 +1532,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     public void setIgnoreAnnotations(boolean value) {
         ignoreAnnotations = value;
     }
-    private Set<Hint> hints = new HashSet<>();
+    private final Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);
@@ -1556,5 +1553,5 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         this.log = log;
     }
     private PrintWriter log;
-    private Set<String> notFoundAnnotations = new HashSet<>();
+    private final Set<String> notFoundAnnotations = new HashSet<>();
 }

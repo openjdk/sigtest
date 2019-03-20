@@ -42,10 +42,11 @@ import java.util.List;
 public class BCProcessor extends HumanErrorFormatter {
     // is it bin mode?
 
-    private boolean bin;
-    private boolean extensibleInterfaces;
-    private ClassHierarchy clHier, sfHier;
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(BCProcessor.class);
+    private final boolean bin;
+    private final boolean extensibleInterfaces;
+    private final ClassHierarchy clHier;
+    private final ClassHierarchy sfHier;
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(BCProcessor.class);
     private ClassDescription objectClass;
 
     /**
@@ -116,7 +117,7 @@ public class BCProcessor extends HumanErrorFormatter {
             setLevel(Level.WARNING);
         }
         private Message m;
-        private Handler r5 = new Rule5_2_3();
+        private final Handler r5 = new Rule5_2_3();
 
         boolean acceptMessageList(List<Message> l) {
 
@@ -636,9 +637,9 @@ public class BCProcessor extends HumanErrorFormatter {
 
     static class Rule4_2 extends FieldPairedHandler {
 
-        Handler r46 = new Rule4_6();
-        Handler r47 = new Rule4_7();
-        Handler r48 = new Rule4_8();
+        final Handler r46 = new Rule4_6();
+        final Handler r47 = new Rule4_7();
+        final Handler r48 = new Rule4_8();
 
         Rule4_2() {
             setLevel(Level.WARNING);

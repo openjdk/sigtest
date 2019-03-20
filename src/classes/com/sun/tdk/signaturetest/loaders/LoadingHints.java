@@ -52,7 +52,7 @@ public interface LoadingHints {
 
     class Hint {
 
-        private String name;
+        private final String name;
 
         Hint(String name) {
             this.name = name;

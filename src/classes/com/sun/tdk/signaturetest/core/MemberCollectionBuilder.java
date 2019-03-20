@@ -46,12 +46,11 @@ import java.util.*;
  */
 public class MemberCollectionBuilder {
 
-    private ClassCorrector cc;
-    private Erasurator erasurator = new Erasurator();
-    private Transformer defaultTransformer = new DefaultAfterBuildMembersTransformer();
-    private Log log;
-    private String builderName; // for debugging
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MemberCollectionBuilder.class);
+    private final ClassCorrector cc;
+    private final Erasurator erasurator = new Erasurator();
+    private final Transformer defaultTransformer = new DefaultAfterBuildMembersTransformer();
+    private final Log log;
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MemberCollectionBuilder.class);
     private BuildMode mode = BuildMode.NORMAL;
     private ClassHierarchy secondCH;
 
@@ -63,7 +62,8 @@ public class MemberCollectionBuilder {
 
     public MemberCollectionBuilder(Log log, String builderName) {
         this(log);
-        this.builderName = builderName;
+        // for debugging
+        String builderName1 = builderName;
     }
 
     /**
@@ -560,7 +560,7 @@ public class MemberCollectionBuilder {
         public static final BuildMode NORMAL = new BuildMode("NORMAL");
         public static final BuildMode SIGFILE = new BuildMode("SIGFILE");   // Used by APICover
         public static final BuildMode TESTABLE = new BuildMode("TESTABLE"); // Used by APICheck
-        private String name;
+        private final String name;
 
         private BuildMode(String name) {
             this.name = name;
@@ -674,8 +674,8 @@ public class MemberCollectionBuilder {
  */
 class MethodOverridingChecker {
 
-    private Map<String, MethodDescr> methodSignatures = new HashMap<>();
-    private Erasurator erasurator;
+    private final Map<String, MethodDescr> methodSignatures = new HashMap<>();
+    private final Erasurator erasurator;
 
     public MethodOverridingChecker(Erasurator er) {
         erasurator = er;

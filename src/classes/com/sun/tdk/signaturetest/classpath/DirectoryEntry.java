@@ -41,7 +41,7 @@ import java.util.LinkedHashSet;
  */
 class DirectoryEntry extends ClasspathEntry {
 
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(DirectoryEntry.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(DirectoryEntry.class);
 
     /**
      * The qualified name of <code>this</code> directory.
@@ -162,13 +162,11 @@ class DirectoryEntry extends ClasspathEntry {
      */
     private String constructFileName(String name) {
 
-        StringBuffer buf = new StringBuffer(256);
-        buf.append(directoryName);
-        buf.append(File.separator);
         // construct name of the class file
-        buf.append(name.replace('.', File.separatorChar));
-        buf.append(JAVA_CLASSFILE_EXTENSION);
 
-        return buf.toString();
+        return directoryName +
+                File.separator +
+                name.replace('.', File.separatorChar) +
+                JAVA_CLASSFILE_EXTENSION;
     }
 }

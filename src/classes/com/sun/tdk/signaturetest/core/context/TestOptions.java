@@ -33,7 +33,7 @@ import java.util.EnumSet;
  * @author Mikhail Ershov
  */
 public class TestOptions extends Options {
-    private EnumSet<Option> options = EnumSet.of(Option.FORMATPLAIN, Option.FORMATHUMAN,
+    private final EnumSet<Option> options = EnumSet.of(Option.FORMATPLAIN, Option.FORMATHUMAN,
             Option.BACKWARD, Option.CHECK_EXCESS_CLASSES_ONLY);
 
     @Override

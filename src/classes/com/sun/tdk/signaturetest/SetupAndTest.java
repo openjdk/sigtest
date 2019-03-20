@@ -216,35 +216,29 @@ public class SetupAndTest extends Result {
      */
     public static void usage() {
         String nl = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
 
-        sb.append(i18n.getString("SetupAndTest.usage.version", Version.Number));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.start"));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.reference", REFERENCE_OPTION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.test", TEST_OPTION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.package", Option.PACKAGE));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.out", SigTest.OUT_OPTION));
-        sb.append(nl).append(i18n.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}));
-        sb.append(nl).append(i18n.getString("SignatureTest.usage.human", new Object[]{Option.FORMATHUMAN.getKey(), Option.FORMATHUMAN.getAlias()}));
-
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.filename", Option.FILE_NAME));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.exclude", Option.EXCLUDE));
-
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.verbose", new Object[]{Setup.VERBOSE_OPTION, Setup.NOWARN}));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.checkvalue", Setup.CHECKVALUE_OPTION));
-        sb.append(nl).append(i18n.getString("SignatureTest.usage.mode", SignatureTest.MODE_OPTION));
-
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.formatplain", Option.FORMATPLAIN));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.classcachesize", new Object[]{SigTest.CLASSCACHESIZE_OPTION, SigTest.DefaultCacheSize}));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", Option.VERSION));
-        sb.append(nl).append(i18n.getString("SetupAndTest.usage.help", Option.HELP));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-
-        System.err.println(sb.toString());
+        String sb = i18n.getString("SetupAndTest.usage.version", Version.Number) +
+                nl + i18n.getString("SetupAndTest.usage.start") +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("SetupAndTest.usage.reference", REFERENCE_OPTION) +
+                nl + i18n.getString("SetupAndTest.usage.test", TEST_OPTION) +
+                nl + i18n.getString("SetupAndTest.usage.package", Option.PACKAGE) +
+                nl + i18n.getString("SetupAndTest.usage.out", SigTest.OUT_OPTION) +
+                nl + i18n.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}) +
+                nl + i18n.getString("SignatureTest.usage.human", new Object[]{Option.FORMATHUMAN.getKey(), Option.FORMATHUMAN.getAlias()}) +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("SetupAndTest.usage.filename", Option.FILE_NAME) +
+                nl + i18n.getString("SetupAndTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE) +
+                nl + i18n.getString("SetupAndTest.usage.exclude", Option.EXCLUDE) +
+                nl + i18n.getString("SetupAndTest.usage.verbose", new Object[]{Setup.VERBOSE_OPTION, Setup.NOWARN}) +
+                nl + i18n.getString("SetupAndTest.usage.checkvalue", Setup.CHECKVALUE_OPTION) +
+                nl + i18n.getString("SignatureTest.usage.mode", SignatureTest.MODE_OPTION) +
+                nl + i18n.getString("SetupAndTest.usage.formatplain", Option.FORMATPLAIN) +
+                nl + i18n.getString("SetupAndTest.usage.classcachesize", new Object[]{SigTest.CLASSCACHESIZE_OPTION, SigTest.DefaultCacheSize}) +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("SetupAndTest.helpusage.version", Option.VERSION) +
+                nl + i18n.getString("SetupAndTest.usage.help", Option.HELP) +
+                nl + i18n.getString("Sigtest.usage.delimiter");
+        System.err.println(sb);
     }
 }

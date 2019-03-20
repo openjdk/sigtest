@@ -48,7 +48,7 @@ import java.util.Set;
 
 public class ModSetup extends ModBase {
 
-    private ModSetupOptions mo = AppContext.getContext().getBean(ModSetupOptions.class);
+    private final ModSetupOptions mo = AppContext.getContext().getBean(ModSetupOptions.class);
     private String copyrightStr = null;
     private EnumSet<ModFeatures> features = EnumSet.of(ModFeatures.ALL);
     private WriteMode wm = WriteMode.SIGFILE;
@@ -172,10 +172,9 @@ public class ModSetup extends ModBase {
      * Prints help text.
      */
     protected void usage() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(getComponentName()).append(" - ").append(i18n.getString("MSetup.usage.version", Version.Number));
-        sb.append(i18n.getString("MSetup.usage"));
-        System.err.println(sb.toString());
+        String sb = getComponentName() + " - " + i18n.getString("MSetup.usage.version", Version.Number) +
+                i18n.getString("MSetup.usage");
+        System.err.println(sb);
     }
 
     protected String getComponentName() {

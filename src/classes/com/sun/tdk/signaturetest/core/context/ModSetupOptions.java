@@ -29,7 +29,7 @@ import java.util.EnumSet;
 
 public class ModSetupOptions extends Options {
 
-    private EnumSet<Option> options = EnumSet.of(
+    private final EnumSet<Option> options = EnumSet.of(
             Option.FILE_NAME, Option.TEST_URL,
             Option.MODULES,
             Option.PKG_INCLUDE, Option.PKG_EXCLUDE,

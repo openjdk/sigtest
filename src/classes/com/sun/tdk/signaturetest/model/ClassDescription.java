@@ -84,7 +84,7 @@ public class ClassDescription extends MemberDescription {
         return memberType.isCompatible(getModifiers(), m.getModifiers())
                 && SwissKnife.equals(typeParameters, m.typeParameters);
     }
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClassDescription.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClassDescription.class);
 
     public boolean containsMember(MemberDescription newMember) {
         return members.contains(newMember);
@@ -219,7 +219,7 @@ public class ClassDescription extends MemberDescription {
 
     public static class TypeParameterList {
 
-        Map<String, TypeParam> tab = new HashMap<>();
+        final Map<String, TypeParam> tab = new HashMap<>();
         int seqnb = 0;
 
         public TypeParameterList(TypeParameterList enclosing) {

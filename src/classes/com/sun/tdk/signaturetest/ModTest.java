@@ -44,7 +44,7 @@ import java.util.*;
 
 public class ModTest extends ModBase {
 
-    private ModTestOptions mo = AppContext.getContext().getBean(ModTestOptions.class);
+    private final ModTestOptions mo = AppContext.getContext().getBean(ModTestOptions.class);
     private EnumSet<ModFeatures> checkers = EnumSet.of(ModFeatures.REQUIRES_TRANSITIVE, ModFeatures.EXPORTS_PUBLIC);
 
     public ModTest() {
@@ -94,10 +94,10 @@ public class ModTest extends ModBase {
 
         boolean result = checkModuleList(thisModel, thatModel);
 
-        for (String mN : thisModel.keySet()) {
+        for (Map.Entry<String, ModuleDescription> stringModuleDescriptionEntry : thisModel.entrySet()) {
 
-            ModuleDescription thisModule = thisModel.get(mN);
-            ModuleDescription thatModule = thatModel.get(mN);
+            ModuleDescription thisModule = stringModuleDescriptionEntry.getValue();
+            ModuleDescription thatModule = thatModel.get(stringModuleDescriptionEntry.getKey());
 
             if (thatModule == null) {
                 continue;
@@ -435,10 +435,9 @@ public class ModTest extends ModBase {
 
     @Override
     protected void usage() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(getComponentName()).append(" - ").append(i18n.getString("MTest.usage.version", Version.Number));
-        sb.append(i18n.getString("MTest.usage"));
-        System.err.println(sb.toString());
+        String sb = getComponentName() + " - " + i18n.getString("MTest.usage.version", Version.Number) +
+                i18n.getString("MTest.usage");
+        System.err.println(sb);
     }
 
     @Override

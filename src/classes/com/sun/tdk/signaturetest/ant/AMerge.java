@@ -74,7 +74,7 @@ public class AMerge extends ASuperBase {
         Merge m = new Merge();
         System.setProperty(Result.NO_EXIT, "true");
         m.run(createParams(), new PrintWriter(System.out, true), null);
-        if (negative ? m.isPassed() : !m.isPassed()) {
+        if (negative == m.isPassed()) {
             if (failOnError) {
                 throw new BuildException(m.toString());
             } else {
@@ -111,7 +111,7 @@ public class AMerge extends ASuperBase {
     }
 
     private void checkParams() throws BuildException {
-        if (files == null || files.size() == 0) {
+        if (files.size() == 0) {
             throw new BuildException("Files are not specified");
         }
 

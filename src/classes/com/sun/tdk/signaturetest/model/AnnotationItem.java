@@ -269,7 +269,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
 
     public static class ValueWrap {
 
-        String value;
+        final String value;
 
         public ValueWrap(String s) {
             value = s;

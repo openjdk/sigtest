@@ -106,7 +106,7 @@ public class Setup extends SigTest {
      * contains signature file.
      */
     protected URL signatureFile;
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Setup.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Setup.class);
     protected boolean isClosedFile = true;
     private Boolean explicitlyGenConsts = null;
     private boolean keepSigFile = false;
@@ -277,30 +277,28 @@ public class Setup extends SigTest {
      */
     protected void usage() {
         String nl = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
 
-        sb.append(getComponentName()).append(" - ").append(i18n.getString("Setup.usage.version", Version.Number));
-        sb.append(nl).append(i18n.getString("Setup.usage.start"));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.usage.classpath", Option.CLASSPATH));
-        sb.append(nl).append(i18n.getString("Setup.usage.package", Option.PACKAGE));
-        sb.append(nl).append(i18n.getString("Setup.usage.filename", Option.FILE_NAME));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-
-        sb.append(nl).append(i18n.getString("Setup.usage.testurl", Option.TEST_URL));
-        sb.append(nl).append(i18n.getString("Setup.usage.packagewithoutsubpackages", Option.PURE_PACKAGE));
-        sb.append(nl).append(i18n.getString("Setup.usage.exclude", Option.EXCLUDE));
-        sb.append(nl).append(i18n.getString("Setup.usage.nonclosedfile", NONCLOSEDFILE_OPTION));
-        sb.append(nl).append(i18n.getString("Setup.usage.apiversion", APIVERSION_OPTION));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}));
-        sb.append(nl).append(i18n.getString("Setup.usage.debug", Option.DEBUG));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.helpusage.version", Option.VERSION));
-        sb.append(nl).append(i18n.getString("Setup.usage.help", Option.HELP));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.usage.end"));
-        System.err.println(sb.toString());
+        String sb = getComponentName() + " - " + i18n.getString("Setup.usage.version", Version.Number) +
+                nl + i18n.getString("Setup.usage.start") +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("Setup.usage.classpath", Option.CLASSPATH) +
+                nl + i18n.getString("Setup.usage.package", Option.PACKAGE) +
+                nl + i18n.getString("Setup.usage.filename", Option.FILE_NAME) +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("Setup.usage.testurl", Option.TEST_URL) +
+                nl + i18n.getString("Setup.usage.packagewithoutsubpackages", Option.PURE_PACKAGE) +
+                nl + i18n.getString("Setup.usage.exclude", Option.EXCLUDE) +
+                nl + i18n.getString("Setup.usage.nonclosedfile", NONCLOSEDFILE_OPTION) +
+                nl + i18n.getString("Setup.usage.apiversion", APIVERSION_OPTION) +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("Setup.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}) +
+                nl + i18n.getString("Setup.usage.debug", Option.DEBUG) +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("Setup.helpusage.version", Option.VERSION) +
+                nl + i18n.getString("Setup.usage.help", Option.HELP) +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("Setup.usage.end");
+        System.err.println(sb);
     }
 
     protected String getComponentName() {

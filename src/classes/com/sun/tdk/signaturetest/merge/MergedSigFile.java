@@ -36,8 +36,8 @@ import java.util.HashMap;
 
 public class MergedSigFile {
 
-    private ClassHierarchy ch;
-    private MultipleFileReader loader;
+    private final ClassHierarchy ch;
+    private final MultipleFileReader loader;
     private HashMap<String, ClassDescription> set;
 
     public MergedSigFile(MultipleFileReader loader, Log log) {

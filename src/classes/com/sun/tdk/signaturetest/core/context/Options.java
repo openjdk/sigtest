@@ -32,7 +32,7 @@ import java.util.*;
  * @author Mikhail Ershov
  */
 public abstract class Options {
-    private Map<Option, List<String>> values;
+    private final Map<Option, List<String>> values;
 
     protected Options() {
         values = new HashMap<>();

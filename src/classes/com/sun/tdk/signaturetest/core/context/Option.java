@@ -94,8 +94,8 @@ public enum Option {
     CHECKS("-Checks", Kind.SINGLE_OPT);
 
 
-    private String key;
-    private Kind kind;
+    private final String key;
+    private final Kind kind;
     private String alias;
 
     Option(String key, Kind kind) {

@@ -33,16 +33,16 @@ import java.util.*;
 
 public class RefCounter {
 
-    private HashMap<String, ClassDescription> api = new HashMap<>();
+    private final HashMap<String, ClassDescription> api = new HashMap<>();
 
     private enum MODE {
 
         REAL, WORST
     }
     private MODE mode = MODE.WORST;
-    private Erasurator erasurator = new Erasurator();
-    private Map<String, ClassDescription> ts = new HashMap<>();
-    Map<String, Integer> results = new HashMap<>();
+    private final Erasurator erasurator = new Erasurator();
+    private final Map<String, ClassDescription> ts = new HashMap<>();
+    final Map<String, Integer> results = new HashMap<>();
 
     public RefCounter() {
         super();

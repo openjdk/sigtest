@@ -41,7 +41,7 @@ import java.util.TreeMap;
  */
 public class VirtualClassDescriptionLoader extends FeaturesHolder implements ClassDescriptionLoader {
 
-    private Map<String, ClassDescription> classDescriptions;
+    private final Map<String, ClassDescription> classDescriptions;
 
     public VirtualClassDescriptionLoader() {
         this.classDescriptions = new TreeMap<>();

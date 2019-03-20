@@ -33,7 +33,7 @@ import com.sun.tdk.signaturetest.util.I18NResourceBundle;
  */
 public class Result {
 
-    static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Result.class);
+    static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Result.class);
 
     // Name of system property, see exit method
     public final static String NO_EXIT = "SigTest.NO_EXIT";

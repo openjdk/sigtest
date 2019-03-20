@@ -237,8 +237,7 @@ public class F40Parser implements Parser {
     }
 
     protected ClassDescription processClassDescription(String classDefinition) {
-        ClassDescription classDescription = (ClassDescription) parse(classDefinition);
-        return classDescription;
+        return (ClassDescription) parse(classDefinition);
     }
 
     private void init(MemberDescription m, String def) {

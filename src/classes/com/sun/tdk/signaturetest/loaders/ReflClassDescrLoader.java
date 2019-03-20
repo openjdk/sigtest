@@ -69,7 +69,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
      *
      * @see Method#invoke(Object,Object[])
      */
-    private Object[] args;
+    private final Object[] args;
 
     /**
      * Adjust new <b>ReflClassDescLoader</b> instance. In particular, detect if
@@ -333,7 +333,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
 
         return sb.toString();
     }
-    private Set<Hint> hints = new HashSet<>();
+    private final Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);

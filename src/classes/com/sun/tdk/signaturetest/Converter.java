@@ -43,7 +43,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class Converter extends Result {
 
-    private static PrintWriter log = new PrintWriter(System.err, true);
+    private static final PrintWriter log = new PrintWriter(System.err, true);
 
     private String oldFileName;
     private String newFileName;
@@ -137,12 +137,11 @@ public class Converter extends Result {
 
     private static void usage() {
         String nl = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
 
-        sb.append(i18n.getString("Converter.usage.start"));
-        sb.append(nl).append(i18n.getString("Converter.usage.oldfilename", OLDFILE_OPTION));
-        sb.append(nl).append(i18n.getString("Converter.usage.newfilename", NEWFILE_OPTION));
-        System.err.println(sb.toString());
+        String sb = i18n.getString("Converter.usage.start") +
+                nl + i18n.getString("Converter.usage.oldfilename", OLDFILE_OPTION) +
+                nl + i18n.getString("Converter.usage.newfilename", NEWFILE_OPTION);
+        System.err.println(sb);
     }
 
 }

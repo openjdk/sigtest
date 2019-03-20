@@ -29,9 +29,9 @@ import java.util.List;
 
 public class PackageDescr {
 
-    private List<ClassDescription> classes;
-    private List<PackageDescr> subpackages;
-    private String fqname;
+    private final List<ClassDescription> classes;
+    private final List<PackageDescr> subpackages;
+    private final String fqname;
     private String name = "";
 
     public String getQualifiedName() {

@@ -100,11 +100,11 @@ public class ClasspathImpl implements Classpath {
      * <code>pathSeparator</code> is uniquely determined when JVM starts.
      */
     private static String pathSeparator;
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClasspathImpl.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClasspathImpl.class);
 
     private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
-    /**
+    /*
      * Try to determine path separator used by operating system. Path separator
      * is found in <code>java.io.File</code>, or by
      * <code>System.getProperty()</code> invocation.

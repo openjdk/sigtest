@@ -45,7 +45,7 @@ import java.util.*;
  */
 public class SortedErrorFormatter extends ErrorFormatter {
 
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(SortedErrorFormatter.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(SortedErrorFormatter.class);
     /**
      * Headers for message groups by error type.
      */
@@ -58,7 +58,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
     /**
      * Tabulator position.
      */
-    protected int tabSize = 20;
+    protected final int tabSize = 20;
 
     /**
      * Assign the given <b>PrintWriter</b> to print error messages.

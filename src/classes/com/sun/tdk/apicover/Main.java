@@ -47,7 +47,7 @@ import java.util.List;
 public class Main implements Log {
 
     private final static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Main.class);
-    private ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
+    private final ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
 
     // non-mandatory Strings
     public static final String MODE_VALUE_WORST = "w";
@@ -65,17 +65,17 @@ public class Main implements Log {
      * URL pointing to signature file.
      */
     protected String signatureFile;
-    RefCounter refCounter = new RefCounter();
+    final RefCounter refCounter = new RefCounter();
     ReportGenerator reporter;
     String ts;
-    private PackageGroup packagesTS = new PackageGroup(true);
-    private PackageGroup excludedPackagesTS = new PackageGroup(true);
-    private PackageGroup purePackagesTS = new PackageGroup(false);
-    private PackageGroup packages = new PackageGroup(true);
-    private PackageGroup purePackages = new PackageGroup(false);
-    private PackageGroup excludedPackages = new PackageGroup(true);
+    private final PackageGroup packagesTS = new PackageGroup(true);
+    private final PackageGroup excludedPackagesTS = new PackageGroup(true);
+    private final PackageGroup purePackagesTS = new PackageGroup(false);
+    private final PackageGroup packages = new PackageGroup(true);
+    private final PackageGroup purePackages = new PackageGroup(false);
+    private final PackageGroup excludedPackages = new PackageGroup(true);
 
-    private CallFilter callFilter = new CallFilter();
+    private final CallFilter callFilter = new CallFilter();
 
     /**
      * Run the test using command-line; return status via numeric exit code.
@@ -306,31 +306,30 @@ public class Main implements Log {
 
     public void usage() {
         String nl = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
-        sb.append(i18n.getString("Main.usage.start"));
-        sb.append(nl).append(i18n.getString("Main.usage.ts", Option.TS));
-        sb.append(nl).append(i18n.getString("Main.usage.tsInclude", Option.TS_ICNLUDE));
-        sb.append(nl).append(i18n.getString("Main.usage.tsIncludeW", Option.TS_ICNLUDEW));
-        sb.append(nl).append(i18n.getString("Main.usage.tsExclude", Option.TS_EXCLUDE));
-        sb.append(nl).append(i18n.getString("Main.usage.api", Option.API));
-        sb.append(nl).append(i18n.getString("Main.usage.apiInclude", Option.API_INCLUDE));
-        sb.append(nl).append(i18n.getString("Main.usage.apiIncludeW", Option.API_INCLUDEW));
-        sb.append(nl).append(i18n.getString("Main.usage.apiExclude", Option.API_EXCLUDE));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeList", Option.EXCLUDE_LIST));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeInterfaces",      Option.EXCLUDE_INTERFACES));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractClasses", Option.EXCLUDE_ABSTRACT_CLASSES));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeAbstractMethods", Option.EXCLUDE_ABSTRACT_METHODS));
-        sb.append(nl).append(i18n.getString("Main.usage.excludeFields", Option.EXCLUDE_FIELDS));
-        sb.append(nl).append(i18n.getString("Main.usage.includeConstantFields",  Option.INCLUDE_CONSTANT_FIELDS));
-        sb.append(nl).append(i18n.getString("Main.usage.mode", Option.MODE));
-        sb.append(nl).append(i18n.getString("Main.usage.detail", Option.DETAIL));
-        sb.append(nl).append(i18n.getString("Main.usage.format", Option.FORMAT));
-        sb.append(nl).append(i18n.getString("Main.usage.report", Option.REPORT));
-        sb.append(nl).append(i18n.getString("Main.usage.debug", Option.DEBUG));
-        sb.append(nl).append(i18n.getString("Main.usage.help", Option.HELP));
-        sb.append(nl).append(i18n.getString("Main.usage.version", Option.VERSION));
-        sb.append(nl).append(i18n.getString("Main.usage.end"));
-        System.err.println(sb.toString());
+        String sb = i18n.getString("Main.usage.start") +
+                nl + i18n.getString("Main.usage.ts", Option.TS) +
+                nl + i18n.getString("Main.usage.tsInclude", Option.TS_ICNLUDE) +
+                nl + i18n.getString("Main.usage.tsIncludeW", Option.TS_ICNLUDEW) +
+                nl + i18n.getString("Main.usage.tsExclude", Option.TS_EXCLUDE) +
+                nl + i18n.getString("Main.usage.api", Option.API) +
+                nl + i18n.getString("Main.usage.apiInclude", Option.API_INCLUDE) +
+                nl + i18n.getString("Main.usage.apiIncludeW", Option.API_INCLUDEW) +
+                nl + i18n.getString("Main.usage.apiExclude", Option.API_EXCLUDE) +
+                nl + i18n.getString("Main.usage.excludeList", Option.EXCLUDE_LIST) +
+                nl + i18n.getString("Main.usage.excludeInterfaces", Option.EXCLUDE_INTERFACES) +
+                nl + i18n.getString("Main.usage.excludeAbstractClasses", Option.EXCLUDE_ABSTRACT_CLASSES) +
+                nl + i18n.getString("Main.usage.excludeAbstractMethods", Option.EXCLUDE_ABSTRACT_METHODS) +
+                nl + i18n.getString("Main.usage.excludeFields", Option.EXCLUDE_FIELDS) +
+                nl + i18n.getString("Main.usage.includeConstantFields", Option.INCLUDE_CONSTANT_FIELDS) +
+                nl + i18n.getString("Main.usage.mode", Option.MODE) +
+                nl + i18n.getString("Main.usage.detail", Option.DETAIL) +
+                nl + i18n.getString("Main.usage.format", Option.FORMAT) +
+                nl + i18n.getString("Main.usage.report", Option.REPORT) +
+                nl + i18n.getString("Main.usage.debug", Option.DEBUG) +
+                nl + i18n.getString("Main.usage.help", Option.HELP) +
+                nl + i18n.getString("Main.usage.version", Option.VERSION) +
+                nl + i18n.getString("Main.usage.end");
+        System.err.println(sb);
     }
 
     void check() {

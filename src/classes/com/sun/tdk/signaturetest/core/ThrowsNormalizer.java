@@ -154,6 +154,6 @@ public class ThrowsNormalizer {
             }
         }
     }
-    private List<String> xthrows = new ArrayList<>();
-    private StringBuffer sb = new StringBuffer();
+    private final List<String> xthrows = new ArrayList<>();
+    private final StringBuffer sb = new StringBuffer();
 }

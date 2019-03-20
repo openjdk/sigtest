@@ -42,7 +42,7 @@ public class Main {
     private static final String COMMAND_MERGE = "Merge";
     private static final String COMMAND_HELP = "-help";
 
-    private static I18NResourceBundle i18n
+    private static final I18NResourceBundle i18n
             = I18NResourceBundle.getBundleForClass(Main.class);
 
     // Is sigtestdev.jar run (or sigtest.jar). In other words, is Setup class

@@ -39,9 +39,7 @@ import java.util.*;
  */
 public class CallFilter {
 
-    private final String PKG_PATTERN = "API_PACKAGE";
-    private final String CLS_PATTERN = "API_CLASS";
-    private ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
+    private final ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
     private List<String> mapFilters = null;
     private List<String> sigFilters = null;
     private PrintWriter pw;
@@ -121,7 +119,9 @@ public class CallFilter {
     }
 
     private boolean accept(String pattern, String pkg, String cls, String testClassName) {
+        String PKG_PATTERN = "API_PACKAGE";
         pattern = simpleReplaceAll(pattern, PKG_PATTERN, pkg);
+        String CLS_PATTERN = "API_CLASS";
         pattern = simpleReplaceAll(pattern, CLS_PATTERN, cls);
         return testClassName.startsWith(pattern);
     }

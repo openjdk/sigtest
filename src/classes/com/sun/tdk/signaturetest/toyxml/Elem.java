@@ -31,8 +31,8 @@ import java.util.TreeMap;
 
 public class Elem {
     private String nodeName;
-    private TreeMap<String, String> attributes = new TreeMap<>();
-    private List<Elem> children = new ArrayList<>();
+    private final TreeMap<String, String> attributes = new TreeMap<>();
+    private final List<Elem> children = new ArrayList<>();
 
     public String getNodeName() {
         return nodeName;

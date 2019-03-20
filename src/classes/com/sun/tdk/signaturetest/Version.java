@@ -32,7 +32,7 @@ public class Version {
     private Version() {
     }
 
-    private static I18NResourceBundle i18n
+    private static final I18NResourceBundle i18n
             = I18NResourceBundle.getBundleForClass(Version.class);
 
     // the following constants should be filled in by the build script
@@ -42,13 +42,11 @@ public class Version {
     public static final String build_user = "";
 
     public static String getVersionInfo() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(i18n.getString("Main.usage.version", Version.Number)).append('\n');
-        sb.append("=========================\n");
-        sb.append(i18n.getString("Version.version.build", Version.build_time)).append('\n');
-        sb.append(i18n.getString("Version.version.build_on", Version.build_os)).append('\n');
-        sb.append(i18n.getString("Version.version.build_by", Version.build_user));
-        return sb.toString();
+        return i18n.getString("Main.usage.version", Version.Number) + '\n' +
+                "=========================\n" +
+                i18n.getString("Version.version.build", Version.build_time) + '\n' +
+                i18n.getString("Version.version.build_on", Version.build_os) + '\n' +
+                i18n.getString("Version.version.build_by", Version.build_user);
     }
 
 }

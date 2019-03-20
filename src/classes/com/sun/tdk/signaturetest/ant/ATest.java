@@ -111,14 +111,13 @@ public class ATest extends ABase {
     private boolean human = false;
     private String out;
     private boolean debug = false;
-    private final boolean errorAll = false;
 
     public void execute() throws BuildException {
         checkParams();
         SignatureTest s = testFactory();
         System.setProperty(Result.NO_EXIT, "true");
         s.run(createParams(), new PrintWriter(System.out, true), null);
-        if (negative ? s.isPassed() : !s.isPassed()) {
+        if (negative == s.isPassed()) {
             if (failOnError) {
                 throw new BuildException(s.toString());
             } else {
@@ -154,6 +153,7 @@ public class ATest extends ABase {
         if (debug) {
             params.add(Option.DEBUG.getKey());
         }
+        boolean errorAll = false;
         if (errorAll) {
             params.add(SigTest.ERRORALL_OPTION);
         }

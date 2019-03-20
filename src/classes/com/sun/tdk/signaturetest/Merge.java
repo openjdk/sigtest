@@ -43,7 +43,7 @@ import java.util.Iterator;
 public class Merge extends SigTest {
 
     // Command line options
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Merge.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Merge.class);
 
     /**
      * Run the test using command-line; return status via numeric exit code.
@@ -275,19 +275,18 @@ public class Merge extends SigTest {
      */
     protected void usage() {
         String nl = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
-        sb.append(nl).append(getComponentName()).append(" - ").append(i18n.getString("SignatureTest.usage.version", Version.Number));
-        sb.append(nl).append(i18n.getString("Setup.usage.start"));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Merge.usage.files", Option.FILES.getKey()));
-        sb.append(nl).append(i18n.getString("Merge.usage.write", Option.WRITE.getKey()));
-        sb.append(nl).append(i18n.getString("Merge.usage.binary", Option.BINARY.getKey()));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("SetupAndTest.helpusage.version", Option.VERSION.getKey()));
-        sb.append(nl).append(i18n.getString("Setup.usage.help", Option.HELP.getKey()));
-        sb.append(nl).append(i18n.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Setup.usage.end"));
-        System.err.println(sb.toString());
+        String sb = nl + getComponentName() + " - " + i18n.getString("SignatureTest.usage.version", Version.Number) +
+                nl + i18n.getString("Setup.usage.start") +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("Merge.usage.files", Option.FILES.getKey()) +
+                nl + i18n.getString("Merge.usage.write", Option.WRITE.getKey()) +
+                nl + i18n.getString("Merge.usage.binary", Option.BINARY.getKey()) +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("SetupAndTest.helpusage.version", Option.VERSION.getKey()) +
+                nl + i18n.getString("Setup.usage.help", Option.HELP.getKey()) +
+                nl + i18n.getString("Sigtest.usage.delimiter") +
+                nl + i18n.getString("Setup.usage.end");
+        System.err.println(sb);
     }
 
     protected String getComponentName() {

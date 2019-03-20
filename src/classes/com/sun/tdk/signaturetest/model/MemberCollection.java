@@ -35,7 +35,7 @@ import java.util.Set;
  */
 public class MemberCollection {
 
-    private Set<MemberDescription> members;
+    private final Set<MemberDescription> members;
 
     public MemberCollection() {
         members = new HashSet<>();

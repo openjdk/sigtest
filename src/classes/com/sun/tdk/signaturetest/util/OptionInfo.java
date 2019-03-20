@@ -28,11 +28,11 @@ public final class OptionInfo {
 
     public static final boolean DEFAULT_SENSITIVITY = false;
     public static final int UNLIMITED = Integer.MAX_VALUE;
-    private boolean required; // the option must be always specified in the command line
-    private int minCount;     // minimum parameters that the option requires
-    private int maxCount;
-    private boolean multiple; // the option can be specified several times
-    private boolean caseSensitive;  // is option case sensitive ot not
+    private final boolean required; // the option must be always specified in the command line
+    private final int minCount;     // minimum parameters that the option requires
+    private final int maxCount;
+    private final boolean multiple; // the option can be specified several times
+    private final boolean caseSensitive;  // is option case sensitive ot not
 
     public static OptionInfo requiredOption(int paramCount) {
         return new OptionInfo(true, paramCount, paramCount, false, DEFAULT_SENSITIVITY);

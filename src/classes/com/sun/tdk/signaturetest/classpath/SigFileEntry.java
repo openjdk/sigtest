@@ -56,22 +56,20 @@ public class SigFileEntry extends ClasspathEntry implements ClassDescriptionLoad
         FileManager fm = new FileManager();
         PrintWriter log = AppContext.getContext().getLogWriter();
         MultipleFileReader in = new MultipleFileReader(log, MultipleFileReader.CLASSPATH_MODE, fm);
-        if (in != null) {
 
-            if (!in.readSignatureFile("", sigFileName)) {
-                in.close();
-                throw new IOException("Can't read " + sigFileName);
-            }
-
-            ClassDescription currentClass;
-            readClasses = new TreeMap<>();
-
-            in.rewind();
-            while ((currentClass = in.nextClass()) != null) {
-                readClasses.put(currentClass.getQualifiedName(), currentClass);
-            }
-
+        if (!in.readSignatureFile("", sigFileName)) {
+            in.close();
+            throw new IOException("Can't read " + sigFileName);
         }
+
+        ClassDescription currentClass;
+        readClasses = new TreeMap<>();
+
+        in.rewind();
+        while ((currentClass = in.nextClass()) != null) {
+            readClasses.put(currentClass.getQualifiedName(), currentClass);
+        }
+
         setListToBegin();
     }
 

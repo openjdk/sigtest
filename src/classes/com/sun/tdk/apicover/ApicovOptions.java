@@ -37,7 +37,7 @@ import java.util.EnumSet;
  */
 public class ApicovOptions extends Options {
 
-    private EnumSet<Option> options = EnumSet.of(
+    private final EnumSet<Option> options = EnumSet.of(
             Option.X_JIMAGE,
             Option.API_INCLUDE,
             Option.API_EXCLUDE,
@@ -65,7 +65,7 @@ public class ApicovOptions extends Options {
             Option.STRUCTURE
     );
 
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     @Override
     public EnumSet<Option> getOptions() {

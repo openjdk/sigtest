@@ -129,15 +129,11 @@ public class BatchFileParser {
                         resolved = false;
                         continue;
                     }
-                    if (newVal != null) {
-                        val = m.replaceFirst(newVal);
-                        props.put(key, val);
-                        // resolved?
-                        if (macro.matcher(val).find()) {
-                            resolved = false;
-                        }
-                    } else {
-                        throw new CommandLineParserException("Can't resolve ${" + keyToFind + "} property");
+                    val = m.replaceFirst(newVal);
+                    props.put(key, val);
+                    // resolved?
+                    if (macro.matcher(val).find()) {
+                        resolved = false;
                     }
                 }
             }

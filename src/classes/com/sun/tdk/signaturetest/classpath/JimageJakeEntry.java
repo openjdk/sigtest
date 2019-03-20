@@ -45,10 +45,10 @@ import java.util.List;
  */
 public class JimageJakeEntry extends ClasspathEntry {
 
-    private List<DirectoryEntry> module_homes = new ArrayList<>();
+    private final List<DirectoryEntry> module_homes = new ArrayList<>();
     private int cur_module_index = -1;
     private Path td;
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     private static final String MODULE_INFO_CLASS = "module-info.class";
 

@@ -50,7 +50,7 @@ import java.util.List;
  */
 public class Structure {
 
-    private ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
+    private final ApicovOptions ao = AppContext.getContext().getBean(ApicovOptions.class);
     private boolean active = false;
     private List<Section> sections;
     private String title = null;
@@ -156,7 +156,7 @@ public class Structure {
     public static class Section {
         private String name;
         private String title;
-        private List<String> pkgInclude = new ArrayList<>();
+        private final List<String> pkgInclude = new ArrayList<>();
         private boolean hidden;
 
         public String getTitle() {

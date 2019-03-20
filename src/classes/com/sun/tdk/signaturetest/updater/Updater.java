@@ -80,9 +80,7 @@ public class Updater extends DefaultHandler {
         } else {
             lastData += new String(ch, start, length);
         }
-        if (lastData != null) {
-            lastData = lastData.trim();
-        }
+        lastData = lastData.trim();
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException {

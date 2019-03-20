@@ -47,12 +47,12 @@ import java.util.*;
  */
 public class JSR68Merger extends FeaturesHolder {
 
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(JSR68Merger.class);
-    private MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(JSR68Merger.class);
+    private final MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
 
-    private Log log;
-    private Result result;
-    private Erasurator erasurator;
+    private final Log log;
+    private final Result result;
+    private final Erasurator erasurator;
 
     public JSR68Merger(Log log, Result result, FeaturesHolder fh) {
         this.log = log;

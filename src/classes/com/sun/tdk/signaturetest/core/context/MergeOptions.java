@@ -32,7 +32,7 @@ import java.util.EnumSet;
  */
 public class MergeOptions extends Options {
 
-    private EnumSet<Option> options = EnumSet.of(Option.FILES, Option.WRITE,
+    private final EnumSet<Option> options = EnumSet.of(Option.FILES, Option.WRITE,
             Option.BINARY, Option.HELP, Option.VERSION);
 
     @Override

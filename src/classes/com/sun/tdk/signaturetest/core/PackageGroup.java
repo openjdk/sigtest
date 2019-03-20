@@ -53,7 +53,7 @@ public class PackageGroup {
      *
      * @see #isSubpackagesUses
      */
-    private List<String> group;
+    private final List<String> group;
 
     /**
      * Create empty list of packages, and decide if subpackages should be

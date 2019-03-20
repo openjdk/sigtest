@@ -50,8 +50,8 @@ import java.util.*;
 public class ClassCorrector implements Transformer {
 
     protected ClassHierarchy classHierarchy = null;
-    private Log log;
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClassCorrector.class);
+    private final Log log;
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClassCorrector.class);
 
     public ClassCorrector(Log log) {
         this.log = log;
@@ -585,7 +585,7 @@ public class ClassCorrector implements Transformer {
         interfaces.clear();
         // remove nulls
         for (String intf : intfs) {
-            if (intf != null && !interfaces.contains(intf)) {
+            if (intf != null) {
                 interfaces.add(intf);
             }
         }
@@ -691,10 +691,10 @@ public class ClassCorrector implements Transformer {
         if (i < 0 && j < 0) {
             return -1;
         }
-        if (i < 0 && j >= 0) {
+        if (i < 0) {
             return j;
         }
-        if (i >= 0 && j < 0) {
+        if (j < 0) {
             return i;
         } else {
             return Math.min(i, j);

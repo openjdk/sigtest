@@ -31,8 +31,8 @@ import java.util.Map;
  */
 public class LRUCache<K, V> extends java.util.LinkedHashMap<K, V> {
 
-    private static float LOAD_FACTOR = 0.75f;
-    protected int maxSize;
+    private static final float LOAD_FACTOR = 0.75f;
+    protected final int maxSize;
 
     public LRUCache(int maxsize) {
         super((int) (maxsize / LOAD_FACTOR + 1), LOAD_FACTOR, true);

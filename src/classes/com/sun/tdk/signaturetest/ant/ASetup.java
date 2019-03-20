@@ -103,7 +103,7 @@ public class ASetup extends ABase {
         Setup s = new Setup();
         System.setProperty(Result.NO_EXIT, "true");
         s.run(createParams(), new PrintWriter(System.out, true), null);
-        if (negative ? s.isPassed() : !s.isPassed()) {
+        if (negative == s.isPassed()) {
             if (failOnError) {
                 throw new BuildException(s.toString());
             } else {

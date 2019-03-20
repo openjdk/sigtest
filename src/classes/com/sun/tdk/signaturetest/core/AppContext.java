@@ -74,8 +74,8 @@ public abstract class AppContext {
 
     private static class AppContextImpl extends AppContext {
 
-        private ConcurrentHashMap<String, String> strings = new ConcurrentHashMap<>();
-        private ConcurrentHashMap<Class<?>, Object> beans = new ConcurrentHashMap<>();
+        private final ConcurrentHashMap<String, String> strings = new ConcurrentHashMap<>();
+        private final ConcurrentHashMap<Class<?>, Object> beans = new ConcurrentHashMap<>();
         private PrintWriter log;
         private Classpath cp;
         private ClassDescriptionLoader loader;

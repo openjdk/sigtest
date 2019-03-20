@@ -119,7 +119,7 @@ public class ExoticCharTools {
     private static boolean isExoticChar(char c) {
         // don't use isJavaIdentifierPart because it since 1.5
         // don't use Character.isJavaLetterOrDigit because cdc does not contain this
-        return !isJavaLetterOrDigit(c) && !("/.;<>[\"".indexOf(c) != -1);
+        return !isJavaLetterOrDigit(c) && "/.;<>[\"".indexOf(c) == -1;
     }
 
     private static boolean isJavaLetterOrDigit(char c) {

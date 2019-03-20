@@ -124,14 +124,10 @@ public final class MethodDescr extends MemberDescription {
 
     public String getSignature() {
 
-        StringBuffer buf = new StringBuffer();
-
-        buf.append(name);
-        buf.append('(');
-        buf.append(args);
-        buf.append(')');
-
-        return buf.toString();
+        return name +
+                '(' +
+                args +
+                ')';
     }
     //  Default value for annotation member or null;
     private Object annoDef;

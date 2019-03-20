@@ -367,7 +367,7 @@ public class Status {
      */
     public static final String EXIT_PREFIX = "STATUS:";
 
-    private static String[] texts = {
+    private static final String[] texts = {
         // correspond to PASSED, FAILED, ERROR, NOT_RUN
         "Passed.",
         "Failed.",

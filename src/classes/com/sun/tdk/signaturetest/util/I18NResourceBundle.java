@@ -176,7 +176,7 @@ public class I18NResourceBundle extends ResourceBundle {
     public String getName() {
         return name;
     }
-    private String name;
+    private final String name;
     private ResourceBundle delegate;
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
 }

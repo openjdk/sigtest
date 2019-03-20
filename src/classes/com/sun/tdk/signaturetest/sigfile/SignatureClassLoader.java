@@ -47,7 +47,7 @@ import java.util.*;
 public abstract class SignatureClassLoader implements Reader {
 
     protected final Format format;
-    protected Set<FeaturesHolder.Feature> features;
+    protected final Set<FeaturesHolder.Feature> features;
     private BufferedReader in;
     private final Parser parser;
     private final int BUFSIZE = 0x8000;

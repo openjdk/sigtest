@@ -52,7 +52,7 @@ public class CMerge {
     public static final String STRICT_OPTION = "-Strict";
     Document result;
     Element resultReport;
-    XPathFactory xPathfactory = XPathFactory.newInstance();
+    final XPathFactory xPathfactory = XPathFactory.newInstance();
 
     public static void main(String[] args) {
         new CMerge().perform(args);
@@ -88,19 +88,18 @@ public class CMerge {
 
     protected void usage() {
         String nl = System.getProperty("line.separator");
-        StringBuilder sb = new StringBuilder();
-        sb.append(nl).append(getComponentName()).append(" - ").append(i18n.getString("Merge.usage.version", Version.Number));
-        sb.append(nl).append(i18n.getString("Merge.usage.start"));
-        sb.append(nl).append(i18n.getString("Merge.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Merge.usage.files", Option.FILES.getKey()));
-        sb.append(nl).append(i18n.getString("Merge.usage.write", Option.WRITE.getKey()));
-        sb.append(nl).append(i18n.getString("Merge.usage.strict", STRICT_OPTION));
-        sb.append(nl).append(i18n.getString("Merge.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Merge.helpusage.version", Option.VERSION.getKey()));
-        sb.append(nl).append(i18n.getString("Merge.usage.help", Option.HELP.getKey()));
-        sb.append(nl).append(i18n.getString("Merge.usage.delimiter"));
-        sb.append(nl).append(i18n.getString("Merge.usage.end"));
-        System.err.println(sb.toString());
+        String sb = nl + getComponentName() + " - " + i18n.getString("Merge.usage.version", Version.Number) +
+                nl + i18n.getString("Merge.usage.start") +
+                nl + i18n.getString("Merge.usage.delimiter") +
+                nl + i18n.getString("Merge.usage.files", Option.FILES.getKey()) +
+                nl + i18n.getString("Merge.usage.write", Option.WRITE.getKey()) +
+                nl + i18n.getString("Merge.usage.strict", STRICT_OPTION) +
+                nl + i18n.getString("Merge.usage.delimiter") +
+                nl + i18n.getString("Merge.helpusage.version", Option.VERSION.getKey()) +
+                nl + i18n.getString("Merge.usage.help", Option.HELP.getKey()) +
+                nl + i18n.getString("Merge.usage.delimiter") +
+                nl + i18n.getString("Merge.usage.end");
+        System.err.println(sb);
     }
 
     protected String getComponentName() {
@@ -310,11 +309,10 @@ public class CMerge {
                                     members.put(memberID, member);
                                 } else {
                                     String m1 = getMemberModifsAsString(members.get(memberID));
-                                    String m2 = myAttrsToCheck;
-                                    if (!m1.equals(m2)) {
+                                    if (!m1.equals(myAttrsToCheck)) {
                                         System.err.println("Incompatible member attributes in class " + qName);
                                         System.err.println("member " + memberID);
-                                        System.err.println(m1 + " and " + m2);
+                                        System.err.println(m1 + " and " + myAttrsToCheck);
                                         return false;
                                     }
                                     // update coverage
@@ -442,7 +440,7 @@ public class CMerge {
 
         DocumentBuilder builder;
         Document doc;
-        XPathFactory xPathfactory = XPathFactory.newInstance();
+        final XPathFactory xPathfactory = XPathFactory.newInstance();
         String fileName;
 
         public CovDocument(String fileName) throws ParserConfigurationException, SAXException, IOException {
@@ -487,7 +485,7 @@ public class CMerge {
         }
 
         private String getQname(Element e) {
-            String qName = e.getAttribute(XC.PACKAGE_NAME);
+            StringBuilder qName = new StringBuilder(e.getAttribute(XC.PACKAGE_NAME));
             Node parentNode;
             Node currNode = e;
             while ((parentNode = currNode.getParentNode()) != null) {
@@ -503,10 +501,10 @@ public class CMerge {
                 if ("".equals(pName)) {
                     break;
                 }
-                qName = pName + "." + qName;
+                qName.insert(0, pName + ".");
                 currNode = p;
             }
-            return qName;
+            return qName.toString();
         }
     }
 }

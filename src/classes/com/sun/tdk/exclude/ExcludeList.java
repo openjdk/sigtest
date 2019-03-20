@@ -41,7 +41,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ExcludeList implements Exclude {
 
-    private List<Pattern> excludeList;
+    private final List<Pattern> excludeList;
 
     public ExcludeList() {
         excludeList = new ArrayList<>();

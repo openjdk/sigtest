@@ -36,9 +36,9 @@ import com.sun.tdk.signaturetest.errors.ErrorFormatter.Message;
  */
 public class Chain {
 
-    private List<Message> mainList;
-    private Set<Message> processedMessages;
-    private Set<Message> newMessages;
+    private final List<Message> mainList;
+    private final Set<Message> processedMessages;
+    private final Set<Message> newMessages;
 
     void setMessageProcessed(Message m) {
         processedMessages.add(m);

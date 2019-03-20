@@ -43,8 +43,8 @@ import java.util.regex.Pattern;
  */
 public class ClassHierarchyImpl implements ClassHierarchy {
 
-    private static String[] EMPTY_STRING_ARRAY = new String[0];
-    private ClassDescriptionLoader loader;
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private final ClassDescriptionLoader loader;
     /**
      * If the <code>trackMode</code> field equals to <code>ALL_PUBLIC</code>,
      * every <code>public</code> or <code>protected</code> class is considered
@@ -56,8 +56,8 @@ public class ClassHierarchyImpl implements ClassHierarchy {
      *
      * @see #trackMode
      */
-    private int trackMode;
-    private Filter defaultFilter = new DefaultIsAccessibleFilter();
+    private final int trackMode;
+    private final Filter defaultFilter = new DefaultIsAccessibleFilter();
 
     public ClassHierarchyImpl(ClassDescriptionLoader loader) {
         this.loader = loader;
@@ -212,13 +212,12 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         }
         return isAnonimouse(md.getDeclaringClassName());
     }
-    private Pattern anonimouse = Pattern.compile("\\$\\d+$");
+    private final Pattern anonimouse = Pattern.compile("\\$\\d+$");
 
     private boolean isAnonimouse(String clName) {
-        boolean ret = anonimouse.matcher(clName).find();
-        return ret;
+        return anonimouse.matcher(clName).find();
     }
-    private static Pattern simpleParamUsage = Pattern.compile("<[^<>]+?>");
+    private static final Pattern simpleParamUsage = Pattern.compile("<[^<>]+?>");
 
     private ClassDescription load(String name, boolean no_cache) throws ClassNotFoundException {
 
@@ -421,7 +420,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         }
         return info;
     }
-    private Map<String, List<String>> directSubClasses = new HashMap<>();
+    private final Map<String, List<String>> directSubClasses = new HashMap<>();
 
     private void addSubClass(String superClass, String subClass) {
 
@@ -443,7 +442,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         boolean accessable = false;
         boolean isDocumentedAnnotation = false;
         int modifiers = 0;
-        boolean isVisibleOutside;
+        final boolean isVisibleOutside;
 
         public ClassInfo(ClassDescription c, boolean accessable, boolean visible) {
 
@@ -472,8 +471,8 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     public int getTrackMode() {
         return trackMode;
     }
-    private HashMap<String, ClassInfo> processedClasses = new HashMap<>();
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private final HashMap<String, ClassInfo> processedClasses = new HashMap<>();
+    private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     class DefaultIsAccessibleFilter implements Filter {
 

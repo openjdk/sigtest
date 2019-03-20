@@ -33,7 +33,7 @@ import com.sun.tdk.signaturetest.sigfile.f43.F43Format;
  */
 public class FormatAdapter extends F43Format {
 
-    private String signature;
+    private final String signature;
     protected Reader reader;
     protected Writer writer;
 

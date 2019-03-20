@@ -32,7 +32,7 @@ public class MessageType implements Comparable<MessageType> {
     private final String text;
     private final int id;
     private final boolean thisIsWarning;
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MessageType.class);
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(MessageType.class);
 
     public int compareTo(MessageType mt) {
         if (id == mt.id) {

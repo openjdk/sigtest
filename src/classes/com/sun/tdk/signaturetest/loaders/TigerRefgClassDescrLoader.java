@@ -49,8 +49,8 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
     private static final String object = "java.lang.Object";
     public static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(TigerRefgClassDescrLoader.class);
-    private ClassLoader ldr;
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private final ClassLoader ldr;
+    private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     public TigerRefgClassDescrLoader() {
         this(null);
@@ -519,17 +519,15 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
         ClassDescription.TypeParameterList tp = c.getTypeparamList();
 
-        if (mm != null && mm.length != 0) {
+        if (mm.length != 0) {
 
             for (Method method : mm) {
                 try {
-                    Method m = method;
-
                     AnnotationItem.Member member = new AnnotationItem.Member(
-                            decodeType(tp, m.getGenericReturnType()),
-                            m.getName(), null);
+                            decodeType(tp, method.getGenericReturnType()),
+                            method.getName(), null);
 
-                    Object value = m.invoke(a, (Object[]) null);
+                    Object value = method.invoke(a, (Object[]) null);
 
                     if (value instanceof Annotation) {
                         member.setValue(parse(c, 0, (Annotation) value));
@@ -554,7 +552,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
 
         return anno;
     }
-    private Set<Hint> hints = new HashSet<>();
+    private final Set<Hint> hints = new HashSet<>();
 
     public void addLoadingHint(Hint hint) {
         hints.add(hint);

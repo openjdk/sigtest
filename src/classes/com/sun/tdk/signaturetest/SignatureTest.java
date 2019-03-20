@@ -167,7 +167,7 @@ public class SignatureTest extends SigTest {
     private String outFormat = null;
     private boolean extensibleInterfaces = false;
     private Set<String> orderImportant;
-    private static I18NResourceBundle i18nSt = I18NResourceBundle.getBundleForClass(SignatureTest.class);
+    private static final I18NResourceBundle i18nSt = I18NResourceBundle.getBundleForClass(SignatureTest.class);
 
     /**
      * Log-file is not the System.err
@@ -199,10 +199,10 @@ public class SignatureTest extends SigTest {
     private boolean isSupersettingEnabled = false;
     private boolean isThrowsRemoved = false;
     private ClassHierarchy signatureClassesHierarchy;
-    private Erasurator erasurator = new Erasurator();
+    private final Erasurator erasurator = new Erasurator();
     protected Exclude exclude;
     private int readMode = MultipleFileReader.MERGE_MODE;
-    protected PackageGroup secure = new PackageGroup(true);
+    protected final PackageGroup secure = new PackageGroup(true);
 
     /**
      * Run the test using command-line; return status via numeric exit code.
@@ -461,42 +461,41 @@ public class SignatureTest extends SigTest {
     protected void usage() {
 
         String nl = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
-        sb.append(getComponentName()).append(" - ").append(i18nSt.getString("SignatureTest.usage.version", Version.Number));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.start"));
-        sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.static", Option.STATIC));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.mode", MODE_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classpath", Option.CLASSPATH.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.filename", Option.FILE_NAME));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.or"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.files", new Object[]{FILES_OPTION, java.io.File.pathSeparator}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.package", Option.PACKAGE.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.human", new Object[]{Option.FORMATHUMAN.getKey(), Option.FORMATHUMAN.getAlias()}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.out", OUT_OPTION));
-        sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.testurl", Option.TEST_URL));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.exclude", Option.EXCLUDE.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.nomerge", NOMERGE_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.update", UPDATE_FILE_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.apiversion", APIVERSION_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.checkvalue", CHECKVALUE_OPTION));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.formatplain", Option.FORMATPLAIN));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.extinterfaces", EXTENSIBLE_INTERFACES_OPTION));
-        sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.classcachesize", new Object[]{CLASSCACHESIZE_OPTION, DefaultCacheSize}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.debug", Option.DEBUG.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.error_all", ERRORALL_OPTION));
-        sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.helpusage.version", Option.VERSION.getKey()));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.help", Option.HELP.getKey()));
-        sb.append(nl).append(i18nSt.getString("Sigtest.usage.delimiter"));
-        sb.append(nl).append(i18nSt.getString("SignatureTest.usage.end"));
 
-        System.err.println(sb.toString());
+        String sb = getComponentName() + " - " + i18nSt.getString("SignatureTest.usage.version", Version.Number) +
+                nl + i18nSt.getString("SignatureTest.usage.start") +
+                nl + i18nSt.getString("Sigtest.usage.delimiter") +
+                nl + i18nSt.getString("SignatureTest.usage.static", Option.STATIC) +
+                nl + i18nSt.getString("SignatureTest.usage.mode", MODE_OPTION) +
+                nl + i18nSt.getString("SignatureTest.usage.backward", new Object[]{Option.BACKWARD.getKey(), Option.BACKWARD.getAlias()}) +
+                nl + i18nSt.getString("SignatureTest.usage.classpath", Option.CLASSPATH.getKey()) +
+                nl + i18nSt.getString("SignatureTest.usage.filename", Option.FILE_NAME) +
+                nl + i18nSt.getString("SignatureTest.usage.or") +
+                nl + i18nSt.getString("SignatureTest.usage.files", new Object[]{FILES_OPTION, File.pathSeparator}) +
+                nl + i18nSt.getString("SignatureTest.usage.package", Option.PACKAGE.getKey()) +
+                nl + i18nSt.getString("SignatureTest.usage.human", new Object[]{Option.FORMATHUMAN.getKey(), Option.FORMATHUMAN.getAlias()}) +
+                nl + i18nSt.getString("SignatureTest.usage.out", OUT_OPTION) +
+                nl + i18nSt.getString("Sigtest.usage.delimiter") +
+                nl + i18nSt.getString("SignatureTest.usage.testurl", Option.TEST_URL) +
+                nl + i18nSt.getString("SignatureTest.usage.packagewithoutsubpackages", Option.PURE_PACKAGE.getKey()) +
+                nl + i18nSt.getString("SignatureTest.usage.exclude", Option.EXCLUDE.getKey()) +
+                nl + i18nSt.getString("SignatureTest.usage.nomerge", NOMERGE_OPTION) +
+                nl + i18nSt.getString("SignatureTest.usage.update", UPDATE_FILE_OPTION) +
+                nl + i18nSt.getString("SignatureTest.usage.apiversion", APIVERSION_OPTION) +
+                nl + i18nSt.getString("SignatureTest.usage.checkvalue", CHECKVALUE_OPTION) +
+                nl + i18nSt.getString("SignatureTest.usage.formatplain", Option.FORMATPLAIN) +
+                nl + i18nSt.getString("SignatureTest.usage.extinterfaces", EXTENSIBLE_INTERFACES_OPTION) +
+                nl + i18nSt.getString("Sigtest.usage.delimiter") +
+                nl + i18nSt.getString("SignatureTest.usage.classcachesize", new Object[]{CLASSCACHESIZE_OPTION, DefaultCacheSize}) +
+                nl + i18nSt.getString("SignatureTest.usage.verbose", new Object[]{VERBOSE_OPTION, NOWARN}) +
+                nl + i18nSt.getString("SignatureTest.usage.debug", Option.DEBUG.getKey()) +
+                nl + i18nSt.getString("SignatureTest.usage.error_all", ERRORALL_OPTION) +
+                nl + i18nSt.getString("Sigtest.usage.delimiter") +
+                nl + i18nSt.getString("SignatureTest.helpusage.version", Option.VERSION.getKey()) +
+                nl + i18nSt.getString("SignatureTest.usage.help", Option.HELP.getKey()) +
+                nl + i18nSt.getString("Sigtest.usage.delimiter") +
+                nl + i18nSt.getString("SignatureTest.usage.end");
+        System.err.println(sb);
     }
 
     private void initDefaultAnnotations() {
@@ -596,180 +595,173 @@ public class SignatureTest extends SigTest {
         String linesep = System.getProperty("line.separator");
         boolean result;
 
-        if (in != null) {
-            if (sigFileNameList != null) {
-                result = in.readSignatureFiles(testURL, sigFileNameList);
-            } else {
-                result = in.readSignatureFile(testURL, sigFileName);
-            }
-
-            if (!result) {
-                in.close();
-                msg = i18nSt.getString("SignatureTest.error.sigfile.invalid", sigFileNameList == null ? sigFileName : sigFileNameList);
-                log.println(msg);
-                return error(msg);
-            }
-
-            if (!prepareCheck(in, log)) {
-                return false;
-            }
-
-            //  Reading the sigfile: main loop.
-            boolean buildMembers = in.isFeatureSupported(FeaturesHolder.BuildMembers);
-            MemberCollectionBuilder sigfileMCBuilder = null;
-            if (buildMembers) {
-                sigfileMCBuilder = new MemberCollectionBuilder(this, "source:sigfile");
-            }
-
-            Erasurator localErasurator = new Erasurator();
-            msg = null;
-            try {
-
-                ClassDescription currentClass;
-
-                // check that set of classes is transitively closed
-                ClassSet closedSet = new ClassSet(signatureClassesHierarchy, true);
-
-                in.rewind();
-                while ((currentClass = in.nextClass()) != null) {
-                    closedSet.addClass(currentClass.getQualifiedName());
-                }
-
-                Set<String> missingClasses = closedSet.getMissingClasses();
-                if (!missingClasses.isEmpty() && !allowMissingSuperclasses()) {
-
-                    log.print(i18nSt.getString("SignatureTest.error.required_classes_missing"));
-                    int count = 0;
-                    for (String missingClass : missingClasses) {
-                        if (count != 0) {
-                            log.print(", ");
-                        }
-                        log.print(missingClass);
-                        ++count;
-                    }
-                    log.println();
-
-                    return error(i18nSt.getString("SignatureTest.error.non_transitively_closed_set"));
-                }
-
-                in.rewind();
-
-                boolean supportNSC = in.isFeatureSupported(FeaturesHolder.NonStaticConstants);
-
-                while ((currentClass = in.nextClass()) != null) {
-                    if (Xverbose) {
-                        getLog().println(i18nSt.getString("SignatureTest.mesg.verbose.check", currentClass.getQualifiedName()));
-                        getLog().flush();
-                    }
-                    if ( to.isSet(Option.CHECK_EXCESS_CLASSES_ONLY)) {
-                        trackedClassNames.add(currentClass.getQualifiedName());
-                    } else {
-                        if (buildMembers && sigfileMCBuilder != null) {
-                            try {
-                                if (isAPICheckMode()) {
-                                    sigfileMCBuilder.setBuildMode(MemberCollectionBuilder.BuildMode.SIGFILE);
-                                }
-                                sigfileMCBuilder.createMembers(currentClass, addInherited(), false, true);
-                            } catch (ClassNotFoundException e) {
-                                if (bo.isSet(Option.DEBUG)) {
-                                    SwissKnife.reportThrowable(e);
-                                }
-                            }
-                        }
-
-                        if (useErasurator()) {
-                            currentClass = localErasurator.erasure(currentClass);
-                        }
-
-                        Transformer t = PluginAPI.BEFORE_TEST.getTransformer();
-                        if (t != null) {
-                            try {
-                                t.transform(currentClass);
-                            } catch (ClassNotFoundException e) {
-                                if (bo.isSet(Option.DEBUG)) {
-                                    SwissKnife.reportThrowable(e);
-                                }
-                            }
-                        }
-
-                        if (currentClass.isModuleOrPackaheInfo() && isTigerFeaturesTracked) {
-                            verifyMduleOrPackageInfo(currentClass);
-                        } else {
-                            verifyClass(currentClass, supportNSC);
-                        }
-                        if (!isAPICheckMode()) {
-                            // save memory
-                            currentClass.setMembers(null);
-                        }
-                    }
-                }
-
-            } catch (OutOfMemoryError e) {
-                msg = i18nSt.getString("SignatureTest.error.sigfile.oome");
-            } catch (StackOverflowError e) {
-                msg = i18nSt.getString("SignatureTest.error.sigfile.soe");
-            } catch (VirtualMachineError e) {
-                msg = i18nSt.getString("SignatureTest.error.sigfile.vme", e.getMessage());
-            } catch (IOException e) {
-                if (bo.isSet(Option.DEBUG)) {
-                    SwissKnife.reportThrowable(e);
-                }
-                msg = i18nSt.getString("SignatureTest.error.sigfile.prob") + linesep + e;
-            } catch (SecurityException e) {
-                if (bo.isSet(Option.DEBUG)) {
-                    SwissKnife.reportThrowable(e);
-                }
-                msg = i18nSt.getString("SignatureTest.error.sigfile.sec") + linesep + e;
-            } catch (AssertionError ass) {
-                SwissKnife.reportThrowable(ass);
-            } catch (Error e) {
-                if (bo.isSet(Option.DEBUG)) {
-                    SwissKnife.reportThrowable(e);
-                }
-                msg = i18nSt.getString("SignatureTest.error.unknownerror") + e;
-            }
-
-            if (msg != null) {
-                in.close();
-                log.println(msg);
-                return error(msg);
-            }
-
-            //  Finished - the sigfile closed.
-            if (!isSupersettingEnabled) {
-                checkAddedClasses();
-            }
-
-            if (isTigerFeaturesTracked) {
-                checkAddedPackages();
-            }
-
-            int auxErrorCount = 0;
-            getErrorManager().printErrors();
-            if (reportWarningAsError) {
-                auxErrorCount = errorMessages.size();
-                printErrors();
-            }
-            log.println("");
-
-            String repmsg = exclude.report();
-            if (isVerbose) {
-                System.out.println(repmsg);
-            }
-
-            int numErrors = getErrorManager().getNumErrors() + auxErrorCount;
-            in.close();
-            if (numErrors == 0) {
-                return passed();
-            } else {
-                return failed(i18nSt.getString("MTest.msg.failed",
-                        Integer.toString(numErrors)));
-            }
-
+        if (sigFileNameList != null) {
+            result = in.readSignatureFiles(testURL, sigFileNameList);
         } else {
+            result = in.readSignatureFile(testURL, sigFileName);
+        }
+
+        if (!result) {
+            in.close();
             msg = i18nSt.getString("SignatureTest.error.sigfile.invalid", sigFileNameList == null ? sigFileName : sigFileNameList);
             log.println(msg);
             return error(msg);
+        }
+
+        if (!prepareCheck(in, log)) {
+            return false;
+        }
+
+        //  Reading the sigfile: main loop.
+        boolean buildMembers = in.isFeatureSupported(FeaturesHolder.BuildMembers);
+        MemberCollectionBuilder sigfileMCBuilder = null;
+        if (buildMembers) {
+            sigfileMCBuilder = new MemberCollectionBuilder(this, "source:sigfile");
+        }
+
+        Erasurator localErasurator = new Erasurator();
+        msg = null;
+        try {
+
+            ClassDescription currentClass;
+
+            // check that set of classes is transitively closed
+            ClassSet closedSet = new ClassSet(signatureClassesHierarchy, true);
+
+            in.rewind();
+            while ((currentClass = in.nextClass()) != null) {
+                closedSet.addClass(currentClass.getQualifiedName());
+            }
+
+            Set<String> missingClasses = closedSet.getMissingClasses();
+            if (!missingClasses.isEmpty() && !allowMissingSuperclasses()) {
+
+                log.print(i18nSt.getString("SignatureTest.error.required_classes_missing"));
+                int count = 0;
+                for (String missingClass : missingClasses) {
+                    if (count != 0) {
+                        log.print(", ");
+                    }
+                    log.print(missingClass);
+                    ++count;
+                }
+                log.println();
+
+                return error(i18nSt.getString("SignatureTest.error.non_transitively_closed_set"));
+            }
+
+            in.rewind();
+
+            boolean supportNSC = in.isFeatureSupported(FeaturesHolder.NonStaticConstants);
+
+            while ((currentClass = in.nextClass()) != null) {
+                if (Xverbose) {
+                    getLog().println(i18nSt.getString("SignatureTest.mesg.verbose.check", currentClass.getQualifiedName()));
+                    getLog().flush();
+                }
+                if ( to.isSet(Option.CHECK_EXCESS_CLASSES_ONLY)) {
+                    trackedClassNames.add(currentClass.getQualifiedName());
+                } else {
+                    if (buildMembers && sigfileMCBuilder != null) {
+                        try {
+                            if (isAPICheckMode()) {
+                                sigfileMCBuilder.setBuildMode(MemberCollectionBuilder.BuildMode.SIGFILE);
+                            }
+                            sigfileMCBuilder.createMembers(currentClass, addInherited(), false, true);
+                        } catch (ClassNotFoundException e) {
+                            if (bo.isSet(Option.DEBUG)) {
+                                SwissKnife.reportThrowable(e);
+                            }
+                        }
+                    }
+
+                    if (useErasurator()) {
+                        currentClass = localErasurator.erasure(currentClass);
+                    }
+
+                    Transformer t = PluginAPI.BEFORE_TEST.getTransformer();
+                    if (t != null) {
+                        try {
+                            t.transform(currentClass);
+                        } catch (ClassNotFoundException e) {
+                            if (bo.isSet(Option.DEBUG)) {
+                                SwissKnife.reportThrowable(e);
+                            }
+                        }
+                    }
+
+                    if (currentClass.isModuleOrPackaheInfo() && isTigerFeaturesTracked) {
+                        verifyMduleOrPackageInfo(currentClass);
+                    } else {
+                        verifyClass(currentClass, supportNSC);
+                    }
+                    if (!isAPICheckMode()) {
+                        // save memory
+                        currentClass.setMembers(null);
+                    }
+                }
+            }
+
+        } catch (OutOfMemoryError e) {
+            msg = i18nSt.getString("SignatureTest.error.sigfile.oome");
+        } catch (StackOverflowError e) {
+            msg = i18nSt.getString("SignatureTest.error.sigfile.soe");
+        } catch (VirtualMachineError e) {
+            msg = i18nSt.getString("SignatureTest.error.sigfile.vme", e.getMessage());
+        } catch (IOException e) {
+            if (bo.isSet(Option.DEBUG)) {
+                SwissKnife.reportThrowable(e);
+            }
+            msg = i18nSt.getString("SignatureTest.error.sigfile.prob") + linesep + e;
+        } catch (SecurityException e) {
+            if (bo.isSet(Option.DEBUG)) {
+                SwissKnife.reportThrowable(e);
+            }
+            msg = i18nSt.getString("SignatureTest.error.sigfile.sec") + linesep + e;
+        } catch (AssertionError ass) {
+            SwissKnife.reportThrowable(ass);
+        } catch (Error e) {
+            if (bo.isSet(Option.DEBUG)) {
+                SwissKnife.reportThrowable(e);
+            }
+            msg = i18nSt.getString("SignatureTest.error.unknownerror") + e;
+        }
+
+        if (msg != null) {
+            in.close();
+            log.println(msg);
+            return error(msg);
+        }
+
+        //  Finished - the sigfile closed.
+        if (!isSupersettingEnabled) {
+            checkAddedClasses();
+        }
+
+        if (isTigerFeaturesTracked) {
+            checkAddedPackages();
+        }
+
+        int auxErrorCount = 0;
+        getErrorManager().printErrors();
+        if (reportWarningAsError) {
+            auxErrorCount = errorMessages.size();
+            printErrors();
+        }
+        log.println("");
+
+        String repmsg = exclude.report();
+        if (isVerbose) {
+            System.out.println(repmsg);
+        }
+
+        int numErrors = getErrorManager().getNumErrors() + auxErrorCount;
+        in.close();
+        if (numErrors == 0) {
+            return passed();
+        } else {
+            return failed(i18nSt.getString("MTest.msg.failed",
+                    Integer.toString(numErrors)));
         }
 
     }
@@ -1529,12 +1521,12 @@ public class SignatureTest extends SigTest {
         signatureClassesHierarchy = new ClassHierarchyImpl(in);
 
         // creates ErrorFormatter.
-        if ((outFormat != null) && FORMAT_PLAIN.equals(outFormat)) {
+        if (FORMAT_PLAIN.equals(outFormat)) {
             setErrorManager(new ErrorFormatter(log));
-        } else if ((outFormat != null) && FORMAT_HUMAN.equals(outFormat)) {
+        } else if (FORMAT_HUMAN.equals(outFormat)) {
             setErrorManager(new HumanErrorFormatter(log, isVerbose,
                     reportWarningAsError ? Level.WARNING : Level.SEVERE));
-        } else if ((outFormat != null) && FORMAT_BACKWARD.equals(outFormat)) {
+        } else if (FORMAT_BACKWARD.equals(outFormat)) {
             setErrorManager(new BCProcessor(log, isVerbose, BINARY_MODE.equals(mode),
                     testableHierarchy, signatureClassesHierarchy,
                     reportWarningAsError ? Level.WARNING : Level.SEVERE, extensibleInterfaces));

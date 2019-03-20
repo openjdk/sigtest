@@ -42,8 +42,8 @@ import java.util.List;
 
 public class HumanErrorFormatter extends SortedErrorFormatter {
 
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(SortedErrorFormatter.class);
-    private Level level;
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(SortedErrorFormatter.class);
+    private final Level level;
 
     /**
      * Assign the given <b>PrintWriter</b> to print error messages.
@@ -211,10 +211,10 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
                 if (m1 == null && m2 == null) {
                     return 0;
                 }
-                if (m1 == null && m2 != null) {
+                if (m1 == null) {
                     return -1;
                 }
-                if (m1 != null && m2 == null) {
+                if (m2 == null) {
                     return 1;
                 }
 

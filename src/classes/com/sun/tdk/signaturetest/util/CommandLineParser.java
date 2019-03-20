@@ -36,11 +36,11 @@ import java.util.*;
  */
 public class CommandLineParser {
 
-    private Object servicedObject;
-    private KnownOptions knownOptions;
-    private Map<String, String> decoders = new HashMap<>();
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(CommandLineParser.class);
-    private Map<String, List<String>> foundOptions = new HashMap<>();
+    private final Object servicedObject;
+    private final KnownOptions knownOptions;
+    private final Map<String, String> decoders = new HashMap<>();
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(CommandLineParser.class);
+    private final Map<String, List<String>> foundOptions = new HashMap<>();
 
     public CommandLineParser(Object servicedObject, String optionPrefix) {
         this.servicedObject = servicedObject;
@@ -113,8 +113,8 @@ public class CommandLineParser {
             knownOptions.validate(foundOptions);
         }
 
-        for (String foundOption : foundOptions.keySet()) {
-            invokeDecoder(foundOption, foundOptions.get(foundOption));
+        for (Map.Entry<String, List<String>> stringListEntry : foundOptions.entrySet()) {
+            invokeDecoder(stringListEntry.getKey(), stringListEntry.getValue());
         }
     }
 
@@ -266,7 +266,7 @@ public class CommandLineParser {
 
     private static class KnownOptions {
 
-        private Map<String, OptionInfo> data = new HashMap<>();
+        private final Map<String, OptionInfo> data = new HashMap<>();
         private final String optionPrefix;
 
         public KnownOptions(String optionPrefix) {
@@ -320,12 +320,11 @@ public class CommandLineParser {
         }
 
         private void validateRequiredOptions(Set<String> foundKeys) throws CommandLineParserException {
-            Set<String> keySet = data.keySet();
 
-            for (String option : keySet) {
-                OptionInfo ki = data.get(option);
-                if (ki.isRequired() && !foundKeys.contains(option)) {
-                    throw new CommandLineParserException(i18n.getString("CommandLineParser.error.option.required", option));
+            for (Map.Entry<String, OptionInfo> stringOptionInfoEntry : data.entrySet()) {
+                OptionInfo ki = stringOptionInfoEntry.getValue();
+                if (ki.isRequired() && !foundKeys.contains(stringOptionInfoEntry.getKey())) {
+                    throw new CommandLineParserException(i18n.getString("CommandLineParser.error.option.required", stringOptionInfoEntry.getKey()));
                 }
             }
         }
@@ -354,8 +353,8 @@ public class CommandLineParser {
         private void validate(Map<String, List<String>> params) throws CommandLineParserException {
             validateRequiredOptions(params.keySet());
 
-            for (String option : params.keySet()) {
-                validateCount(option, params.get(option).size());
+            for (Map.Entry<String, List<String>> stringListEntry : params.entrySet()) {
+                validateCount(stringListEntry.getKey(), stringListEntry.getValue().size());
             }
         }
 

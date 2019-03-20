@@ -49,7 +49,7 @@ import java.util.*;
 // Plain report generator
 public abstract class ReportGenerator extends APIVisitor {
 
-    protected RefCounter refCounter;
+    protected final RefCounter refCounter;
     private PrintWriter log;
 
     public void setLog(PrintWriter log) {
@@ -106,8 +106,8 @@ public abstract class ReportGenerator extends APIVisitor {
     protected static class Field {
 
         int classes;
-        int members;
-        int tested;
+        final int members;
+        final int tested;
 
         Field(int members, int tested) {
             this.members = members;
@@ -594,7 +594,7 @@ class ReportPlain extends ReportGenerator {
 
         super.visit(pd);
     }
-    Erasurator erasurator = new Erasurator();
+    final Erasurator erasurator = new Erasurator();
 
     @Override
     protected void visit(ClassDescription cd) {
@@ -646,7 +646,7 @@ class ReportPlain extends ReportGenerator {
 
         println();
     }
-    StringBuffer line = new StringBuffer(120);
+    final StringBuffer line = new StringBuffer(120);
 
     StringBuffer tab(int p) {
         return tab(p, ' ');
@@ -694,7 +694,7 @@ interface XC {
 class ReportXML extends ReportGenerator {
 
     TransformerHandler ser;
-    Erasurator erasurator = new Erasurator();
+    final Erasurator erasurator = new Erasurator();
 
     public ReportXML(RefCounter reporter) {
         super(reporter);
@@ -702,11 +702,11 @@ class ReportXML extends ReportGenerator {
 
     public void printHead() {
         startElement(XC.HEAD);
-        for (String key : config.keySet()) {
-            for (String value : config.get(key)) {
+        for (Map.Entry<String, String[]> stringEntry : config.entrySet()) {
+            for (String value : stringEntry.getValue()) {
                 // XXX to think about this repr
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute("", "", XC.HEAD_PROPERTY_NAME, "", key);
+                atts.addAttribute("", "", XC.HEAD_PROPERTY_NAME, "", stringEntry.getKey());
                 atts.addAttribute("", "", XC.HEAD_PROPERTY_VALUE, "", value);
                 startElement(XC.HEAD_PROPERTY, atts);
                 endElement(XC.HEAD_PROPERTY);

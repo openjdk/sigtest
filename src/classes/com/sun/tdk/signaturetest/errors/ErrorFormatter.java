@@ -47,7 +47,7 @@ public class ErrorFormatter {
     /**
      * Output stream intended to print error messages.
      */
-    PrintWriter out;
+    final PrintWriter out;
     /**
      * Number of added errors.
      */
@@ -116,11 +116,11 @@ public class ErrorFormatter {
         /**
          * Message templates for different error types.
          */
-        public MemberDescription errorObject;
+        public final MemberDescription errorObject;
         /**
          * Name of the class affected by <code>this</code> error message.
          */
-        public String className;
+        public final String className;
         /**
          * Class or class member affected by <code>this</code> error message.
          */
@@ -132,7 +132,7 @@ public class ErrorFormatter {
         /**
          * Type of <code>this</code> error message.
          */
-        public MessageType messageType;
+        public final MessageType messageType;
         private Level level = Level.SEVERE;
 
         /**

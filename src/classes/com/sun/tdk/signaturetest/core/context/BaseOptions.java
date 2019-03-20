@@ -33,7 +33,7 @@ import java.util.EnumSet;
  */
 public class BaseOptions extends Options {
 
-    private EnumSet<Option> options = EnumSet.of(Option.X_JIMAGE, Option.DEBUG,
+    private final EnumSet<Option> options = EnumSet.of(Option.X_JIMAGE, Option.DEBUG,
             Option.PACKAGE, Option.PURE_PACKAGE, Option.EXCLUDE, Option.FILE_NAME, Option.TEST_URL,
             Option.API_EXCLUDE, Option.API_INCLUDE, Option.CLASSPATH,
             Option.ALL_PUBLIC,  Option.HELP, Option.VERSION, Option.STATIC, Option.MODULES);

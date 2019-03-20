@@ -40,14 +40,14 @@ import java.util.*;
  */
 public abstract class ModBase extends SigTest {
     protected static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ModBase.class);
-    private PackageGroup modIncl;
-    private PackageGroup modExcl;
-    private PackageGroup modExact;
-    private PackageGroup pkgIncl;
-    private PackageGroup pkgExcl;
+    private final PackageGroup modIncl;
+    private final PackageGroup modExcl;
+    private final PackageGroup modExact;
+    private final PackageGroup pkgIncl;
+    private final PackageGroup pkgExcl;
     protected String apiVer = "";
 
-    protected SimpleErrorFormatter errorFormatter = new SimpleErrorFormatter();
+    protected final SimpleErrorFormatter errorFormatter = new SimpleErrorFormatter();
 
     public ModBase() {
         modIncl = new PackageGroup(true);
@@ -93,8 +93,7 @@ public abstract class ModBase extends SigTest {
         String lClassName = "com.sun.tdk.signaturetest.loaders.ModuleLoader";
         try {
             Class<ModuleDescriptionLoader> c = (Class<ModuleDescriptionLoader>) Class.forName(lClassName);
-            ModuleDescriptionLoader md = c.newInstance();
-            return md;
+            return c.newInstance();
         } catch (Throwable e) {
             //e.printStackTrace();
         }
@@ -257,7 +256,7 @@ public abstract class ModBase extends SigTest {
 
     class SimpleErrorFormatter {
 
-        private List<String> errors = new ArrayList<>();
+        private final List<String> errors = new ArrayList<>();
 
         void addError(String formatStr, Object... args) {
             errors.add(String.format(formatStr, args));

@@ -55,11 +55,11 @@ import java.util.regex.Pattern;
  */
 public class Erasurator {
 
-    private Map<String, String> globalParameters = new HashMap<>();
-    private Map<String, String> localParameters = new HashMap<>();
-    private Set<String> unresolvedWarnings = new HashSet<>();
-    private static I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Erasurator.class);
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private final Map<String, String> globalParameters = new HashMap<>();
+    private final Map<String, String> localParameters = new HashMap<>();
+    private final Set<String> unresolvedWarnings = new HashSet<>();
+    private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Erasurator.class);
+    private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     public ClassDescription erasure(ClassDescription clz) {
 
@@ -362,24 +362,25 @@ public class Erasurator {
 
     private static String maskDollar(String str) {
         int pos;
-        String tmp = str, result = "";
+        String tmp = str;
+        StringBuilder result = new StringBuilder();
 
         do {
             pos = tmp.indexOf('$');
             if (pos != -1) {
-                result += tmp.substring(0, pos);
-                result += "\\$";
+                result.append(tmp, 0, pos);
+                result.append("\\$");
                 tmp = tmp.substring(pos + 1);
             }
         } while (pos != -1);
 
-        result += tmp;
+        result.append(tmp);
 
-        return result;
+        return result.toString();
     }
     // begin of line + % + any numbers
-    private static Pattern simpleParamName = Pattern.compile("^%\\d+?");
+    private static final Pattern simpleParamName = Pattern.compile("^%\\d+?");
     //    private static Pattern simpleParamUsage = Pattern.compile("<.+?>");
-    private static Pattern simpleParamUsage = Pattern.compile("<[^<>]+?>");
-    private static Pattern replaceParamUsage = Pattern.compile("\\{.+?\\}");
+    private static final Pattern simpleParamUsage = Pattern.compile("<[^<>]+?>");
+    private static final Pattern replaceParamUsage = Pattern.compile("\\{.+?\\}");
 }

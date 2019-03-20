@@ -100,10 +100,8 @@ public class AnnotationParser {
             }
         }
 
-        if (theRest != null) {
-            theRest.delete(0, theRest.length() - 1); // clear old if any
-            theRest.append(rest);
-        }
+        theRest.delete(0, theRest.length() - 1); // clear old if any
+        theRest.append(rest);
 
         return item;
 

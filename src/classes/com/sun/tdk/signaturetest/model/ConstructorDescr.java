@@ -131,16 +131,12 @@ public final class ConstructorDescr extends MemberDescription {
 
     public String getSignature() {
 
-        StringBuffer buf = new StringBuffer();
-
-        buf.append(declaringClass);
-        buf.append(delimiter);
-        buf.append(name);
-        buf.append('(');
-        buf.append(args);
-        buf.append(')');
-
-        return buf.toString();
+        return declaringClass +
+                delimiter +
+                name +
+                '(' +
+                args +
+                ')';
     }
 
     protected void populateDependences(Set<String> set) {
