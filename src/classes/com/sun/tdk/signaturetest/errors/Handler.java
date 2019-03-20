@@ -88,7 +88,7 @@ public abstract class Handler {
     protected static final ArrayList<String> EMPTY_ARRAY_LIST = new ArrayList<>();
 
     protected static ArrayList<String> stringToArrayList(String source, String delimiter) {
-        if ((source == null) || source.length() == 0) {
+        if ((source == null) || source.isEmpty()) {
             return EMPTY_ARRAY_LIST;
         }
 
@@ -200,10 +200,10 @@ class ModifiersHandler extends PairedHandler {
             c2.removeAll(c1);
             c1.removeAll(c3);
 
-            if (c1.size() != 0) {
+            if (!c1.isEmpty()) {
                 addDef("    - " + c1.toString());
             }
-            if (c2.size() != 0) {
+            if (!c2.isEmpty()) {
                 addDef("    + " + c2.toString());
             }
             return true;
@@ -281,10 +281,10 @@ class TypeParametersHandler extends PairedHandler {
             c2.removeAll(c1);
             c1.removeAll(c3);
 
-            if (c1.size() != 0) {
+            if (!c1.isEmpty()) {
                 addDef("    - Type parameters: " + c1.toString().trim());
             }
-            if (c2.size() != 0) {
+            if (!c2.isEmpty()) {
                 addDef("    + Type parameters: " + c2.toString().trim());
             }
             return true;
@@ -293,7 +293,7 @@ class TypeParametersHandler extends PairedHandler {
     }
 
     private String trimTypeParameter(String s) {
-        if ((s == null) || s.length() == 0) {
+        if ((s == null) || s.isEmpty()) {
             return "";
         }
         StringBuffer sb = new StringBuffer(s);
@@ -323,10 +323,10 @@ class ThrowsHandler extends PairedHandler {
             c2.removeAll(c1);
             c1.removeAll(c3);
 
-            if (c1.size() != 0) {
+            if (!c1.isEmpty()) {
                 addDef("    - Throws: " + c1.toString());
             }
-            if (c2.size() != 0) {
+            if (!c2.isEmpty()) {
                 addDef("    + Throws: " + c2.toString());
             }
             return true;
@@ -347,10 +347,10 @@ class AnnotationHandler extends PairedHandler {
             c2.removeAll(c1);
             c1.removeAll(c3);
 
-            if (c1.size() != 0) {
+            if (!c1.isEmpty()) {
                 addDef("    - Anno: " + c1.toString());
             }
-            if (c2.size() != 0) {
+            if (!c2.isEmpty()) {
                 addDef("    + Anno: " + c2.toString());
             }
             return true;

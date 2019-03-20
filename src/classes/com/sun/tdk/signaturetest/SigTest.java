@@ -555,7 +555,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
                     Member memval = annotation.findByName("value");
                     if (memval != null) {
                         List<AnnotationItem> newAnns = ap.unpack(memval.value);
-                        if (newAnns != null && newAnns.size() > 0) {
+                        if (newAnns != null && !newAnns.isEmpty()) {
                             unpackedAnnotations.addAll(newAnns);
                             toRemove.add(annotation);
                         }

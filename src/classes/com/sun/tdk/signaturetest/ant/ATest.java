@@ -144,7 +144,7 @@ public class ATest extends ABase {
             params.add(Option.FORMATHUMAN.getKey());
         }
 
-        if (out != null && out.length() > 0) {
+        if (out != null && !out.isEmpty()) {
             params.add(SigTest.OUT_OPTION);
             params.add(out);
         }
@@ -167,12 +167,12 @@ public class ATest extends ABase {
         }
 
         // package
-        if (pac.size() == 0) {
+        if (pac.isEmpty()) {
             throw new BuildException("Package is not specified");
         }
 
         // filename
-        if (fileName == null || fileName.length() == 0) {
+        if (fileName == null || fileName.isEmpty()) {
             throw new BuildException("Filename is not specified");
         }
 

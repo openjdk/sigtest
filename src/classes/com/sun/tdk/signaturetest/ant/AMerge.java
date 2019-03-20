@@ -111,7 +111,7 @@ public class AMerge extends ASuperBase {
     }
 
     private void checkParams() throws BuildException {
-        if (files.size() == 0) {
+        if (files.isEmpty()) {
             throw new BuildException("Files are not specified");
         }
 

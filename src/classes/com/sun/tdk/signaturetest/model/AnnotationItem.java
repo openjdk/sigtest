@@ -333,7 +333,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
     }
 
     public static AnnotationItem[] toArray(List<AnnotationItem> alist) {
-        if (alist == null || alist.size() == 0) {
+        if (alist == null || alist.isEmpty()) {
             return EMPTY_ANNOTATIONITEM_ARRAY;
         }
 

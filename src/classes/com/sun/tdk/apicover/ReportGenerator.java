@@ -827,7 +827,7 @@ class ReportXML extends ReportGenerator {
         if (res != null) {
             return res;
         }
-        return (type.length() == 0) ? "" : "L" + type.replace('.', '/') + ";";
+        return (type.isEmpty()) ? "" : "L" + type.replace('.', '/') + ";";
     }
 
     void printMember(MemberDescription md, int coverCount) {

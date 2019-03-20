@@ -853,7 +853,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
         StringBuffer sb = new StringBuffer();
 
-        if (parser.method_args != null && parser.method_args.size() != 0) {
+        if (parser.method_args != null && !parser.method_args.isEmpty()) {
             sb.append(parser.method_args.get(0));
             for (int i = 1; i < parser.method_args.size(); i++) {
                 sb.append(MemberDescription.ARGS_DELIMITER).append(parser.method_args.get(i));
@@ -863,7 +863,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         fid.setArgs(sb.toString());
 
         sb.setLength(0);
-        if (parser.method_throws != null && parser.method_throws.size() != 0) {
+        if (parser.method_throws != null && !parser.method_throws.isEmpty()) {
             sb.append(parser.method_throws.get(0));
             for (int i = 1; i < parser.method_throws.size(); i++) {
                 sb.append(MemberDescription.THROWS_DELIMITER).append(parser.method_throws.get(i));
@@ -1361,11 +1361,11 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
                 //  first bound is erasure and must stay in place
                 //  remaining bounds (if any) are sorted
-                if (bounds.size() > 0) {
+                if (!bounds.isEmpty()) {
                     String first = bounds.remove(0);
                     sb.append(" extends ").append(first);
 
-                    if (bounds.size() != 0) {
+                    if (!bounds.isEmpty()) {
                         Collections.sort(bounds);
                         for (String bound : bounds) {
                             sb.append(" & ").append(bound);
@@ -1459,7 +1459,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                         s = s.substring(object.length()).trim();
                     }
 
-                    return (s.length() > 0) ? "? extends " + s : "?";
+                    return (!s.isEmpty()) ? "? extends " + s : "?";
                 }
 
                 case '-':

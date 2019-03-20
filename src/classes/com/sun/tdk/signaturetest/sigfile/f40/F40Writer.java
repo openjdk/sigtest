@@ -182,7 +182,7 @@ public class F40Writer implements Writer {
         buf.append(memberType);
 
         String modifiers = Modifier.toString(memberType, m.getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }
@@ -214,7 +214,7 @@ public class F40Writer implements Writer {
         buf.append(memberType);
 
         String modifiers = Modifier.toString(memberType, m.getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }
@@ -233,7 +233,7 @@ public class F40Writer implements Writer {
         buf.append(')');
 
         String throwables = m.getThrowables();
-        if (throwables.length() > 0) {
+        if (!throwables.isEmpty()) {
             buf.append(" throws ");
             buf.append(throwables);
         }
@@ -256,7 +256,7 @@ public class F40Writer implements Writer {
         buf.append(memberType);
 
         String modifiers = Modifier.toString(memberType, m.getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }
@@ -270,7 +270,7 @@ public class F40Writer implements Writer {
 
         String type = m.getType();
 
-        if (type.length() != 0) {
+        if (!type.isEmpty()) {
             buf.append(' ');
             buf.append(type);
         }
@@ -282,7 +282,7 @@ public class F40Writer implements Writer {
         buf.append(')');
 
         String throwables = m.getThrowables();
-        if (throwables.length() > 0) {
+        if (!throwables.isEmpty()) {
             buf.append(" throws ");
             buf.append(throwables);
         }
@@ -295,14 +295,14 @@ public class F40Writer implements Writer {
         buf.append(memberType);
 
         String modifiers = Modifier.toString(memberType, m.getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }
 
         String type = m.getType();
 
-        if (type.length() != 0) {
+        if (!type.isEmpty()) {
             buf.append(' ');
             buf.append(type);
         }
@@ -334,7 +334,7 @@ public class F40Writer implements Writer {
         buf.append(memberType);
 
         String modifiers = Modifier.toString(memberType, m.getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }

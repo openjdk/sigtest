@@ -490,7 +490,7 @@ public class Setup extends SigTest {
         }
 
         // print warnings
-        if (isClosedFile && excludedClasses.size() != 0) {
+        if (isClosedFile && !excludedClasses.isEmpty()) {
 
             boolean printHeader = true;
 

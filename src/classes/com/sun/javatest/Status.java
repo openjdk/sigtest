@@ -206,7 +206,7 @@ public class Status {
      * status reason and the additional information in <em>aux</em>.
      */
     public Status augment(String aux) {
-        if (aux == null || aux.length() == 0) {
+        if (aux == null || aux.isEmpty()) {
             return this;
         } else {
             return new Status(type, (reason + " [" + aux + "]"));
@@ -270,7 +270,7 @@ public class Status {
      * @see #parse
      */
     public String toString() {
-        if (reason == null || reason.length() == 0) {
+        if (reason == null || reason.isEmpty()) {
             return texts[type];
         } else {
             return texts[type] + " " + reason;

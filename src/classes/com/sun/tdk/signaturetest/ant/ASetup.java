@@ -128,12 +128,12 @@ public class ASetup extends ABase {
         }
 
         // package
-        if (pac.size() == 0) {
+        if (pac.isEmpty()) {
             throw new BuildException("Package is not specified");
         }
 
         // filename
-        if (fileName == null || fileName.length() == 0) {
+        if (fileName == null || fileName.isEmpty()) {
             throw new BuildException("Filename is not specified");
         }
 

@@ -141,7 +141,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
                     out.println(current.className + ":"
                             + space(' ', currentTab - current.className.length() - 1)
                             + current.definition);
-                    if (isVerbose() && current.tail.length() != 0) {
+                    if (isVerbose() && !current.tail.isEmpty()) {
                         out.println(i18n.getString("SortedErrorFormatter.error.affected", current.tail));
                     }
                 }
@@ -149,7 +149,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
                 out.println(current);
             }
         }
-        if (failedMessages.size() > 0) {
+        if (!failedMessages.isEmpty()) {
             out.println("");
         }
 
@@ -274,11 +274,11 @@ public class SortedErrorFormatter extends ErrorFormatter {
                     for (i = k; --i >= 0; ) {
                         Message msgi = v.get(i);
                         if (msgi.className.equals(supk)) {
-                            if (msgi.tail.length() != 0) {
+                            if (!msgi.tail.isEmpty()) {
                                 msgi.tail += ",";
                             }
                             msgi.tail += msgk.className;
-                            if (msgk.tail.length() != 0) {
+                            if (!msgk.tail.isEmpty()) {
                                 msgi.tail += "," + msgk.tail;
                             }
                             exclude.add(v.get(k));

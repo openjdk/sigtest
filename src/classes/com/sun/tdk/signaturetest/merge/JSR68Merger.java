@@ -281,7 +281,7 @@ public class JSR68Merger extends FeaturesHolder {
                 noGenPos = i;
             }
         }
-        if (hasGen.size() == 0 || noGen.size() == 0) {
+        if (hasGen.isEmpty() || noGen.isEmpty()) {
             return true;
         }
 

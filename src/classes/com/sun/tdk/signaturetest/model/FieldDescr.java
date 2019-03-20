@@ -78,12 +78,12 @@ public final class FieldDescr extends MemberDescription {
         buf.append("field");
 
         String modifiers = Modifier.toString(memberType, getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }
 
-        if (type.length() != 0) {
+        if (!type.isEmpty()) {
             buf.append(' ');
             buf.append(type);
         }

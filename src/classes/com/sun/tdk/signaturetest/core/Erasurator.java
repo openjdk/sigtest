@@ -100,7 +100,7 @@ public class Erasurator {
             newS = m.replaceAll("");
         }
 
-        if (globalParameters.size() == 0 && localParameters.size() == 0) {
+        if (globalParameters.isEmpty() && localParameters.isEmpty()) {
             return newS;  // nothing to do
         }
         m = replaceParamUsage.matcher(newS);
@@ -303,7 +303,7 @@ public class Erasurator {
 
     public static Collection<MemberDescription> replaceFormalParameters(String fqn, Collection<MemberDescription> members, List<String> actualTypeParamList, boolean skipRawTypes) {
 
-        assert actualTypeParamList.size() != 0;
+        assert !actualTypeParamList.isEmpty();
 
         Collection<MemberDescription> result = new ArrayList<>();
 

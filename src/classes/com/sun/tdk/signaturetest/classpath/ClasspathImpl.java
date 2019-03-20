@@ -160,7 +160,7 @@ public class ClasspathImpl implements Classpath {
         ClasspathEntry previosEntry = null;
 
         //creates Hashtable with ZipFiles and directories from path.
-        while (path != null && path.length() > 0) {
+        while (path != null && !path.isEmpty()) {
             String s;
             int index = path.indexOf(pathSeparator);
             if (index < 0) {

@@ -76,7 +76,7 @@ public final class InnerDescr extends MemberDescription {
         }
 
         String modifiers = Modifier.toString(memberType, getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }

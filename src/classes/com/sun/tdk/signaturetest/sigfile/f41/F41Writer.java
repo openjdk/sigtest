@@ -50,7 +50,7 @@ public class F41Writer extends F40Writer {
         buf.append(memberType);
 
         String modifiers = Modifier.toString(memberType, m.getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }

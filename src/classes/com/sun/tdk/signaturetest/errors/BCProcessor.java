@@ -102,7 +102,7 @@ public class BCProcessor extends HumanErrorFormatter {
             }
             out.println("  " + prefix + current.definition + " : " + current.errorObject);
         }
-        if (failedMessages.size() > 0) {
+        if (!failedMessages.isEmpty()) {
             out.println("");
         }
     }

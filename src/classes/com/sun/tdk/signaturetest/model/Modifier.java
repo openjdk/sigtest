@@ -87,7 +87,7 @@ public final class Modifier implements Serializable {
 
         int result = 0;
 
-        while (elems.size() > 0) {
+        while (!elems.isEmpty()) {
             Modifier m = getModifier(elems.get(0));
             if (m != null) {
                 result |= m.value;

@@ -175,7 +175,7 @@ public class ClassCorrector implements Transformer {
 
         Set<String> oldInt = classHierarchy.getAllImplementedInterfaces(clName);
 
-        if (oldInt.size() != 0) {
+        if (!oldInt.isEmpty()) {
 
             Set<String> newInt = classHierarchy.getAllImplementedInterfaces(replacement);
 
@@ -256,9 +256,9 @@ public class ClassCorrector implements Transformer {
                 ArrayList<ArrayList<String>> paths = new ArrayList<>();
                 List<String> currentPath = new ArrayList<>();
                 getPaths(paths, currentPath, replaceWithClassName, clName);
-                if (paths.size() > 0) {
+                if (!paths.isEmpty()) {
                     ArrayList<String> shorterPath = paths.get(0);
-                    if (shorterPath.size() > 0) {
+                    if (!shorterPath.isEmpty()) {
                         return shorterPath.get(shorterPath.size() - 1);
                     }
                 }
@@ -268,7 +268,7 @@ public class ClassCorrector implements Transformer {
         }
 
         // supers sorted from analyzed class to superclass
-        if (supers.size() > 0) {
+        if (!supers.isEmpty()) {
             // used for members - finds nearest visible subclass
             if (!findToSuper) {
                 int i = supers.indexOf(clName);
@@ -382,7 +382,7 @@ public class ClassCorrector implements Transformer {
         while (tz.hasMoreTokens()) {
             String param = tz.nextToken().trim();
 
-            if (param.length() > 0) {
+            if (!param.isEmpty()) {
 
                 String prefix = "? super ";
                 if (param.indexOf(prefix) == 0) {
@@ -712,7 +712,7 @@ public class ClassCorrector implements Transformer {
 
     private boolean isInvisibleClass(String fqname) {
 
-        if (fqname.length() == 0) // constructors' return type
+        if (fqname.isEmpty()) // constructors' return type
         {
             return false;
         }

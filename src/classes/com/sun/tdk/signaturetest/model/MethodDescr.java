@@ -86,7 +86,7 @@ public final class MethodDescr extends MemberDescription {
         buf.append("method");
 
         String modifiers = Modifier.toString(memberType, getModifiers(), true);
-        if (modifiers.length() != 0) {
+        if (!modifiers.isEmpty()) {
             buf.append(' ');
             buf.append(modifiers);
         }
@@ -96,7 +96,7 @@ public final class MethodDescr extends MemberDescription {
             buf.append(typeParameters);
         }
 
-        if (type.length() != 0) {
+        if (!type.isEmpty()) {
             buf.append(' ');
             buf.append(type);
         }
@@ -109,7 +109,7 @@ public final class MethodDescr extends MemberDescription {
         buf.append(args);
         buf.append(')');
 
-        if (throwables.length() > 0) {
+        if (!throwables.isEmpty()) {
             buf.append(" throws ");
             buf.append(throwables);
         }

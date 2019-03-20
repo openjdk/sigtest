@@ -42,7 +42,7 @@
              destdir="${build.javadoc.dir}"
              author="false"
              version="false"
-             additionalparam="-breakiterator -html5"
+             additionalparam="-breakiterator"
              classpath="${build.javatest.dir}:${java.class.path}"
     >
         <packageset dir="${build.src.classes.dir}">

@@ -378,7 +378,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
             String first = tmp.remove(0);
             sb.append(" extends ").append(first);
 
-            if (tmp.size() != 0) {
+            if (!tmp.isEmpty()) {
                 Collections.sort(tmp);
                 for (String o : tmp) {
                     sb.append(" & ").append(o);
@@ -441,7 +441,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
                 if (s.startsWith(object)) {
                     s = s.substring(object.length()).trim();
                 }
-                if (s.length() > 0) {
+                if (!s.isEmpty()) {
                     sb.append(" extends ").append(s);
                 }
             }

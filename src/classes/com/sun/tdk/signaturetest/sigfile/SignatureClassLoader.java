@@ -103,7 +103,7 @@ public abstract class SignatureClassLoader implements Reader {
 
             currentLine = currentLine.trim();
             currentLine = preprocessLine(currentLine);
-            if (currentLine.length() == 0 || currentLine.startsWith("#")) {
+            if (currentLine.isEmpty() || currentLine.startsWith("#")) {
                 continue;
             }
             MemberType type = MemberType.getItemType(currentLine);
@@ -126,7 +126,7 @@ public abstract class SignatureClassLoader implements Reader {
         }
         in.reset();
 
-        if (classDescr == null && definitions.size() == 0) {
+        if (classDescr == null && definitions.isEmpty()) {
             return null;
         }
 
@@ -145,7 +145,7 @@ public abstract class SignatureClassLoader implements Reader {
         while (line != null && !line.trim().isEmpty()) {
             line = line.trim();
             line = preprocessLine(line);
-            if (line.length() == 0 || line.startsWith("#")) {
+            if (line.isEmpty() || line.startsWith("#")) {
                 line = in.readLine();
                 continue;
             }

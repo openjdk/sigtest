@@ -90,12 +90,12 @@ public class AnnotationParser {
         String rest = str.substring(endPos + 1);
         str = str.substring(pos + 1, endPos);
 
-        if (str.length() != 0) {
+        if (!str.isEmpty()) {
 
-            while (str.length() > 0 && str.charAt(0) != ')') {
+            while (!str.isEmpty() && str.charAt(0) != ')') {
                 pos = parseMember(item, str);
                 str = str.substring(pos);
-                if (str.length() > 0 && str.charAt(0) == ',') {
+                if (!str.isEmpty() && str.charAt(0) == ',') {
                     str = str.substring(1).trim();
                 }
             }

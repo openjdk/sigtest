@@ -166,7 +166,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
                     StringBuffer name = new StringBuffer();
                     if (current.messageType != MessageType.CHNG_CLASSES_MEMBERS) {
                         out.println("    " + current.definition);
-                        if (isVerbose() && current.tail.length() != 0) {
+                        if (isVerbose() && !current.tail.isEmpty()) {
                             out.println(i18n.getString("SortedErrorFormatter.error.affected", current.tail));
                         }
                     } else {
@@ -184,7 +184,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
                 out.println(current);
             }
         }
-        if (failedMessages.size() > 0) {
+        if (!failedMessages.isEmpty()) {
             out.println("");
         }
     }

@@ -64,7 +64,7 @@ public class ThrowsNormalizer {
 
         String throwables = mr.getThrowables();
 
-        if (throwables.length() != 0) {
+        if (!throwables.isEmpty()) {
 
             xthrows.clear();
 

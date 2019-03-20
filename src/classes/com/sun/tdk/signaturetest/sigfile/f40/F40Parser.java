@@ -196,7 +196,7 @@ public class F40Parser implements Parser {
     }
 
     protected void appendAnnotations(MemberDescription fid, List<String> alist) {
-        if (alist.size() != 0) {
+        if (!alist.isEmpty()) {
 
             AnnotationItem[] tmp = new AnnotationItem[alist.size()];
             AnnotationParser par = new AnnotationParser();
@@ -287,7 +287,7 @@ public class F40Parser implements Parser {
             ctor.setArgs(s.substring(1, s.length() - 1));
         }
 
-        if (elems.size() != 0) {
+        if (!elems.isEmpty()) {
             s = getElem();
             if (!s.equals("throws")) {
                 err();
@@ -362,7 +362,7 @@ public class F40Parser implements Parser {
 
         field.setupMemberName(s, currentClassName);
 
-        if (elems.size() != 0) {
+        if (!elems.isEmpty()) {
             s = getElem();
             if (!s.startsWith("=")) {
                 err();
@@ -415,7 +415,7 @@ public class F40Parser implements Parser {
     private String getElem() {
         String s = null;
 
-        if (elems.size() != 0) {
+        if (!elems.isEmpty()) {
             s = elems.get(0);
             elems.remove(0);
         }
