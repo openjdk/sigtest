@@ -35,7 +35,7 @@ public abstract class Options {
     private final Map<Option, List<String>> values;
 
     protected Options() {
-        values = new HashMap<>();
+        values = new EnumMap<>(Option.class);
     }
 
     protected Options getParent() {

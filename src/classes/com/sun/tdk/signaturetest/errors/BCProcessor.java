@@ -535,8 +535,8 @@ public class BCProcessor extends HumanErrorFormatter {
         }
 
         protected boolean proc() {
-            Collection<String> c1 = Handler.stringToArrayList(m1.getThrowables(), ",");
-            Collection<String> c2 = Handler.stringToArrayList(m2.getThrowables(), ",");
+            Collection<String> c1 = Handler.stringToList(m1.getThrowables(), ",");
+            Collection<String> c2 = Handler.stringToList(m2.getThrowables(), ",");
 
             if (!c1.equals(c2)) {
                 newM.definition = i18n.getString("BCProcessor.error.3_4"); //"E3.4 - Changing normalized throw list";

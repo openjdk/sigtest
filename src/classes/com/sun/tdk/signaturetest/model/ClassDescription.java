@@ -351,7 +351,7 @@ public class ClassDescription extends MemberDescription {
      * Given the (qualified) class <code>name</code>, extract its package name.
      */
     public static String getPackageName(String name) {
-        int pos = name.lastIndexOf(".");
+        int pos = name.lastIndexOf('.');
         if (pos > 0) {
             return name.substring(0, pos);
         }

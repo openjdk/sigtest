@@ -103,7 +103,7 @@ public enum ModFeatures {
                 f = f.trim().toUpperCase();
                 if (!f.isEmpty()) {
                     try {
-                        res.add(ModFeatures.valueOf(f));
+                        res.add(valueOf(f));
                     } catch (IllegalArgumentException e) {
                         throw new IllegalArgumentException(f);
                     }

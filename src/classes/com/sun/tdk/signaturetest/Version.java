@@ -42,11 +42,11 @@ public class Version {
     public static final String build_user = "";
 
     public static String getVersionInfo() {
-        return i18n.getString("Main.usage.version", Version.Number) + '\n' +
+        return i18n.getString("Main.usage.version", Number) + '\n' +
                 "=========================\n" +
-                i18n.getString("Version.version.build", Version.build_time) + '\n' +
-                i18n.getString("Version.version.build_on", Version.build_os) + '\n' +
-                i18n.getString("Version.version.build_by", Version.build_user);
+                i18n.getString("Version.version.build", build_time) + '\n' +
+                i18n.getString("Version.version.build_on", build_os) + '\n' +
+                i18n.getString("Version.version.build_by", build_user);
     }
 
 }

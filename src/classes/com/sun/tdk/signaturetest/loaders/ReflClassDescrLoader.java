@@ -270,7 +270,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
         member.setType(MemberDescription.getTypeName(meth.getReturnType()));
 
         // create args
-        member.setArgs(ReflClassDescrLoader.getArgs(meth.getParameterTypes()));
+        member.setArgs(getArgs(meth.getParameterTypes()));
 
         // create throws clause
         member.setThrowables(getThrows(meth.getExceptionTypes()));
@@ -287,7 +287,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
                 ctor.getModifiers());
 
         // create args
-        member.setArgs(ReflClassDescrLoader.getArgs(ctor.getParameterTypes()));
+        member.setArgs(getArgs(ctor.getParameterTypes()));
 
         // create throws clause
         member.setThrowables(getThrows(ctor.getExceptionTypes()));

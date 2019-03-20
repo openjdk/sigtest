@@ -30,10 +30,7 @@ import com.sun.tdk.signaturetest.errors.ErrorFormatter.Message;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -85,15 +82,13 @@ public abstract class Handler {
                 || m.messageType == MessageType.MISS_ANNO);
     }
 
-    protected static final ArrayList<String> EMPTY_ARRAY_LIST = new ArrayList<>();
-
-    protected static ArrayList<String> stringToArrayList(String source, String delimiter) {
+    protected static List<String> stringToList(String source, String delimiter) {
         if ((source == null) || source.isEmpty()) {
-            return EMPTY_ARRAY_LIST;
+            return Collections.emptyList();
         }
 
         String[] strA;
-        ArrayList<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         try {
             strA = source.split(delimiter);
         } catch (PatternSyntaxException e) {
@@ -192,8 +187,8 @@ class ModifiersHandler extends PairedHandler {
 
     protected boolean proc() {
 
-        Collection<String> c1 = Handler.stringToArrayList(Modifier.toString(m1.getMemberType(), m1.getModifiers(), true), " ");
-        Collection<String> c2 = Handler.stringToArrayList(Modifier.toString(m2.getMemberType(), m2.getModifiers(), true), " ");
+        Collection<String> c1 = Handler.stringToList(Modifier.toString(m1.getMemberType(), m1.getModifiers(), true), " ");
+        Collection<String> c2 = Handler.stringToList(Modifier.toString(m2.getMemberType(), m2.getModifiers(), true), " ");
 
         if (!c1.equals(c2)) {
             Collection<String> c3 = new ArrayList<>(c2);
@@ -273,8 +268,8 @@ class TypeParametersHandler extends PairedHandler {
 
     protected boolean proc() {
 
-        Collection<String> c1 = Handler.stringToArrayList(trimTypeParameter(m1.getTypeParameters()), ", ");
-        Collection<String> c2 = Handler.stringToArrayList(trimTypeParameter(m2.getTypeParameters()), ", ");
+        Collection<String> c1 = Handler.stringToList(trimTypeParameter(m1.getTypeParameters()), ", ");
+        Collection<String> c2 = Handler.stringToList(trimTypeParameter(m2.getTypeParameters()), ", ");
 
         if (!c1.equals(c2)) {
             Collection<String> c3 = new ArrayList<>(c2);
@@ -314,8 +309,8 @@ class ThrowsHandler extends PairedHandler {
 
     protected boolean proc() {
 
-        Collection<String> c1 = Handler.stringToArrayList(m1.getThrowables(), ",");
-        Collection<String> c2 = Handler.stringToArrayList(m2.getThrowables(), ",");
+        Collection<String> c1 = Handler.stringToList(m1.getThrowables(), ",");
+        Collection<String> c2 = Handler.stringToList(m2.getThrowables(), ",");
 
         if (c1 != null && !c1.equals(c2)) {
 
@@ -339,8 +334,8 @@ class AnnotationHandler extends PairedHandler {
 
     protected boolean proc() {
 
-        Collection<String> c1 = annotationListToArrayList(m1.getAnnoList());
-        Collection<String> c2 = annotationListToArrayList(m2.getAnnoList());
+        Collection<String> c1 = annotationListToList(m1.getAnnoList());
+        Collection<String> c2 = annotationListToList(m2.getAnnoList());
 
         if (!c1.equals(c2)) {
             Collection<String> c3 = new ArrayList<>(c2);
@@ -359,9 +354,9 @@ class AnnotationHandler extends PairedHandler {
 
     }
 
-    private ArrayList<String> annotationListToArrayList(AnnotationItem[] a) {
+    private List<String> annotationListToList(AnnotationItem[] a) {
         if (a == null) {
-            return EMPTY_ARRAY_LIST;
+            return Collections.emptyList();
         }
         ArrayList<String> result = new ArrayList<>();
         for (AnnotationItem annotationItem : a) {

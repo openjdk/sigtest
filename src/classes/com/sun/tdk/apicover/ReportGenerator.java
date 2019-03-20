@@ -69,7 +69,7 @@ public abstract class ReportGenerator extends APIVisitor {
 
     DETAIL_LEVEL detail = DETAIL_LEVEL.NOT_COVERED_MEMB;
     FIELD_MODE fieldMode = FIELD_MODE.NOCONST;
-    Set<EXLUDE_MODE> excludeMode = new HashSet<>();
+    Set<EXLUDE_MODE> excludeMode = EnumSet.noneOf(EXLUDE_MODE.class);
     Map<String, String[]> config;
     Map<String, Field> results = new HashMap<>();
     Collection<String> xList = new ArrayList<>();
@@ -270,7 +270,7 @@ public abstract class ReportGenerator extends APIVisitor {
         if (xList.contains(str)) {
             return true;
         }
-        int i = str.lastIndexOf(".");
+        int i = str.lastIndexOf('.');
         if (i > 0) {
             return isPackageExcluded(str.substring(0, i));
         }

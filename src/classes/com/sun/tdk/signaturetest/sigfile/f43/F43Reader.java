@@ -116,7 +116,7 @@ public class F43Reader extends F42Reader {
             for (Elem r : reqs) {
                 ModuleDescription.Requires rq = new ModuleDescription.Requires();
                 rq.name = r.getAttribute(NAME);
-                Set<ModuleDescription.Requires.Modifier> ms = new HashSet<>();
+                Set<ModuleDescription.Requires.Modifier> ms = EnumSet.noneOf(ModuleDescription.Requires.Modifier.class);
                 if (TRUE.equals(r.getAttribute(ModuleDescription.Requires.Modifier.MANDATED.name().toLowerCase()))) {
                     ms.add(ModuleDescription.Requires.Modifier.MANDATED);
                 }

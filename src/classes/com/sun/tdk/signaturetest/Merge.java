@@ -51,7 +51,7 @@ public class Merge extends SigTest {
      * @see #run(String[], PrintWriter, PrintWriter)
      */
     public static void main(String[] args) {
-        Merge m = Merge.getInstance();
+        Merge m = getInstance();
         m.run(args, new PrintWriter(System.err, true), null);
         m.exit();
     }

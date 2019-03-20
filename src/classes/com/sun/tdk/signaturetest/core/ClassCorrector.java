@@ -726,7 +726,7 @@ public class ClassCorrector implements Transformer {
             return false;
         }
 
-        String pname = ClassCorrector.stripTypesAndArrays(fqname);
+        String pname = stripTypesAndArrays(fqname);
 
         if (PrimitiveTypes.isPrimitive(pname)) {
             return false;

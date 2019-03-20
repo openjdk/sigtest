@@ -183,9 +183,7 @@ public class Updater extends DefaultHandler {
 
     private void writeOut(String to, SigList sl) throws FileNotFoundException {
         try (PrintWriter pw = new PrintWriter(new FileOutputStream(to))) {
-            for (String o : sl) {
-                pw.write(o + '\n');
-            }
+            sl.print(pw);
         }
     }
 
@@ -202,15 +200,16 @@ public class Updater extends DefaultHandler {
         }
     }
 
-    class SigList extends ArrayList<String> {
+    class SigList {
 
+        private final List<String> sigList = new ArrayList<String>();
         private int startPos = -1;
 
         public boolean findClass(String className) {
             startPos = -1;
             int i = 0;
-            while (i < size()) {
-                String l = get(i);
+            while (i < sigList.size()) {
+                String l = sigList.get(i);
                 if (l.startsWith("CLSS ") && l.endsWith(" " + className)) {
                     startPos = i;
                     return true;
@@ -222,27 +221,27 @@ public class Updater extends DefaultHandler {
 
         public void removeCurrentClass() {
             if (startPos >= 0) {
-                while (!get(startPos).trim().isEmpty()) {
-                    remove(startPos);
+                while (!sigList.get(startPos).trim().isEmpty()) {
+                    sigList.remove(startPos);
                 }
             }
         }
 
         public void addText(String body) {
             StringTokenizer st = new StringTokenizer(body, "\n");
-            add("");
+            sigList.add("");
             while (st.hasMoreTokens()) {
-                add(st.nextToken().trim());
+                sigList.add(st.nextToken().trim());
             }
-            add("");
+            sigList.add("");
         }
 
         public boolean findPackageMember(String packageName) {
             startPos = -1;
             int i = 0;
             final String pSig = " " + packageName + ".";
-            while (i < size()) {
-                String l = get(i);
+            while (i < sigList.size()) {
+                String l = sigList.get(i);
                 if (l.startsWith("CLSS ")) {
                     int x = l.indexOf('<');
                     int y = l.indexOf(pSig);
@@ -258,10 +257,10 @@ public class Updater extends DefaultHandler {
 
         public boolean removeMember(String memberName) {
             if (startPos >= 0) {
-                for (int i = startPos; i < size(); i++) {
-                    String l = get(i).trim();
+                for (int i = startPos; i < sigList.size(); i++) {
+                    String l = sigList.get(i).trim();
                     if (memberName.equals(l)) {
-                        remove(i);
+                        sigList.remove(i);
                         return true;
                     } else {
                         if (l.isEmpty()) {
@@ -275,10 +274,10 @@ public class Updater extends DefaultHandler {
 
         public boolean changeMember(String oldMember, String newMember) {
             if (startPos >= 0) {
-                for (int i = startPos; i < size(); i++) {
-                    String l = get(i).trim();
+                for (int i = startPos; i < sigList.size(); i++) {
+                    String l = sigList.get(i).trim();
                     if (oldMember.equals(l)) {
-                        set(i, newMember);
+                        sigList.set(i, newMember);
                         return true;
                     } else {
                         if (l.isEmpty()) {
@@ -292,11 +291,11 @@ public class Updater extends DefaultHandler {
 
         public void pack() {
             boolean empty = false;
-            for (int i = 0; i < size(); i++) {
-                String l = get(i);
+            for (int i = 0; i < sigList.size(); i++) {
+                String l = sigList.get(i);
                 if (l.trim().isEmpty()) {
                     if (empty) {
-                        remove(i--);
+                        sigList.remove(i--);
                         continue;
                     } else {
                         empty = true;
@@ -309,15 +308,25 @@ public class Updater extends DefaultHandler {
 
         public boolean addMember(String memberName) {
             if (startPos >= 0) {
-                for (int i = startPos + 1; i < size(); i++) {
-                    String l = get(i).trim();
+                for (int i = startPos + 1; i < sigList.size(); i++) {
+                    String l = sigList.get(i).trim();
                     if (!l.startsWith(AnnotationItem.ANNOTATION_PREFIX)) {
-                        add(i, memberName);
+                        sigList.add(i, memberName);
                         return true;
                     }
                 }
             }
             return false;
+        }
+
+        public boolean add(String s) {
+            return sigList.add(s);
+        }
+
+        public void print(PrintWriter pw) {
+            for (String o : sigList) {
+                pw.write(o + '\n');
+            }
         }
     }
 

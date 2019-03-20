@@ -167,7 +167,7 @@ public class AnnotationParser {
         StringTokenizer st = new StringTokenizer(specificData, ";");
         while (st.hasMoreTokens()) {
             String set = st.nextToken();
-            int delPos = set.indexOf("=");
+            int delPos = set.indexOf('=');
             assert delPos > 0;
             String name = set.substring(0, delPos);
             String val = set.substring(delPos + 1);

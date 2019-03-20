@@ -145,7 +145,7 @@ public final class Modifier implements Serializable {
 
     public Modifier(String name, boolean isTracked) {
 
-        Modifier[] ms = Modifier.getAllModifiers();
+        Modifier[] ms = getAllModifiers();
         int v = 0;
 
         for (Modifier m : ms) {

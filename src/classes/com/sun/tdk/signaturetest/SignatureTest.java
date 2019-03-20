@@ -195,7 +195,7 @@ public class SignatureTest extends SigTest {
      * @param args arguments
      */
     public static void main(String[] args) {
-        SignatureTest t = SignatureTest.getInstance();
+        SignatureTest t = getInstance();
         t.run(args, new PrintWriter(System.err, true), null);
         t.exit();
     }
@@ -1548,7 +1548,7 @@ public class SignatureTest extends SigTest {
                     }
                 }
                 sb.append("]");
-                return ("Superclasses " + sb.toString() + " of class " + clName + " not found");
+                return ("Superclasses " + sb + " of class " + clName + " not found");
             }
         }
 

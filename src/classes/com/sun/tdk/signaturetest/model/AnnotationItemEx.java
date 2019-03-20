@@ -87,43 +87,43 @@ public class AnnotationItemEx extends AnnotationItem {
         switch (target_type) {
 
             // 3.3.1 Type parameters
-            case AnnotationItemEx.TARGET_METHOD_TYPE_PARAMETER:
-            case AnnotationItemEx.TARGET_CLASS_TYPE_PARAMETER:
+            case TARGET_METHOD_TYPE_PARAMETER:
+            case TARGET_CLASS_TYPE_PARAMETER:
                 setParameterIndex(is.readUnsignedByte()).setTracked(true);
                 break;
 
             // 3.3.2 Class supertypes: extends and implements clauses
-            case AnnotationItemEx.TARGET_CLASS_EXTENDS:
+            case TARGET_CLASS_EXTENDS:
                 setTypeIndex(is.readUnsignedShort()).setTracked(true);
                 break;
 
             // 3.3.3 Type parameter bounds
-            case AnnotationItemEx.TARGET_CLASS_TYPE_PARAMETER_BOUND:
-            case AnnotationItemEx.TARGET_METHOD_TYPE_PARAMETER_BOUND:
+            case TARGET_CLASS_TYPE_PARAMETER_BOUND:
+            case TARGET_METHOD_TYPE_PARAMETER_BOUND:
                 setParameterIndex(is.readUnsignedByte()).setBoundIndex(is.readUnsignedByte()).setTracked(true);
                 break;
 
             // 3.3.4 Method return type, receiver, and fields
-            case AnnotationItemEx.TARGET_FIELD:
-            case AnnotationItemEx.TARGET_METHOD_RETURN:
-            case AnnotationItemEx.TARGET_METHOD_RECEIVER:
+            case TARGET_FIELD:
+            case TARGET_METHOD_RETURN:
+            case TARGET_METHOD_RECEIVER:
                 setTracked(true);
                 break;
 
             // 3.3.5 Method formal parameters
-            case AnnotationItemEx.TARGET_METHOD_FORMAL_PARAMETER:
+            case TARGET_METHOD_FORMAL_PARAMETER:
                 setParameterIndex(is.readUnsignedByte()).setTracked(true);
                 break;
 
             // 3.3.6 throws clauses
-            case AnnotationItemEx.TARGET_THROWS:
+            case TARGET_THROWS:
                 setTypeIndex(is.readUnsignedShort()).setTracked(true);
                 break;
 
             //----------------------------------------------------------
             // 3.3.7 Local variables and resource variables
-            case AnnotationItemEx.TARGET_LOCAL_VARIABLE:
-            case AnnotationItemEx.TARGET_RESOURCE_VARIABLE:
+            case TARGET_LOCAL_VARIABLE:
+            case TARGET_RESOURCE_VARIABLE:
                 int table_length = is.readUnsignedShort();
                 for (int i = 0; i < table_length; i++) {
                     is.readUnsignedShort();
@@ -134,28 +134,28 @@ public class AnnotationItemEx extends AnnotationItem {
                 break;
 
             // 3.3.8 Exception parameters (catch clauses)
-            case AnnotationItemEx.TARGET_EXCEPTION_PARAMETER:
+            case TARGET_EXCEPTION_PARAMETER:
 //                is.readUnsignedShort();
                 is.readUnsignedByte();
                 setTracked(false);
                 break;
 
             // 3.3.9 Type tests, object creation, and method/constructor references
-            case AnnotationItemEx.TARGET_INSTANCEOF:
-            case AnnotationItemEx.TARGET_NEW:
-            case AnnotationItemEx.TARGET_CONSTRUCTOR_REFERENCE:
-            case AnnotationItemEx.TARGET_METHOD_REFERENCE:
+            case TARGET_INSTANCEOF:
+            case TARGET_NEW:
+            case TARGET_CONSTRUCTOR_REFERENCE:
+            case TARGET_METHOD_REFERENCE:
 
                 is.readUnsignedShort();
                 setTracked(false);
                 break;
 
             // 3.3.10 Casts and type arguments to constructor/method invocation/references
-            case AnnotationItemEx.TARGET_CAST:
-            case AnnotationItemEx.TARGET_CONSTRUCTOR_INVOCATION_TYPE_ARGUMENT:
-            case AnnotationItemEx.TARGET_METHOD_INVOCATION_TYPE_ARGUMENT:
-            case AnnotationItemEx.TARGET_CONSTRUCTOR_REFERENCE_TYPE_ARGUMENT:
-            case AnnotationItemEx.TARGET_METHOD_REFERENCE_TYPE_ARGUMENT:
+            case TARGET_CAST:
+            case TARGET_CONSTRUCTOR_INVOCATION_TYPE_ARGUMENT:
+            case TARGET_METHOD_INVOCATION_TYPE_ARGUMENT:
+            case TARGET_CONSTRUCTOR_REFERENCE_TYPE_ARGUMENT:
+            case TARGET_METHOD_REFERENCE_TYPE_ARGUMENT:
 
                 is.readUnsignedShort();
                 is.readUnsignedByte();

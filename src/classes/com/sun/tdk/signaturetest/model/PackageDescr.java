@@ -44,7 +44,7 @@ public class PackageDescr {
 
     public PackageDescr(String fqname) {
         this.fqname = fqname;
-        this.name = fqname.lastIndexOf(".") > 0 ? fqname.substring(fqname.lastIndexOf(".") + 1) : fqname;
+        this.name = fqname.lastIndexOf('.') > 0 ? fqname.substring(fqname.lastIndexOf('.') + 1) : fqname;
         this.classes = new ArrayList<>();
         this.subpackages = new ArrayList<>();
     }
