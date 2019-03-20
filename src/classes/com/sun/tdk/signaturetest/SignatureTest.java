@@ -1024,13 +1024,13 @@ public class SignatureTest extends SigTest {
 
     private boolean hasClassParameter(ClassDescription cl) {
         String tp = cl.getTypeParameters();
-        boolean result = (tp != null) && (!"".equals(tp));
+        boolean result = (tp != null) && (!tp.isEmpty());
         // check all the members also
         if (!result) {
             for (Iterator<MemberDescription> e = cl.getMembersIterator(); e.hasNext(); ) {
                 MemberDescription mr = e.next();
                 String tpM = mr.getTypeParameters();
-                if ((tpM != null) && (!"".equals(tpM))) {
+                if ((tpM != null) && (!tpM.isEmpty())) {
                     result = true;
                     break;
                 }

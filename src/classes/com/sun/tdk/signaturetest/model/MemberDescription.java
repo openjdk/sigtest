@@ -607,7 +607,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
      * @return simplified arguments as String
      */
     public String getSimplifiedArgs() {
-        if (args == null || args.equals("")) {
+        if (args == null || args.isEmpty()) {
             return args;
         } else {
             StringBuffer sb = new StringBuffer();

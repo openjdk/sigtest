@@ -116,7 +116,7 @@ public class AMerge extends ASuperBase {
         }
 
         // write
-        if (write == null || "".equals(write)) {
+        if (write == null || write.isEmpty()) {
             throw new BuildException("Output file is not specified");
         }
     }

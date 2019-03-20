@@ -219,10 +219,10 @@ class ReturnTypeHandler extends PairedHandler {
         String t2 = m2.getType();
 
         if (t1 != null && !t1.equals(t2)) {
-            if (!t1.equals("")) {
+            if (!t1.isEmpty()) {
                 addDef("    - type: " + t1);
             }
-            if ((t2 != null) && (!t2.equals(""))) {
+            if ((t2 != null) && (!t2.isEmpty())) {
                 addDef("    + type: " + t2);
             }
             return true;
@@ -256,10 +256,10 @@ class ConstantValueHandler extends PairedHandler {
         String v1 = f1.getConstantValue() == null ? "" : f1.getConstantValue();
         String v2 = f2.getConstantValue() == null ? "" : f2.getConstantValue();
         if (!v1.equals(v2)) {
-            if (!"".equals(v1)) {
+            if (!v1.isEmpty()) {
                 addDef("    - value: " + v1);
             }
-            if (!"".equals(v2)) {
+            if (!v2.isEmpty()) {
                 addDef("    + value: " + v2);
             }
 

@@ -71,7 +71,7 @@ public class BatchFileParser {
             while ((currLine = r.readLine()) != null) {
                 currLine = currLine.trim();
                 Matcher m = setPattern.matcher(currLine);
-                if (currLine.startsWith("#") || "".equals(currLine)) { // comment or empty line
+                if (currLine.startsWith("#") || currLine.isEmpty()) { // comment or empty line
                     continue;
                 } else if (m.find()) {
                     props.put(m.group(1), m.group(2));

@@ -120,7 +120,7 @@ public class PackageGroup {
      * <code>name</code> is nonempty.
      */
     private static String getPackageName(String name) {
-        return name + ((name.endsWith(".") || name.equals("")) ? "" : ".");
+        return name + ((name.endsWith(".") || name.isEmpty()) ? "" : ".");
     }
 
     public void addPackages(List<String> packs) {

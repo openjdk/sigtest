@@ -130,7 +130,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
                 lastType = current.messageType;
             }
             if (hasHeader) {
-                if (current.definition.equals("")) {
+                if (current.definition.isEmpty()) {
                     out.println(current.className);
                 } else {
                     int currentTab = (current.className.length() + 1) / tabSize;

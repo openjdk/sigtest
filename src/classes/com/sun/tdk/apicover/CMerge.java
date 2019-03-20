@@ -460,7 +460,7 @@ public class CMerge {
                 Element h = (Element) nl.item(i);
                 if (h.getAttribute(XC.HEAD_PROPERTY_NAME).equals(key)) {
                     String v = h.getAttribute(XC.HEAD_PROPERTY_VALUE);
-                    if (v == null || "".equals(v)) {
+                    if (v == null || v.isEmpty()) {
                         return def;
                     } else {
                         return v;
@@ -499,7 +499,7 @@ public class CMerge {
                     break;
                 }
                 String pName = p.getAttribute(XC.PACKAGE_NAME);
-                if ("".equals(pName)) {
+                if (pName != null && pName.isEmpty()) {
                     break;
                 }
                 qName.insert(0, pName + ".");

@@ -113,7 +113,7 @@ class DirectoryEntry extends ClasspathEntry {
 
             for (String file : files) {
                 File current = new File(directory, file);
-                String namePrefix = packageName.equals("") ? "" : (packageName + ".");
+                String namePrefix = packageName.isEmpty() ? "" : (packageName + ".");
                 if (current.isDirectory()) {
                     scanDirectory(current, namePrefix + file);
                 } else if (file.endsWith(JAVA_CLASSFILE_EXTENSION)) {

@@ -160,7 +160,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
                 lastType = current.messageType;
             }
             if (hasHeader) {
-                if (current.definition.equals("")) {
+                if (current.definition.isEmpty()) {
                     out.println(current.className);
                 } else {
                     StringBuffer name = new StringBuffer();

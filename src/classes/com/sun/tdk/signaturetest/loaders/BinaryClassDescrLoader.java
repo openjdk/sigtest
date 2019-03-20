@@ -882,7 +882,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     //
     private static String getArgs(String descr) throws IllegalArgumentException {
 
-        if (descr.equals("")) {
+        if (descr.isEmpty()) {
             return descr;
         }
 

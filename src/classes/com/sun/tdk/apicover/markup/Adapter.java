@@ -56,7 +56,7 @@ public class Adapter {
                         covOn = false;
                     } else if (st.equals("#coverage on")) {
                         covOn = true;
-                    } else if (!"".equals(st) && !covOn && !st.startsWith("#")) {
+                    } else if (!st.isEmpty() && !covOn && !st.startsWith("#")) {
                         if (!st.startsWith(AnnotationItem.ANNOTATION_PREFIX)
                                 && !st.startsWith(FormatAdapter.HIDDEN_FIELDS)
                                 && !st.startsWith(FormatAdapter.HIDDEN_CLASSES)) {

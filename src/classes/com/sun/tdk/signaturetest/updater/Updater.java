@@ -222,7 +222,7 @@ public class Updater extends DefaultHandler {
 
         public void removeCurrentClass() {
             if (startPos >= 0) {
-                while (!"".equals(get(startPos).trim())) {
+                while (!get(startPos).trim().isEmpty()) {
                     remove(startPos);
                 }
             }
@@ -264,7 +264,7 @@ public class Updater extends DefaultHandler {
                         remove(i);
                         return true;
                     } else {
-                        if ("".equals(l)) {
+                        if (l.isEmpty()) {
                             break;
                         }
                     }
@@ -281,7 +281,7 @@ public class Updater extends DefaultHandler {
                         set(i, newMember);
                         return true;
                     } else {
-                        if ("".equals(l)) {
+                        if (l.isEmpty()) {
                             break;
                         }
                     }
@@ -294,7 +294,7 @@ public class Updater extends DefaultHandler {
             boolean empty = false;
             for (int i = 0; i < size(); i++) {
                 String l = get(i);
-                if ("".equals(l.trim())) {
+                if (l.trim().isEmpty()) {
                     if (empty) {
                         remove(i--);
                         continue;

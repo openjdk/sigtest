@@ -153,7 +153,7 @@ public class ClasspathImpl implements Classpath {
         errors = new ArrayList<>();
         Set<String> unique = new HashSet<>();
         String path = (classPath == null) ? "" : classPath;
-        if (!path.equals("") && (pathSeparator == null)) {
+        if (!path.isEmpty() && (pathSeparator == null)) {
             throw new SecurityException(i18n.getString("ClasspathImpl.error.notdefinepathsep"));
         }
 

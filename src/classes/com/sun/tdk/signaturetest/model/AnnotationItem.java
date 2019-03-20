@@ -308,7 +308,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
         StringBuffer sb = new StringBuffer();
         sb.append(getPrefix()).append(" ");
 
-        if (!"".equals(getSpecificData())) {
+        if (getSpecificData() != null && !getSpecificData().isEmpty()) {
             sb.append(getSpecificData()).append(" ");
         }
 

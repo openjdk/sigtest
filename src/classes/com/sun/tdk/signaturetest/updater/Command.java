@@ -40,7 +40,7 @@ abstract class Command {
     abstract void validate() throws IllegalArgumentException;
 
     protected void trace() {
-        if (id != null && !"".equals(id)) {
+        if (id != null && !id.isEmpty()) {
             log.println("Applying " + id);
         }
     }
@@ -66,7 +66,7 @@ class RemoveClass extends Command {
     }
 
     void validate() throws IllegalArgumentException {
-        if (className == null || "".equals(className)) {
+        if (className == null || className.isEmpty()) {
             throw new IllegalArgumentException("Class name should be specified");
         }
     }
@@ -93,10 +93,10 @@ class RemoveMember extends Command {
     }
 
     void validate() throws IllegalArgumentException {
-        if (className == null || "".equals(className)) {
+        if (className == null || className.isEmpty()) {
             throw new IllegalArgumentException("Class name should be specified");
         }
-        if (memberName == null || "".equals(memberName)) {
+        if (memberName == null || memberName.isEmpty()) {
             throw new IllegalArgumentException("Member name should be specified");
         }
     }
@@ -122,10 +122,10 @@ class AddMember extends Command {
     }
 
     void validate() throws IllegalArgumentException {
-        if (className == null || "".equals(className)) {
+        if (className == null || className.isEmpty()) {
             throw new IllegalArgumentException("Class name should be specified");
         }
-        if (memberName == null || "".equals(memberName)) {
+        if (memberName == null || memberName.isEmpty()) {
             throw new IllegalArgumentException("Member name should be specified");
         }
     }
@@ -153,13 +153,13 @@ class ChangeMember extends Command {
     }
 
     void validate() throws IllegalArgumentException {
-        if (className == null || "".equals(className)) {
+        if (className == null || className.isEmpty()) {
             throw new IllegalArgumentException("Class name should be specified");
         }
-        if (memberName == null || "".equals(memberName)) {
+        if (memberName == null || memberName.isEmpty()) {
             throw new IllegalArgumentException("Member name should be specified");
         }
-        if (newMemberName == null || "".equals(newMemberName)) {
+        if (newMemberName == null || newMemberName.isEmpty()) {
             throw new IllegalArgumentException("New member name should be specified");
         }
 
@@ -187,10 +187,10 @@ class AddClass extends Command {
     }
 
     void validate() throws IllegalArgumentException {
-        if (className == null || "".equals(className)) {
+        if (className == null || className.isEmpty()) {
             throw new IllegalArgumentException("Class name should be specified");
         }
-        if (body == null || "".equals(body)) {
+        if (body == null || body.isEmpty()) {
             throw new IllegalArgumentException("Class defenition should be specified");
         }
     }
@@ -213,7 +213,7 @@ class RemovePackage extends Command {
     }
 
     void validate() throws IllegalArgumentException {
-        if (packageName == null || "".equals(packageName)) {
+        if (packageName == null || packageName.isEmpty()) {
             throw new IllegalArgumentException("Package name should be specified");
         }
     }
