@@ -1188,23 +1188,18 @@ public class SignatureTest extends SigTest {
     private MemberDescription transformMember(ClassDescription parent, MemberDescription member) {
         MemberDescription clonedMember = member;
 
-        if (parent.hasModifier(Modifier.FINAL)
-                && member.isMethod()
-                && member.getDeclaringClassName().equals(parent.getQualifiedName())) {
-
+        if (member.isMethod() && member.getDeclaringClassName().equals(parent.getQualifiedName())) {
             MethodDescr md = (MethodDescr) member;
             // below is a fix for issue 21
             try {
-                if (!member.hasModifier(Modifier.FINAL)) {
-                    if (!testableHierarchy.isMethodOverriden(md)) {
-                        clonedMember = (MemberDescription) member.clone();
-                        clonedMember.addModifier(Modifier.FINAL);
-                    }
-                } else {
-                    if (testableHierarchy.isMethodOverriden(md)) {
-                        clonedMember = (MemberDescription) member.clone();
-                        clonedMember.removeModifier(Modifier.FINAL);
-                    }
+                if (parent.hasModifier(Modifier.FINAL)
+                        && !member.hasModifier(Modifier.FINAL)
+                        && !testableHierarchy.isMethodOverriden(md)) {
+                    clonedMember = (MemberDescription) member.clone();
+                    clonedMember.addModifier(Modifier.FINAL);
+                } else if (testableHierarchy.isMethodOverriden(md)) {
+                    clonedMember = (MemberDescription) member.clone();
+                    clonedMember.removeModifier(Modifier.FINAL);
                 }
             } catch (ClassNotFoundException e) {
                 SwissKnife.reportThrowable(e);
@@ -1219,7 +1214,6 @@ public class SignatureTest extends SigTest {
 
         return clonedMember;
     }
-
     /**
      * Compare the <code>required</code> and <code>found</code> sets of class
      * members having the same signature <code>name</code>. It is assumed, that

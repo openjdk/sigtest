@@ -195,7 +195,9 @@ public class ClassHierarchyImpl implements ClassHierarchy {
             erasurator.erasure(sc);
             moc.addMethods(sc.getDeclaredMethods());
         }
-        return moc.getOverridingMethod(md, false) != null;
+        boolean isMethodOverriddenFromClass = moc.getOverridingMethod(md, false) != null;
+        boolean isMethodOverriddenFromInterface = isMethodImplements(md);
+        return isMethodOverriddenFromClass || isMethodOverriddenFromInterface;
     }
 
     public boolean isMethodImplements(MethodDescr md) throws ClassNotFoundException {
