@@ -889,6 +889,12 @@ public class SignatureTest extends SigTest {
 
         }
 
+       if(found.hasModifier(Modifier.FINAL) && !required.hasModifier(Modifier.FINAL)
+                && found.isMethod() && required.isMethod()
+                && !found.getDeclaringClassName().equals(required.getDeclaringClassName())) {
+            found.removeModifier(Modifier.FINAL);
+        }
+
     }
 
     /**
@@ -1188,18 +1194,23 @@ public class SignatureTest extends SigTest {
     private MemberDescription transformMember(ClassDescription parent, MemberDescription member) {
         MemberDescription clonedMember = member;
 
-        if (member.isMethod() && member.getDeclaringClassName().equals(parent.getQualifiedName())) {
+        if (parent.hasModifier(Modifier.FINAL)
+                && member.isMethod()
+                && member.getDeclaringClassName().equals(parent.getQualifiedName())) {
+
             MethodDescr md = (MethodDescr) member;
             // below is a fix for issue 21
             try {
-                if (parent.hasModifier(Modifier.FINAL)
-                        && !member.hasModifier(Modifier.FINAL)
-                        && !testableHierarchy.isMethodOverriden(md)) {
-                    clonedMember = (MemberDescription) member.clone();
-                    clonedMember.addModifier(Modifier.FINAL);
-                } else if (testableHierarchy.isMethodOverriden(md)) {
-                    clonedMember = (MemberDescription) member.clone();
-                    clonedMember.removeModifier(Modifier.FINAL);
+                if (!member.hasModifier(Modifier.FINAL)) {
+                    if (!testableHierarchy.isMethodOverriden(md)) {
+                        clonedMember = (MemberDescription) member.clone();
+                        clonedMember.addModifier(Modifier.FINAL);
+                    }
+                } else {
+                    if (testableHierarchy.isMethodOverriden(md)) {
+                        clonedMember = (MemberDescription) member.clone();
+                        clonedMember.removeModifier(Modifier.FINAL);
+                    }
                 }
             } catch (ClassNotFoundException e) {
                 SwissKnife.reportThrowable(e);
