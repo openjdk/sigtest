@@ -215,6 +215,7 @@ public class SignatureTest extends SigTest {
     public void run(String[] args, PrintWriter log, PrintWriter ref) {
 
 //        long startTime = System.currentTimeMillis();
+        AppContext.getContext().clean();
         setLog(log);
         mode = null;
         try {
