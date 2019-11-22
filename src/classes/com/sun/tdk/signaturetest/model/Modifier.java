@@ -48,6 +48,7 @@ public final class Modifier implements Serializable {
     public static final Modifier VOLATILE = new Modifier("volatile", 0x00000040, java.lang.reflect.Modifier.VOLATILE, true);
     // used for classes only
     public static final Modifier ENUM = new Modifier("!enum", 0x00004000, 0, true);
+    public static final Modifier MANDATED = new Modifier("!mandated", 0x00008000, 0, false);
     // This modifier is equivalent of ENUM but it's not tracked and used for fields only
     public static final Modifier FIELD_ENUM = new Modifier("!fld_enum", 0x00004000, 0, false);
     public static final Modifier ANNOTATION = new Modifier("!annotation", 0x00002000, 0, true);
