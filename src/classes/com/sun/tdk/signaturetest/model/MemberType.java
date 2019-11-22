@@ -46,17 +46,17 @@ public final class MemberType implements Comparable<MemberType>, Serializable {
     };
     private static final Modifier[] constructorModifiers = {
             Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE,
-            Modifier.VARARGS, Modifier.ACC_SYNTHETIC, Modifier.ACC_STRICT
+            Modifier.VARARGS, Modifier.ACC_SYNTHETIC, Modifier.ACC_STRICT, Modifier.MANDATED
     };
     private static final Modifier[] methodModifiers = {
             Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE, Modifier.ABSTRACT,
             Modifier.NATIVE, Modifier.VARARGS, Modifier.BRIDGE, Modifier.FINAL, Modifier.HASDEFAULT,
-            Modifier.STATIC, Modifier.SYNCHRONIZED, Modifier.ACC_SYNTHETIC, Modifier.ACC_STRICT
+            Modifier.STATIC, Modifier.SYNCHRONIZED, Modifier.ACC_SYNTHETIC, Modifier.ACC_STRICT, Modifier.MANDATED
     };
     private static final Modifier[] fieldModifiers = {
             Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE, Modifier.FINAL,
             Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE,
-            Modifier.FIELD_ENUM, Modifier.ACC_SYNTHETIC
+            Modifier.FIELD_ENUM, Modifier.ACC_SYNTHETIC, Modifier.MANDATED
     };
     private static final Modifier[] noneModifiers = {};
     public static final MemberType CLASS = new MemberType("CLSS", classModifiers);
