@@ -52,8 +52,8 @@
     <property name="javac.level.src" value="1.7" />
 
     <!-- defaults  -->
-    <property name="javac.jt.level.bin" value="1.6" />
-    <property name="javac.jt.level.src" value="1.6" />
+    <property name="javac.jt.level.bin" value="1.7" />
+    <property name="javac.jt.level.src" value="1.7" />
 
     <!-- defaults  -->
     <property name="javac.core.level.bin" value="1.7" />

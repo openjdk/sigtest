@@ -28,6 +28,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 import java.util.*;
@@ -54,6 +55,8 @@ public class Updater extends DefaultHandler {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         try {
             SAXParser sp = spf.newSAXParser();
+            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             sp.parse(updFile, this);
             return applyUpdate(fromFile, toFile);
         } catch (Exception e) {
