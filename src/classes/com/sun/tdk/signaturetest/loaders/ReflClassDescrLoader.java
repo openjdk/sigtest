@@ -43,8 +43,8 @@ import java.util.Set;
 /**
  * <b>ReflClassDescrLoader</b> is intended to compile information about classes
  * via reflections package. If available, the advanced method
- * <b>Class</b>.<code>forName</code>(<b>String</b>,
- * <code>boolean</code>,<b>ClassLoader</b>) is involved, which enables to do not
+ * <b>Class</b>.{@code forName}(<b>String</b>,
+ * {@code boolean},<b>ClassLoader</b>) is involved, which enables to do not
  * initialize classes being loaded. (This helps to avoid irrelevant security
  * problems.)
  *
@@ -56,15 +56,15 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
 
     public final static boolean debug = false;
     /**
-     * Reference to advanced <code>forName()</code> method available only for
-     * newer Java implementations. If only simpler <code>forName()</code> method
-     * is available, then this field is incarnated with <code>null</code>.
+     * Reference to advanced {@code forName()} method available only for
+     * newer Java implementations. If only simpler {@code forName()} method
+     * is available, then this field is incarnated with {@code null}.
      *
      * @see Class#forName(String, boolean, ClassLoader)
      */
     private Method forName;
     /**
-     * Arguments prepared to invoke advanced <code>forName()</code> method via
+     * Arguments prepared to invoke advanced {@code forName()} method via
      * reflection.
      *
      * @see Method#invoke(Object, Object[])
@@ -73,10 +73,10 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
 
     /**
      * Adjust new <b>ReflClassDescLoader</b> instance. In particular, detect if
-     * advanced method <b>Class</b>.<code>forName()</code> is implemented, which
+     * advanced method <b>Class</b>.{@code forName()} is implemented, which
      * enables to do not initialize the class being loaded. Otherwise, tune
-     * <code>this</code> instance to use simpler version of the method
-     * <code>forName()</code>, which must be available anyway.
+     * {@code this} instance to use simpler version of the method
+     * {@code forName()}, which must be available anyway.
      *
      * @see Class#forName(String, boolean, ClassLoader)
      * @see Class#forName(String)
@@ -103,9 +103,9 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
 
     /**
      * Return new <b>ClassDescription</b> for that class found by the given
-     * <code>name</code>.
+     * {@code name}.
      *
-     * @throws ClassNotFoundException If <b>Class</b>.<code>forName(name)</code>
+     * @throws ClassNotFoundException If <b>Class</b>.{@code forName(name)}
      *                                fails to load the required class.
      * @see Class#forName(String)
      */
@@ -167,7 +167,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
 
     }
 
-    private void setupMethods(ClassDescription cd, Class classObject) {
+    private static void setupMethods(ClassDescription cd, Class classObject) {
         Method[] methods = classObject.getDeclaredMethods();
         cd.createMethods(methods.length);
         for (int i = 0; i < methods.length; i++) {
@@ -206,7 +206,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
         }
     }
 
-    private void setupNested(ClassDescription cd, Class classObject) {
+    private static void setupNested(ClassDescription cd, Class classObject) {
         Class[] nested = classObject.getDeclaredClasses();
         cd.createNested(nested.length);
         for (int i = 0; i < nested.length; i++) {
@@ -223,7 +223,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
         }
     }
 
-    private void setupConstructors(ClassDescription cd, Class classObject) {
+    private static void setupConstructors(ClassDescription cd, Class classObject) {
         Constructor[] ctors = classObject.getDeclaredConstructors();
         cd.createConstructors(ctors.length);
         for (int i = 0; i < ctors.length; i++) {
@@ -231,7 +231,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
         }
     }
 
-    private void setupInterfaces(ClassDescription cd, Class classObject) {
+    private static void setupInterfaces(ClassDescription cd, Class classObject) {
         Class[] interfaces = classObject.getInterfaces();
         cd.createInterfaces(interfaces.length);
         for (int i = 0; i < interfaces.length; i++) {
@@ -241,7 +241,7 @@ public class ReflClassDescrLoader implements ClassDescriptionLoader, LoadingHint
         }
     }
 
-    private void setupSuperClass(ClassDescription cd, Class classObject) {
+    private static void setupSuperClass(ClassDescription cd, Class classObject) {
         Class spr = classObject.getSuperclass();
         if (spr != null) {
             SuperClass sc = new SuperClass();

@@ -118,7 +118,7 @@ public class CallFilter {
 
     }
 
-    private boolean accept(String pattern, String pkg, String cls, String testClassName) {
+    private static boolean accept(String pattern, String pkg, String cls, String testClassName) {
         String PKG_PATTERN = "API_PACKAGE";
         pattern = simpleReplaceAll(pattern, PKG_PATTERN, pkg);
         String CLS_PATTERN = "API_CLASS";
@@ -126,7 +126,7 @@ public class CallFilter {
         return testClassName.startsWith(pattern);
     }
 
-    private String simpleReplaceAll(String string, String search, String replace) {
+    private static String simpleReplaceAll(String string, String search, String replace) {
         int p = 0;
         while ((p = string.indexOf(search, p)) >= 0) {
             String s1 = string.substring(0, p);
@@ -138,7 +138,7 @@ public class CallFilter {
         return string;
     }
 
-    private String getMemberSignature(MemberDescription md) {
+    private static String getMemberSignature(MemberDescription md) {
         if (md instanceof ConstructorDescr) {
             ConstructorDescr cd = (ConstructorDescr) md;
             return cd.getSignature();

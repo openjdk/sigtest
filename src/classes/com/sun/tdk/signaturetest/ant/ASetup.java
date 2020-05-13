@@ -123,7 +123,7 @@ public class ASetup extends ABase {
 
     private void checkParams() throws BuildException {
         // classpath
-        if (classpath == null || classpath.size() == 0) {
+        if (classpath == null || classpath.isEmpty()) {
             throw new BuildException("Classpath is not specified");
         }
 

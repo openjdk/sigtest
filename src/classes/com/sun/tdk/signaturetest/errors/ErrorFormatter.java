@@ -118,19 +118,19 @@ public class ErrorFormatter {
          */
         public final MemberDescription errorObject;
         /**
-         * Name of the class affected by <code>this</code> error message.
+         * Name of the class affected by {@code this} error message.
          */
         public final String className;
         /**
-         * Class or class member affected by <code>this</code> error message.
+         * Class or class member affected by {@code this} error message.
          */
         public String definition;
         /**
-         * The tail to append to <code>this</code> error message.
+         * The tail to append to {@code this} error message.
          */
         public String tail;
         /**
-         * Type of <code>this</code> error message.
+         * Type of {@code this} error message.
          */
         public final MessageType messageType;
         private Level level = Level.SEVERE;
@@ -147,13 +147,13 @@ public class ErrorFormatter {
         }
 
         /**
-         * Compare <code>this</code> <b>Message</b> to the given <b>Message</b>
-         * <code>ob</code>. Messages ordering is the following: <br> &nbsp; 1.
-         * Compare <code>errorType</code> fields as integers. <br> &nbsp; 2. If
-         * <code>errorType</code> fields are equal, than compare
-         * <code>className</code> fields. <br> &nbsp; 3. If
-         * <code>className</code> fields also equals, than compare
-         * <code>definition</code> fields.
+         * Compare {@code this} <b>Message</b> to the given <b>Message</b>
+         * {@code ob}. Messages ordering is the following: <br> &nbsp; 1.
+         * Compare {@code errorType} fields as integers. <br> &nbsp; 2. If
+         * {@code errorType} fields are equal, than compare
+         * {@code className} fields. <br> &nbsp; 3. If
+         * {@code className} fields also equals, than compare
+         * {@code definition} fields.
          */
         public int compareTo(Message ob) {
             int comp = 0;
@@ -176,8 +176,8 @@ public class ErrorFormatter {
         }
 
         /**
-         * Cut `` <code>throws</code>'' clause out off the given member
-         * description <code>def</code>.
+         * Cut `` {@code throws}'' clause out off the given member
+         * description {@code def}.
          */
         public String getShortName(String def) {
             String retVal = def;
@@ -189,7 +189,7 @@ public class ErrorFormatter {
         }
 
         /**
-         * Return string representing <code>this</code> <b>Message</b>.
+         * Return string representing {@code this} <b>Message</b>.
          */
         public String toString() {
             String retVal = messageType.getLocMessage();

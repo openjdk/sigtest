@@ -55,7 +55,7 @@ public class ThrowsNormalizer {
         }
     }
 
-    private boolean checkException(ClassHierarchy h, String candidate, String matchedException) throws ClassNotFoundException {
+    private static boolean checkException(ClassHierarchy h, String candidate, String matchedException) throws ClassNotFoundException {
         return candidate.equals(matchedException) || h.isSubclass(candidate, matchedException);
     }
 

@@ -53,11 +53,11 @@ public abstract class SignatureClassLoader implements Reader {
     private static final int BUFSIZE = 0x8000;
     private final List<Elem> elems;
     /**
-     * API version found in <code>this</code> signature file.
+     * API version found in {@code this} signature file.
      */
     protected String apiVersion = "";
     /**
-     * Sigfile format version found in <code>this</code> signature file.
+     * Sigfile format version found in {@code this} signature file.
      */
     protected String signatureFileFormat = "";
 
@@ -84,8 +84,8 @@ public abstract class SignatureClassLoader implements Reader {
     }
 
     /**
-     * Return the next <code>SigFileClassDescription</code> read from
-     * <code>this</code> signature file.
+     * Return the next {@code SigFileClassDescription} read from
+     * {@code this} signature file.
      *
      * @see ClassDescription
      */
@@ -171,7 +171,7 @@ public abstract class SignatureClassLoader implements Reader {
     protected abstract List<String> convertClassDefinitions(List<String> definitions);
 
     /**
-     * Open <code>fileURL</code> for input, and parse comments to initialize
+     * Open {@code fileURL} for input, and parse comments to initialize
      * fields
      */
     public boolean readSignatureFile(URL fileURL) throws IOException {

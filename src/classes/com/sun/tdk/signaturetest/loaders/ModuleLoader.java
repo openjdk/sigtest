@@ -143,7 +143,7 @@ public class ModuleLoader implements ModuleDescriptionLoader {
         return loadBootModules().stream()
                 .filter(md -> modules.contains(md.getName()))
                 .flatMap(md -> md.getExports().stream())
-                .filter(ex -> ex.isPublic()).map(ex -> ex.source)
+                .filter(ModuleDescription.Exports::isPublic).map(ex -> ex.source)
                 .collect(Collectors.toList());
 
     }

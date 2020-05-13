@@ -170,7 +170,7 @@ public final class Modifier implements Serializable {
      * This is copy of Integer.highestOneBit from JDK 1.5 Because this class
      * must be 1.4 compatible we can not use the original method
      */
-    private int highestOneBit(int i) {
+    private static int highestOneBit(int i) {
         i |= (i >> 1);
         i |= (i >> 2);
         i |= (i >> 4);

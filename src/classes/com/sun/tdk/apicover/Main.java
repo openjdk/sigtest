@@ -115,7 +115,7 @@ public class Main implements Log {
      * Parse options specific for <b>SignatureTest</b>, and pass other options
      * to <b>SigTest</b> parameters parser.
      *
-     * @param args Same as <code>args[]</code> passes to <code>main()</code>.
+     * @param args Same as {@code args[]} passes to {@code main()}.
      */
     protected boolean parseParameters(String[] args) {
 
@@ -333,11 +333,11 @@ public class Main implements Log {
 
     void check() {
         FileManager f = new FileManager();
-        MultipleFileReader in = new MultipleFileReader(log, MultipleFileReader.CLASSPATH_MODE, f);
-        ClassHierarchy apiHierarchy = new ClassHierarchyImpl(in, ClassHierarchy.ALL_PUBLIC);
-        new Adapter(f);
 
-        try {
+
+        try (MultipleFileReader in = new MultipleFileReader(log, MultipleFileReader.CLASSPATH_MODE, f)) {
+            ClassHierarchy apiHierarchy = new ClassHierarchyImpl(in, ClassHierarchy.ALL_PUBLIC);
+            new Adapter(f);
 
             if (!searachOnly()) {
 
@@ -421,8 +421,6 @@ public class Main implements Log {
         } catch (Throwable e) {
             debug(e);
             error(i18n.getString("Main.error.check", e.getMessage()));
-        } finally {
-            in.close();
         }
     }
 
@@ -432,13 +430,13 @@ public class Main implements Log {
 
     private void error(String s) {
         log.println(s);
-        if (!Boolean.valueOf(System.getProperty(Result.NO_EXIT))) {
+        if (!Boolean.parseBoolean(System.getProperty(Result.NO_EXIT))) {
             System.exit(1);
         }
     }
 
-    private void passed() {
-        if (!Boolean.valueOf(System.getProperty(Result.NO_EXIT))) {
+    private static void passed() {
+        if (!Boolean.parseBoolean(System.getProperty(Result.NO_EXIT))) {
             System.exit(0);
         }
     }

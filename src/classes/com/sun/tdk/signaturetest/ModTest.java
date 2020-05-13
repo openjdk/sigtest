@@ -362,7 +362,7 @@ public class ModTest extends ModBase {
         return modules;
     }
 
-    private Map<String, ModuleDescription> createModel() {
+    private static Map<String, ModuleDescription> createModel() {
         ModuleDescriptionLoader mdl = getModuleLoader();
         Set<ModuleDescription> modules = mdl.loadBootModules();
         Map<String, ModuleDescription> model = new HashMap<>();

@@ -49,11 +49,11 @@ import java.util.*;
  * element, which can provide access to a bytecode for each class found inside
  * the directory or jar-file. All classes found inside the listed directories
  * and jar-files are virtually enumerated in the same order as they are found.
- * The methods <code>nextClassName()</code> and <code>setListToBegin()</code>
+ * The methods {@code nextClassName()} and {@code setListToBegin()}
  * provide access to this classes enumeration.
  * </p>
  * <p>
- * Also, the method <code>findClass(name)</code> provides access to class
+ * Also, the method {@code findClass(name)} provides access to class
  * directly by its qualified name. Note however, that the names class must
  * belong to some directory or zip-file pointed to the <b>ClasspathImpl</b>
  * instance.</p>
@@ -96,12 +96,12 @@ public class ClasspathImpl implements Classpath {
     private ClasspathEntry currentEntry;
     /**
      * Path separator used by operating system. Note, that
-     * <code>pathSeparator</code> is uniquely determined when JVM starts.
+     * {@code pathSeparator} is uniquely determined when JVM starts.
      */
     private static String pathSeparator;
     private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(ClasspathImpl.class);
 
-    private BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
+    private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     /*
      * Try to determine path separator used by operating system. Path separator
@@ -136,7 +136,7 @@ public class ClasspathImpl implements Classpath {
      * instance.
      *
      * @param classPath Path string listing directories and/or zip files.
-     * @throws SecurityException The <code>classPath</code> string has invalid
+     * @throws SecurityException The {@code classPath} string has invalid
      *                           format.
      * @see #findClass(String)
      * @see #nextClassName()
@@ -234,8 +234,8 @@ public class ClasspathImpl implements Classpath {
      * Reset list of directories and/or zip-files found by <b>ClasspathImpl</b>.
      * This also resets transparent enumeration of classes found inside those
      * directories and zip-files, which are available with the methods
-     * <code>nextClassName()</code>, <code>getCurrentClass()</code>, or
-     * <code>findClass(name)</code>.
+     * {@code nextClassName()}, {@code getCurrentClass()}, or
+     * {@code findClass(name)}.
      *
      * @see #nextClassName()
      * @see #findClass(String)
@@ -270,8 +270,8 @@ public class ClasspathImpl implements Classpath {
 
     /**
      * Search next class in the enumeration of classes found inside directories
-     * and jar-files pointed to <code>this</code> <b>ClasspathImpl</b> instance.
-     * You may invoke <code>setListToBegin()</code> method to restore classes
+     * and jar-files pointed to {@code this} <b>ClasspathImpl</b> instance.
+     * You may invoke {@code setListToBegin()} method to restore classes
      * enumeration to its starting point.
      *
      * @return Class qualified name
@@ -286,12 +286,12 @@ public class ClasspathImpl implements Classpath {
     /**
      * Returns <b>FileInputStream</b> instance providing bytecode for the
      * required class. The class must be found by the given qualified name
-     * inside some of <b>ClasspathEntry</b> iterator listed by <code>this</code>
+     * inside some of <b>ClasspathEntry</b> iterator listed by {@code this}
      * <b>ClasspathImpl</b> instance.
      *
      * @param name Qualified name of the class requested.
      * @throws ClassNotFoundException Not found in any <b>ClasspathEntry</b> in
-     *                                <code>this</code>
+     *                                {@code this}
      *                                <b>ClasspathImpl</b> instance.
      * @see java.io.FileInputStream
      */
@@ -349,7 +349,7 @@ public class ClasspathImpl implements Classpath {
      *
      * @param name Qualified name of some directory or zip file or jimage.
      * @return New <b>ClasspathEntry</b> instance corresponding to the given
-     * <code>name</code>.
+     * {@code name}.
      */
     protected ClasspathEntry createPathEntry(ClasspathEntry previosEntry, String name) {
         try {
@@ -369,7 +369,7 @@ public class ClasspathImpl implements Classpath {
         }
     }
 
-    private boolean isSigFile(String fName) {
+    private static boolean isSigFile(String fName) {
         // first version, later ti analise the content
         return fName.toLowerCase().endsWith(".sig");
     }

@@ -55,7 +55,7 @@ public class Elem {
         return res;
     }
 
-    private void getElementsByTagName(Elem e, String name, List<Elem> res) {
+    private static void getElementsByTagName(Elem e, String name, List<Elem> res) {
         if (e.getNodeName().equals(name)) {
             res.add(e);
         }

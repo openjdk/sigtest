@@ -44,7 +44,7 @@ class DirectoryEntry extends ClasspathEntry {
     private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(DirectoryEntry.class);
 
     /**
-     * The qualified name of <code>this</code> directory.
+     * The qualified name of {@code this} directory.
      */
     private String directoryName = "";
 
@@ -75,15 +75,15 @@ class DirectoryEntry extends ClasspathEntry {
     }
 
     /**
-     * Find all classes placed in the given <code>directory</code> including
+     * Find all classes placed in the given {@code directory} including
      * those placed in subdirectories. (Recursively walk subdirectories tree, if
      * needed.) Qualified names for all class files found inside the given
-     * <code>directory</code> are collected in <code>this</code>
+     * {@code directory} are collected in {@code this}
      * <b>DirectoryEntry</b> instance.
      *
      * @param directory   Directory to scan.
      * @param packageName Package name for classes inside the given
-     *                    <code>directory</code>.
+     *                    {@code directory}.
      */
     private void scanDirectory(File directory, String packageName) {
         // check for infinite loop which could occurs in the case of
@@ -138,11 +138,11 @@ class DirectoryEntry extends ClasspathEntry {
     /**
      * Returns <b>FileInputStream</b> instance providing bytecode for the
      * required class, if the class could be found by the given qualified name
-     * in <code>this</code> <b>DirectoryEntry</b> instance.
+     * in {@code this} <b>DirectoryEntry</b> instance.
      *
      * @param name Qualified name of the class required.
      * @throws ClassNotFoundException The named class is not found in
-     *                                <code>this</code> <b>DirectoryEntry</b>.
+     *                                {@code this} <b>DirectoryEntry</b>.
      * @see java.io.FileInputStream
      */
     public InputStream findClass(String name) throws IOException, ClassNotFoundException {
@@ -155,7 +155,7 @@ class DirectoryEntry extends ClasspathEntry {
     }
 
     /**
-     * Replace dots in the given qualified class <code>name</code> with
+     * Replace dots in the given qualified class {@code name} with
      * appropriate files separator symbol.
      *
      * @see java.io.File#separator

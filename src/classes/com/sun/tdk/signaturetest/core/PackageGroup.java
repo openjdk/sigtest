@@ -40,7 +40,7 @@ import java.util.List;
 public class PackageGroup {
 
     /**
-     * For every package listed in the <code>group</code> filed, indicate if its
+     * For every package listed in the {@code group} filed, indicate if its
      * subpackages are implicitly implied.
      *
      * @see #group
@@ -48,7 +48,7 @@ public class PackageGroup {
     private boolean isSubpackagesUses = true;
     /**
      * List of strings intended to contain names of packages. If the field
-     * <code>isSubpackagesUses</code> is <code>true</code>, all subpackages
+     * {@code isSubpackagesUses} is {@code true}, all subpackages
      * names are implicitly implied for each package name listed here.
      *
      * @see #isSubpackagesUses
@@ -73,7 +73,7 @@ public class PackageGroup {
     }
 
     /**
-     * Add some package <code>name</code> to <code>this</code> group.
+     * Add some package {@code name} to {@code this} group.
      */
     public void addPackage(String packageName) {
         group.add(packageName);
@@ -84,9 +84,9 @@ public class PackageGroup {
     }
 
     /**
-     * Check if the given class <code>name</code> belongs to some of the
-     * packages listed by <code>this</code> <b>PackageGroup</b>. If
-     * <code>isSubpackagesUsed</code> policy is set, also check if that class
+     * Check if the given class {@code name} belongs to some of the
+     * packages listed by {@code this} <b>PackageGroup</b>. If
+     * {@code isSubpackagesUsed} policy is set, also check if that class
      * belongs to some subpackage of some of the packages listed here.
      */
     public boolean checkName(String className) {
@@ -101,9 +101,9 @@ public class PackageGroup {
     }
 
     /**
-     * Check if the given module <code>name</code> belongs to some of the
-     * modules listed by <code>this</code> <b>PackageGroup</b>. If
-     * <code>isSubpackagesUsed</code> policy is set, also check if that module
+     * Check if the given module {@code name} belongs to some of the
+     * modules listed by {@code this} <b>PackageGroup</b>. If
+     * {@code isSubpackagesUsed} policy is set, also check if that module
      * is submodule.
      */
     public boolean checkModuleName(String moduleName) {
@@ -116,8 +116,8 @@ public class PackageGroup {
     }
 
     /**
-     * Terminate the given package <code>name</code> with the dot symbol, if the
-     * <code>name</code> is nonempty.
+     * Terminate the given package {@code name} with the dot symbol, if the
+     * {@code name} is nonempty.
      */
     private static String getPackageName(String name) {
         return name + ((name.endsWith(".") || name.isEmpty()) ? "" : ".");

@@ -34,10 +34,10 @@ import java.util.*;
 /**
  * This class provides methods to findByName an load a class and to compile a
  * <b>ClassDescription</b> for it. The method
- * <b>Class</b>.<code>forName()</code> is used to findByName a
- * <code>Class</code> object. If the advanced method
- * <code>forName</code>(<b>String</b>, <code>boolean</code>,<b>ClassLoader</b>)
- * is unavailable, the rougher method <code>forName</code>(<b>String</b>) is
+ * <b>Class</b>.{@code forName()} is used to findByName a
+ * {@code Class} object. If the advanced method
+ * {@code forName}(<b>String</b>, {@code boolean},<b>ClassLoader</b>)
+ * is unavailable, the rougher method {@code forName}(<b>String</b>) is
  * used.
  *
  * @author Maxim Sokolnikov
@@ -63,14 +63,14 @@ public class MemberCollectionBuilder {
     public MemberCollectionBuilder(Log log, String builderName) {
         this(log);
         // for debugging
-        String builderName1 = builderName;
+        //String builderName1 = builderName;
     }
 
     /**
-     * Generate <code>members</code> field for the given <b>ClassDescription</b>
-     * <code>cl</code>. Recursively findByName all inherited fields, methods,
+     * Generate {@code members} field for the given <b>ClassDescription</b>
+     * {@code cl}. Recursively findByName all inherited fields, methods,
      * nested classes, and interfaces for the class having the name prescribed
-     * by <code>cl</code>.
+     * by {@code cl}.
      *
      * @see MemberDescription
      */
@@ -193,9 +193,9 @@ public class MemberCollectionBuilder {
 
     /**
      * Collect <b>MemberDescription</b>s for all fields, methods, and nested
-     * classes of the given class described by <code>cl</code>. Recursively
+     * classes of the given class described by {@code cl}. Recursively
      * findByName all inherited members, as far as members declared by the class
-     * <code>cl</code>.
+     * {@code cl}.
      *
      * @see com.sun.tdk.signaturetest.model.MemberDescription
      */
@@ -444,7 +444,7 @@ public class MemberCollectionBuilder {
 
     }
 
-    private void postProcessInterfaceFields(ClassDescription cl, boolean checkHidding, MemberCollection retVal, Map<String, MemberDescription> inheritedFields, Set<String> xfCan) {
+    private static void postProcessInterfaceFields(ClassDescription cl, boolean checkHidding, MemberCollection retVal, Map<String, MemberDescription> inheritedFields, Set<String> xfCan) {
         Set<String> internalFields = Collections.emptySet();
         Set<String> xFields = Collections.emptySet();
         if (checkHidding) {
@@ -530,8 +530,8 @@ public class MemberCollectionBuilder {
         }
     }
 
-    private MemberCollection addSuperMembers(MemberDescription[] from,
-                                             MemberCollection to) {
+    private static MemberCollection addSuperMembers(MemberDescription[] from,
+                                                    MemberCollection to) {
         for (MemberDescription memberDescription : from) {
             to.addMember(memberDescription);
         }
@@ -582,15 +582,15 @@ public class MemberCollectionBuilder {
 
     /**
      * Filter those <b>MemberDescription</b> instances found inside the given
-     * <code>members</code> collection available for use by the given
-     * <code>subclass</code>, provided they are members of the given
-     * <code>superClass</code>.
+     * {@code members} collection available for use by the given
+     * {@code subclass}, provided they are members of the given
+     * {@code superClass}.
      *
      * @see MemberDescription
      */
-    private MemberCollection getAccessibleMembers(MemberCollection members,
-                                                  ClassDescription subclass,
-                                                  ClassDescription superClass) {
+    private static MemberCollection getAccessibleMembers(MemberCollection members,
+                                                         ClassDescription subclass,
+                                                         ClassDescription superClass) {
 
         String pkg = subclass.getPackageName();
         boolean isSamePackage = pkg.equals(superClass.getPackageName());
@@ -607,7 +607,7 @@ public class MemberCollectionBuilder {
     }
 
     //  Find all inheritable annotations
-    private void findInheritableAnnotations(ClassDescription subclass, ClassDescription superClass) {
+    private static void findInheritableAnnotations(ClassDescription subclass, ClassDescription superClass) {
 
         AnnotationItem[] superClassAnnoList = superClass.getAnnoList();
 
@@ -641,7 +641,7 @@ public class MemberCollectionBuilder {
         secondCH = signatureClassesHierarchy;
     }
 
-    class DefaultAfterBuildMembersTransformer implements Transformer {
+    static class DefaultAfterBuildMembersTransformer implements Transformer {
 
         public ClassDescription transform(ClassDescription cls) {
 

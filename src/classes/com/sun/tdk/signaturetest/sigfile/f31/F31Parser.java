@@ -118,7 +118,7 @@ public class F31Parser implements Parser {
         return classDescription;
     }
 
-    private void appendAnnotations(MemberDescription fid, List<String> alist) {
+    private static void appendAnnotations(MemberDescription fid, List<String> alist) {
         if (!alist.isEmpty()) {
 
             AnnotationItem[] tmp = new AnnotationItem[alist.size()];

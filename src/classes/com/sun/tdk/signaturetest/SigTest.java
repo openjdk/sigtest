@@ -55,12 +55,12 @@ import java.util.Set;
  * accessibility and appurtenance to the required packages.</p>
  * <p>
  * This class parses the following options core for signature tests: <dl>
- * <dt><code>-Package</code> &lt;package&gt;
- * <dt><code>-PackageWithoutSubpackages</code> &lt;package&gt;
- * <dt><code>-Exclude</code> &lt;package_or_class_name&gt;
- * <dt><code>-Classpath</code> &lt;path&gt; <dt><code>-APIversion</code>
- * &lt;version&gt; <dt><code>-static</code> <dt><code>-ClassCacheSize</code>
- * &lt;number&gt; <dt><code>-AllPublic</code> </dl>
+ * <dt>{@code -Package} &lt;package&gt;
+ * <dt>{@code -PackageWithoutSubpackages} &lt;package&gt;
+ * <dt>{@code -Exclude} &lt;package_or_class_name&gt;
+ * <dt>{@code -Classpath} &lt;path&gt; <dt>{@code -APIversion}
+ * &lt;version&gt; <dt>{@code -static} <dt>{@code -ClassCacheSize}
+ * &lt;number&gt; <dt>{@code -AllPublic} </dl>
  *
  * @author Maxim Sokolnikov
  * @author Serguei Ivashin
@@ -91,7 +91,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected PackageGroup apiExcl;
 
     /**
-     * Collector for error messages, or <code>null</code> if log is not
+     * Collector for error messages, or {@code null} if log is not
      * required.
      */
     private ErrorFormatter errorManager;
@@ -130,7 +130,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     public static boolean isConstantValuesTracked = true;
     public final static int DefaultCacheSize = 1024;
     /**
-     * <b>BinaryClassDescrLoader</b> may cache up to <code>cacheSize</code>
+     * <b>BinaryClassDescrLoader</b> may cache up to {@code cacheSize}
      * classes being loaded.
      */
     protected int cacheSize = DefaultCacheSize;
@@ -298,7 +298,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     /**
      * @return if module support available (Java 9 or newer)
      */
-    private boolean isModuleSupportAvailable() {
+    private static boolean isModuleSupportAvailable() {
         return ModBase.getModuleLoader() != null;
     }
 
@@ -332,7 +332,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     }
 
     /**
-     * Check if the given class <code>name</code> belongs to some of the
+     * Check if the given class {@code name} belongs to some of the
      * packages marked to be tested.
      *
      * @see #packages

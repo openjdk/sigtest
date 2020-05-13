@@ -136,7 +136,7 @@ public enum Option {
 
     public static Option byKey(String key) {
         assert key != null;
-        for (Option o : Option.values()) {
+        for (Option o : values()) {
             if (key.equalsIgnoreCase(o.getKey()) || (o.hasAlias() && key.equalsIgnoreCase(o.getAlias()))) {
                 return o;
             }

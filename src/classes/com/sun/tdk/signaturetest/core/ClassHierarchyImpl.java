@@ -46,10 +46,10 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private final ClassDescriptionLoader loader;
     /**
-     * If the <code>trackMode</code> field equals to <code>ALL_PUBLIC</code>,
-     * every <code>public</code> or <code>protected</code> class is considered
+     * If the {@code trackMode} field equals to {@code ALL_PUBLIC},
+     * every {@code public} or {@code protected} class is considered
      * to be accessible. Otherwise, ordinal accessibility rules are applied.
-     * These rules imply, that <code>public</code> or <code>protected</code>
+     * These rules imply, that {@code public} or {@code protected}
      * nested class may become inaccessible because of stronger accessibility
      * limitations assigned to its declaring class, or to class declaring its
      * declaring class, and so on.
@@ -257,13 +257,13 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     }
 
     /**
-     * Check if the class described by <code>c</code> is to be traced
-     * accordingly to <code>trackMode</code> set for <code>this</code> instance.
-     * Every <code>public</code> or <code>protected</code> class is accessible,
+     * Check if the class described by {@code c} is to be traced
+     * accordingly to {@code trackMode} set for {@code this} instance.
+     * Every {@code public} or {@code protected} class is accessible,
      * if it is not nested to another class having stronger accessibility
-     * limitations. However, if <code>trackMode</code> is set to
-     * <code>ALL_PUBLIC</code> for <code>this</code> instance, every
-     * <code>public</code> or <code>protected</code> class is considered to be
+     * limitations. However, if {@code trackMode} is set to
+     * {@code ALL_PUBLIC} for {@code this} instance, every
+     * {@code public} or {@code protected} class is considered to be
      * accessible despite of its accessibility limitations possibly inherited.
      */
     public boolean isAccessible(ClassDescription c) {

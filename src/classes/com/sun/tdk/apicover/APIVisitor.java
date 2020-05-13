@@ -53,7 +53,7 @@ class APIVisitor {
         }
     }
 
-    private PackageDescr addPackage(String pname, List<PackageDescr> packages) {
+    private static PackageDescr addPackage(String pname, List<PackageDescr> packages) {
         PackageDescr newPackage = new PackageDescr(pname);
         PackageDescr parent = null;
         for (PackageDescr pd : packages) {

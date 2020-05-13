@@ -41,12 +41,12 @@ public class SwissKnife {
     }
 
     /**
-     * Determines whether the object <code>x</code> is equal to object
-     * <code>y</code>. If ( <code>x</code> == <code>null</code>) and (
-     * <code>y</code> == <code>null</code>) the result is true.
+     * Determines whether the object {@code x} is equal to object
+     * {@code y}. If ( {@code x} == {@code null}) and (
+     * {@code y} == {@code null}) the result is true.
      *
-     * @param x - first comparable object, may by <code>null</code>
-     * @param y - second comparable object, may by <code>null</code>
+     * @param x - first comparable object, may by {@code null}
+     * @param y - second comparable object, may by {@code null}
      * @return true if x equal to y
      */
     public static boolean equals(Object x, Object y) {

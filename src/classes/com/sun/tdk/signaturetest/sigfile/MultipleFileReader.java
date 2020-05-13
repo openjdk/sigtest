@@ -51,10 +51,10 @@ public class MultipleFileReader extends VirtualClassDescriptionLoader implements
     public static final int CLASSPATH_MODE = 1;
     public static final int MERGE_MODE = 2;
     private Iterator<ClassDescription> classIterator = null;
-    private PrintWriter log;
-    private int mode;
+    private final PrintWriter log;
+    private final int mode;
     private String apiVersion;
-    private FileManager fileMan;
+    private final FileManager fileMan;
     private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
     private List<Elem> elements;
 

@@ -665,7 +665,7 @@ public class BCProcessor extends HumanErrorFormatter {
             return false;
         }
 
-        private boolean conValEquals(FieldDescr f1, FieldDescr f2) {
+        private static boolean conValEquals(FieldDescr f1, FieldDescr f2) {
             String v1 = f1.getConstantValue() == null ? "" : f1.getConstantValue();
             String v2 = f2.getConstantValue() == null ? "" : f2.getConstantValue();
             if (!f1.getType().equals(f2.getType())) {

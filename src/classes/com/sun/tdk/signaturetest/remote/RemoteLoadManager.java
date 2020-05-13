@@ -48,10 +48,8 @@ public class RemoteLoadManager {
             descr = e;
         }
 
-        try {
-            ObjectOutputStream objOut = new ObjectOutputStream(out);
+        try(ObjectOutputStream objOut = new ObjectOutputStream(out)) {
             objOut.writeObject(descr);
-            objOut.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

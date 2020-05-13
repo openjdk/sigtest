@@ -42,7 +42,7 @@ public class MemberCollection {
     }
 
     /**
-     * Add the given <code>member</code> to this member collection. If a member
+     * Add the given {@code member} to this member collection. If a member
      * with the the same "key" already exists in the collection, the new member
      * will override it.
      *

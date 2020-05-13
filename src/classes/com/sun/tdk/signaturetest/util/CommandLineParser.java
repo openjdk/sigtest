@@ -187,7 +187,7 @@ public class CommandLineParser {
         }
     }
 
-    private boolean isDecoder(Method method, String option) {
+    private static boolean isDecoder(Method method, String option) {
         String methodName = "decode" + option;
         return method.getName().equalsIgnoreCase(methodName)
                 && method.getParameterTypes().length == 1
@@ -205,7 +205,7 @@ public class CommandLineParser {
         return m;
     }
 
-    private Method getDefaultDecoderMethod(Method[] methods, String option) {
+    private static Method getDefaultDecoderMethod(Method[] methods, String option) {
 
         for (Method method : methods) {
             if (isDecoder(method, option)) {

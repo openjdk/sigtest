@@ -73,7 +73,7 @@ class F21Reader extends SignatureClassLoader {
         return newDef;
     }
 
-    private String processConstructors(String memberDef) {
+    private static String processConstructors(String memberDef) {
 
         if (memberDef.startsWith("cons ")) {
             Matcher m = constructorName.matcher(memberDef);
@@ -84,7 +84,7 @@ class F21Reader extends SignatureClassLoader {
         return memberDef;
     }
 
-    private String processArrays(String memberDef) {
+    private static String processArrays(String memberDef) {
 
         Matcher m = arrayDeclaration.matcher(memberDef);
         while (m.find()) {
@@ -122,7 +122,7 @@ class F21Reader extends SignatureClassLoader {
         return memberDef;
     }
 
-    private String processConstants(String memberDef) throws NumberFormatException {
+    private static String processConstants(String memberDef) throws NumberFormatException {
 
         Matcher m = constantDeclaration.matcher(memberDef);
         if (m.find()) {
@@ -144,7 +144,7 @@ class F21Reader extends SignatureClassLoader {
                         while (uc.find()) {
                             String uValue = value.substring(uc.start() + 2, uc.end());
                             char ch = (char) Integer.parseInt(uValue, 16);
-                            String repl = "" + ch;
+                            String repl = String.valueOf(ch);
                             if (ch == '\\' || ch == '$') {
                                 repl = "\\" + ch;
                             }
@@ -162,22 +162,22 @@ class F21Reader extends SignatureClassLoader {
                         }
                         break;
                     case "int":
-                        oVal = new Integer(value);
+                        oVal = Integer.valueOf(value);
                         break;
                     case "long":
-                        oVal = new Long(value);
+                        oVal = Long.valueOf(value);
                         break;
                     case "char":
                         oVal = (char) Integer.parseInt(value);
                         break;
                     case "byte":
-                        oVal = new Byte(value);
+                        oVal = Byte.valueOf(value);
                         break;
                     case "double":
-                        oVal = new Double(value);
+                        oVal = Double.parseDouble(value);
                         break;
                     case "float":
-                        oVal = new Float(value);
+                        oVal = Float.parseFloat(value);
                         break;
                 }
 

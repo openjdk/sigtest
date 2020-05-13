@@ -235,7 +235,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         }
     }
 
-    private int getSyntheticMethodCount(Method[] methods) {
+    private static int getSyntheticMethodCount(Method[] methods) {
         int count = 0;
         for (Method method : methods) {
             if (method.isSynthetic()) {
@@ -245,7 +245,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         return count;
     }
 
-    private int getSyntheticConstructorCount(Constructor[] ctors) {
+    private static int getSyntheticConstructorCount(Constructor[] ctors) {
         int count = 0;
         for (Constructor ctor : ctors) {
             if (ctor.isSynthetic()) {
@@ -255,7 +255,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         return count;
     }
 
-    private int getSyntheticFieldCount(Field[] flds) {
+    private static int getSyntheticFieldCount(Field[] flds) {
         int count = 0;
         for (Field fld : flds) {
             if (fld.isSynthetic()) {
@@ -318,7 +318,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         }
     }
 
-    private int getSyntheticNestedCount(Class[] clss) {
+    private static int getSyntheticNestedCount(Class[] clss) {
         int count = 0;
         for (Class clss1 : clss) {
             if (clss1.isSynthetic()) {
@@ -328,7 +328,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         return count;
     }
 
-    private void readNested(ClassDescription c, Class classObject) {
+    private static void readNested(ClassDescription c, Class classObject) {
         Class[] nestedClasses = classObject.getDeclaredClasses();
 
         if (nestedClasses.length != 0) {

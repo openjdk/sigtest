@@ -145,16 +145,16 @@ public class SetupAndTest extends Result {
         }
     }
 
-    private void addOption(List<String> options, String optionName, String optionValue) {
+    private static void addOption(List<String> options, String optionName, String optionValue) {
         options.add(optionName);
         options.add(optionValue);
     }
 
-    private void addFlag(List<String> options, String flag) {
+    private static void addFlag(List<String> options, String flag) {
         options.add(flag);
     }
 
-    private void addOption(List<String> options, String optionName, String[] optionValues) {
+    private static void addOption(List<String> options, String optionName, String[] optionValues) {
         options.add(optionName);
         options.addAll(Arrays.asList(optionValues));
     }

@@ -61,7 +61,7 @@ public class ToyParser {
         return root;
     }
 
-    private void closeElement(String def, Stack<Elem> stack) {
+    private static void closeElement(String def, Stack<Elem> stack) {
         Elem e = stack.peek();
         Matcher m = close.matcher(def);
         if (m.find()) {
@@ -98,7 +98,7 @@ public class ToyParser {
         }
     }
 
-    private void makeElem(Elem el, String txt) {
+    private static void makeElem(Elem el, String txt) {
 
         Matcher mn = name.matcher(txt);
         if (mn.find()) {
@@ -117,7 +117,7 @@ public class ToyParser {
         }
     }
 
-    private Kind getLexKind(String el) {
+    private static Kind getLexKind(String el) {
         if (close.matcher(el).find()) {
             return CLOSE;
         }

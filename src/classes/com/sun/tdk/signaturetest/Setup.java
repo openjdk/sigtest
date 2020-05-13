@@ -81,7 +81,7 @@ import java.util.*;
  * includes tracked classes.
  * <dt><code><b>-Version</b></code> &lt;version&gt; <dd> Specify API version. If
  * this parameter is not specified, API version is assumed to be that reported
- * by <code>getProperty("java.version")</code>.
+ * by {@code getProperty("java.version")}.
  * <dt><code><b>-Verbose</b></code> <dd> Print names of ignored classes. </dl>
  *
  * @author Maxim Sokolnikov
@@ -604,7 +604,7 @@ public class Setup extends SigTest {
      *
      * @param classes MemberCollection which stores occurred errors. *
      */
-    private List<String> sortClasses(Collection<String> classes) {
+    private static List<String> sortClasses(Collection<String> classes) {
         List<String> retVal = new ArrayList<>(classes);
         Collections.sort(retVal);
         return retVal;

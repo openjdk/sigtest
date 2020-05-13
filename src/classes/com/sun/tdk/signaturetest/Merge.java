@@ -108,7 +108,7 @@ public class Merge extends SigTest {
         return passed();
     }
 
-    private void checkValidWriteFile() throws CommandLineParserException {
+    private static void checkValidWriteFile() throws CommandLineParserException {
         File canonicalFile = null;
         MergeOptions mo = AppContext.getContext().getBean(MergeOptions.class);
         try {

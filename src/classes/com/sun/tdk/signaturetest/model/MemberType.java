@@ -33,7 +33,7 @@ public final class MemberType implements Comparable<MemberType>, Serializable {
 
     /**
      * NOTE: changing order of modifiers in these arrays affects order of
-     * modifiers in string returned via method <code>Modifier.toString()</code>
+     * modifiers in string returned via method {@code Modifier.toString()}
      *
      * @see Modifier#toString(MemberType, int, boolean)
      */

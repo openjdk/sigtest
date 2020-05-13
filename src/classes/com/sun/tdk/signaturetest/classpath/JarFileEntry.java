@@ -92,11 +92,11 @@ class JarFileEntry extends ClasspathEntry {
     /**
      * Returns <b>InputStream</b> providing bytecode for the required class, if
      * that class could be found by the given qualified name in
-     * <code>JarFileEntry</code>.
+     * {@code JarFileEntry}.
      *
      * @param name Qualified name of the class requested.
      * @throws ClassNotFoundException if the class was not found inside this
-     *                                <code>JarFileEntry</code>.
+     *                                {@code JarFileEntry}.
      */
     public InputStream findClass(String name) throws IOException, ClassNotFoundException {
 

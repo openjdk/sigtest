@@ -53,7 +53,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     public static final boolean ANNOTATION_DEFAULT_VALUES_ON = true;
     private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
-    private class BinaryClassDescription extends ClassDescription {
+    private static class BinaryClassDescription extends ClassDescription implements AutoCloseable {
 
         private int major_version;          // class file format versions
         private int minor_version;
@@ -184,6 +184,11 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
             sigfields = null;
             sigmethods = null;
             constants = null;
+        }
+
+        @Override
+        public void close() throws Exception {
+            cleanup();
         }
     }
 
@@ -412,17 +417,13 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     }
 
     private void readClass(BinaryClassDescription c, InputStream is, String className) throws IOException {
-
-        DataInput classData = new DataInputStream(is);
-
-        try {
+        try(DataInputStream classData = new DataInputStream(is)) {
             readClass(c, classData);
         } catch (Throwable t) {
             System.err.println(i18n.getString("BinaryClassDescrLoader.error.classname", className));
             SwissKnife.reportThrowable(t);
         } finally {
             c.cleanup();
-            is.close();
         }
     }
 
@@ -843,11 +844,11 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
     // simplified logic because of
     // cls initialization is not complited
-    private boolean isAnonimouseSimple(ClassDescription cls) {
+    private static boolean isAnonimouseSimple(ClassDescription cls) {
         return Character.isDigit(cls.getName().charAt(0));
     }
 
-    private void postMethod(SignatureParser parser, MemberDescription fid) {
+    private static void postMethod(SignatureParser parser, MemberDescription fid) {
         fid.setTypeParameters(parser.generic_pars);
         fid.setType(parser.field_type);
 
@@ -1516,7 +1517,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
     }
 
-    private void err(String s) {
+    private static void err(String s) {
         throw new ClassFormatError(s == null ? "???" : s);
     }
 

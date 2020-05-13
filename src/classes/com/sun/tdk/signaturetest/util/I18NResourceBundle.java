@@ -169,7 +169,7 @@ public class I18NResourceBundle extends ResourceBundle {
 
     /**
      * Returns the name of this bundle (useful for methods using bundle name
-     * instead of instance, such as <code>Logger</code> creation,
+     * instead of instance, such as {@code Logger} creation,
      *
      * @return the name of this resource bundle
      */

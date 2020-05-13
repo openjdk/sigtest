@@ -140,7 +140,7 @@ public class AnnotationParser {
         return res;
     }
 
-    private int findCorresponding(String str, char open, char close) {
+    private static int findCorresponding(String str, char open, char close) {
         char[] chars = str.toCharArray();
         int count = 0;
         for (int i = 0; i < chars.length; i++) {
@@ -156,11 +156,11 @@ public class AnnotationParser {
         return -1;
     }
 
-    private void parseAnnData(AnnotationItem item, String specificData) {
-        item.setTarget(Integer.valueOf(specificData));
+    private static void parseAnnData(AnnotationItem item, String specificData) {
+        item.setTarget(Integer.parseInt(specificData));
     }
 
-    private void parseAnnExData(AnnotationItemEx item, String specificData) {
+    private static void parseAnnExData(AnnotationItemEx item, String specificData) {
         assert specificData.startsWith("[");
         assert specificData.endsWith("]");
         specificData = specificData.substring(1, specificData.length() - 1);
@@ -273,7 +273,7 @@ public class AnnotationParser {
         return result;
     }
 
-    private int findClosingBracket(String str, int startPos, char openingChar, char closingChar) {
+    private static int findClosingBracket(String str, int startPos, char openingChar, char closingChar) {
 
         int level = 0;
         int len = str.length();

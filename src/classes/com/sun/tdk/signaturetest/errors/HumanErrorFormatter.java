@@ -303,7 +303,7 @@ public class HumanErrorFormatter extends SortedErrorFormatter {
 
     }
 
-    private boolean isSameKind(Message m1, Message m2) {
+    private static boolean isSameKind(Message m1, Message m2) {
         if (m1 == null || m2 == null) {
             return false;
         }

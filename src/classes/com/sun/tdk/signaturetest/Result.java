@@ -109,7 +109,7 @@ public class Result {
 
         // Don't change this to if(Boolean.parseBoolean(System.getProperty(NO_EXIT))) {
         // because Boolean.parseBoolean is since 1.5
-        if (Boolean.valueOf(System.getProperty(NO_EXIT))) {
+        if (Boolean.parseBoolean(System.getProperty(NO_EXIT))) {
             return isPassed();
         } else {
             System.exit(exitCodes[type]);

@@ -220,7 +220,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
             return result;
         }
 
-        private int compareNullableStrings(String s1, String s2) {
+        private static int compareNullableStrings(String s1, String s2) {
             if (s1 != null && s2 != null) {
                 return s1.compareTo(s2);
             } else if (s1 == null && s2 == null) {
@@ -296,7 +296,7 @@ public class AnnotationItem implements Comparable<AnnotationItem> {
 
     // for extensions
     protected String getSpecificData() {
-        return "" + target;
+        return String.valueOf(target);
     }
 
     protected String getPrefix() {

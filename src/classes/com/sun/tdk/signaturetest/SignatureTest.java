@@ -62,8 +62,8 @@ import java.util.*;
  * the Java API library under test.</p>
  * <p>
  * <b>SignatureTest</b> implements the standard JavaTest 3.0
- * <code>com.sun.javatest.Test</code> interface and uses the standard
- * <code>main()</code> method implementation. <b>SignatureTest</b> allows to
+ * {@code com.sun.javatest.Test} interface and uses the standard
+ * {@code main()} method implementation. <b>SignatureTest</b> allows to
  * check only specified by command line the package or packages.
  * </p>
  * <p>
@@ -89,7 +89,7 @@ import java.util.*;
  * field name.
  * </p>
  * <p>
- * Usage: <code>java com.sun.tdk.signaturetest.SignatureTest</code>
+ * Usage: {@code java com.sun.tdk.signaturetest.SignatureTest}
  * &lt;options&gt;
  * <br>where &lt;options&gt; includes:
  * <br><dl> <dt><code><b>-TestURL</b></code> &lt;URL&gt; <dd> URL of signature file.
@@ -105,8 +105,8 @@ import java.util.*;
  * subpackages.
  * <br><dt><code><b>-Exclude</b></code> &lt;package_or_class_name&gt; <dd> Name of
  * the package or class, which is not required to be traced, despite of it is
- * implied by <code>-Package</code> or by
- * <code>-PackageWithoutSubpackages</code> options. If the specified parameter
+ * implied by {@code -Package} or by
+ * {@code -PackageWithoutSubpackages} options. If the specified parameter
  * names a package, all its subpackages are implied to be also excluded. Such
  * option should be included for each package (but subpackages) or class, which
  * is not required to be traced.
@@ -116,13 +116,13 @@ import java.util.*;
  * <br><dt><code><b>-Classpath</b></code> &lt;path&gt; <dd> Path to packages being
  * tested. If there are several directories and/or zip-files containing the
  * required packages, all of them should be specified here. Use
- * <code>java.io.File.pathSeparator</code> to separate directory and/or zip-file
+ * {@code java.io.File.pathSeparator} to separate directory and/or zip-file
  * names in the specified path. Only classes from &lt;path&gt; will be used for
  * tracking adding classes.
  * <br><dt><code><b>-static</b></code> <dd> Run signature test in static mode.
  * <br><dt><code><b>-Version</b></code> &lt;version&gt; <dd> Specify API version. If
  * this parameter is not specified, API version is assumed to be that reported
- * by <code>getProperty("java.version")</code>.
+ * by {@code getProperty("java.version")}.
  * <br><dt><code><b>-CheckValue</b></code>
  * <dd> Check values of primitive constant. This option can be used in static
  * mode only.
@@ -248,7 +248,7 @@ public class SignatureTest extends SigTest {
      * clean up constant values for non-static constants if this feature is not
      * supported by the format
      */
-    private void correctConstants(final ClassDescription currentClass) {
+    private static void correctConstants(final ClassDescription currentClass) {
         for (FieldDescr fd : currentClass.getDeclaredFields()) {
             if (!fd.isStatic()) {
                 fd.setConstantValue(null);
@@ -260,7 +260,7 @@ public class SignatureTest extends SigTest {
      * Parse options specific for <b>SignatureTest</b>, and pass other options
      * to <b>SigTest</b> parameters parser.
      *
-     * @param args Same as <code>args[]</code> passes to <code>main()</code>.
+     * @param args Same as {@code args[]} passes to {@code main()}.
      */
     private boolean parseParameters(String[] args) {
 
@@ -389,7 +389,7 @@ public class SignatureTest extends SigTest {
      * Detects if the current platform supports Java9's
      * ModuleReader::list for enumerating available classes
      */
-    private boolean isPlatformEnumerationSupported() {
+    private static boolean isPlatformEnumerationSupported() {
         try {
             Class.forName("java.lang.module.ModuleReader").getMethod("list");
             //System.out.println("PlatformEnumeration detected");
@@ -779,8 +779,8 @@ public class SignatureTest extends SigTest {
 
     /**
      * Check if packages being tested do not contain any extra class, which is
-     * not described in the <code>signatureFile</code>. For each extra class
-     * detected, error message is appended to the <code>log</code>.
+     * not described in the {@code signatureFile}. For each extra class
+     * detected, error message is appended to the {@code log}.
      */
     private void checkAddedClasses() {
         //check that new classes are not added to the tracked packages.
@@ -870,8 +870,8 @@ public class SignatureTest extends SigTest {
 
     }
 
-    private void transformPair(ClassDescription parentReq, MemberDescription required,
-                               ClassDescription parentFou, MemberDescription found) {
+    private static void transformPair(ClassDescription parentReq, MemberDescription required,
+                                      ClassDescription parentFou, MemberDescription found) {
         // number of simple transformations for found - required pair
 
         // Issue 54
@@ -899,13 +899,13 @@ public class SignatureTest extends SigTest {
     }
 
     /**
-     * Check if the <code>required</code> class described in signature file also
+     * Check if the {@code required} class described in signature file also
      * presents (and is public or protected) in the API being tested. If this
      * method fails to findByName that class in the API being tested, it appends
-     * corresponding message to the errors <code>log</code>.
+     * corresponding message to the errors {@code log}.
      *
-     * @return <code>Status.failed("...")</code> if security exception occurred;
-     * or <code>Status.passed("")</code> otherwise.
+     * @return {@code Status.failed("...")} if security exception occurred;
+     * or {@code Status.passed("")} otherwise.
      */
     protected boolean verifyClass(ClassDescription required, boolean supportNSC) {
         // checks that package from tested API
@@ -1002,7 +1002,7 @@ public class SignatureTest extends SigTest {
         return passed();
     }
 
-    private void checkSupers(ClassDescription cl) throws SuperClassesNotFoundException {
+    private static void checkSupers(ClassDescription cl) throws SuperClassesNotFoundException {
         ArrayList<String> fNotFound = new ArrayList<>();
         SuperClass sc = cl.getSuperClass();
         ClassHierarchy hi = cl.getClassHierarchy();
@@ -1029,7 +1029,7 @@ public class SignatureTest extends SigTest {
         }
     }
 
-    private boolean hasClassParameter(ClassDescription cl) {
+    private static boolean hasClassParameter(ClassDescription cl) {
         String tp = cl.getTypeParameters();
         boolean result = (tp != null) && (!tp.isEmpty());
         // check all the members also
@@ -1077,16 +1077,16 @@ public class SignatureTest extends SigTest {
     }
 
     /**
-     * Compare descriptions of the <code>required</code> and <code>found</code>
-     * classes. It is assumed, that description for the <code>required</code>
-     * class is read from signature file, and the <code>found</code> description
+     * Compare descriptions of the {@code required} and {@code found}
+     * classes. It is assumed, that description for the {@code required}
+     * class is read from signature file, and the {@code found} description
      * belongs to that API being tested. If the descriptions compared are not
      * equal to each other (class names differ, or there are different sets of
      * public members in them), this method appends corresponding error messages
-     * to the <code>log</code>-file. Note, that equality of class or member
-     * names may do not imply that they have the same <code>static</code> and
-     * <code>protected</code> attributes, and <code>throws</code> clause, if the
-     * chosen <code>converter</code> enables weaker equivalence.
+     * to the {@code log}-file. Note, that equality of class or member
+     * names may do not imply that they have the same {@code static} and
+     * {@code protected} attributes, and {@code throws} clause, if the
+     * chosen {@code converter} enables weaker equivalence.
      */
     protected void verifyClass(ClassDescription required, ClassDescription found) {
 
@@ -1160,7 +1160,7 @@ public class SignatureTest extends SigTest {
 
     }
 
-    private void fixEnum(ClassDescription required) {
+    private static void fixEnum(ClassDescription required) {
         required.addModifier(Modifier.FINAL);
         required.removeModifier(Modifier.ABSTRACT);
         for (MethodDescr mr : required.getDeclaredMethods()) {
@@ -1170,14 +1170,14 @@ public class SignatureTest extends SigTest {
     }
 
     /**
-     * Compare names of the <code>required</code> and <code>found</code>
-     * classes. It is assumed, that description for the <code>required</code>
-     * class is read from signature file, and the <code>found</code> description
+     * Compare names of the {@code required} and {@code found}
+     * classes. It is assumed, that description for the {@code required}
+     * class is read from signature file, and the {@code found} description
      * belongs to that API being tested. If the descriptions compared are not
      * equal to each other, this method appends corresponding error messages to
-     * the <code>log</code>-file. Note, that equality of descriptions may do not
-     * imply that they have the same <code>static</code> and
-     * <code>protected</code> attributes, if the chosen <code>converter</code>
+     * the {@code log}-file. Note, that equality of descriptions may do not
+     * imply that they have the same {@code static} and
+     * {@code protected} attributes, if the chosen {@code converter}
      * enables weaker equivalence.
      */
     private void checkClassDescription(ClassDescription required, ClassDescription found) {
@@ -1227,12 +1227,12 @@ public class SignatureTest extends SigTest {
         return clonedMember;
     }
     /**
-     * Compare the <code>required</code> and <code>found</code> sets of class
-     * members having the same signature <code>name</code>. It is assumed, that
-     * the <code>required</code> description was read from signature file, and
-     * the <code>found</code> description belongs to the API being tested. If
+     * Compare the {@code required} and {@code found} sets of class
+     * members having the same signature {@code name}. It is assumed, that
+     * the {@code required} description was read from signature file, and
+     * the {@code found} description belongs to the API being tested. If
      * these two member descriptions are not equal to each other, this method
-     * appends corresponding error messages to the <code>log</code>-file.
+     * appends corresponding error messages to the {@code log}-file.
      *
      * @param parentReq ClassDesription for contained class from required set
      * @param parentFou ClassDesription for contained class from found set
@@ -1391,7 +1391,7 @@ public class SignatureTest extends SigTest {
         }
     }
 
-    private AnnotationItem[] removeExtendedAnnotations(AnnotationItem[] baseAnnotList) {
+    private static AnnotationItem[] removeExtendedAnnotations(AnnotationItem[] baseAnnotList) {
 
         if (baseAnnotList == null) {
             return AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY;
@@ -1531,8 +1531,8 @@ public class SignatureTest extends SigTest {
 
     static class SuperClassesNotFoundException extends ClassNotFoundException {
 
-        private String[] scNames;
-        private String clName;
+        private final String[] scNames;
+        private final String clName;
 
         private SuperClassesNotFoundException(String[] scNames, String clName) {
             if (scNames == null || scNames.length == 0) {

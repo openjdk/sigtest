@@ -64,7 +64,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
 
     protected final char delimiter;
     /**
-     * All modifiers assigned to <code>this</code> item.
+     * All modifiers assigned to {@code this} item.
      *
      * @see com.sun.tdk.signaturetest.model.Modifier Direct access to this field
      * not allowed because method setModifiers(int) changes incoming modifiers!
@@ -74,25 +74,25 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     //  For classes, methods and constructors: generic type parameters or null
     String typeParameters;
     /**
-     * FieldDescr type, if <code>this</code> item describes some field, or
-     * return type, if <code>this</code> item describes some methods. null value
+     * FieldDescr type, if {@code this} item describes some field, or
+     * return type, if {@code this} item describes some methods. null value
      * not allowed!
      */
     String type = NO_TYPE;
     /**
-     * Qualified name of the class or interface, where <code>this</code> item is
+     * Qualified name of the class or interface, where {@code this} item is
      * declared. null value not allowed!
      */
     String declaringClass = NO_DECLARING_CLASS;
     /**
-     * If <code>this</code> item describes some method or constructor,
-     * <code>args</code> lists types of its arguments. Type names are separated
-     * by commas, and the whole <code>args</code> list is embraced inside
+     * If {@code this} item describes some method or constructor,
+     * {@code args} lists types of its arguments. Type names are separated
+     * by commas, and the whole {@code args} list is embraced inside
      * matching parentheses. in form: (arg,arg,...) null value not allowed!
      */
     String args = NO_ARGS;
     /**
-     * Contains <I><b>throws</b></I> clause, if <code>this</code> item describes
+     * Contains <I><b>throws</b></I> clause, if {@code this} item describes
      * some method or constructor. in form: throws t,t,...t null value not
      * allowed!
      */
@@ -100,7 +100,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     //  Sorted list of annotations present on this item or null
     private AnnotationItem[] annoList = AnnotationItem.EMPTY_ANNOTATIONITEM_ARRAY;
     /**
-     * Sort of entity referred by <code>this</code> item. It should be either
+     * Sort of entity referred by {@code this} item. It should be either
      * field, or method, or constructor, or class or inner class, or interface
      * being implemented by some class, or <I>superclass</I> being extended by
      * some class.
@@ -166,15 +166,15 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     }
 
     /**
-     * Check if <code>this</code> is a class item.
+     * Check if {@code this} is a class item.
      */
     public boolean isClass() {
         return false;
     }
 
     /**
-     * Check if <code>this</code> item describes superclass for some class.
-     * (I.e., check if <code>this</code> describes ``<I><b>extends</b></I> ...''
+     * Check if {@code this} item describes superclass for some class.
+     * (I.e., check if {@code this} describes ``<I><b>extends</b></I> ...''
      * suffix for some
      * <b>ClassDescription</b>.)
      */
@@ -183,8 +183,8 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     }
 
     /**
-     * Check if <code>this</code> item describes interface class for some class.
-     * (I.e., check if <code>this</code> describes some of interface name(s) in
+     * Check if {@code this} item describes interface class for some class.
+     * (I.e., check if {@code this} describes some of interface name(s) in
      * ``<I><b>implements</b></I> ...'' suffix for some
      * <b>ClassDescription</b>.)
      */
@@ -193,21 +193,21 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     }
 
     /**
-     * Check if <code>this</code> item describes some field.
+     * Check if {@code this} item describes some field.
      */
     public boolean isField() {
         return false;
     }
 
     /**
-     * Check if <code>this</code> item describes some method.
+     * Check if {@code this} item describes some method.
      */
     public boolean isMethod() {
         return false;
     }
 
     /**
-     * Check if <code>this</code> item describes some constructor.
+     * Check if {@code this} item describes some constructor.
      */
     public boolean isConstructor() {
         return false;
@@ -218,7 +218,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     }
 
     /**
-     * Return <b>Set</b> of Modifier assigned to <code>this</code> item.
+     * Return <b>Set</b> of Modifier assigned to {@code this} item.
      *
      * @see Modifier
      */
@@ -227,8 +227,8 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     }
 
     /**
-     * Display return-type if <code>this</code> describes some method, or type
-     * of the field if <code>this</code> describes some field.
+     * Display return-type if {@code this} describes some method, or type
+     * of the field if {@code this} describes some field.
      */
     public String getType() {
         return type;
@@ -353,7 +353,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
 
     /**
      * Display qualified name of the class or interface declaring
-     * <code>this</code> item. Empty string is returned if <code>this</code>
+     * {@code this} item. Empty string is returned if {@code this}
      * item describes top-level class or interface, which is not inner class or
      * interface.
      */
@@ -374,7 +374,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     /**
      * Returns list of exception names separated by commas declared in the
      * <I><b>throws</b></I> clause for that method or constructor described by
-     * <code>this</code> item.
+     * {@code this} item.
      */
     public String getThrowables() {
         return throwables;
@@ -395,40 +395,40 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     }
 
     /**
-     * Check if modifiers list for <code>this</code> item contains the
-     * <code>"protected"</code> string.
+     * Check if modifiers list for {@code this} item contains the
+     * {@code "protected"} string.
      */
     public boolean isProtected() {
         return Modifier.hasModifier(modifiers, Modifier.PROTECTED);
     }
 
     /**
-     * Check if modifiers list for <code>this</code> item contains the
-     * <code>"public"</code> string.
+     * Check if modifiers list for {@code this} item contains the
+     * {@code "public"} string.
      */
     public boolean isPublic() {
         return Modifier.hasModifier(modifiers, Modifier.PUBLIC);
     }
 
     /**
-     * Check if modifiers list for <code>this</code> item contains the
-     * <code>"private"</code> string.
+     * Check if modifiers list for {@code this} item contains the
+     * {@code "private"} string.
      */
     public boolean isPrivate() {
         return Modifier.hasModifier(modifiers, Modifier.PRIVATE);
     }
 
     /**
-     * Check if modifiers list for <code>this</code> item contains the
-     * <code>"abstract"</code> string.
+     * Check if modifiers list for {@code this} item contains the
+     * {@code "abstract"} string.
      */
     public boolean isAbstract() {
         return Modifier.hasModifier(modifiers, Modifier.ABSTRACT);
     }
 
     /**
-     * Check if modifiers list for <code>this</code> item contains the
-     * <code>"static"</code> string.
+     * Check if modifiers list for {@code this} item contains the
+     * {@code "static"} string.
      */
     public boolean isStatic() {
         return Modifier.hasModifier(modifiers, Modifier.STATIC);
@@ -439,8 +439,8 @@ public abstract class MemberDescription implements Cloneable, Serializable {
     }
 
     /**
-     * Check if modifiers list for <code>this</code> item contains the
-     * <code>"interface"</code> string.
+     * Check if modifiers list for {@code this} item contains the
+     * {@code "interface"} string.
      */
     public boolean isInterface() {
         return Modifier.hasModifier(modifiers, Modifier.INTERFACE);

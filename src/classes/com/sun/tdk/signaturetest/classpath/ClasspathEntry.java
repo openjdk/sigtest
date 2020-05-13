@@ -45,13 +45,13 @@ public abstract class ClasspathEntry implements Classpath {
     }
 
     /**
-     * Qualified names for all those classes found in <code>this</code>
+     * Qualified names for all those classes found in {@code this}
      * directory.
      */
     protected Set<String> classes;
     /**
-     * This <code>currentPosition</code> iterator is used to browse
-     * <code>classes</code>
+     * This {@code currentPosition} iterator is used to browse
+     * {@code classes}
      */
     protected Iterator<String> currentPosition;
 
@@ -64,7 +64,7 @@ public abstract class ClasspathEntry implements Classpath {
     }
 
     /**
-     * Reset enumeration of classes found in <code>this</code>
+     * Reset enumeration of classes found in {@code this}
      * <b>ClasspathEntry</b>.
      *
      * @see #nextClassName()

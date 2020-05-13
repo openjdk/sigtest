@@ -287,7 +287,7 @@ class TypeParametersHandler extends PairedHandler {
         return false;
     }
 
-    private String trimTypeParameter(String s) {
+    private static String trimTypeParameter(String s) {
         if ((s == null) || s.isEmpty()) {
             return "";
         }
@@ -354,11 +354,11 @@ class AnnotationHandler extends PairedHandler {
 
     }
 
-    private List<String> annotationListToList(AnnotationItem[] a) {
+    private static List<String> annotationListToList(AnnotationItem[] a) {
         if (a == null) {
             return Collections.emptyList();
         }
-        ArrayList<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         for (AnnotationItem annotationItem : a) {
             result.add(annotationItem.getName());
         }

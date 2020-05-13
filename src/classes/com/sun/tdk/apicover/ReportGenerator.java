@@ -142,9 +142,7 @@ public abstract class ReportGenerator extends APIVisitor {
 
     public void addXList(String[] names) {
         for (String name : names) {
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(new FileReader(name));
+            try(BufferedReader in = new BufferedReader(new FileReader(name))) {
                 String line;
                 while ((line = in.readLine()) != null) {
                     if (line.trim().startsWith("#")) {
@@ -155,14 +153,6 @@ public abstract class ReportGenerator extends APIVisitor {
                 this.addConfig(Option.EXCLUDE_LIST.getKey(), name);
             } catch (IOException e) {
                 log.println(e.getMessage());
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        log.println(e.getMessage());
-                    }
-                }
             }
         }
     }
@@ -386,8 +376,6 @@ public abstract class ReportGenerator extends APIVisitor {
             filter();
             printHeader(null);
             print();
-            printFooter();
-            close();
         } else {
             List<ClassDescription> allApi = new ArrayList<>(refCounter.getClasses());
             printHeader(structure.getTitle());
@@ -403,13 +391,13 @@ public abstract class ReportGenerator extends APIVisitor {
                     }
                 }
             }
-            printFooter();
-            close();
         }
+        printFooter();
+        close();
 
     }
 
-    private List<ClassDescription> filterRefs(Structure.Section section, List<ClassDescription> allApi) {
+    private static List<ClassDescription> filterRefs(Structure.Section section, List<ClassDescription> allApi) {
         List<ClassDescription> res = new ArrayList<>();
         for (ClassDescription cd : allApi) {
             for (String pkg : section.getPkgInclude()) {
@@ -798,7 +786,7 @@ class ReportXML extends ReportGenerator {
         endElement(XC.CLASS);
     }
 
-    private String constructClassName(ClassDescription cd) {
+    private static String constructClassName(ClassDescription cd) {
         int pos = cd.getQualifiedName().lastIndexOf('.');
         if (pos == -1) {
             return cd.getName();
@@ -857,7 +845,7 @@ class ReportXML extends ReportGenerator {
             }
         }
         atts.addAttribute("", "", XC.MEMBER_TESTED, "", coverCount > 0 ? "1" : "0");
-        atts.addAttribute("", "", XC.MEMBER_REFCOUNT, "", "" + coverCount);
+        atts.addAttribute("", "", XC.MEMBER_REFCOUNT, "", String.valueOf(coverCount));
         startElement(type, atts);
         endElement(type);
     }

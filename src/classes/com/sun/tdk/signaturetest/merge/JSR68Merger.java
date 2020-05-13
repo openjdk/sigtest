@@ -369,7 +369,7 @@ public class JSR68Merger extends FeaturesHolder {
 
     }
 
-    private boolean isGeneralized(ClassDescription clazz) {
+    private static boolean isGeneralized(ClassDescription clazz) {
         if (clazz.getTypeParameters() != null) {
             return true;
         }
@@ -506,7 +506,7 @@ public class JSR68Merger extends FeaturesHolder {
         return false;
     }
 
-    private boolean mergeInterfaces(ClassDescription[] similarClasses, ClassDescription result) {
+    private static boolean mergeInterfaces(ClassDescription[] similarClasses, ClassDescription result) {
 
         Set<SuperInterface> ts = new TreeSet<>(new Comparator<SuperInterface>() {
             public int compare(SuperInterface s1, SuperInterface s2) {
@@ -549,7 +549,7 @@ public class JSR68Merger extends FeaturesHolder {
         return true;
     }
 
-    private boolean makeHiders(ClassDescription[] similarClasses, ClassDescription result) {
+    private static boolean makeHiders(ClassDescription[] similarClasses, ClassDescription result) {
         // result should be intersection
         Set<String> internalFields = new HashSet<>(similarClasses[0].getInternalFields());
         Set<String> internalClasses = new HashSet<>(similarClasses[0].getInternalClasses());
@@ -814,7 +814,7 @@ public class JSR68Merger extends FeaturesHolder {
         }
     }
 
-    private void mergeAnnotations(MemberDescription[] similarMembers, MemberDescription result) {
+    private static void mergeAnnotations(MemberDescription[] similarMembers, MemberDescription result) {
         TreeSet<AnnotationItem> annotations = new TreeSet<>();
         for (MemberDescription similarMember : similarMembers) {
             AnnotationItem[] annos = similarMember.getAnnoList();

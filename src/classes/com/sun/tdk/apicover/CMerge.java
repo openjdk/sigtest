@@ -232,7 +232,7 @@ public class CMerge {
         for (int i = 0; i < docs.length; i++) {
             CovDocument d = docs[i];
             for (Element cl : d.getClasses()) {
-                String qName = d.getQname(cl);
+                String qName = CovDocument.getQname(cl);
                 if (!allClasses.containsKey(qName)) {
                     allClasses.put(qName, new Element[docs.length]);
                 }
@@ -334,7 +334,7 @@ public class CMerge {
         return true;
     }
 
-    private String getMemberModifsAsString(Element member) {
+    private static String getMemberModifsAsString(Element member) {
         // collect member's attributes
         HashSet<String> modifS = new HashSet<>();
         NamedNodeMap attrs = member.getAttributes();
@@ -353,7 +353,7 @@ public class CMerge {
         return modifS.toString();
     }
 
-    private void saveToXml(Document d, String oFile) throws TransformerException {
+    private static void saveToXml(Document d, String oFile) throws TransformerException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
@@ -391,8 +391,8 @@ public class CMerge {
                 }
                 cl.appendChild(newM);
                 memberCount++;
-                cl.setAttribute(XC.CLASS_MEMBERS, "" + memberCount);
-                cl.setAttribute(XC.CLASS_TESTED, "" + testedCount);
+                cl.setAttribute(XC.CLASS_MEMBERS, String.valueOf(memberCount));
+                cl.setAttribute(XC.CLASS_TESTED, String.valueOf(testedCount));
             }
             pck.appendChild(cl);
             updateCounters(pck, memberCount, testedCount);
@@ -431,13 +431,13 @@ public class CMerge {
         return par;
     }
 
-    private void updateCounters(Element pck, int memberCount, int testedCount) {
+    private static void updateCounters(Element pck, int memberCount, int testedCount) {
         Element p = pck;
         while (p.getNodeName().equals(XC.PACKAGE)) {
             int count = Integer.parseInt(p.getAttribute(XC.PACKAGE_MEMBERS)) + memberCount;
             int tested = Integer.parseInt(p.getAttribute(XC.PACKAGE_TESTED)) + testedCount;
-            p.setAttribute(XC.PACKAGE_MEMBERS, "" + count);
-            p.setAttribute(XC.PACKAGE_TESTED, "" + tested);
+            p.setAttribute(XC.PACKAGE_MEMBERS, String.valueOf(count));
+            p.setAttribute(XC.PACKAGE_TESTED, String.valueOf(tested));
             p = (Element) p.getParentNode();
         }
     }
@@ -490,7 +490,7 @@ public class CMerge {
             return result;
         }
 
-        private String getQname(Element e) {
+        private static String getQname(Element e) {
             StringBuilder qName = new StringBuilder(e.getAttribute(XC.PACKAGE_NAME));
             Node parentNode;
             Node currNode = e;

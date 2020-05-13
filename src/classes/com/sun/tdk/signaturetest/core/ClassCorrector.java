@@ -602,7 +602,7 @@ public class ClassCorrector implements Transformer {
      * and reference by qualified name is impossible also
      * due to I1 and I2 are invisible outside the package
      */
-    private void removeDuplicatedConstants(ClassDescription c) {
+    private static void removeDuplicatedConstants(ClassDescription c) {
 
         Set<String> constantNames = new HashSet<>();
 

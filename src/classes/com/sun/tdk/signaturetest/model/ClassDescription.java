@@ -162,7 +162,7 @@ public class ClassDescription extends MemberDescription {
      * >
      *
      */
-    private int smartIndexOf(String str, char c, int startPos) {
+    private static int smartIndexOf(String str, char c, int startPos) {
         int res = -1;
         if (str.indexOf('<', startPos) == -1) {
             // simple case
@@ -321,7 +321,7 @@ public class ClassDescription extends MemberDescription {
     }
 
     /**
-     * List of members of that class described by <code>this</code> instance.
+     * List of members of that class described by {@code this} instance.
      * This is a hashtable indexed by
      * <b>MemberDescription</b> instances, and containing a <b>List</b> of
      * <b>MemberDescription</b> instances describing all members characterized
@@ -348,7 +348,7 @@ public class ClassDescription extends MemberDescription {
     }
 
     /**
-     * Given the (qualified) class <code>name</code>, extract its package name.
+     * Given the (qualified) class {@code name}, extract its package name.
      */
     public static String getPackageName(String name) {
         int pos = name.lastIndexOf('.');
@@ -388,7 +388,7 @@ public class ClassDescription extends MemberDescription {
 
     /**
      * Return <b>Enumeration</b> of <b>MemberDescription</b> getMembersIterator
-     * for all members of that class described by <code>this</code> instance.
+     * for all members of that class described by {@code this} instance.
      *
      * @see #members
      * @see MemberDescription
@@ -545,7 +545,7 @@ public class ClassDescription extends MemberDescription {
         return true;
     }
 
-    private boolean isInternalMember(MemberDescription m) {
+    private static boolean isInternalMember(MemberDescription m) {
         return m.hasModifier(Modifier.PRIVATE) || (!m.hasModifier(Modifier.PUBLIC) && !m.hasModifier(Modifier.PROTECTED));
     }
 

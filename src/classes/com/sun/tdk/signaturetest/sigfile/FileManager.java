@@ -71,7 +71,7 @@ public class FileManager {
         return result;
     }
 
-    private String getFormat(URL fileURL) {
+    private static String getFormat(URL fileURL) {
         String currentLine;
         try (BufferedReader in = new BufferedReader(new InputStreamReader(fileURL.openStream(), StandardCharsets.UTF_8))) {
             if ((currentLine = in.readLine()) == null) {

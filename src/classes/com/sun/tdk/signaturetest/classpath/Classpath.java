@@ -39,7 +39,7 @@ import java.io.PrintWriter;
 public interface Classpath extends AutoCloseable {
 
     /**
-     * Initialize the module with given parameter: <code>classPath</code>.
+     * Initialize the module with given parameter: {@code classPath}.
      *
      * @param classPath parameter provided to initialize module (usually a
      *                  directory or file classPath).

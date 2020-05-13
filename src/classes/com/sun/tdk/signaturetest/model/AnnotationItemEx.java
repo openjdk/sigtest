@@ -341,7 +341,7 @@ public class AnnotationItemEx extends AnnotationItem {
 
     // this code should be 1.3 compatible
     // so we can't use 1.5's Arrays.toString()
-    private String arrayToString(int[] a) {
+    private static String arrayToString(int[] a) {
         if (a == null) {
             return "null";
         }

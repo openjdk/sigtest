@@ -141,7 +141,7 @@ public class Updater extends DefaultHandler {
         lastData = null;
     }
 
-    private void fillUR(UpdateRecord ur, Attributes attributes) {
+    private static void fillUR(UpdateRecord ur, Attributes attributes) {
         Field[] fs = UpdateRecord.class.getDeclaredFields();
         try {
             for (Field f : fs) {
@@ -205,7 +205,7 @@ public class Updater extends DefaultHandler {
 
     class SigList {
 
-        private final List<String> sigList = new ArrayList<String>();
+        private final List<String> sigList = new ArrayList<>();
         private int startPos = -1;
 
         public boolean findClass(String className) {
@@ -334,7 +334,7 @@ public class Updater extends DefaultHandler {
     }
 
     // data bean
-    private class UpdateRecord {
+    private static class UpdateRecord {
 
         String atype;
         String aclassname;

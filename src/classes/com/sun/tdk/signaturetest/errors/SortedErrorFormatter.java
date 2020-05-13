@@ -87,7 +87,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
     }
 
     /**
-     * Append new error message to the <code>failedMessages</code> buffer.
+     * Append new error message to the {@code failedMessages} buffer.
      *
      * @see #failedMessages
      */
@@ -100,7 +100,7 @@ public class SortedErrorFormatter extends ErrorFormatter {
     }
 
     /**
-     * Print all error messages collected by <code>failedMessages</code>.
+     * Print all error messages collected by {@code failedMessages}.
      */
     public void printErrors() {
 
@@ -192,8 +192,8 @@ public class SortedErrorFormatter extends ErrorFormatter {
     }
 
     /**
-     * Return string consisting of <code>len</code> copies of the symbol
-     * <code>c</code>.
+     * Return string consisting of {@code len} copies of the symbol
+     * {@code c}.
      */
     protected static String space(char c, int len) {
         char[] buff = new char[len];
