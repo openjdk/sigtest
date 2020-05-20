@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -219,6 +219,7 @@ public class MemberCollectionBuilder {
         MemberDescription[] fields = cl.getDeclaredFields();
         MemberDescription[] classes = cl.getDeclaredClasses();
         MemberDescription[] intrfs = cl.getInterfaces();
+        MemberDescription[] permittedSubClasses = cl.getPermittedSubclasses();
 
         String clsName = cl.getQualifiedName();
         ClassHierarchy hierarchy = cl.getClassHierarchy();
@@ -228,11 +229,13 @@ public class MemberCollectionBuilder {
             methods = Erasurator.replaceFormalParameters(clsName, methods, paramList, skipRawTypes);
             fields = Erasurator.replaceFormalParameters(clsName, fields, paramList, skipRawTypes);
             classes = Erasurator.replaceFormalParameters(clsName, classes, paramList, skipRawTypes);
+            permittedSubClasses = Erasurator.replaceFormalParameters(clsName, permittedSubClasses, paramList, skipRawTypes);
         } else if (callErasurator && cl.getTypeParameters() != null) {
             List<String> boundsList = cl.getTypeBounds();
             methods = Erasurator.replaceFormalParameters(clsName, methods, boundsList, false);
             fields = Erasurator.replaceFormalParameters(clsName, fields, boundsList, false);
             classes = Erasurator.replaceFormalParameters(clsName, classes, boundsList, false);
+            permittedSubClasses = Erasurator.replaceFormalParameters(clsName, permittedSubClasses, boundsList, false);
         }
         if (paramList != null) {
             intrfs = Erasurator.replaceFormalParameters(clsName, intrfs, paramList, skipRawTypes);
@@ -243,6 +246,7 @@ public class MemberCollectionBuilder {
         retVal = addSuperMembers(methods, retVal);
         retVal = addSuperMembers(fields, retVal);
         retVal = addSuperMembers(classes, retVal);
+        retVal = addSuperMembers(permittedSubClasses, retVal);
 
         for (MemberDescription intrf : intrfs) {
             SuperInterface s = (SuperInterface) intrf;
@@ -298,6 +302,9 @@ public class MemberCollectionBuilder {
                         if (!internalClasses.contains(supMD.getName())) {
                             retVal.addMember(supMD);
                         }
+                    } else if (supMD.isPermittedSubClass()) {
+                        //skipping
+                        continue;
                     } else {
                         retVal.addMember(supMD);
                     }
@@ -429,7 +436,9 @@ public class MemberCollectionBuilder {
                                 cl.addXClasses(membToAdd.getName());
                             }
                         }
-
+                    } else if (membToAdd.isPermittedSubClass()){
+                        //skip
+                        continue;
                     } else {
                         retVal.addMember(membToAdd);
                     }
@@ -657,7 +666,11 @@ public class MemberCollectionBuilder {
                 }
 
                 // includes only public and protected constructors, methods, classes, fields
-                if (!(mr.isPublic() || mr.isProtected() || mr.isSuperInterface() || mr.isSuperClass())) {
+                if (!mr.isPublic()
+                        && !mr.isProtected()
+                        && !mr.isSuperInterface()
+                        && !mr.isSuperClass()
+                        && !mr.isPermittedSubClass()) {
                     it.remove();
                 }
             }

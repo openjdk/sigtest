@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -67,12 +67,14 @@ public class MessageType implements Comparable<MessageType> {
     final public static MessageType MISS_CLASSES = new MessageType(i18n.getString("ErrorFormatter.error.missing.classes"), 1);
     final public static MessageType MISS_NESTED_CLASSES = new MessageType(i18n.getString("ErrorFormatter.error.missing.nested.classes"), 2);
     final public static MessageType MISS_SUPERCLASSES = new MessageType(i18n.getString("ErrorFormatter.error.missing.superclasses"), 3);
+    final public static MessageType MISS_PERMITTEDSUBCLASSES = new MessageType(i18n.getString("ErrorFormatter.error.missing.permittedsubclasses"), 25);
     final public static MessageType MISS_FIELDS = new MessageType(i18n.getString("ErrorFormatter.error.missing.field"), 4);
     final public static MessageType MISS_CONSTRUCTORS = new MessageType(i18n.getString("ErrorFormatter.error.missing.construct"), 5);
     final public static MessageType MISS_METHS = new MessageType(i18n.getString("ErrorFormatter.error.missing.methods"), 6);
     final public static MessageType ADD_CLASSES = new MessageType(i18n.getString("ErrorFormatter.error.added.classes"), 7); // Added nested Classes or class definitions
     final public static MessageType ADD_NESTED_CLASSES = new MessageType(i18n.getString("ErrorFormatter.error.added.nested.classes"), 8); // Added nested Classes or class definitions
     final public static MessageType ADD_SUPCLASSES = new MessageType(i18n.getString("ErrorFormatter.error.added.superclasses"), 9); // Added Superclasses or Superinterfaces
+    final public static MessageType ADD_PERMITTEDSUBCLASSES = new MessageType(i18n.getString("ErrorFormatter.error.added.permittedsubclasses"), 26);
     final public static MessageType ADD_FLD = new MessageType(i18n.getString("ErrorFormatter.error.added.field"), 10); // Added Fields
     final public static MessageType ADD_CONSTRUCTORS = new MessageType(i18n.getString("ErrorFormatter.error.added.construct"), 11); // Added Constructors
     final public static MessageType ADD_METHS = new MessageType(i18n.getString("ErrorFormatter.error.added.methods"), 12); // Added Methods
@@ -91,6 +93,9 @@ public class MessageType implements Comparable<MessageType> {
         }
         if (type == MemberType.SUPERCLASS || type == MemberType.SUPERINTERFACE) {
             return MISS_SUPERCLASSES;
+        }
+        if (type == MemberType.PERMITTEDSUBCLASS) {
+            return MISS_PERMITTEDSUBCLASSES;
         }
         if (type == MemberType.FIELD) {
             return MISS_FIELDS;
@@ -113,6 +118,9 @@ public class MessageType implements Comparable<MessageType> {
         }
         if (type == MemberType.SUPERCLASS || type == MemberType.SUPERINTERFACE) {
             return ADD_SUPCLASSES;
+        }
+        if (type == MemberType.PERMITTEDSUBCLASS) {
+            return ADD_PERMITTEDSUBCLASSES;
         }
         if (type == MemberType.FIELD) {
             return ADD_FLD;

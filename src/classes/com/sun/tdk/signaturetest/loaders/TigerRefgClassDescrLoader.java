@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -46,7 +46,7 @@ import java.util.*;
 /**
  * This is J2SE 1.5 (Tiger) loader
  */
-public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, LoadingHints {
+public class TigerRefgClassDescrLoader extends CommonLoaderHelper implements ClassDescriptionLoader, LoadingHints {
 
     private static final String object = "java.lang.Object";
     public static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(TigerRefgClassDescrLoader.class);
@@ -142,6 +142,7 @@ public class TigerRefgClassDescrLoader implements ClassDescriptionLoader, Loadin
         readCtors(c, classObject);
         readMethods(c, classObject);
         readNested(c, classObject);
+        readPermittedSubClasses(c, classObject);
     }
 
     private void readFields(ClassDescription c, Class classObject) {

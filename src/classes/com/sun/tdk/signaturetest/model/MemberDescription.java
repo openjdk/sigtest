@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -111,6 +111,7 @@ public abstract class MemberDescription implements Cloneable, Serializable {
      * @see #isClass()
      * @see #isSuperClass()
      * @see #isSuperInterface()
+     * @see #isPermittedSubClass() ()
      * @see #isInner()
      */
     MemberType memberType;
@@ -189,6 +190,13 @@ public abstract class MemberDescription implements Cloneable, Serializable {
      * <b>ClassDescription</b>.)
      */
     public boolean isSuperInterface() {
+        return false;
+    }
+
+    /**
+     * Check if {@code this} item describes permitted subclass for some sealed class.
+     */
+    public boolean isPermittedSubClass() {
         return false;
     }
 
@@ -273,8 +281,10 @@ public abstract class MemberDescription implements Cloneable, Serializable {
         fqn = ExoticCharTools.encodeExotic(fqn);
         outerName = ExoticCharTools.encodeExotic(outerName);
 
-        if (memberType == MemberType.CLASS || memberType == MemberType.SUPERCLASS
-                || memberType == MemberType.SUPERINTERFACE) {
+        if (memberType == MemberType.CLASS
+                || memberType == MemberType.SUPERCLASS
+                || memberType == MemberType.SUPERINTERFACE
+                || memberType == MemberType.PERMITTEDSUBCLASS) {
 
             name = fqn.intern();
 
@@ -309,8 +319,10 @@ public abstract class MemberDescription implements Cloneable, Serializable {
 
         int delimPos = fqn.lastIndexOf(delimiter);
 
-        if (memberType == MemberType.CLASS || memberType == MemberType.SUPERCLASS
-                || memberType == MemberType.SUPERINTERFACE) {
+        if (memberType == MemberType.CLASS
+                || memberType == MemberType.SUPERCLASS
+                || memberType == MemberType.SUPERINTERFACE
+                || memberType == MemberType.PERMITTEDSUBCLASS) {
 
             name = fqn.intern();
 

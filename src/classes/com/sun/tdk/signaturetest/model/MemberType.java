@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -67,6 +67,7 @@ public final class MemberType implements Comparable<MemberType>, Serializable {
     public static final MemberType METHOD = new MemberType("meth", methodModifiers);
     public static final MemberType FIELD = new MemberType("fld", fieldModifiers);
     public static final MemberType MODULE = new MemberType("<module", noneModifiers);
+    public static final MemberType PERMITTEDSUBCLASS = new MemberType("perm", noneModifiers);
 
 
     public String toString() {
@@ -156,5 +157,5 @@ public final class MemberType implements Comparable<MemberType>, Serializable {
     private final Modifier[] applicableModifiers;
     private int modifiersMask;
     private int trackedModifiersMask;     // used to clean non-tracked modifiers quickly
-    public static final MemberType[] knownTypes = {CLASS, SUPERCLASS, SUPERINTERFACE, CONSTRUCTOR, METHOD, FIELD, INNER, MODULE};
+    public static final MemberType[] knownTypes = {CLASS, SUPERCLASS, SUPERINTERFACE, CONSTRUCTOR, METHOD, FIELD, INNER, MODULE, PERMITTEDSUBCLASS};
 }

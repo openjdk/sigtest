@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -425,6 +425,10 @@ public class ClassDescription extends MemberDescription {
         return interfaces;
     }
 
+    public PermittedSubClass[] getPermittedSubclasses() {
+        return permittedSubclasses;
+    }
+
     public String getOuterClass() {
         return declaringClass;
     }
@@ -446,6 +450,18 @@ public class ClassDescription extends MemberDescription {
 
     public void setInterfaces(SuperInterface[] interfs) {
         interfaces = interfs;
+    }
+
+    public void createPermittedSubclasses(int size) {
+        permittedSubclasses = size > 0 ? new PermittedSubClass[size] : PermittedSubClass.EMPTY_ARRAY;
+    }
+
+    public void setPermittedSubclass(int i, PermittedSubClass cl) {
+        permittedSubclasses[i] = cl;
+    }
+
+    public void setPermittedSubclasses(PermittedSubClass[] classes) {
+        permittedSubclasses = classes;
     }
 
     public void createFields(int size) {
@@ -517,6 +533,7 @@ public class ClassDescription extends MemberDescription {
     private ConstructorDescr[] declaredConstructors = ConstructorDescr.EMPTY_ARRAY;
     private SuperInterface[] interfaces = SuperInterface.EMPTY_ARRAY;
     private InnerDescr[] nestedClasses = InnerDescr.EMPTY_ARRAY;
+    private PermittedSubClass[] permittedSubclasses = PermittedSubClass.EMPTY_ARRAY;
     // these class's members initialized only if class description loaded from signature file
     private Set<String> internalFields = null;  // contains private and package access fields
     private Set<String> internalClasses = null; // contains private and package access nested classes

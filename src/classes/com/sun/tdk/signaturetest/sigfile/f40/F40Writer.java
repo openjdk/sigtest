@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -168,6 +168,8 @@ public class F40Writer implements Writer {
             write(buf, (SuperClass) m);
         } else if (type == MemberType.SUPERINTERFACE) {
             write(buf, (SuperInterface) m);
+        } else if (type == MemberType.PERMITTEDSUBCLASS) {
+            write(buf, (PermittedSubClass) m);
         } else if (type == MemberType.INNER) {
             write(buf, (InnerDescr) m);
         } else {
@@ -197,6 +199,12 @@ public class F40Writer implements Writer {
         }
 
         addAnnotations(buf, m);
+    }
+
+    protected void write(StringBuffer buf, PermittedSubClass m) {
+        buf.append(m.getMemberType());
+        buf.append(' ');
+        buf.append(m.getQualifiedName());
     }
 
     protected void addAnnotations(StringBuffer buf, MemberDescription m) {

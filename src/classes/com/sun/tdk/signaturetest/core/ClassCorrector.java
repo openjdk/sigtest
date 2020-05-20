@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -67,6 +67,7 @@ public class ClassCorrector implements Transformer {
         // 2)fix invisible parameter types
         fixMethods(cl);
         removeInvisibleInterfaces(cl);
+        removeInvisiblePermittedSubClasses(cl);
         fixInvisibleSuperclasses(cl);
         removeDuplicatedConstants(cl);
         checkClassTypeParameters(cl);
@@ -591,6 +592,27 @@ public class ClassCorrector implements Transformer {
         }
     }
 
+    protected void removeInvisiblePermittedSubClasses(ClassDescription c) throws ClassNotFoundException {
+
+        List<String> makeThemDirect = null;
+
+        for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
+            MemberDescription mr = e.next();
+            if (mr.isPermittedSubClass()) {
+
+                PermittedSubClass pc = (PermittedSubClass) mr;
+                String siName = pc.getQualifiedName();
+
+                if (isInvisibleClass(siName)) {
+                    e.remove();
+                }
+
+                if (mr.getTypeParameters() != null) {
+                    checkActualParameters(c, mr, mr.getTypeParameters());
+                }
+            }
+        }
+    }
 
     /*
      * After removing invisible interfaces we can have duplicated constants

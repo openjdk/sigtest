@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -190,6 +190,12 @@ public class Erasurator {
         for (int i = 0; i < inners.length; i++) {
             clz.setNested(i, (InnerDescr) processMember(inners[i], false));
         }
+
+        PermittedSubClass[] permittedSubclasses = clz.getPermittedSubclasses();
+        clz.setPermittedSubclasses(new PermittedSubClass[permittedSubclasses.length]);
+        for (int i = 0; i < permittedSubclasses.length; i++) {
+            clz.setPermittedSubclass(i, (PermittedSubClass) processMember(permittedSubclasses[i], false));
+        }
     }
 
     private void processMembers(ClassDescription clz) {
@@ -351,7 +357,7 @@ public class Erasurator {
             mr.setType(m.replaceAll(actual));
         }
 
-        if (mr.isSuperInterface() || mr.isSuperClass()) {
+        if (mr.isSuperInterface() || mr.isSuperClass() || mr.isPermittedSubClass()) {
             String typeParams = mr.getTypeParameters();
             if (typeParams != null) {
                 m = p.matcher(typeParams);

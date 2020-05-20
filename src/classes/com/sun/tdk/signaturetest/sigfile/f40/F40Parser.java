@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -55,7 +55,8 @@ public class F40Parser implements Parser {
         List<String> alist = new ArrayList<>();
         List<MemberDescription> items = new ArrayList<>();
 
-        int method_count = 0, field_count = 0, constructor_count = 0, inner_count = 0, interfaces_count = 0;
+        int method_count = 0, field_count = 0, constructor_count = 0,
+                inner_count = 0, interfaces_count = 0, permittedSubClasses_count = 0;
 
         for (String member : members) {
 
@@ -92,6 +93,8 @@ public class F40Parser implements Parser {
                     inner_count++;
                 } else if (mt == MemberType.SUPERINTERFACE) {
                     interfaces_count++;
+                } else if (mt == MemberType.PERMITTEDSUBCLASS) {
+                    permittedSubClasses_count++;
                 }
 
                 if (m != classDescription) {
@@ -117,12 +120,16 @@ public class F40Parser implements Parser {
         if (interfaces_count > 0) {
             classDescription.createInterfaces(interfaces_count);
         }
+        if (permittedSubClasses_count > 0) {
+            classDescription.createPermittedSubclasses(permittedSubClasses_count);
+        }
 
         constructor_count = 0;
         method_count = 0;
         field_count = 0;
         inner_count = 0;
         interfaces_count = 0;
+        permittedSubClasses_count = 0;
 
         for (MemberDescription item : items) {
             m = item;
@@ -148,6 +155,9 @@ public class F40Parser implements Parser {
                 si.setDirect(true);
                 classDescription.setInterface(interfaces_count, si);
                 interfaces_count++;
+            } else if (mt == MemberType.PERMITTEDSUBCLASS) {
+                classDescription.setPermittedSubclass(permittedSubClasses_count, (PermittedSubClass) m);
+                permittedSubClasses_count++;
             } else {
                 assert false;
             }
@@ -230,6 +240,8 @@ public class F40Parser implements Parser {
             member = parse(new SuperInterface(), definition);
         } else if (type == MemberType.INNER) {
             member = parse(new InnerDescr(), definition);
+        } else if (type == MemberType.PERMITTEDSUBCLASS) {
+            member = parse(new PermittedSubClass(), definition);
         } else {
             assert false;  // unknown member type
         }
@@ -252,6 +264,18 @@ public class F40Parser implements Parser {
     }
 
     protected MemberDescription parse(ClassDescription cls, String def) {
+
+        init(cls, def);
+
+        cls.setModifiers(Modifier.scanModifiers(elems));
+
+        String s = getElem();
+        cls.setupGenericClassName(s);
+
+        return cls;
+    }
+
+    protected MemberDescription parse(PermittedSubClass cls, String def) {
 
         init(cls, def);
 

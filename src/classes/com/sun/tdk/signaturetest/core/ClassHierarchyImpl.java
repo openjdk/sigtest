@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -88,6 +88,11 @@ public class ClassHierarchyImpl implements ClassHierarchy {
     public String[] getSuperInterfaces(String fqClassName) throws ClassNotFoundException {
         ClassInfo info = getClassInfo(fqClassName);
         return info.superInterfaces;
+    }
+
+    public String[] getPermittedSubClasses(String fqClassName) throws ClassNotFoundException {
+        ClassInfo info = getClassInfo(fqClassName);
+        return info.permittedSubClasses;
     }
 
     public Set<String> getAllImplementedInterfaces(String fqClassName) throws ClassNotFoundException {
@@ -442,6 +447,7 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         private static final String[] EMPTY_INTERFACES = new String[0];
         String superClass = null;
         String[] superInterfaces = EMPTY_INTERFACES;
+        String[] permittedSubClasses = new String[0];
         boolean accessable = false;
         boolean isDocumentedAnnotation = false;
         int modifiers = 0;
@@ -462,6 +468,15 @@ public class ClassHierarchyImpl implements ClassHierarchy {
                 superInterfaces = new String[len];
                 for (int i = 0; i < len; ++i) {
                     superInterfaces[i] = intfs[i].getQualifiedName();
+                }
+            }
+
+            PermittedSubClass[] pClss = c.getPermittedSubclasses();
+            len = pClss.length;
+            if (len > 0) {
+                permittedSubClasses = new String[len];
+                for (int i = 0; i < len; ++i) {
+                    permittedSubClasses[i] = pClss[i].getQualifiedName();
                 }
             }
 

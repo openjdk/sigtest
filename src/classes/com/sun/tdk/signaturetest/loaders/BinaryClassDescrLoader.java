@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2019, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -289,6 +289,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
     private static final int MAGIC = 0xCAFEBABE;
     private static final int TIGER_CLASS_VERSION = 49;
     private static final int J7_CLASS_VERSION = 51;
+    private static final int J15_CLASS_VERSION = 59;
     //  Constant pool tags (see the JVM II 4.4, p. 103)
     private static final int CONSTANT_Utf8 = 1,
             CONSTANT_Integer = 3,
@@ -578,8 +579,8 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
         int access = -1;
 
-        void check(BinaryClassDescription c, String s) throws IOException {
-            if (s.equals("InnerClasses")) {
+        void check(BinaryClassDescription c, String attrName) throws IOException {
+            if (attrName.equals("InnerClasses")) {
                 List<InnerDescr> tmp = null;
 
                 String fqname = c.getQualifiedName();
@@ -620,6 +621,17 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
                 if (tmp != null) {
                     c.setNestedClasses(tmp.toArray(InnerDescr.EMPTY_ARRAY));
+                }
+            } else if (SigTest.isTigerFeaturesTracked && attrName.equals("PermittedSubclasses")) {
+                checkVersion(c, attrName, J15_CLASS_VERSION);
+
+                int n = is.readUnsignedShort();
+                c.createPermittedSubclasses(n);
+                for (int i = 0; i < n; i++) {
+                    String permittedSubClassName = c.getClassName(is.readUnsignedShort());
+                    PermittedSubClass permittedSubClass = new PermittedSubClass();
+                    permittedSubClass.setupGenericClassName(permittedSubClassName);
+                    c.setPermittedSubclass(i, permittedSubClass);
                 }
             }
         }
