@@ -246,6 +246,11 @@ public class MemberCollectionBuilder {
         retVal = addSuperMembers(methods, retVal);
         retVal = addSuperMembers(fields, retVal);
         retVal = addSuperMembers(classes, retVal);
+
+        for (MemberDescription perm : permittedSubClasses) {
+            PermittedSubClass s = (PermittedSubClass) perm;
+            s.setDeclaringClass(cl.getQualifiedName());
+        }
         retVal = addSuperMembers(permittedSubClasses, retVal);
 
         for (MemberDescription intrf : intrfs) {
