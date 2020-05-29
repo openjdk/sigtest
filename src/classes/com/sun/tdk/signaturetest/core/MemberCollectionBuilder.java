@@ -247,11 +247,14 @@ public class MemberCollectionBuilder {
         retVal = addSuperMembers(fields, retVal);
         retVal = addSuperMembers(classes, retVal);
 
-        for (MemberDescription perm : permittedSubClasses) {
-            PermittedSubClass s = (PermittedSubClass) perm;
-            s.setDeclaringClass(cl.getQualifiedName());
+        // CODETOOLS-7901685 - ignoring permitted for enums
+        if (!cl.hasModifier(Modifier.ENUM)) {
+            for (MemberDescription perm : permittedSubClasses) {
+                PermittedSubClass s = (PermittedSubClass) perm;
+                s.setDeclaringClass(cl.getQualifiedName());
+            }
+            retVal = addSuperMembers(permittedSubClasses, retVal);
         }
-        retVal = addSuperMembers(permittedSubClasses, retVal);
 
         for (MemberDescription intrf : intrfs) {
             SuperInterface s = (SuperInterface) intrf;

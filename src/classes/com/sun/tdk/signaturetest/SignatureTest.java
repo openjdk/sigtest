@@ -1160,10 +1160,11 @@ public class SignatureTest extends SigTest {
 
     }
 
-    private static void fixEnum(ClassDescription required) {
-        required.addModifier(Modifier.FINAL);
-        required.removeModifier(Modifier.ABSTRACT);
-        for (MethodDescr mr : required.getDeclaredMethods()) {
+    private static void fixEnum(ClassDescription enumClassDescr) {
+        // CODETOOLS-7901685
+        enumClassDescr.addModifier(Modifier.FINAL);
+        enumClassDescr.removeModifier(Modifier.ABSTRACT);
+        for (MethodDescr mr : enumClassDescr.getDeclaredMethods()) {
             mr.addModifier(Modifier.FINAL);
             mr.removeModifier(Modifier.ABSTRACT);
         }
