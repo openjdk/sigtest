@@ -50,7 +50,6 @@ import java.util.*;
  */
 public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHints {
 
-    public static final boolean ANNOTATION_DEFAULT_VALUES_ON = true;
     private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
     private static class BinaryClassDescription extends ClassDescription implements AutoCloseable {
@@ -187,7 +186,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
             cleanup();
         }
     }
@@ -286,7 +285,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
     private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(BinaryClassDescrLoader.class);
     // Magic number identifying class file format
-    private static final int MAGIC = 0xCAFEBABE;
+    private static final int MAGIC = 0b11001010111111101011101010111110;
     private static final int TIGER_CLASS_VERSION = 49;
     private static final int J7_CLASS_VERSION = 51;
     private static final int J15_CLASS_VERSION = 59;
@@ -417,7 +416,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         }
     }
 
-    private void readClass(BinaryClassDescription c, InputStream is, String className) throws IOException {
+    private void readClass(BinaryClassDescription c, InputStream is, String className) {
         try(DataInputStream classData = new DataInputStream(is)) {
             readClass(c, classData);
         } catch (Throwable t) {
@@ -580,7 +579,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         int access = -1;
 
         void check(BinaryClassDescription c, String attrName) throws IOException {
-            if (attrName.equals("InnerClasses")) {
+            if ("InnerClasses".equals(attrName)) {
                 List<InnerDescr> tmp = null;
 
                 String fqname = c.getQualifiedName();
@@ -622,7 +621,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                 if (tmp != null) {
                     c.setNestedClasses(tmp.toArray(InnerDescr.EMPTY_ARRAY));
                 }
-            } else if (SigTest.isTigerFeaturesTracked && attrName.equals("PermittedSubclasses")) {
+            } else if (SigTest.isTigerFeaturesTracked && "PermittedSubclasses".equals(attrName)) {
                 checkVersion(c, attrName, J15_CLASS_VERSION);
 
                 int n = is.readUnsignedShort();
@@ -716,7 +715,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         Object value = null;
 
         void check(BinaryClassDescription c, String s) throws IOException {
-            if (s.equals("ConstantValue")) {
+            if ("ConstantValue".equals(s)) {
                 if (value != null) {
                     err(null);
                 }
@@ -790,7 +789,9 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
 
             if (attrs.annodef != null) {
                 memberD.addModifier(Modifier.HASDEFAULT);
-                ((MethodDescr) memberD).setAnnoDef(attrs.annodef);
+                if (memberD instanceof MethodDescr) {
+                    ((MethodDescr) memberD).setAnnoDef(attrs.annodef);
+                }
             }
 
             memberD.setThrowables(MemberDescription.getThrows(attrs.xthrows));
@@ -947,7 +948,7 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
         String[] xthrows;
 
         void check(BinaryClassDescription c, String s) throws IOException {
-            if (s.equals("Exceptions")) {
+            if ("Exceptions".equals(s)) {
                 int n = is.readUnsignedShort();
                 xthrows = new String[n];
                 for (int i = 0; i < n; i++) {
@@ -983,34 +984,34 @@ public class BinaryClassDescrLoader implements ClassDescriptionLoader, LoadingHi
                     is = new DataInputStream(new ByteArrayInputStream(info));
                 }
 
-                if (name.equals("Synthetic")) {
+                if ("Synthetic".equals(name)) {
                     synthetic = true;
-                } else if (name.equals("Deprecated")) {
+                } else if ("Deprecated".equals(name)) {
                     deprecated = true;
-                } else if (name.equals("Signature")) {
+                } else if ("Signature".equals(name)) {
                     checkVersion(c, name, TIGER_CLASS_VERSION);
                     signature = c.getName(is.readUnsignedShort());
-                } else if (SigTest.isTigerFeaturesTracked && name.equals("RuntimeVisibleAnnotations")) {
+                } else if (SigTest.isTigerFeaturesTracked && "RuntimeVisibleAnnotations".equals(name)) {
                     checkVersion(c, name, TIGER_CLASS_VERSION);
                     readAnnotations(c, 0);
 
-                } else if (SigTest.isTigerFeaturesTracked && name.equals("RuntimeInvisibleAnnotations")) {
+                } else if (SigTest.isTigerFeaturesTracked && "RuntimeInvisibleAnnotations".equals(name)) {
                     checkVersion(c, name, TIGER_CLASS_VERSION);
                     readAnnotations(c, 0);
-                } else if (SigTest.isTigerFeaturesTracked && name.equals("RuntimeVisibleTypeAnnotations")) {
+                } else if (SigTest.isTigerFeaturesTracked && "RuntimeVisibleTypeAnnotations".equals(name)) {
                     checkVersion(c, name, J7_CLASS_VERSION);
                     readExtAnnotations(c, 0);
-                } else if (SigTest.isTigerFeaturesTracked && name.equals("RuntimeInvisibleTypeAnnotations")) {
+                } else if (SigTest.isTigerFeaturesTracked && "RuntimeInvisibleTypeAnnotations".equals(name)) {
                     checkVersion(c, name, J7_CLASS_VERSION);
                     readExtAnnotations(c, 0);
                 } else if (SigTest.isTigerFeaturesTracked
-                        && (name.equals("RuntimeVisibleParameterAnnotations") || name.equals("RuntimeInvisibleParameterAnnotations"))) {
+                        && ("RuntimeVisibleParameterAnnotations".equals(name) || "RuntimeInvisibleParameterAnnotations".equals(name))) {
                     checkVersion(c, name, TIGER_CLASS_VERSION);
                     int m = is.readUnsignedByte();
                     for (int l = 0; l < m; l++) {
                         readAnnotations(c, l + 1);
                     }
-                } else if (SigTest.isTigerFeaturesTracked && name.equals("AnnotationDefault")) {
+                } else if (SigTest.isTigerFeaturesTracked && "AnnotationDefault".equals(name)) {
                     checkVersion(c, name, TIGER_CLASS_VERSION);
                     annodef = read_member_value(c);
                 } else {
