@@ -27,7 +27,6 @@ package com.sun.tdk.signaturetest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1036,15 +1035,14 @@ public class JakartaSignatureTest extends SigTest {
         return passed();
     }
 
-    private static void checkSupers(ClassDescription cl) throws SuperClassesNotFoundException {
+    private void checkSupers(ClassDescription cl) throws SuperClassesNotFoundException {
 
         ArrayList<String> fNotFound = new ArrayList<>();
         SuperClass sc = cl.getSuperClass();
         ClassHierarchy hi = cl.getClassHierarchy();
         if (sc != null) {
             try {
-                if (!sc.getQualifiedName().startsWith("java") &&  // DO NOT MERGE this hack
-                    !sc.getQualifiedName().startsWith("javax")) { // DO NOT MERGE this hack
+                if (isPackageMember(sc.getQualifiedName())) {
                     hi.load(sc.getQualifiedName());
                 }
             } catch (ClassNotFoundException ex) {
@@ -1055,8 +1053,7 @@ public class JakartaSignatureTest extends SigTest {
         if (sif != null) {
             for (SuperInterface superInterface : sif) {
                 try {
-                    if (!superInterface.getQualifiedName().startsWith("java") &&  // DO NOT MERGE this hack
-                        !superInterface.getQualifiedName().startsWith("javax")) { // DO NOT MERGE this hack
+                    if (isPackageMember(superInterface.getQualifiedName())) {
                         hi.load(superInterface.getQualifiedName());
                     }
                 } catch (ClassNotFoundException ex) {
