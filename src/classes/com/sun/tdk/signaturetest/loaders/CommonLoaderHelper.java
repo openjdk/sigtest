@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,8 +27,6 @@ package com.sun.tdk.signaturetest.loaders;
 import com.sun.tdk.signaturetest.model.ClassDescription;
 import com.sun.tdk.signaturetest.model.PermittedSubClass;
 
-import java.lang.reflect.Array;
-
 /**
  * This class contains common methods for loaders
  *
@@ -44,27 +42,26 @@ class CommonLoaderHelper {
      */
     static void readPermittedSubClasses(ClassDescription cd, Class<?> classObject) {
         try {
-            Object permClasses = Class.class.getMethod("getPermittedSubclasses").invoke(classObject);
-            int n;
-            if (permClasses.getClass().isArray() && (n=Array.getLength(permClasses)) > 0) {
-                PermittedSubClass[] permittedSubClassesArray = new PermittedSubClass[n];
-                for (int i = 0; i < n; i++) {
-                    Object classDesc = Array.get(permClasses, i);
-                    String permittedSubClassName = (String) classDesc.getClass().getMethod("displayName").invoke(classDesc);
-                    String permittedSubClassPackageName = (String) classDesc.getClass().getMethod("packageName").invoke(classDesc);
+            Object permClassesObj = Class.class.getMethod("getPermittedSubclasses").invoke(classObject);
+            if (permClassesObj instanceof Class<?>[]) {
+                Class<?>[] permClasses = (Class<?>[]) permClassesObj;
 
-                    String fullQualifiedName = permittedSubClassPackageName.isEmpty()
-                            ? permittedSubClassName
-                            : permittedSubClassPackageName + "." + permittedSubClassName;
+                if (permClasses.length > 0) {
+                    PermittedSubClass[] permittedSubClassesArray = new PermittedSubClass[permClasses.length];
 
-                    PermittedSubClass permittedSubClass = new PermittedSubClass();
-                    permittedSubClass.setupGenericClassName(fullQualifiedName);
-                    permittedSubClassesArray[i] = permittedSubClass;
+                    for (int i = 0; i < permClasses.length; i++) {
+                        Class<?> clss = permClasses[i];
+                        String fullQualifiedName = clss.getName();
+
+                        PermittedSubClass permittedSubClass = new PermittedSubClass();
+                        permittedSubClass.setupGenericClassName(fullQualifiedName);
+                        permittedSubClassesArray[i] = permittedSubClass;
+                    }
+                    cd.setPermittedSubclasses(permittedSubClassesArray);
                 }
-                cd.setPermittedSubclasses(permittedSubClassesArray);
             }
         } catch (ReflectiveOperationException | ClassCastException | NullPointerException | ArrayIndexOutOfBoundsException e) {
-            //just skipping since getPermittedSubclasses method is not available
+            //just skipping since getPermittedSubclasses might not be available
         }
     }
 }
