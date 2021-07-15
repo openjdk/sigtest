@@ -280,7 +280,9 @@ public class MemberCollectionBuilder {
 
         Map<String, MemberDescription> inheritedFields = new HashMap<>();
         SuperClass superClassDescr = cl.getSuperClass();
-        if (superClassDescr != null) {
+        if (superClassDescr != null &&
+                !superClassDescr.getQualifiedName().startsWith("java") &&  // DO NOT MERGE this hack
+                !superClassDescr.getQualifiedName().startsWith("javax")) { // DO NOT MERGE this hack
             try {
                 // creates members inherited from superclass
                 ClassDescription superClass = hierarchy.load(superClassDescr.getQualifiedName());
@@ -343,6 +345,10 @@ public class MemberCollectionBuilder {
 
         Set<String> xfCan = new HashSet<>();
         for (SuperInterface anInterface : interfaces) {
+            if (anInterface.getQualifiedName().startsWith("java") ||  // DO NOT MERGE this hack
+                anInterface.getQualifiedName().startsWith("javax")) { // DO NOT MERGE this hack
+                continue;                                             // DO NOT MERGE this hack
+            }
             try {
                 ClassDescription intf = hierarchy.load(anInterface.getQualifiedName());
                 MemberCollection h = getMembers(intf, anInterface.getTypeParameters(), false, true, true, checkHidding);
