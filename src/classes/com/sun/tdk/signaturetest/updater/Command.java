@@ -191,7 +191,7 @@ class AddClass extends Command {
             throw new IllegalArgumentException("Class name should be specified");
         }
         if (body == null || body.isEmpty()) {
-            throw new IllegalArgumentException("Class defenition should be specified");
+            throw new IllegalArgumentException("Class definition should be specified");
         }
     }
 }
