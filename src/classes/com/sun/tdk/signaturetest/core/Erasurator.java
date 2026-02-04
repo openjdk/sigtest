@@ -28,6 +28,7 @@ import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
 import com.sun.tdk.signaturetest.model.*;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
+import com.sun.tdk.signaturetest.util.SwissKnife;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -61,9 +62,13 @@ public class Erasurator {
     private static final I18NResourceBundle i18n = I18NResourceBundle.getBundleForClass(Erasurator.class);
     private final BaseOptions bo = AppContext.getContext().getBean(BaseOptions.class);
 
+    private ClassDescription currentClass;
+
     public ClassDescription erasure(ClassDescription clz) {
 
         ClassDescription result = (ClassDescription) clz.clone();
+
+        this.currentClass = result;
 
         globalParameters.clear();
 
@@ -72,6 +77,8 @@ public class Erasurator {
             result.setTypeParameters(null);
         }
         processMembers(result);
+
+        this.currentClass = null;
         return result;
     }
 
@@ -87,6 +94,214 @@ public class Erasurator {
         }
         processDeclaredMembers(result);
         return result;
+    }
+
+
+    /**
+     * resolve an interface/superclass type parameter by searching the inheritance hierarchy.
+     * Uses the ClassHierarchy from the current class to load definitions.
+     *
+     * Handles transitive relationships: ie, RuleBasedCollator extends Collator , Collator implements Comparator<Object>, and more complex relationships
+     */
+    private String resolve(String param) {
+        if (currentClass == null) {
+            return null;
+        }
+
+        ClassHierarchy hierarchy = currentClass.getClassHierarchy();
+        if (hierarchy == null) {
+            return null;
+        }
+
+        // Extract interface/class name and parameter index
+        int startBrace = param.indexOf('{');
+        int endBrace = param.indexOf('}');
+        int percentPos = param.indexOf('%');
+
+        if (startBrace == -1 || endBrace == -1 || percentPos == -1) {
+            return null;
+        }
+
+        String className = param.substring(startBrace + 1, percentPos);
+        int paramIndex;
+        try {
+            paramIndex = Integer.parseInt(param.substring(percentPos + 1, endBrace));
+        } catch (NumberFormatException e) {
+            return null;
+        }
+
+        // Search through the hierarchy
+        String resolved = searchInHierarchy(currentClass, className, paramIndex, hierarchy);
+        if (resolved != null) {
+            return resolved;
+        }
+
+        // Fallback to load definition and get bound
+        return loadAndGetBound(hierarchy, className, paramIndex);
+    }
+
+    /**
+     * Search through class hierarchy (superclass and interfaces) for the target type parameter.
+     */
+    private String searchInHierarchy(ClassDescription clazz, String targetClassName, int paramIndex, ClassHierarchy hierarchy) {
+        if (clazz == null) {
+            return null;
+        }
+
+        // Check superclass
+        SuperClass superClass = clazz.getSuperClass();
+        if (superClass != null) {
+            String superName = superClass.getQualifiedName();
+
+            // Direct match with superclass
+            if (superName.equals(targetClassName)) {
+                String resolved = extractAndResolveTypeParam(superClass.getTypeParameters(), paramIndex);
+                if (resolved != null) {
+                    return resolved;
+                }
+            }
+
+            // Recursively search in superclass hierarchy
+            try {
+                ClassDescription superDesc = hierarchy.load(superName);
+                String resolved = searchInHierarchy(superDesc, targetClassName, paramIndex, hierarchy);
+                if (resolved != null) {
+                    return resolved;
+                }
+            } catch (ClassNotFoundException e) {
+                if (bo.isSet(Option.DEBUG)) {
+                    SwissKnife.reportThrowable(e);
+                }
+            }
+        }
+
+        // Check direct interfaces
+        SuperInterface[] interfaces = clazz.getInterfaces();
+        for (SuperInterface intf : interfaces) {
+            String intfName = intf.getQualifiedName();
+
+            // Direct match with interface
+            if (intfName.equals(targetClassName)) {
+                String resolved = extractAndResolveTypeParam(intf.getTypeParameters(), paramIndex);
+                if (resolved != null) {
+                    return resolved;
+                }
+            }
+
+            // Recursively search in interface hierarchy
+            try {
+                ClassDescription intfDesc = hierarchy.load(intfName);
+                String resolved = searchInHierarchy(intfDesc, targetClassName, paramIndex, hierarchy);
+                if (resolved != null) {
+                    return resolved;
+                }
+            } catch (ClassNotFoundException e) {
+                if (bo.isSet(Option.DEBUG)) {
+                    SwissKnife.reportThrowable(e);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract type parameter and resolve it (handles nested parameter references).
+     */
+    private String extractAndResolveTypeParam(String typeParams, int paramIndex) {
+        if (typeParams == null || typeParams.isEmpty()) {
+            return null;
+        }
+
+        try {
+            List<String> actualParams = splitParameters(typeParams);
+            if (paramIndex >= actualParams.size()) {
+                return null;
+            }
+
+            String actualType = actualParams.get(paramIndex);
+
+            // Recursively resolve parameter references
+            // Example: Comparator<{Container%0}> where {Container%0} needs resolution
+            if (actualType.matches("\\{.+%\\d+\\}")) {
+                String resolved = resolve(actualType);
+                if (resolved != null) {
+                    return resolved;
+                }
+            }
+
+            // Remove generics: List<String> -> List
+            while (actualType.indexOf('<') != -1) {
+                Matcher m = simpleParamUsage.matcher(actualType);
+                if (m.find()) {
+                    actualType = m.replaceAll("");
+                } else {
+                    break;
+                }
+            }
+
+            return maskDollar(actualType);
+
+        } catch (Exception e) {
+            if (bo.isSet(Option.DEBUG)) {
+                SwissKnife.reportThrowable(e);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Fallback: load the class/interface definition and get its declared bound.
+     * According to JLS 4.6, use the leftmost bound.
+     */
+    private String loadAndGetBound(ClassHierarchy hierarchy, String className, int paramIndex) {
+        try {
+            ClassDescription desc = hierarchy.load(className);
+            String formalParams = desc.getTypeParameters();
+
+            if (formalParams != null) {
+                StringTokenizer st = new StringTokenizer(formalParams, "<>,");
+                final String ext = " extends ";
+                int idx = 0;
+
+                while (st.hasMoreTokens()) {
+                    String token = st.nextToken().trim();
+                    Matcher m = simpleParamName.matcher(token);
+
+                    if (m.lookingAt()) {
+                        if (idx == paramIndex) {
+                            // Found the right parameter
+                            if (token.length() > m.end() && token.substring(m.end()).startsWith(ext)) {
+                                String bound = token.substring(m.end() + ext.length()).trim();
+
+                                // Take leftmost bound (before '&' or space)
+                                int space = bound.indexOf(' ');
+                                int amp = bound.indexOf('&');
+
+                                if (space > 0 && (amp < 0 || space < amp)) {
+                                    bound = bound.substring(0, space);
+                                } else if (amp > 0) {
+                                    bound = bound.substring(0, amp).trim();
+                                }
+
+                                return maskDollar(bound);
+                            }
+                            // No explicit bound means Object
+                            return "java.lang.Object";
+                        }
+                        idx++;
+                    }
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            if (bo.isSet(Option.DEBUG)) {
+                SwissKnife.reportThrowable(e);
+            }
+        }
+
+        return "java.lang.Object";
     }
 
     private String convert(String s, Map<String, String> globalParameters, Map<String, String> localParameters) {
@@ -115,6 +330,16 @@ public class Erasurator {
                 newS = m.replaceFirst(localParameters.get(param));
                 m = replaceParamUsage.matcher(newS);
                 continue;
+            }
+
+            if (param.matches("\\{[^%]+%\\d+}")) {
+                String resolved = resolve(param);
+                if (resolved != null) {
+                    globalParameters.put(param, resolved);
+                    newS = m.replaceFirst(resolved);
+                    m = replaceParamUsage.matcher(newS);
+                    continue;
+                }
             }
 
             if (!unresolvedWarnings.contains(param)) {
