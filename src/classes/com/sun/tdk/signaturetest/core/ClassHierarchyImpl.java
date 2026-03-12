@@ -224,6 +224,35 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         return anonimouse.matcher(clName).find();
     }
 
+
+    /**
+     * An instance of SigTest or its subclass that contains additional settings
+     * which may be needed for member verification.
+     */
+    private SigTest sigTest;
+
+    public void setSigTest(SigTest sigTest) {
+        this.sigTest = sigTest;
+    }
+
+    public SigTest getSigTest() {
+        return  this.sigTest;
+    }
+
+    /**
+     * Checks if the given class name belongs to some of the packages
+     * marked to be tested according to the current configuration.
+     * If there's a SigTest instance provided to this class, then the call is delegated to SigTest.isPackageMember()
+     * Otherwise an IllegalStateException is thrown.
+     */
+    @Override
+    public final boolean isPackageMember(String name) {
+        if (sigTest != null) {
+            return sigTest.isPackageMember(name);
+        }
+        throw new IllegalStateException("The SigTest instance to delegate this call to was not set.");
+    }
+
     private static final Pattern simpleParamUsage = Pattern.compile("<[^<>]+?>");
 
     private ClassDescription load(String name, boolean no_cache) throws ClassNotFoundException {

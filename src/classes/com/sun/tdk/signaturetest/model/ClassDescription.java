@@ -82,6 +82,7 @@ public class ClassDescription extends MemberDescription {
         }
 
         return memberType.isCompatible(getModifiers(), m.getModifiers())
+                && (m instanceof ClassDescription ? ((ClassDescription)m).isSealed() == this.isSealed() : true )
                 && SwissKnife.equals(typeParameters, m.typeParameters);
     }
 
@@ -367,6 +368,16 @@ public class ClassDescription extends MemberDescription {
 
     public void setTiger(boolean tiger) {
         isTiger = tiger;
+    }
+
+    /**
+     * A helper virtual flag identifying that a non-empty list of permitted subclasses was initialized originally.
+     * If the permitted class names are implementation-specific, they would be ignored at comparison,
+     * but the class itself retain `sealed` status which would be checked when comparing implementation v.s. the reference.
+     * The sealed status is always "false" if this class represent an enum, see details in CODETOOLS-7902682/JCK-7314248 .
+     */
+    public boolean isSealed() {
+        return !hasModifier(Modifier.ENUM) && permittedSubclasses.length > 0;
     }
 
     /**
@@ -658,6 +669,10 @@ public class ClassDescription extends MemberDescription {
 
         buf.append("CLASS");
 
+        if (isSealed()) {
+            buf.append(" sealed");
+        }
+
         String modifiers = Modifier.toString(memberType, getModifiers(), true);
         if (!modifiers.isEmpty()) {
             buf.append(' ');
@@ -703,6 +718,13 @@ public class ClassDescription extends MemberDescription {
                 continue;
             }
 
+            if ((((ClassHierarchyImpl)hierarchy).getSigTest()).filterNonPublicAnnotations()){
+                // Check if annotation should be included in dependencies
+                if (!isPublicApiAnnotationDependency(annot.getName())) {
+                    continue;
+                }
+            }
+
             addDependency(dependences, annot.getName());
         }
 
@@ -713,6 +735,17 @@ public class ClassDescription extends MemberDescription {
         // add outer class for nested class
         if (!isTopClass()) {
             addDependency(dependences, declaringClass);
+        }
+    }
+
+
+    private boolean isPublicApiAnnotationDependency(String annotationName) {
+        // Try to check if annotation is accessible and documented
+        try {
+            return hierarchy.isAccessible(annotationName) && hierarchy.isDocumentedAnnotation(annotationName);
+        } catch (ClassNotFoundException e) {
+            // If annotation class can't be loaded, don't include it as dependency
+            return false;
         }
     }
 

@@ -89,6 +89,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
     protected PackageGroup excludedPackages;
     protected PackageGroup apiIncl;
     protected PackageGroup apiExcl;
+    protected boolean filterNonPublicAnnotations;
 
     /**
      * Collector for error messages, or {@code null} if log is not
@@ -169,7 +170,7 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      */
     protected boolean isVerbose = false;
     static boolean Xverbose = false;
-    protected ClassHierarchy testableHierarchy;
+    protected ClassHierarchyImpl testableHierarchy;
     protected final Set<String> errorMessages = new HashSet<>();
     private ClassDescriptionLoader loader;
     protected boolean reportWarningAsError = false;
@@ -339,12 +340,16 @@ public abstract class SigTest extends Result implements PluginAPI, Log {
      * @see #purePackages
      * @see #excludedPackages
      */
-    protected boolean isPackageMember(String name) {
+    public boolean isPackageMember(String name) {
 
         boolean excluded = excludedPackages.checkName(name) || apiExcl.checkName(name);
         boolean included = packages.checkName(name) || purePackages.checkName(name) || apiIncl.checkName(name);
 
         return included && !excluded;
+    }
+
+    public boolean filterNonPublicAnnotations() {
+        return filterNonPublicAnnotations;
     }
 
     public void setClassDescrLoader(ClassDescriptionLoader loader) {

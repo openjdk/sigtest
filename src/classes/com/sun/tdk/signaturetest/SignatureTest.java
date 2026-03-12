@@ -182,7 +182,7 @@ public class SignatureTest extends SigTest {
     private static final String ORDANN_OPTION = "-OrdAnn";
     private boolean isSupersettingEnabled = false;
     private boolean isThrowsRemoved = false;
-    private ClassHierarchy signatureClassesHierarchy;
+    private ClassHierarchyImpl signatureClassesHierarchy;
     private final Erasurator erasurator = new Erasurator();
     protected Exclude exclude;
     private int readMode = MultipleFileReader.MERGE_MODE;
@@ -890,7 +890,7 @@ public class SignatureTest extends SigTest {
 
         }
 
-       if(found.hasModifier(Modifier.FINAL) && !required.hasModifier(Modifier.FINAL)
+        if(found.hasModifier(Modifier.FINAL) && !required.hasModifier(Modifier.FINAL)
                 && found.isMethod() && required.isMethod()
                 && !found.getDeclaringClassName().equals(required.getDeclaringClassName())) {
             found.removeModifier(Modifier.FINAL);
@@ -1099,6 +1099,8 @@ public class SignatureTest extends SigTest {
 
         // track class modifiers
         correctClassModifiers(required, found);
+        removePermittedSubclassesOutsideOfTestedPackages(required);
+        removePermittedSubclassesOutsideOfTestedPackages(found);
         checkClassDescription(required, found);
 
         // track members declared in the signature file.
@@ -1160,11 +1162,24 @@ public class SignatureTest extends SigTest {
 
     }
 
-    private static void fixEnum(ClassDescription enumClassDescr) {
-        // CODETOOLS-7901685
-        enumClassDescr.addModifier(Modifier.FINAL);
-        enumClassDescr.removeModifier(Modifier.ABSTRACT);
-        for (MethodDescr mr : enumClassDescr.getDeclaredMethods()) {
+    /**
+     * Iterates through the list of permitted subclasses of the passed class using its members iterator,
+     * and removes those which are outside the scope of tested packages.
+     * @param classDescription the class to process
+     */
+    private void removePermittedSubclassesOutsideOfTestedPackages(ClassDescription classDescription) {
+        for (Iterator<MemberDescription> e = classDescription.getMembersIterator(); e.hasNext(); ) {
+            MemberDescription memberDescription = e.next();
+            if (memberDescription.isPermittedSubClass() && !isPackageMember(memberDescription.getQualifiedName())) {
+                e.remove();
+            }
+        }
+    }
+
+    private static void fixEnum(ClassDescription required) {
+        required.addModifier(Modifier.FINAL);
+        required.removeModifier(Modifier.ABSTRACT);
+        for (MethodDescr mr : required.getDeclaredMethods()) {
             mr.addModifier(Modifier.FINAL);
             mr.removeModifier(Modifier.ABSTRACT);
         }
@@ -1510,8 +1525,10 @@ public class SignatureTest extends SigTest {
         }
 
         testableHierarchy = new ClassHierarchyImpl(loader);
+        testableHierarchy.setSigTest(this);
         testableMCBuilder = new MemberCollectionBuilder(this, "source:testable");
         signatureClassesHierarchy = new ClassHierarchyImpl(in);
+        signatureClassesHierarchy.setSigTest(this);
 
         // creates ErrorFormatter.
         if (FORMAT_PLAIN.equals(outFormat)) {
