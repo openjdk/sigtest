@@ -25,7 +25,6 @@
 package com.sun.tdk.signaturetest.model;
 
 import com.sun.tdk.signaturetest.core.ClassHierarchy;
-import com.sun.tdk.signaturetest.core.ClassHierarchyImpl;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 
@@ -719,7 +718,7 @@ public class ClassDescription extends MemberDescription {
                 continue;
             }
 
-            if ((((ClassHierarchyImpl)hierarchy).getSigTest()).filterNonPublicAnnotations()){
+            if (hierarchy.filterNonPublicAnnotations()) {
                 // Check if annotation should be included in dependencies
                 if (!isPublicApiAnnotationDependency(annot.getName())) {
                     continue;

@@ -85,4 +85,10 @@ public interface ClassHierarchy extends ClassDescriptionLoader {
      * marked to be tested according to the current configuration.
      */
     boolean isPackageMember(String name);
+
+    /**
+     * @return {@code true} if non-public/non-documented annotations should be
+     * filtered out while collecting dependencies.
+     */
+    boolean filterNonPublicAnnotations();
 }

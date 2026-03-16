@@ -240,6 +240,11 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         return  this.sigTest;
     }
 
+    @Override
+    public boolean filterNonPublicAnnotations() {
+        return sigTest != null && sigTest.filterNonPublicAnnotations();
+    }
+
     /**
      * Checks if the given class name belongs to some of the packages
      * marked to be tested according to the current configuration.
