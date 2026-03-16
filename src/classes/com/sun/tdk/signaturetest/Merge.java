@@ -193,7 +193,8 @@ public class Merge extends SigTest {
             return;
         }
 
-        ClassHierarchy ch = new ClassHierarchyImpl(result, ClassHierarchy.ALL_PUBLIC);
+        ClassHierarchyImpl ch = new ClassHierarchyImpl(result, ClassHierarchy.ALL_PUBLIC);
+        ch.setSigTest(this);
         for (Iterator<ClassDescription> i = result.getClassIterator(); i.hasNext(); ) {
             ClassDescription c = i.next();
             c.setHierarchy(ch);

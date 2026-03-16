@@ -79,4 +79,10 @@ public interface ClassHierarchy extends ClassDescriptionLoader {
     boolean isMethodOverriden(MethodDescr md) throws ClassNotFoundException;
 
     boolean isMethodImplements(MethodDescr md) throws ClassNotFoundException;
+
+    /**
+     * Checks if the given class name belongs to some of the packages
+     * marked to be tested according to the current configuration.
+     */
+    boolean isPackageMember(String name);
 }

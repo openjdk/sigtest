@@ -594,17 +594,24 @@ public class ClassCorrector implements Transformer {
 
     protected void removeInvisiblePermittedSubClasses(ClassDescription c) throws ClassNotFoundException {
 
-        List<String> makeThemDirect = null;
-
+        boolean hasAtLeastOneUndefinedPermit = false;
         for (Iterator<MemberDescription> e = c.getMembersIterator(); e.hasNext(); ) {
             MemberDescription mr = e.next();
             if (mr.isPermittedSubClass()) {
 
                 PermittedSubClass pc = (PermittedSubClass) mr;
                 String siName = pc.getQualifiedName();
-
-                if (isInvisibleClass(siName)) {
-                    e.remove();
+                if (isInvisibleClass(siName) || !classHierarchy.isPackageMember(siName)) {
+                    if ( !hasAtLeastOneUndefinedPermit ) {
+                        // keeping at one "undefined" permitted subclass to indicate that the class as sealed
+                        pc.setupClassName("undefined");
+                        hasAtLeastOneUndefinedPermit = true;
+                    } else {
+                        // already have undefined "permits",
+                        // which effectively means our subclass would be recognized as sealed
+                        // no need to add one more "perm undefined"
+                        e.remove();
+                    }
                 }
 
                 if (mr.getTypeParameters() != null) {

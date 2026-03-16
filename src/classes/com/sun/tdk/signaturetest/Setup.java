@@ -22,6 +22,7 @@
  * or visit www.oracle.com if you need additional information or have any
  * questions.
  */
+
 package com.sun.tdk.signaturetest;
 
 import com.sun.tdk.signaturetest.classpath.Classpath;
@@ -102,6 +103,7 @@ public class Setup extends SigTest {
     // This option is used only for debugging purposes. It's not recommended
     // to use it to create signature files for production!
     public static final String XREFLECTION_OPTION = "-Xreflection";
+    public static final String FILTER_NON_PUBLIC_ANNOT_OPTION = "-FilterNonPublicAnnotations";
     /**
      * contains signature file.
      */
@@ -177,6 +179,7 @@ public class Setup extends SigTest {
         parser.addOption(PLUGIN_OPTION, OptionInfo.option(1), optionsDecoder);
         parser.addOption(ERRORALL_OPTION, OptionInfo.optionalFlag(), optionsDecoder);
         parser.addOption(COPYRIGHT_OPTION, OptionInfo.option(1), optionsDecoder);
+        parser.addOption(FILTER_NON_PUBLIC_ANNOT_OPTION , OptionInfo.optionalFlag(), optionsDecoder);
 
         parser.addOptions(bo.getOptions(), optionsDecoder);
 
@@ -209,6 +212,10 @@ public class Setup extends SigTest {
         // create arguments
         if (packages.isEmpty() && purePackages.isEmpty() && apiIncl.isEmpty()) {
             packages.addPackage("");
+        }
+
+        if (parser.isOptionSpecified(FILTER_NON_PUBLIC_ANNOT_OPTION)) {
+            filterNonPublicAnnotations = true;
         }
 
         if (bo.getValue(Option.FILE_NAME) == null) {
@@ -352,6 +359,7 @@ public class Setup extends SigTest {
 
             ClassDescriptionLoader testableLoader = getClassDescrLoader();
             testableHierarchy = new ClassHierarchyImpl(testableLoader);
+            testableHierarchy.setSigTest(this);
             testableMCBuilder = new MemberCollectionBuilder(this, "source:setup");
 
             // adds classes which are member of classes from tracked package
@@ -409,7 +417,12 @@ public class Setup extends SigTest {
                 }
 
                 if (copyrightStr != null) {
-                    FeaturesHolder.CopyRight.setText("# " + copyrightStr);
+                    String commentedCRN = copyrightStr.replaceAll("\n", "\n# ");
+                    int lastInd = commentedCRN.length() - 1;
+                    if (lastInd > 0 && commentedCRN.lastIndexOf('#') == lastInd) {
+                        commentedCRN = commentedCRN.substring(0, lastInd - 2); // cutting "# " at the end
+                    }
+                    FeaturesHolder.CopyRight.setText("# " + commentedCRN);
                     writer.addFeature(FeaturesHolder.CopyRight);
                 }
 
