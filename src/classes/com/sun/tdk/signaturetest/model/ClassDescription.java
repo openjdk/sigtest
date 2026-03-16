@@ -25,6 +25,7 @@
 package com.sun.tdk.signaturetest.model;
 
 import com.sun.tdk.signaturetest.core.ClassHierarchy;
+import com.sun.tdk.signaturetest.core.ClassHierarchyImpl;
 import com.sun.tdk.signaturetest.util.I18NResourceBundle;
 import com.sun.tdk.signaturetest.util.SwissKnife;
 
