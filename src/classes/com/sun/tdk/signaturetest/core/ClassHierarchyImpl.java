@@ -236,10 +236,6 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         this.sigTest = sigTest;
     }
 
-    public SigTest getSigTest() {
-        return  this.sigTest;
-    }
-
     @Override
     public boolean filterNonPublicAnnotations() {
         return sigTest != null && sigTest.filterNonPublicAnnotations();
