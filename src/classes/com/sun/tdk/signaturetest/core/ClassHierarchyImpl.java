@@ -24,6 +24,7 @@
  */
 package com.sun.tdk.signaturetest.core;
 
+import com.sun.tdk.signaturetest.SigTest;
 import com.sun.tdk.signaturetest.classpath.Classpath;
 import com.sun.tdk.signaturetest.core.context.BaseOptions;
 import com.sun.tdk.signaturetest.core.context.Option;
@@ -235,8 +236,9 @@ public class ClassHierarchyImpl implements ClassHierarchy {
         this.sigTest = sigTest;
     }
 
-    public SigTest getSigTest() {
-        return  this.sigTest;
+    @Override
+    public boolean filterNonPublicAnnotations() {
+        return sigTest != null && sigTest.filterNonPublicAnnotations();
     }
 
     /**

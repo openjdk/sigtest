@@ -718,7 +718,7 @@ public class ClassDescription extends MemberDescription {
                 continue;
             }
 
-            if ((((ClassHierarchyImpl)hierarchy).getSigTest()).filterNonPublicAnnotations()){
+            if (hierarchy.filterNonPublicAnnotations()) {
                 // Check if annotation should be included in dependencies
                 if (!isPublicApiAnnotationDependency(annot.getName())) {
                     continue;
